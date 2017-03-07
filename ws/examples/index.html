@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">   
+    <link rel="shortcut icon" href="../../favicon.ico">
+
+    <title>Examples - Bullet</title>
+
+    <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/font-hack/2.018/css/hack.min.css">
+    <link href='//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700,700italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href="../../css/base.css" rel="stylesheet">
+    <link href="../../css/cinder.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/highlight.css">
+
+
+    <link href="../../css/extra.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
+    <script>
+    WebFont.load({
+        google: {
+            families: ['Open Sans', 'PT Sans']
+        }
+    });
+    </script>
+
+    
+</head>
+
+<body>
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="../..">Bullet</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li >
+                        <a href="../..">Home</a>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../../quick-start/">Quick Start</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Backend <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../backend/storm-architecture/">Storm Architecture</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../backend/ingestion/">Getting your data into Bullet</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../backend/setup-storm/">Setup on Storm</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../backend/performance/">Performance</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">REST API <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../setup/">Setup</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../api/">API</a>
+</li>
+
+                        
+                            
+<li class="active">
+    <a href="./">Examples</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">UI <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../ui/setup/">Setup</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../ui/usage/">Usage</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">About <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../about/releases/">Releases</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                </ul>
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                </li>
+                
+                    <li >
+                        <a rel="next" href="../api/">
+                            <i class="fa fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="prev" href="../../ui/setup/">
+                            Next <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </li>
+                
+                
+                    <li>
+                        <a href="https://github.com/yahoo/bullet-docs">
+                            
+                                <i class="fa fa-github"></i>
+                            
+                            GitHub
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+    <div class="container">
+        
+        <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="first-level active"><a href="#examples">Examples</a></li>
+        
+            <li class="second-level"><a href="#simplest-query">Simplest Query</a></li>
+            
+        
+            <li class="second-level"><a href="#simple-filtering">Simple Filtering</a></li>
+            
+        
+            <li class="second-level"><a href="#relational-filters-and-projections">Relational Filters and Projections</a></li>
+            
+        
+            <li class="second-level"><a href="#logical-filters-and-projections">Logical Filters and Projections</a></li>
+            
+        
+            <li class="second-level"><a href="#group-all-count-aggregation">GROUP ALL COUNT Aggregation</a></li>
+            
+        
+            <li class="second-level"><a href="#group-all-multiple-aggregations">GROUP ALL Multiple Aggregations</a></li>
+            
+        
+            <li class="second-level"><a href="#exact-count-distinct-aggregation">Exact COUNT DISTINCT Aggregation</a></li>
+            
+        
+            <li class="second-level"><a href="#approximate-count-distinct-aggregation">Approximate COUNT DISTINCT Aggregation</a></li>
+            
+        
+            <li class="second-level"><a href="#distinct-aggregation">DISTINCT Aggregation</a></li>
+            
+        
+            <li class="second-level"><a href="#group-by-aggregation">GROUP by Aggregation</a></li>
+            
+        
+    
+    </ul>
+</div></div>
+        <div class="col-md-9" role="main">
+
+<h2 id="examples">Examples</h2>
+<p>Rather than sourcing the examples from the <a href="../../quick-start/">Quick Start</a>, these examples are real-world ones sourced from Bullet running on raw, user events generated by instrumentation on Yahoo sites.</p>
+<div class="admonition note">
+<p class="admonition-title">Real data!?</p>
+<p>The actual data shown here has been edited and is not how actual Yahoo user events look.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">SQL translation</p>
+<p>For each query, we will also rewrite it to a SQL like syntax for readability. Eventually, we plan the API to support this format as input so you could just write this in place of the JSON syntax.</p>
+</div>
+<h3 id="simplest-query">Simplest Query</h3>
+<p>The simplest query you can write would be:</p>
+<p><strong>Bullet Query</strong></p>
+<pre><code class="javascript">{}
+</code></pre>
+
+<p>While not a very useful query - this will get any one event record (no filters =&gt; any record would be matched, no projection =&gt; gets the entire record, default aggregation =&gt; <code>LIMIT</code>or <code>RAW</code>, with size 1, default duration =&gt; 30000 ms), this can be used to quickly test your connection to Bullet.</p>
+<p><strong>SQL</strong></p>
+<pre><code class="SQL">SELECT * FROM WINDOW(30000) LIMIT 1;
+</code></pre>
+
+<p>Since there is only one data stream in Bullet, the <code>FROM</code> clause is replaced with a <code>WINDOW</code> function that sets the time window for the Bullet query.</p>
+<h3 id="simple-filtering">Simple Filtering</h3>
+<p><strong>Bullet Query</strong></p>
+<pre><code class="javascript">{
+   &quot;filters&quot;:[
+       {
+           &quot;field&quot;:&quot;id&quot;,
+           &quot;operation&quot;:&quot;==&quot;,
+           &quot;values&quot;:[
+               &quot;btsg8l9b234ha&quot;
+           ]
+       }
+    ]
+}
+</code></pre>
+
+<p><strong>SQL</strong></p>
+<pre><code class="SQL">SELECT * FROM WINDOW(30s) WHERE id = &quot;btsg8l9b234ha&quot; LIMIT 1;
+</code></pre>
+
+<p>Because of the default constraints, this query would find at most 1 record with the id matching the value provided. The record would have all its fields.</p>
+<p>A sample response could be (it has been edited to remove PII and other Yahoo data). The response contains a single matching record, and the associated meta information.</p>
+<pre><code class="javascript">{
+   &quot;records&quot;:[
+       {
+           &quot;server_name&quot;:&quot;EDITED&quot;,
+           &quot;page_uri&quot;:&quot;/&quot;,
+           &quot;is_page_view&quot;:true,
+           &quot;device&quot;:&quot;tablet&quot;,
+           &quot;debug_codes&quot;:{
+               &quot;http_status_code&quot;:&quot;200&quot;
+           },
+           &quot;referrer_domain&quot;:&quot;www.yahoo.com&quot;,
+           &quot;is_logged_in&quot;:true,
+           &quot;timestamp&quot;:1446842189000,
+           &quot;event_family&quot;:&quot;view&quot;,
+           &quot;id&quot;:&quot;btsg8l9b234ha&quot;,
+           &quot;os_name&quot;:&quot;mac os&quot;,
+           &quot;demographics&quot;:{
+               &quot;age&quot; : &quot;25&quot;,
+               &quot;gender&quot; : &quot;m&quot;,
+            }
+       }
+    ],
+    &quot;meta&quot;:{
+        &quot;rule_id&quot;:1167304238598842449,
+        &quot;rule_body&quot;:&quot;{}&quot;,
+        &quot;rule_finish_time&quot;:1480723799550,
+        &quot;rule_receive_time&quot;:1480723799540
+    }
+}
+</code></pre>
+
+<h3 id="relational-filters-and-projections">Relational Filters and Projections</h3>
+<p><strong>Bullet Query</strong></p>
+<pre><code class="javascript">{
+    &quot;filters&quot;:[
+        {
+            &quot;field&quot;:&quot;id&quot;,
+            &quot;operation&quot;:&quot;==&quot;,
+            &quot;values&quot;:[
+                &quot;btsg8l9b234ha&quot;
+            ]
+        },
+        {
+            &quot;field&quot;:&quot;page_id&quot;,
+            &quot;operation&quot;:&quot;!=&quot;,
+            &quot;values&quot;:[
+                &quot;null&quot;
+            ]
+        }
+    ],
+    &quot;projection&quot;:{
+        &quot;fields&quot;:{
+            &quot;timestamp&quot;:&quot;ts&quot;,
+            &quot;device_timestamp&quot;:&quot;device_ts&quot;,
+            &quot;event&quot;:&quot;event&quot;,
+            &quot;page_domain&quot;:&quot;domain&quot;,
+            &quot;id&quot;:&quot;id&quot;
+        }
+    },
+    &quot;aggregation&quot;:{
+        &quot;type&quot;:&quot;RAW&quot;,
+        &quot;size&quot;:10
+    },
+    &quot;duration&quot;:20000
+}
+</code></pre>
+
+<p><strong>SQL</strong></p>
+<pre><code class="SQL">SELECT timestamp AS ts, device_timestamp AS device_ts, event AS event, page_domain AS domain
+FROM WINDOW(20s)
+WHERE id = &quot;btsg8l9b234ha&quot; AND page_id IS NOT NULL
+LIMIT 10;
+</code></pre>
+
+<p>The above query finds all events with id set to 'btsg8l9b234ha' and page_id is not null, projects out the fields listed above with their new names (timestamp becomes ts etc) and limits the results to at most 10 such records. <code>RAW</code> indicates that the complete raw record fields will be returned, and more complicated aggregations such as <code>COUNT</code> or <code>SUM</code> will not be performed. The duration would set the query to wait at most 20 seconds for records to show up.</p>
+<p>The resulting response could look like (only 3 events were generated that matched the criteria):</p>
+<pre><code class="javascript">{
+    &quot;records&quot;: [
+        {
+            &quot;domain&quot;: &quot;http://some.url.com&quot;,
+            &quot;device_ts&quot;: 1481152233788,
+            &quot;id&quot;: 2273844742998,
+            &quot;event&quot;: &quot;page&quot;,
+            &quot;ts&quot;: null
+        },
+        {
+            &quot;domain&quot;: &quot;www.yahoo.com&quot;,
+            &quot;device_ts&quot;: 1481152233788,
+            &quot;id&quot;: 227384472956,
+            &quot;event&quot;: &quot;click&quot;,
+            &quot;ts&quot;: 1481152233888
+        },
+        {
+            &quot;domain&quot;: &quot;https://news.yahoo.com&quot;,
+            &quot;device_ts&quot;: null,
+            &quot;id&quot;: 2273844742556,
+            &quot;event&quot;: &quot;page&quot;,
+            &quot;ts&quot;: null
+        }
+    ],
+    &quot;meta&quot;: {
+        &quot;rule_id&quot;: -3239746252817510000,
+        &quot;rule_body&quot;: &quot;&lt;entire rule body is re-emitted here&gt;&quot;,
+        &quot;rule_finish_time&quot;: 1481152233799,
+        &quot;rule_receive_time&quot;: 1481152233796
+    }
+}
+</code></pre>
+
+<h3 id="logical-filters-and-projections">Logical Filters and Projections</h3>
+<p><strong>Bullet Query</strong></p>
+<pre><code class="javascript">{
+ &quot;filters&quot;: [
+                {
+                    &quot;operation&quot;: &quot;OR&quot;,
+                    &quot;clauses&quot;: [
+                        {
+                            &quot;operation&quot;: &quot;AND&quot;,
+                            &quot;clauses&quot;: [
+                                {
+                                    &quot;field&quot;: &quot;id&quot;,
+                                    &quot;operation&quot;: &quot;==&quot;,
+                                    &quot;values&quot;: [&quot;c14plm1begla7&quot;]
+                                },
+                                {
+                                    &quot;operation&quot;: &quot;OR&quot;,
+                                    &quot;clauses&quot;: [
+                                        {
+                                            &quot;operation&quot;: &quot;AND&quot;,
+                                            &quot;clauses&quot;: [
+                                                {
+                                                    &quot;field&quot;: &quot;experience&quot;,
+                                                    &quot;operation&quot;: &quot;==&quot;,
+                                                    &quot;values&quot;: [&quot;web&quot;]
+                                                },
+                                                {
+                                                    &quot;field&quot;: &quot;page_id&quot;,
+                                                    &quot;operation&quot;: &quot;==&quot;,
+                                                    &quot;values&quot;: [&quot;18025&quot;, &quot;47729&quot;]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            &quot;field&quot;: &quot;link_id&quot;,
+                                            &quot;operation&quot;: &quot;RLIKE&quot;,
+                                            &quot;values&quot;: [&quot;2.*&quot;]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            &quot;operation&quot;: &quot;AND&quot;,
+                            &quot;clauses&quot;: [
+                                {
+                                    &quot;field&quot;: &quot;tags.player&quot;,
+                                    &quot;operation&quot;: &quot;==&quot;,
+                                    &quot;values&quot;: [&quot;true&quot;]
+                                },
+                                {
+                                    &quot;field&quot;: &quot;demographics.age&quot;,
+                                    &quot;operation&quot;: &quot;&gt;&quot;,
+                                    &quot;values&quot;: [&quot;65&quot;]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+ &quot;projection&quot; : {
+    &quot;fields&quot;: {
+        &quot;id&quot;: &quot;id&quot;,
+        &quot;experience&quot;: &quot;experience&quot;,
+        &quot;page_id&quot;: &quot;pid&quot;,
+        &quot;link_id&quot;: &quot;lid&quot;,
+        &quot;tags&quot;: &quot;tags&quot;,
+        &quot;demographics.age&quot;: &quot;age&quot;
+    }
+ },
+ &quot;aggregation&quot;: {&quot;type&quot; : &quot;RAW&quot;, &quot;size&quot; : 1},
+ &quot;duration&quot;: 60000
+}
+</code></pre>
+
+<p><strong>SQL</strong></p>
+<pre><code class="SQL">SELECT id AS id, experience AS experience, page_id AS pid,
+       link_id AS lid, tags AS tags, demographics[&quot;age&quot;] AS age
+FROM WINDOW(1min)
+WHERE (id = &quot;c14plm1begla7&quot; AND ((experience = &quot;web&quot; AND page_id IN [&quot;18025&quot;, &quot;47729&quot;])
+                                 OR link_id MATCHES &quot;2.*&quot;))
+      OR
+      (tags[&quot;player&quot;] AND demographics[&quot;age&quot;] &gt; &quot;65&quot;)
+LIMIT 1;
+</code></pre>
+
+<div class="admonition note">
+<p class="admonition-title">Typing</p>
+<p>If demographics["age"] was of type Long, then Bullet will convert 85 to be an Long, but in this example, we are pretending that it is String.  So, no conversion is made. Similarly for link_id, id, experience and page_id. tags is a Map of String to Boolean so Bullet converts <code>"true"</code> to the Boolean <code>true</code>.</p>
+</div>
+<p>This query is looking for a single event with a specific id and either the page_id is in two specific pages on the "web" experience or with a link_id that starts with 2, or a player event where the age is greater than "65". In other words, it is looking for senior citizens who generate video player events or a particular person's (based on id) events on two specific pages or a group of pages that have link that have ids that start with 2. It then projects out only these fields with different names.</p>
+<p>A sample result could look like (it matched because of tags.player was true and demographics.age was &gt; 65):</p>
+<pre><code class="javascript">{
+    &quot;records&quot;: [
+        {
+            &quot;pid&quot;:&quot;158&quot;,
+            &quot;id&quot;:&quot;0qcgofdbfqs9s&quot;,
+            &quot;experience&quot;:&quot;web&quot;,
+            &quot;lid&quot;:&quot;978500434&quot;,
+            &quot;age&quot;:&quot;66&quot;,
+            &quot;tags&quot;:{&quot;player&quot;:true}
+        }
+    ],
+    &quot;meta&quot;: {
+        &quot;rule_id&quot;: 3239746252812284004,
+        &quot;rule_body&quot;: &quot;&lt;RULE_BODY_EDITED_OUT&gt;&quot;,
+        &quot;rule_finish_time&quot;: 1481152233805,
+        &quot;rule_receive_time&quot;: 1481152233881
+    }
+}
+</code></pre>
+
+<h3 id="group-all-count-aggregation">GROUP ALL COUNT Aggregation</h3>
+<p>An example of a query performing a COUNT all records aggregation would look like:</p>
+<p><strong>Bullet Query</strong></p>
+<pre><code class="javascript">{
+   &quot;filters&quot;:[
+      {
+         &quot;field&quot;: &quot;demographics.age&quot;,
+         &quot;operation&quot;: &quot;&gt;&quot;,
+         &quot;values&quot;: [&quot;65&quot;]
+      }
+   ],
+   &quot;aggregation&quot;:{
+      &quot;type&quot;: &quot;GROUP&quot;,
+      &quot;attributes&quot;: {
+         &quot;operations&quot;: [
+            {
+               &quot;type&quot;: &quot;COUNT&quot;,
+               &quot;newName&quot;: &quot;numSeniors&quot;
+            }
+         ]
+      }
+   },
+   &quot;duration&quot;: 20000
+}
+</code></pre>
+
+<p><strong>SQL</strong></p>
+<pre><code class="SQL">SELECT COUNT(*) AS numSeniors
+FROM WINDOW(20s)
+WHERE demographics[&quot;age&quot;] &gt; &quot;65&quot;;
+</code></pre>
+
+<p>This query will count the number events for which demographics.age &gt; 65. The aggregation type GROUP indicates that it is a group aggregation. To group by a key, the <code>fields</code> key needs to be set in the <code>aggregation</code> part of the query. If <code>fields</code> is empty or is omitted (as it is in the query above) and the <code>type</code> is <code>GROUP</code>, it is as if all the records are collapsed into a single group - a <code>GROUP ALL</code>. Adding a <code>COUNT</code> in the <code>operations</code> part of the <code>attributes</code> indicates that the number of records in this group will be counted, and the "newName" key denotes the name the resulting column "numSeniors" in the result. Setting the duration to 20000 counts matching records for
+this duration.</p>
+<p>A sample result would look like:</p>
+<pre><code class="javascript">{
+    &quot;records&quot;: [
+        {
+            &quot;numSeniors&quot;: 363201
+        }
+    ],
+    &quot;meta&quot;: {}
+}
+</code></pre>
+
+<p>This result indicates that 363,201 records were counted with demographics.age &gt; 65 during the 20 s the query was running.</p>
+<h3 id="group-all-multiple-aggregations">GROUP ALL Multiple Aggregations</h3>
+<p>COUNT is the only GROUP operation for which you can omit a "field".</p>
+<p><strong>Bullet Query</strong></p>
+<pre><code class="javascript">{
+   &quot;filters&quot;:[
+      {
+         &quot;field&quot;: &quot;demographics.state&quot;,
+         &quot;operation&quot;: &quot;==&quot;,
+         &quot;values&quot;: [&quot;california&quot;]
+      }
+   ],
+   &quot;aggregation&quot;:{
+      &quot;type&quot;: &quot;GROUP&quot;,
+      &quot;attributes&quot;: {
+         &quot;operations&quot;: [
+            {
+               &quot;type&quot;: &quot;COUNT&quot;,
+               &quot;newName&quot;: &quot;numCalifornians&quot;
+            },
+            {
+               &quot;type&quot;: &quot;AVG&quot;,
+               &quot;field&quot;: &quot;demographics.age&quot;,
+               &quot;newName&quot;: &quot;avgAge&quot;
+            },
+            {
+               &quot;type&quot;: &quot;MIN&quot;,
+               &quot;field&quot;: &quot;demographics.age&quot;,
+               &quot;newName&quot;: &quot;minAge&quot;
+            },
+            {
+               &quot;type&quot;: &quot;MAX&quot;,
+               &quot;field&quot;: &quot;demographics.age&quot;,
+               &quot;newName&quot;: &quot;maxAge&quot;
+            }
+         ]
+      }
+   },
+   &quot;duration&quot;: 20000
+}
+</code></pre>
+
+<p><strong>SQL</strong></p>
+<pre><code class="SQL">SELECT COUNT(*) AS numCalifornians, AVG(demographics[&quot;age&quot;]) AS avgAge,
+       MIN(demographics[&quot;age&quot;]) AS minAge, MAX(demographics[&quot;age&quot;]) AS maxAge,
+FROM WINDOW(20s)
+WHERE demographics[&quot;state&quot;] = &quot;california&quot;;
+</code></pre>
+
+<p>A sample result would look like:</p>
+<pre><code class="javascript">{
+    &quot;records&quot;: [
+        {
+            &quot;maxAge&quot;: 94.0,
+            &quot;numCalifornians&quot;: 188451,
+            &quot;minAge&quot;: 6.0,
+            &quot;avgAge&quot;: 33.71828
+        }
+    ],
+    &quot;meta&quot;: {
+        &quot;rule_id&quot;: 8051040987827161000,
+        &quot;rule_body&quot;: &quot;&lt;RULE BODY HERE&gt;&quot;,
+        &quot;rule_finish_time&quot;: 1482371927435,
+        &quot;rule_receive_time&quot;: 1482371916625
+    }
+}
+</code></pre>
+
+<p>This result indicates that, among the records observed during the 20 s this query ran, there were 188,451 users with demographics.state equal to "california". Among these users the average age was 33.71828, the max age observed was 94, and the minimum age observed was 6.</p>
+<h3 id="exact-count-distinct-aggregation">Exact COUNT DISTINCT Aggregation</h3>
+<p><strong>Bullet Query</strong></p>
+<pre><code class="javascript">{
+  &quot;aggregation&quot;: {
+      &quot;type&quot;: &quot;COUNT DISTINCT&quot;,
+      &quot;fields&quot;: {
+          &quot;browser_name&quot;: &quot;&quot;,
+          &quot;browser_version&quot;: &quot;&quot;
+      }
+    }
+}
+</code></pre>
+
+<p><strong>SQL</strong></p>
+<pre><code class="SQL">SELECT COUNT(*) AS &quot;COUNT DISTINCT&quot;
+FROM (SELECT browser_name, browser_version
+      FROM WINDOW(30s)
+      GROUP BY browser_name, browser_version) tmp;
+</code></pre>
+
+<p>This gets the count of the unique browser names and versions in the next 30 s (default duration). Note that we do not specify values for the keys in fields. This is because they are not relevant</p>
+<pre><code class="javascript">{
+    &quot;records&quot;: [
+        {
+            &quot;COUNT DISTINCT&quot;: 158.0
+        }
+    ],
+    &quot;meta&quot;: {
+        &quot;rule_id&quot;: 4451146261377394443,
+        &quot;aggregation&quot;: {
+            &quot;standardDeviations&quot;: {
+                &quot;1&quot;: {
+                    &quot;upperBound&quot;: 158.0,
+                    &quot;lowerBound&quot;: 158.0
+                },
+                &quot;2&quot;: {
+                    &quot;upperBound&quot;: 158.0,
+                    &quot;lowerBound&quot;: 158.0
+                },
+                &quot;3&quot;: {
+                    &quot;upperBound&quot;: 158.0,
+                    &quot;lowerBound&quot;: 158.0
+                }
+            },
+            &quot;wasEstimated&quot;: false,
+            &quot;sketchFamily&quot;: &quot;COMPACT&quot;,
+            &quot;sketchTheta&quot;: 1.0,
+            &quot;sketchSize&quot;: 1280
+        },
+        &quot;rule_body&quot;: &quot;&lt;RULE BODY HERE&gt;&quot;,
+        &quot;rule_finish_time&quot;: 1484084869073,
+        &quot;rule_receive_time&quot;: 1484084832684
+    }
+}
+</code></pre>
+
+<p>There were 158 unique combinations on browser names and versions in our dataset for those 30 s. Note the new <code>aggregation</code> object in the meta. It has various metadata about the result and Sketches. In particular, the <code>wasEstimated</code> key denotes where the result
+was estimated or not. The <code>standardDeviations</code> key denotes the confidence at various sigmas: 1 (1 sigma = ~68% confidence, 2 sigma = ~95% confidence, 3 sigma = ~99% confidence). Since this result was not estimated, the result is the same as the upper and lower bounds for the result.</p>
+<h3 id="approximate-count-distinct-aggregation">Approximate COUNT DISTINCT Aggregation</h3>
+<p><strong>Bullet Query</strong></p>
+<pre><code class="javascript">{
+  &quot;aggregation&quot;: {
+      &quot;type&quot;: &quot;COUNT DISTINCT&quot;,
+      &quot;fields&quot;: {
+          &quot;ip_address&quot;: &quot;&quot;
+      },
+      &quot;attributes&quot;: {
+          &quot;newName&quot;: &quot;uniqueIPs&quot;
+      }
+    },
+    &quot;duration&quot;: 10000
+}
+</code></pre>
+
+<p><strong>SQL</strong></p>
+<pre><code class="SQL">SELECT COUNT(*) AS uniqueIPs
+FROM (SELECT ip_address
+      FROM WINDOW(10s)
+      GROUP BY ip_address) tmp;
+</code></pre>
+
+<p>This query gets us the unique IP addresses in the next 10 s. It renames the result column from "COUNT DISTINCT" to "uniqueIPs".</p>
+<pre><code class="javascript">{
+    &quot;records&quot;: [
+        {
+            &quot;uniqueIPs&quot;: 130551.07952805843
+        }
+    ],
+    &quot;meta&quot;: {
+        &quot;rule_id&quot;: 5377782455857451480,
+        &quot;aggregation&quot;: {
+            &quot;standardDeviations&quot;: {
+                &quot;1&quot;: {
+                    &quot;upperBound&quot;: 131512.85413760383,
+                    &quot;lowerBound&quot;: 129596.30223107953
+                },
+                &quot;2&quot;: {
+                    &quot;upperBound&quot;: 132477.15103015225,
+                    &quot;lowerBound&quot;: 128652.93906100772
+                },
+                &quot;3&quot;: {
+                    &quot;upperBound&quot;: 133448.49248615955,
+                    &quot;lowerBound&quot;: 127716.46773622213
+                }
+            },
+            &quot;wasEstimated&quot;: true,
+            &quot;sketchFamily&quot;: &quot;COMPACT&quot;,
+            &quot;sketchTheta&quot;: 0.12549877074343688,
+            &quot;sketchSize&quot;: 131096
+        },
+        &quot;rule_body&quot;: &quot;&lt;RULE BODY HERE&gt;&quot;,
+        &quot;rule_finish_time&quot;: 1484090240812,
+        &quot;rule_receive_time&quot;: 1484090223351
+    }
+}
+</code></pre>
+
+<p>The number of unique IPs in our dataset was 130551 in those 10 s (approximately) with the true value between (129596, 131512) at 68% confidence, (128652, 132477) at 95% confidence and (127716, 133448) at 99% confidence. In the <em>worst</em> case at 3 sigma (99% confidence),
+our error is 2.17%. The final result was computed with 131096 bytes or ~128 KiB as denoted by <code>sketchSize</code>. This happens to be maximum size the the COUNT DISTINCT sketch will take up at the default nominal entries, so even if we had billions of unique IPs, the size will be the same and the error may be higher (depends on the distribution). For example, the error when the same query was run for 30 s was 2.28% at 99% confidence (actual unique IPs: 559428, upper bound: 572514). In fact, the worst the error can get at this
+Sketch size is 2.34% as defined <a href="https://datasketches.github.io/docs/Theta/ThetaErrorTable.html">here</a>, <em>regardless of the number of unique entries added to the Sketch!</em>.</p>
+<h3 id="distinct-aggregation">DISTINCT Aggregation</h3>
+<p><strong>Bullet Query</strong></p>
+<pre><code class="javascript">{
+   &quot;aggregation&quot;:{
+      &quot;type&quot;: &quot;DISTINCT&quot;,
+      &quot;size&quot;: 10,
+      &quot;fields&quot;: {
+         &quot;browser_name&quot;: &quot;browser&quot;
+      }
+   }
+}
+</code></pre>
+
+<p><strong>SQL</strong></p>
+<pre><code class="SQL">SELECT browser_name AS browser
+FROM WINDOW(30s)
+GROUP BY browser_name
+LIMIT 10;
+</code></pre>
+
+<p>This query gets the distinct values for the browser_name field and limit the results to 10. It runs for 30 s.</p>
+<pre><code class="javascript">{
+  &quot;records&quot;:[
+    {
+      &quot;browser&quot;:&quot;opera&quot;
+    },
+    {
+      &quot;browser&quot;:&quot;flock&quot;
+    },
+    {
+      &quot;browser&quot;:&quot;links&quot;
+    },
+    {
+      &quot;browser&quot;:&quot;mozilla firefox&quot;
+    },
+    {
+      &quot;browser&quot;:&quot;dolfin&quot;
+    },
+    {
+      &quot;browser&quot;:&quot;lynx&quot;
+    },
+    {
+      &quot;browser&quot;:&quot;chrome&quot;
+    },
+    {
+      &quot;browser&quot;:&quot;microsoft internet explorer&quot;
+    },
+    {
+      &quot;browser&quot;:&quot;aol browser&quot;
+    },
+    {
+      &quot;browser&quot;:&quot;edge&quot;
+    }
+  ],
+  &quot;meta&quot;:{
+    &quot;rule_id&quot;:-4872093887360741287,
+    &quot;aggregation&quot;:{
+      &quot;standardDeviations&quot;:{
+        &quot;1&quot;:{
+          &quot;upperBound&quot;:28.0,
+          &quot;lowerBound&quot;:28.0
+        },
+        &quot;2&quot;:{
+          &quot;upperBound&quot;:28.0,
+          &quot;lowerBound&quot;:28.0
+        },
+        &quot;3&quot;:{
+          &quot;upperBound&quot;:28.0,
+          &quot;lowerBound&quot;:28.0
+        }
+      },
+      &quot;wasEstimated&quot;:false,
+      &quot;uniquesEstimate&quot;:28.0,
+      &quot;sketchTheta&quot;:1.0
+    },
+    &quot;rule_body&quot;:&quot;&lt;RULE_BODY_HERE&gt;&quot;,
+    &quot;rule_finish_time&quot;:1485469087971,
+    &quot;rule_receive_time&quot;:1485469054070
+  }
+}
+</code></pre>
+
+<p>There were 28 unique results but we asked for 10, so the query returned a uniform sample across the 28 distinct values.</p>
+<p>DISTINCT is just an alias for GROUP. A GROUP by with no operations is exactly a DISTINCT.</p>
+<h3 id="group-by-aggregation">GROUP by Aggregation</h3>
+<p><strong>Bullet Query</strong></p>
+<pre><code class="javascript">{
+   &quot;filters&quot;:[
+      {
+         &quot;field&quot;: &quot;demographics&quot;,
+         &quot;operation&quot;: &quot;!=&quot;,
+         &quot;values&quot;: [&quot;null&quot;]
+      }
+   ],
+   &quot;aggregation&quot;:{
+      &quot;type&quot;: &quot;GROUP&quot;,
+      &quot;size&quot;: 50,
+      &quot;fields&quot;: {
+          &quot;demographics.country&quot;: &quot;country&quot;,
+          &quot;device&quot;: &quot;&quot;
+      },
+      &quot;attributes&quot;: {
+         &quot;operations&quot;: [
+            {
+               &quot;type&quot;: &quot;COUNT&quot;,
+               &quot;newName&quot;: &quot;count&quot;
+            },
+            {
+               &quot;type&quot;: &quot;AVG&quot;,
+               &quot;field&quot;: &quot;demographics.age&quot;,
+               &quot;newName&quot;: &quot;averageAge&quot;
+            },
+            {
+               &quot;type&quot;: &quot;AVG&quot;,
+               &quot;field&quot;: &quot;timespent&quot;,
+               &quot;newName&quot;: &quot;averageTimespent&quot;
+            }
+         ]
+      }
+   },
+   &quot;duration&quot;: 20000
+}
+</code></pre>
+
+<p><strong>SQL</strong></p>
+<pre><code class="SQL">SELECT demographics[&quot;country&quot;] AS country, device AS device,
+       COUNT(*) AS count, AVG(demographics[&quot;age&quot;]) AS averageAge,
+       AVG(timespent) AS averageTimespent
+FROM WINDOW(20s)
+WHERE demographics IS NOT NULL
+GROUP BY demographics[&quot;country&quot;], device
+LIMIT 50;
+</code></pre>
+
+<p>This query groups by the country and the device and for each unique group gets the count, average age and time spent by the users for the next 20 seconds. It renames demographics.country to country and does not rename device. It limits the groups to 50. If there were more than
+50 groups, the results would be a uniform sampling of the groups (but each group in the result would have the correct result). These parameters can all be tweaked <a href="#configuration">in the configuration</a>.</p>
+<pre><code class="javascript">{
+  &quot;records&quot;:[
+    {
+      &quot;country&quot;:&quot;uk&quot;,
+      &quot;device&quot;:&quot;desktop&quot;,
+      &quot;count&quot;:203034,
+      &quot;averageAge&quot;:32.42523,
+      &quot;averageTimespent&quot;:1.342
+    },
+    {
+      &quot;country&quot;:&quot;us&quot;,
+      &quot;device&quot;:&quot;desktop&quot;,
+      &quot;count&quot;:1934030,
+      &quot;averageAge&quot;:29.42523,
+      &quot;averageTimespent&quot;:3.234520
+    },
+    &lt;...and 41 other such records here&gt;
+  ],
+  &quot;meta&quot;:{
+    &quot;rule_id&quot;:1705911449584057747,
+    &quot;aggregation&quot;:{
+      &quot;standardDeviations&quot;:{
+        &quot;1&quot;:{
+          &quot;upperBound&quot;:43.0,
+          &quot;lowerBound&quot;:43.0
+        },
+        &quot;2&quot;:{
+          &quot;upperBound&quot;:43.0,
+          &quot;lowerBound&quot;:43.0
+        },
+        &quot;3&quot;:{
+          &quot;upperBound&quot;:43.0,
+          &quot;lowerBound&quot;:43.0
+        }
+      },
+      &quot;wasEstimated&quot;:false,
+      &quot;uniquesEstimate&quot;:43.0,
+      &quot;sketchTheta&quot;:1.0
+    },
+    &quot;rule_body&quot;:&quot;&lt;RULE_BODY_HERE&gt;&quot;,
+    &quot;rule_finish_time&quot;:1485217172780,
+    &quot;rule_receive_time&quot;:1485217148840
+  }
+}
+</code></pre>
+
+<p>We received 43 rows for this result. The maximum groups that was allowed for the instance of Bullet was 512. If there were more groups than the maximum specified by your configuration, <strong>a uniform sample</strong> across them would be chosen
+for the result. However, for each group, the values computed (average, count) would be exact. The standard deviations, whether the result was estimated and the number of approximate uniques in the metadata would reflect the change.</p>
+<p>If you asked for 50 rows in the aggregation (as the query did above) but there were more than 50 in the result (but &lt; 512), the metadata would reflect the fact that the result was not estimated. You would still get a uniform sample
+but by increasing your aggregation size higher, you could get the rest.</p>
+<p>For readability, if you were just trying to get the unique values for a field or a set of fields, you could leave out the attributes section and specify your fields section. You could also call the type <code>DISTINCT</code> instead of
+<code>GROUP</code> to make that explicit. <code>DISTINCT</code> is just an alias for <code>GROUP</code>. See <a href="#distinct-aggregation">the DISTINCT example</a>.</p></div>
+        
+    </div>
+
+    <footer class="col-md-12 text-center">
+        <hr>
+        <p>
+        <small>Bullet is licensed under the <a href='https://github.com/yahoo/bullet/blob/master/LICENSE'>Apache 2 license<br></small>
+        
+        <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p></small>
+    </footer>
+
+    <script src="../../js/jquery-1.10.2.min.js"></script>
+    <script src="../../js/bootstrap-3.0.3.min.js"></script>
+    <script src="../../js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script>
+    var base_url = '../..';
+    </script>
+    <script data-main="../../mkdocs/js/search.js" src="../../mkdocs/js/require.js"></script>
+    <script src="../../js/base.js"></script>
+
+    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        From here you can search these documents. Enter your search terms below.
+                    </p>
+                    <form role="form">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                        </div>
+                    </form>
+                    <div id="mkdocs-search-results"></div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </body>
+
+</html>

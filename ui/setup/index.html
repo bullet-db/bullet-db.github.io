@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">   
+    <link rel="shortcut icon" href="../../favicon.ico">
+
+    <title>Setup - Bullet</title>
+
+    <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/font-hack/2.018/css/hack.min.css">
+    <link href='//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700,700italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href="../../css/base.css" rel="stylesheet">
+    <link href="../../css/cinder.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/highlight.css">
+
+
+    <link href="../../css/extra.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
+    <script>
+    WebFont.load({
+        google: {
+            families: ['Open Sans', 'PT Sans']
+        }
+    });
+    </script>
+
+    
+</head>
+
+<body>
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="../..">Bullet</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li >
+                        <a href="../..">Home</a>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../../quick-start/">Quick Start</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Backend <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../backend/storm-architecture/">Storm Architecture</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../backend/ingestion/">Getting your data into Bullet</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../backend/setup-storm/">Setup on Storm</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../backend/performance/">Performance</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">REST API <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../ws/setup/">Setup</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../ws/api/">API</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../ws/examples/">Examples</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">UI <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li class="active">
+    <a href="./">Setup</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../usage/">Usage</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">About <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../about/releases/">Releases</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                </ul>
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                </li>
+                
+                    <li >
+                        <a rel="next" href="../../ws/examples/">
+                            <i class="fa fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="prev" href="../usage/">
+                            Next <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </li>
+                
+                
+                    <li>
+                        <a href="https://github.com/yahoo/bullet-docs">
+                            
+                                <i class="fa fa-github"></i>
+                            
+                            GitHub
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+    <div class="container">
+        
+        <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="first-level active"><a href="#the-ui-layer">The UI Layer</a></li>
+        
+            <li class="second-level"><a href="#prerequisites">Prerequisites</a></li>
+            
+        
+            <li class="second-level"><a href="#installation">Installation</a></li>
+            
+                <li class="third-level"><a href="#github-releases">GitHub Releases</a></li>
+            
+                <li class="third-level"><a href="#build-from-source">Build from source</a></li>
+            
+        
+            <li class="second-level"><a href="#running">Running</a></li>
+            
+        
+            <li class="second-level"><a href="#configuration">Configuration</a></li>
+            
+        
+    
+    </ul>
+</div></div>
+        <div class="col-md-9" role="main">
+
+<h1 id="the-ui-layer">The UI Layer</h1>
+<p>The Bullet UI lets you easily create and work with Bullet queries and results for your custom data. It stores all created queries, results and other metadata in the local browser storage or <a href="https://www.w3schools.com/html/html5_webstorage.asp">LocalStorage</a>.</p>
+<p>While LocalStorage is sufficient for simple usage, the UI users can run out of space when a lot of queries and results are being stored. We are looking into more robust solutions like <a href="https://localforage.github.io/localForage/">LocalForage</a>. See <a href="https://github.com/yahoo/bullet-ui/issues/9">#9</a>. This should be landing soon&trade;.</p>
+<div class="admonition note">
+<p class="admonition-title">Really!? LocalStorage only!?</p>
+<p>We're serious about the no persistence thing with Bullet! And while we're at it, we are also not interested in supporting old browsers. Joking aside though, we wanted to keep Bullet as light and simple as possible to start with. We can look into extending support from the server-side by adding a database or the like if needed. In practice, we have found that this isn't as important as it initially seems.</p>
+</div>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>In order for your UI to work with Bullet, you should have:</p>
+<ul>
+<li>An instance of the <a href="../../backend/setup-storm/">backend</a> set up</li>
+<li>An instance of the <a href="../../ws/setup/">Web Service</a> set up</li>
+<li>You should also have a Web Service serving your schema (either by using the <a href="../../ws/setup/#file-based-schema">file based serving</a> from the Web Service or your own somewhere else)</li>
+</ul>
+<h2 id="installation">Installation</h2>
+<p>We are considering various packaging options at the moment like Docker etc. In the meantime, the following two options are available:</p>
+<h3 id="github-releases">GitHub Releases</h3>
+<ul>
+<li>Head to the <a href="../../about/releases/#bullet-ui">Releases page</a> and grab the latest release</li>
+<li>Download the bullet-ui-vX.X.X.tar.gz archive</li>
+<li>Unarchive it into your web server where you wish to run the UI.</li>
+<li>Install <a href="https://nodejs.org/">Node</a> (recommend using <a href="https://github.com/creationix/nvm">nvm</a> to manage Node versions) on the web server</li>
+</ul>
+<h3 id="build-from-source">Build from source</h3>
+<ul>
+<li>Install <a href="https://nodejs.org/">Node</a> (recommend using <a href="https://github.com/creationix/nvm">nvm</a> to manage Node versions).</li>
+<li>Install <a href="https://bower.io/">Bower</a>. Use NPM to install it with <code>sudo npm install -g bower</code></li>
+<li>Install <a href="http://emberjs.com/">Ember</a>. <code>sudo npm install -g ember-cli</code> (sudo required only if not using nvm)</li>
+<li>git clone git@github.com:yahoo/bullet-ui.git</li>
+<li>cd bullet-ui</li>
+<li><code>npm install</code></li>
+<li><code>bower install</code></li>
+<li><code>ember build --environment production</code></li>
+</ul>
+<p>The entire application with all its assets and dependencies are compiled and placed into dist/. You could point a web server directly at this folder but you will <strong>only</strong> be able to use the default configuration (see <a href="#configuration">below</a>).</p>
+<h2 id="running">Running</h2>
+<p>There is a Node.js server endpoint defined at <a href="../server/index.js">server/index.js</a> to serve the UI. This dynamically injects the settings (see configuration <a href="#configuration">below</a>) into the served UI based on the environment variable NODE_ENV. You should not need to worry about if you only have one environment.</p>
+<p>The entrypoint for the UI is the <a href="http://expressjs.com/">Express</a> endpoint defined as the main in package.json that simply adds the server/index.js as a middleware.</p>
+<p>Regardless of which <a href="#installation">installation</a> option you chose, you need the following folder structure in order to run the UI:</p>
+<pre><code>dist/*
+config/env-settings.json
+server/index.js
+express-server.js
+</code></pre>
+
+<p>You can use node to launch the UI from the top-level of the folder structure above.</p>
+<p>To launch the UI with the default settings (without specifying proper API endpoints you will not be able to create or run a query):</p>
+<pre><code class="bash">PORT=8800 node express-server.js
+</code></pre>
+
+<p>To launch with custom settings:</p>
+<pre><code class="bash">NODE_ENV=&lt;your_property_name_from_env-settings.json&gt; PORT=8800 node express-server.js
+</code></pre>
+
+<p>Visit localhost:8800 to see your UI that should be configured with the right settings.</p>
+<h2 id="configuration">Configuration</h2>
+<p>All of the configuration for the UI is <strong>environment-specific</strong>. This lets you have different instances of Bullet for different environments (e.g. CI, Staging, Production).
+These settings can be found in <a href="https://github.com/yahoo/bullet-ui/blob/master/config/env-settings.json">env-settings.json</a>.</p>
+<p>Each property in the env-settings.json file will contain the settings that will be used when running a custom instance of the UI (see <a href="#Running">above</a>).</p>
+<p>The <code>default</code> property shows the default settings for the UI that can be selectively overridden based on which host you are running on. The file does not specify the <code>defaultFilter</code> setting shown below.</p>
+<pre><code class="json">&quot;default&quot;: {
+  &quot;drpcHost&quot;: &quot;http://foo.bar.com:4080&quot;,
+  &quot;drpcNamespace&quot;: &quot;bullet/api&quot;,
+  &quot;drpcPath&quot;: &quot;drpc&quot;,
+  &quot;schemaHost&quot;: &quot;http://foo.bar.com:4080&quot;,
+  &quot;schemaNamespace&quot;: &quot;bullet/api&quot;,
+  &quot;helpLinks&quot;: [
+    {
+      &quot;name&quot;: &quot;Example Docs Page&quot;,
+      &quot;link&quot;: &quot;&quot;
+    }
+  ],
+  &quot;defaultFilter&quot;: {
+      &quot;clauses&quot;: [
+          {
+              &quot;field&quot;: &quot;primary_key&quot;,
+              &quot;values&quot;:[&quot;123123123321321&quot;],
+              &quot;operation&quot;:&quot;==&quot;
+          }
+      ],
+      &quot;operation&quot;:&quot;AND&quot;
+  },
+  &quot;aggregateDataDefaultSize&quot;: 512,
+  &quot;modelVersion&quot;: 1
+}
+</code></pre>
+
+<p>You can add more configuration at the top level for each host you have the UI running on.</p>
+<p><code>drpcHost</code> is the end point (port included) of your Web Service machine that is proxying to the Bullet topology.</p>
+<p><code>drpcNamespace</code> is the fragment of the path to your Web Service on the <code>drpcHost</code>.</p>
+<p><code>schemaHost</code> is the end point (port included) of your Web Service machine that is serving your schema in the JSON API format (see the <a href="../../ws/setup/">Web Service setup</a> for details.)</p>
+<p><code>schemaNamespace</code> is the fragment of the path to your schema Web Service on the <code>schemaHost</code>. There is no <code>schemaPath</code> because it <strong>must</strong> be "columns" in order for the UI to be able fetch the column resource (columns in your schema).</p>
+<p><code>modelVersion</code> is a way for you to control your UI users' Ember models saved in LocalStorage. If there is a need for you to purge all your user's created queries, results and other data stored in their LocalStorage, then you should increment this number. The UI, on startup, will compare this number with what it has seen before (your old version) and purge the LocalStorage.</p>
+<p><code>helpLinks</code> is a list of objects, where each object is a help link. These links drive the dropdown list when you click the "Help" button on the UI's top navbar. You can use this to point to your particular help links. For example, you could use this to point your users toward a page that
+helps them understand your data (that this UI is operating on).</p>
+<p><code>defaultFilter</code> can either be an <a href="../../ws/api/#filters">API Filter</a> or a URL from which one could be fetched dynamically. The UI adds this filter to every newly created Query. You could use this as a way to have user specific (for example, cookie based) filters created for your users when they create a new query in the UI.</p>
+<p><code>bugLink</code> is a url that by default points to the issues page for the UI GitHub repository (this). You can change it to point to your own custom JIRA queue or the like if you want to.</p>
+<p><code>aggregateDataDefaultSize</code> is the aggregation size for all queries that are not pulling raw data. In order to keep the
+aggregation size from being ambiguous for UI users when doing a Count Distinct or a Distinct or a Group By query, this is
+the size that is used. You should set this to your max size that you have configured for your non-raw aggregations in
+your topology configuration.</p>
+<p><strong>Note that all your Web Service endpoints must support CORS (return the right headers) in order for the UI to be able to communicate with it.</strong> The Bullet Web Service already does this for the DRPC and columns endpoints.</p>
+<p>To cement all this, if you wanted an instance of the UI in your CI environment, you could add this to the env-settings.json file.</p>
+<pre><code class="json">{
+  &quot;default&quot;: {
+      &quot;drpcHost&quot;: &quot;&quot;,
+      &quot;drpcNamespace&quot;: &quot;bullet/api&quot;,
+      &quot;drpcPath&quot;: &quot;drpc&quot;,
+      &quot;schemaHost&quot;: &quot;&quot;,
+      &quot;schemaNamespace&quot;: &quot;bullet/api&quot;,
+      &quot;helpLinks&quot;: [
+        {
+          &quot;name&quot;: &quot;Data Documentation&quot;,
+          &quot;link&quot;: &quot;http://data.docs.domain.com&quot;
+        }
+      ],
+      &quot;bugLink&quot;: &quot;http://your.issues.page.com&quot;,
+      &quot;aggregateDataDefaultSize&quot;: 500,
+      &quot;modelVersion&quot;: 1
+  },
+   &quot;ci&quot;: {
+        &quot;drpcHost&quot;: &quot;http://bullet-ws.development.domain.com:4080&quot;,
+        &quot;schemaHost&quot;: &quot;http://bullet-ws.development.domain.com:4080&quot;,
+        &quot;defaultFilter&quot;: &quot;http://bullet-ws.development.domain.com:4080/custom-endpoint/api/defaultQuery&quot;
+      }
+}
+</code></pre>
+
+<p>Your UI on CI host will POST to http://bullet-ws.development.domain.com:4080/bullet/api/drpc for UI created Bullet queries, GET the schema from http://bullet-ws.development.domain.com:4080/bullet/api/columns, populate an additional link on the Help dropdown pointing to http://data.docs.domain.com and will GET and cache a defaultFilter from http://bullet-ws.development.domain.com:4080/custom-endpoint/api/defaultQuery.</p></div>
+        
+    </div>
+
+    <footer class="col-md-12 text-center">
+        <hr>
+        <p>
+        <small>Bullet is licensed under the <a href='https://github.com/yahoo/bullet/blob/master/LICENSE'>Apache 2 license<br></small>
+        
+        <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p></small>
+    </footer>
+
+    <script src="../../js/jquery-1.10.2.min.js"></script>
+    <script src="../../js/bootstrap-3.0.3.min.js"></script>
+    <script src="../../js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script>
+    var base_url = '../..';
+    </script>
+    <script data-main="../../mkdocs/js/search.js" src="../../mkdocs/js/require.js"></script>
+    <script src="../../js/base.js"></script>
+
+    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        From here you can search these documents. Enter your search terms below.
+                    </p>
+                    <form role="form">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                        </div>
+                    </form>
+                    <div id="mkdocs-search-results"></div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </body>
+
+</html>

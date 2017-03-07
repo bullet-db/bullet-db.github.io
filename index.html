@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">   
+    <link rel="shortcut icon" href="./favicon.ico">
+
+    <title>Bullet</title>
+
+    <link href="./css/bootstrap-custom.min.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/font-hack/2.018/css/hack.min.css">
+    <link href='//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700,700italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href="./css/base.css" rel="stylesheet">
+    <link href="./css/cinder.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/highlight.css">
+
+
+    <link href="./css/extra.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
+    <script>
+    WebFont.load({
+        google: {
+            families: ['Open Sans', 'PT Sans']
+        }
+    });
+    </script>
+
+    
+</head>
+
+<body class="homepage" >
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+            <a class="navbar-brand" href=".">Bullet</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li class="active">
+                        <a href=".">Home</a>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="quick-start/">Quick Start</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Backend <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="backend/storm-architecture/">Storm Architecture</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="backend/ingestion/">Getting your data into Bullet</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="backend/setup-storm/">Setup on Storm</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="backend/performance/">Performance</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">REST API <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="ws/setup/">Setup</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="ws/api/">API</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="ws/examples/">Examples</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">UI <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="ui/setup/">Setup</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="ui/usage/">Usage</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">About <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="about/releases/">Releases</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                </ul>
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                </li>
+                
+                    <li class="disabled">
+                        <a rel="next" >
+                            <i class="fa fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="prev" href="quick-start/">
+                            Next <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </li>
+                
+                
+                    <li>
+                        <a href="https://github.com/yahoo/bullet-docs">
+                            
+                                <i class="fa fa-github"></i>
+                            
+                            GitHub
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+    <div class="container">
+        
+        <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="first-level active"><a href="#overview">Overview</a></li>
+        
+            <li class="second-level"><a href="#bullet">Bullet ...</a></li>
+            
+        
+            <li class="second-level"><a href="#how-is-this-useful">How is this useful</a></li>
+            
+                <li class="third-level"><a href="#how-bullet-is-used-at-yahoo">How Bullet is used at Yahoo</a></li>
+            
+        
+    
+        <li class="first-level "><a href="#quick-start">Quick Start</a></li>
+        
+    
+        <li class="first-level "><a href="#setting-up-bullet-on-your-streaming-data">Setting up Bullet on your streaming data</a></li>
+        
+    
+        <li class="first-level "><a href="#querying-in-bullet">Querying in Bullet</a></li>
+        
+            <li class="second-level"><a href="#termination-conditions">Termination conditions</a></li>
+            
+        
+            <li class="second-level"><a href="#filters">Filters</a></li>
+            
+        
+            <li class="second-level"><a href="#projections">Projections</a></li>
+            
+        
+            <li class="second-level"><a href="#aggregations">Aggregations</a></li>
+            
+        
+    
+        <li class="first-level "><a href="#results">Results</a></li>
+        
+    
+        <li class="first-level "><a href="#approximate-computation">Approximate computation</a></li>
+        
+            <li class="second-level"><a href="#new-query-types-coming-soon">New query types coming soon</a></li>
+            
+        
+    
+        <li class="first-level "><a href="#architecture">Architecture</a></li>
+        
+            <li class="second-level"><a href="#backend">Backend</a></li>
+            
+        
+            <li class="second-level"><a href="#web-service-and-ui">Web Service and UI</a></li>
+            
+        
+            <li class="second-level"><a href="#end-to-end-architecture">End-to-End Architecture</a></li>
+            
+        
+    
+        <li class="first-level "><a href="#releases">Releases</a></li>
+        
+    
+    </ul>
+</div></div>
+        <div class="col-md-9" role="main">
+
+<h1 id="overview">Overview</h1>
+<h2 id="bullet">Bullet ...</h2>
+<ul>
+<li>
+<p>Is a real-time query engine that lets you run queries on very large data streams</p>
+</li>
+<li>
+<p>Does not use a <strong>a persistence layer</strong>. This makes it <strong>light-weight, cheap and fast</strong></p>
+</li>
+<li>
+<p>Is a <strong>look-forward</strong> query system. Queries are submitted first and they operate on data that arrive after the query is submitted</p>
+</li>
+<li>
+<p>Is <strong>multi-tenant</strong> and can scale independently for more queries and for more data in the first order</p>
+</li>
+<li>
+<p>Provides a <strong>UI and Web Service</strong> that are also pluggable for a full end-to-end solution to your querying needs</p>
+</li>
+<li>
+<p>Can be implemented on different Stream processing frameworks. Bullet on <a href="http://storm.apache.org">Storm</a> is currently available</p>
+</li>
+<li>
+<p>Is <strong>pluggable</strong>. Any data source that can be read from Storm can be converted into a standard data container letting you query that data. Data is <strong>typed</strong></p>
+</li>
+<li>
+<p>Is used at scale and in production at Yahoo with hundreds of queries simultaneously on hundreds of thousands of records per second and tested up to millions of records per second</p>
+</li>
+</ul>
+<h2 id="how-is-this-useful">How is this useful</h2>
+<p>How Bullet is used is largely determined by the data source it consumes. Depending on what kind of data you put Bullet on, the types of queries you run on it and your use-cases will change. As a look-forward query system with no persistence, you will not be able to repeat your queries on the same data. The next time you run your query, it will operate on the different data that arrives after that submission. If this usage pattern is what you need and you are looking for a light-weight system that can tap into your streaming data, then Bullet is for you!</p>
+<h3 id="how-bullet-is-used-at-yahoo">How Bullet is used at Yahoo</h3>
+<p>Bullet is used in production internally at Yahoo by having it sit on raw user engagement events from Yahoo sites and apps. This lets Yahoo developers automatically validate <em>end-to-end</em> their instrumentation code in their Continuous Delivery pipelines. Validating instrumentation is critical since it powers pretty much all decisions and products including machine learning, corporate KPIs, analytics, personalization, targeting.</p>
+<p>This instance of Bullet also powers other use-cases such as letting analysts validate assumptions about data, product managers verify launches instantly, debug issues and outages, or simply explore and play around with the data.</p>
+<hr />
+<h1 id="quick-start">Quick Start</h1>
+<p>See <a href="quick-start/">Quick Start</a> to set up Bullet on a local Storm topology. We will generate some fake streaming data that you can then query with Bullet.</p>
+<h1 id="setting-up-bullet-on-your-streaming-data">Setting up Bullet on your streaming data</h1>
+<p>To set up Bullet on a real data stream, you need:</p>
+<ol>
+<li>The backend set up on a Stream processor:<ol>
+<li>Plug in your source of data. See <a href="backend/ingestion/">Getting your data into Bullet</a> for details</li>
+<li>Consume your data stream. Currently, we support <a href="backend/setup-storm/">Bullet on Storm</a></li>
+</ol>
+</li>
+<li>The <a href="ws/setup/">Web Service</a> set up to convey queries and return results back from the backend</li>
+<li>The optional <a href="ui/setup/">UI</a> set up to talk to your Web Service. You can skip the UI if all your access is programmatic</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Schema in the UI</p>
+<p>The UI also needs an endpoint that provides your data schema to help with query building. The Web Service you set up provides a simple file based schema endpoint that you can point the UI to if that is sufficient for your needs.</p>
+</div>
+<hr />
+<h1 id="querying-in-bullet">Querying in Bullet</h1>
+<p>Bullet queries allow you to filter, project and aggregate data. It lets you fetch raw (the individual data records) as well as aggregated data.</p>
+<p>See the <a href="ui/usage/">UI Usage section</a> for using the UI to build Bullet queries.</p>
+<p>See the <a href="ws/api/">API section</a> for building Bullet API queries.</p>
+<p>For examples using the API, see <a href="ws/examples/">Examples</a>.</p>
+<h2 id="termination-conditions">Termination conditions</h2>
+<p>A Bullet query terminates and returns whatever has been collected so far when:</p>
+<ol>
+<li>A maximum duration is reached. In other words, a query runs for a defined time window</li>
+<li>A maximum number of records is reached. (only applicable for queries that are fetching raw data records and not aggregating)</li>
+</ol>
+<h2 id="filters">Filters</h2>
+<p>Bullet supports two kinds of filters:</p>
+<table>
+<thead>
+<tr>
+<th>Filter Type</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Logical filter</td>
+<td>Allow you to combine filter clauses (Logical or Relational) with logical operations like AND, OR and NOTs</td>
+</tr>
+<tr>
+<td>Relational filters</td>
+<td>Allow you to use comparison operations like equals, not equals, greater than, less than, regex like etc, on fields</td>
+</tr>
+</tbody>
+</table>
+<h2 id="projections">Projections</h2>
+<p>Projections allow you to pull out only the fields needed and rename them when you are quering for raw data records.</p>
+<h2 id="aggregations">Aggregations</h2>
+<p>Aggregations allow you to perform some operation on the collected records.</p>
+<p>The current aggregation types that are supported are:</p>
+<table>
+<thead>
+<tr>
+<th>Aggregation</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GROUP</td>
+<td>The resulting output would be a record containing the result of an operation for each unique value combination in your specified fields</td>
+</tr>
+<tr>
+<td>COUNT DISTINCT</td>
+<td>Computes the number of distinct elements in the fields. (May be approximate)</td>
+</tr>
+<tr>
+<td>LIMIT or RAW</td>
+<td>The resulting output would be at most the number specified in size.</td>
+</tr>
+</tbody>
+</table>
+<p>Currently we support <code>GROUP</code> aggregations on the following operations:</p>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>COUNT</td>
+<td>Computes the number of the elements in the group</td>
+</tr>
+<tr>
+<td>SUM</td>
+<td>Computes the sum of the elements in the group</td>
+</tr>
+<tr>
+<td>MIN</td>
+<td>Returns the minimum of the elements in the group</td>
+</tr>
+<tr>
+<td>MAX</td>
+<td>Returns the maximum of the elements in the group</td>
+</tr>
+<tr>
+<td>AVG</td>
+<td>Computes the average of the elements in the group</td>
+</tr>
+</tbody>
+</table>
+<h1 id="results">Results</h1>
+<p>The Bullet Web Service returns your query result as well as associated metadata information in a structured JSON format. The UI can display the results in different formats.</p>
+<hr />
+<h1 id="approximate-computation">Approximate computation</h1>
+<p>It is often intractable to perform aggregations on an unbounded stream of data and still support arbitrary queries. However, it is possible if an exact answer is not required and the approximate answer's error is exactly quantifiable. There are stochastic algorithms and data structures that let us do this. We use <a href="https://datasketches.github.io/">Data Sketches</a> to perform aggregations such as counting uniques, and will be using Sketches to implement some future aggregations.</p>
+<p>Sketches let us be exact in our computation up to configured thresholds and approximate after. The error is very controllable and quantifiable. All Bullet queries that use Sketches return the error bounds with Standard Deviations as part of the results so you can quantify the error exactly. Using Sketches lets us address otherwise hard to solve problems in sublinear space.</p>
+<p>We also use Sketches as a way to control high cardinality grouping (group by a natural key column or related) and rely on the Sketching data structure to drop excess groups. It is up to you setting up Bullet to determine to set Sketch sizes large or small enough for to satisfy the queries that will be performed on that instance of Bullet.</p>
+<h2 id="new-query-types-coming-soon">New query types coming soon</h2>
+<p>Using Sketches, we have implemented <code>COUNT DISTINCT</code> and <code>GROUP</code> and are working on other aggregations including but not limited to:</p>
+<table>
+<thead>
+<tr>
+<th>Aggregation</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TOP K</td>
+<td>Returns the top K most freqently appearing values in the column</td>
+</tr>
+<tr>
+<td>DISTRIBUTION</td>
+<td>Computes distributions of the elements in the column. E.g. Find the median value or the 95th percentile of a field or graph the entire distribution as a histogram</td>
+</tr>
+</tbody>
+</table>
+<h1 id="architecture">Architecture</h1>
+<h2 id="backend">Backend</h2>
+<p><img alt="High Level Architecture" src="./img/higharch.png" /></p>
+<p>The Bullet backend can be split into three main sub-systems:</p>
+<ol>
+<li>Request Processor - receives queries, adds metadata and sends it to the rest of the system</li>
+<li>Data Processor - converts the data from an stream and matches it against queries</li>
+<li>Combiner - combines results for different queries, perfoms final aggregations and returns results</li>
+</ol>
+<h2 id="web-service-and-ui">Web Service and UI</h2>
+<p>The rest of the pieces are just the standard other two pieces in a full-stack application:</p>
+<ul>
+<li>A Web Service that talks to this backend</li>
+<li>A UI that talks to this Web Service</li>
+</ul>
+<p>The <a href="ws/api/">Bullet Web Service</a> is built using <a href="https://jersey.java.net/">Jersey</a> and the <a href="ui/usage/">UI</a> is built in <a href="./emberjs.com">Ember</a>.</p>
+<p>The Web Service can be deployed with your favorite servlet container like <a href="http://www.eclipse.org/jetty/">Jetty</a>. The UI is a client-side application that can be served using <a href="http://nodejs.org/">Node.js</a></p>
+<p>In the case of Bullet on Storm, the Web Service and UI talk to the backend using <a href="http://storm.apache.org/releases/1.0.0/Distributed-RPC.html">Storm DRPC</a>.</p>
+<h2 id="end-to-end-architecture">End-to-End Architecture</h2>
+<p><img alt="Overall Storm Architecture" src="./img/overallarch.png" /></p>
+<div class="admonition note">
+<p class="admonition-title">Want to know more?</p>
+<p>In practice, the backend is implemented using the basic components that the Stream processing framework provides. See <a href="backend/storm-architecture/">Storm Architecture</a> for details.</p>
+</div>
+<h1 id="releases">Releases</h1>
+<p>See the <a href="about/releases/">Releases</a> section where the various Bullet releases are collected in one place.</p></div>
+        
+    </div>
+
+    <footer class="col-md-12 text-center">
+        <hr>
+        <p>
+        <small>Bullet is licensed under the <a href='https://github.com/yahoo/bullet/blob/master/LICENSE'>Apache 2 license<br></small>
+        
+        <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p></small>
+    </footer>
+
+    <script src="./js/jquery-1.10.2.min.js"></script>
+    <script src="./js/bootstrap-3.0.3.min.js"></script>
+    <script src="./js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script>
+    var base_url = '.';
+    </script>
+    <script data-main="./mkdocs/js/search.js" src="./mkdocs/js/require.js"></script>
+    <script src="./js/base.js"></script>
+
+    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        From here you can search these documents. Enter your search terms below.
+                    </p>
+                    <form role="form">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                        </div>
+                    </form>
+                    <div id="mkdocs-search-results"></div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </body>
+
+</html>
+
+<!--
+MkDocs version : 0.16.1
+Build Date UTC : 2017-03-07 23:37:07
+-->
