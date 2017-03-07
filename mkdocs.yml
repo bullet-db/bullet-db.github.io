@@ -1,0 +1,31 @@
+theme: cinder
+
+site_name: Bullet
+site_favicon: favicon.ico
+repo_url: https://github.com/yahoo/bullet-docs
+
+pages:
+- Home: index.md
+- Quick Start: quick-start.md
+- Backend:
+  - Storm Architecture: backend/storm-architecture.md
+  - Getting your data into Bullet: backend/ingestion.md
+  - Setup on Storm: backend/setup-storm.md
+  - Performance: backend/performance.md
+- REST API:
+  - Setup: ws/setup.md
+  - API: ws/api.md
+  - Examples: ws/examples.md
+- UI:
+  - Setup: ui/setup.md
+  - Usage: ui/usage.md
+- About:
+  - Releases: about/releases.md
+
+markdown_extensions:
+    - admonition
+
+extra_css:
+  - css/extra.css
+
+copyright: "Bullet is licensed under the <a href='https://github.com/yahoo/bullet/blob/master/LICENSE'>Apache 2 license"

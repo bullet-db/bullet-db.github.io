@@ -1,0 +1,18 @@
+{
+  "default": {
+    "drpcHost": "http://localhost:9999",
+    "drpcNamespace": "bullet-service/api",
+    "drpcPath": "drpc",
+    "schemaHost": "http://localhost:9999",
+    "schemaNamespace": "bullet-service/api",
+    "helpLinks": [
+      {
+        "name": "Example Docs Page",
+        "link": ""
+      }
+    ],
+    "bugLink": "https://github.com/yahoo/bullet-ui/issues",
+    "aggregateDataDefaultSize": 512,
+    "modelVersion": 1
+  }
+}
