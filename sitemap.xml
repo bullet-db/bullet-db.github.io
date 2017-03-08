@@ -91,6 +91,18 @@
      <changefreq>daily</changefreq>
     </url>
         
+    <url>
+     <loc>/about/contributing/</loc>
+     <lastmod>2017-03-07</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>/about/contact/</loc>
+     <lastmod>2017-03-07</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
     
 
 </urlset>

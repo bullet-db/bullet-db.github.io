@@ -166,7 +166,19 @@
                         
                             
 <li >
-    <a href="../../about/releases/">Releases</a>
+    <a href="../../about/releases/">Past Releases</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../about/contributing/">Contributing</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../about/contact/">Contact Us</a>
 </li>
 
                         
@@ -366,7 +378,13 @@ your topology configuration.</p>
 }
 </code></pre>
 
-<p>Your UI on CI host will POST to http://bullet-ws.development.domain.com:4080/bullet/api/drpc for UI created Bullet queries, GET the schema from http://bullet-ws.development.domain.com:4080/bullet/api/columns, populate an additional link on the Help dropdown pointing to http://data.docs.domain.com and will GET and cache a defaultFilter from http://bullet-ws.development.domain.com:4080/custom-endpoint/api/defaultQuery.</p></div>
+<p>Your UI on your CI environment will:</p>
+<ul>
+<li>POST to <code>http://bullet-ws.development.domain.com:4080/bullet/api/drpc</code> for UI created Bullet queries</li>
+<li>GET the schema from <code>http://bullet-ws.development.domain.com:4080/bullet/api/columns</code></li>
+<li>Populate an additional link on the Help dropdown pointing to <code>http://data.docs.domain.com</code></li>
+<li>GET and cache a defaultFilter from <code>http://bullet-ws.development.domain.com:4080/custom-endpoint/api/defaultQuery</code></li>
+</ul></div>
         
     </div>
 
