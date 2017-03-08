@@ -16,7 +16,7 @@ If you have any issues with any of the particular Bullet sub-components, feel fr
 
 If you have a general question, reach out to us at the Users list and at Developers if you have a particular question for the developers.
 
-|            |        |
-| ---------- | ------ |
-| Users      | [bullet-users@googlegroups.com](bullet-users@googlegroups.com) |
-| Developers | [bullet-dev@googlegroups.com](bullet-dev@googlegroups.com) |
+|            | Mail                                                                  | Forum                                                                                            |
+| ---------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| Users      | [bullet-users@googlegroups.com](mailto:bullet-users@googlegroups.com) | [https://groups.google.com/d/forum/bullet-users](https://groups.google.com/d/forum/bullet-users) |
+| Developers | [bullet-dev@googlegroups.com](mailto:bullet-dev@googlegroups.com)     | [https://groups.google.com/d/forum/bullet-dev](https://groups.google.com/d/forum/bullet-dev)     |
