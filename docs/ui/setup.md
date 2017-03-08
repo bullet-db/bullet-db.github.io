@@ -162,4 +162,9 @@ To cement all this, if you wanted an instance of the UI in your CI environment, 
 }
 ```
 
-Your UI on CI host will POST to http://bullet-ws.development.domain.com:4080/bullet/api/drpc for UI created Bullet queries, GET the schema from http://bullet-ws.development.domain.com:4080/bullet/api/columns, populate an additional link on the Help dropdown pointing to http://data.docs.domain.com and will GET and cache a defaultFilter from http://bullet-ws.development.domain.com:4080/custom-endpoint/api/defaultQuery.
+Your UI on your CI environment will:
+
+  * POST to ```http://bullet-ws.development.domain.com:4080/bullet/api/drpc``` for UI created Bullet queries
+  * GET the schema from ```http://bullet-ws.development.domain.com:4080/bullet/api/columns```
+  * Populate an additional link on the Help dropdown pointing to ```http://data.docs.domain.com```
+  * GET and cache a defaultFilter from ```http://bullet-ws.development.domain.com:4080/custom-endpoint/api/defaultQuery```

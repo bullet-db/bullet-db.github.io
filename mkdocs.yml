@@ -20,7 +20,9 @@ pages:
   - Setup: ui/setup.md
   - Usage: ui/usage.md
 - About:
-  - Releases: about/releases.md
+  - Past Releases: about/releases.md
+  - Contributing: about/contributing.md
+  - Contact Us: about/contact.md
 
 markdown_extensions:
     - admonition
