@@ -135,7 +135,7 @@ unzip jetty-distribution-9.3.16.v20170120.zip
 
 ```bash
 cd jetty-distribution-9.3.16.v20170120
-curl -L0 webapps/bullet-service.war http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/0.0.1/bullet-service-0.0.1.war
+curl -Lo webapps/bullet-service.war http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/0.0.1/bullet-service-0.0.1.war
 cp $BULLET_EXAMPLES/web-service/example_* $BULLET_HOME/service/jetty-distribution-9.3.16.v20170120
 ```
 
