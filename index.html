@@ -5,21 +5,19 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">   
-    <link rel="shortcut icon" href="./favicon.ico">
+    <link rel="shortcut icon" href="./img/favicon.ico">
 
-    <title>Bullet</title>
+    <title>Home - Bullet</title>
 
     <link href="./css/bootstrap-custom.min.css" rel="stylesheet">
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/font-hack/2.018/css/hack.min.css">
     <link href='//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700,700italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
     <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
     <link href="./css/base.css" rel="stylesheet">
     <link href="./css/cinder.css" rel="stylesheet">
     <link rel="stylesheet" href="./css/highlight.css">
-
-
-    <link href="./css/extra.css" rel="stylesheet">
+        <link href="./css/extra.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -37,9 +35,22 @@
     </script>
 
     
+
+    
+    
+      
+    
+    
+    <style>
+        /* Collapse ToC */
+        .bs-sidebar .nav .nav {
+            display: none;
+        }
+    </style>
+    
 </head>
 
-<body class="homepage" >
+<body class="homepage"  data-spy="scroll" data-target=".bs-sidebar">
 
     <div class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container">
@@ -57,7 +68,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href=".">Bullet</a>
+            <a class="navbar-brand" href=".">Bullet<small class="small small-brand-text"></small></a>
         </div>
 
         <!-- Expanded navigation -->
@@ -190,11 +201,7 @@
             
 
             <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
-                        <i class="fa fa-search"></i> Search
-                    </a>
-                </li>
+                
                 
                     <li class="disabled">
                         <a rel="next" >
@@ -224,64 +231,117 @@
 
     <div class="container">
         
-        <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+        <div class="col-md-3">
+
+  
+
+<div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="first-level active"><a href="#overview">Overview</a></li>
-        
-            <li class="second-level"><a href="#bullet">Bullet ...</a></li>
+        <li class="active">
+            <a href="#overview">Overview</a>
+            <ul class="nav">
+                
+                    <li class="second-level">
+                        <a href="#bullet">Bullet ...</a>
+                        
+                    </li>
             
-        
-            <li class="second-level"><a href="#how-is-this-useful">How is this useful</a></li>
+                    <li class="second-level">
+                        <a href="#how-is-this-useful">How is this useful</a>
+                        <ul class="nav">
+                        
+                            <li class="third-level">
+                                <a href="#how-bullet-is-used-at-yahoo">How Bullet is used at Yahoo</a>
+                                
+                            </li>
+                        
+                        </ul>
+                    </li>
             
-                <li class="third-level"><a href="#how-bullet-is-used-at-yahoo">How Bullet is used at Yahoo</a></li>
-            
-        
+            </ul>
+        </li>
     
-        <li class="first-level "><a href="#quick-start">Quick Start</a></li>
-        
+        <li class="">
+            <a href="#quick-start">Quick Start</a>
+            
+        </li>
     
-        <li class="first-level "><a href="#setting-up-bullet-on-your-streaming-data">Setting up Bullet on your streaming data</a></li>
-        
+        <li class="">
+            <a href="#setting-up-bullet-on-your-streaming-data">Setting up Bullet on your streaming data</a>
+            
+        </li>
     
-        <li class="first-level "><a href="#querying-in-bullet">Querying in Bullet</a></li>
-        
-            <li class="second-level"><a href="#termination-conditions">Termination conditions</a></li>
+        <li class="">
+            <a href="#querying-in-bullet">Querying in Bullet</a>
+            <ul class="nav">
+                
+                    <li class="second-level">
+                        <a href="#termination-conditions">Termination conditions</a>
+                        
+                    </li>
             
-        
-            <li class="second-level"><a href="#filters">Filters</a></li>
+                    <li class="second-level">
+                        <a href="#filters">Filters</a>
+                        
+                    </li>
             
-        
-            <li class="second-level"><a href="#projections">Projections</a></li>
+                    <li class="second-level">
+                        <a href="#projections">Projections</a>
+                        
+                    </li>
             
-        
-            <li class="second-level"><a href="#aggregations">Aggregations</a></li>
+                    <li class="second-level">
+                        <a href="#aggregations">Aggregations</a>
+                        
+                    </li>
             
-        
+            </ul>
+        </li>
     
-        <li class="first-level "><a href="#results">Results</a></li>
-        
+        <li class="">
+            <a href="#results">Results</a>
+            
+        </li>
     
-        <li class="first-level "><a href="#approximate-computation">Approximate computation</a></li>
-        
-            <li class="second-level"><a href="#new-query-types-coming-soon">New query types coming soon</a></li>
+        <li class="">
+            <a href="#approximate-computation">Approximate computation</a>
+            <ul class="nav">
+                
+                    <li class="second-level">
+                        <a href="#new-query-types-coming-soon">New query types coming soon</a>
+                        
+                    </li>
             
-        
+            </ul>
+        </li>
     
-        <li class="first-level "><a href="#architecture">Architecture</a></li>
-        
-            <li class="second-level"><a href="#backend">Backend</a></li>
+        <li class="">
+            <a href="#architecture">Architecture</a>
+            <ul class="nav">
+                
+                    <li class="second-level">
+                        <a href="#backend">Backend</a>
+                        
+                    </li>
             
-        
-            <li class="second-level"><a href="#web-service-and-ui">Web Service and UI</a></li>
+                    <li class="second-level">
+                        <a href="#web-service-and-ui">Web Service and UI</a>
+                        
+                    </li>
             
-        
-            <li class="second-level"><a href="#end-to-end-architecture">End-to-End Architecture</a></li>
+                    <li class="second-level">
+                        <a href="#end-to-end-architecture">End-to-End Architecture</a>
+                        
+                    </li>
             
-        
+            </ul>
+        </li>
     
-        <li class="first-level "><a href="#releases">Releases</a></li>
-        
+        <li class="">
+            <a href="#releases">Releases</a>
+            
+        </li>
     
     </ul>
 </div></div>
@@ -484,12 +544,18 @@
         
     </div>
 
-    <footer class="col-md-12 text-center">
-        <hr>
-        <p>
-        <small>Bullet is licensed under the <a href='https://github.com/yahoo/bullet/blob/master/LICENSE'>Apache 2 license<br></small>
-        
-        <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p></small>
+    <footer class="col-md-12" >
+        <hr />
+        <div class="pull-left col-md-6">
+            
+            
+        </div>
+        <div class="pull-right col-md-4 text-right">
+            <p>
+            <small>Bullet is licensed under the <a href='https://github.com/yahoo/bullet/blob/master/LICENSE'>Apache 2 license<br></small>
+            
+            <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p></small>
+        </div>
     </footer>
 
     <script src="./js/jquery-1.10.2.min.js"></script>
@@ -535,5 +601,5 @@
 
 <!--
 MkDocs version : 0.16.1
-Build Date UTC : 2017-03-08 01:11:38
+Build Date UTC : 2017-03-08 01:53:41
 -->

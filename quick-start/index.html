@@ -5,21 +5,19 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">   
-    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="shortcut icon" href="../img/favicon.ico">
 
     <title>Quick Start - Bullet</title>
 
     <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/font-hack/2.018/css/hack.min.css">
     <link href='//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700,700italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
     <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
     <link href="../css/base.css" rel="stylesheet">
     <link href="../css/cinder.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/highlight.css">
-
-
-    <link href="../css/extra.css" rel="stylesheet">
+        <link href="../css/extra.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -37,9 +35,22 @@
     </script>
 
     
+
+    
+    
+      
+    
+    
+    <style>
+        /* Collapse ToC */
+        .bs-sidebar .nav .nav {
+            display: none;
+        }
+    </style>
+    
 </head>
 
-<body>
+<body data-spy="scroll" data-target=".bs-sidebar">
 
     <div class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container">
@@ -57,7 +68,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="..">Bullet</a>
+            <a class="navbar-brand" href="..">Bullet<small class="small small-brand-text"></small></a>
         </div>
 
         <!-- Expanded navigation -->
@@ -190,11 +201,7 @@
             
 
             <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
-                        <i class="fa fa-search"></i> Search
-                    </a>
-                </li>
+                
                 
                     <li >
                         <a rel="next" href="..">
@@ -224,56 +231,129 @@
 
     <div class="container">
         
-        <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+        <div class="col-md-3">
+
+  
+
+<div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="first-level active"><a href="#quick-start">Quick Start</a></li>
-        
-            <li class="second-level"><a href="#setting-up-storm">Setting up Storm</a></li>
+        <li class="active">
+            <a href="#quick-start">Quick Start</a>
+            <ul class="nav">
+                
+                    <li class="second-level">
+                        <a href="#setting-up-storm">Setting up Storm</a>
+                        <ul class="nav">
+                        
+                            <li class="third-level">
+                                <a href="#step-1-setup-directories-and-examples">Step 1: Setup directories and examples</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#step-2-install-storm-10">Step 2: Install Storm 1.0</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#step-3-launch-storm-components">Step 3: Launch Storm components</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#step-4-test-storm-optional">Step 4: Test Storm (Optional)</a>
+                                
+                            </li>
+                        
+                        </ul>
+                    </li>
             
-                <li class="third-level"><a href="#step-1-setup-directories-and-examples">Step 1: Setup directories and examples</a></li>
+                    <li class="second-level">
+                        <a href="#setting-up-the-example-bullet-topology">Setting up the example Bullet topology</a>
+                        <ul class="nav">
+                        
+                            <li class="third-level">
+                                <a href="#step-5-build-the-storm-example">Step 5: Build the Storm example</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#step-6-launch-the-topology">Step 6: Launch the topology</a>
+                                
+                            </li>
+                        
+                        </ul>
+                    </li>
             
-                <li class="third-level"><a href="#step-2-install-storm-10">Step 2: Install Storm 1.0</a></li>
+                    <li class="second-level">
+                        <a href="#setting-up-the-bullet-web-service">Setting up the Bullet Web Service</a>
+                        <ul class="nav">
+                        
+                            <li class="third-level">
+                                <a href="#step-7-install-jetty">Step 7: Install Jetty</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#step-8-install-the-bullet-web-service">Step 8: Install the Bullet Web Service</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#step-9-launch-the-web-service">Step 9: Launch the Web Service</a>
+                                
+                            </li>
+                        
+                        </ul>
+                    </li>
             
-                <li class="third-level"><a href="#step-3-launch-storm-components">Step 3: Launch Storm components</a></li>
+                    <li class="second-level">
+                        <a href="#setting-up-the-bullet-ui">Setting up the Bullet UI</a>
+                        <ul class="nav">
+                        
+                            <li class="third-level">
+                                <a href="#step-10-install-node">Step 10: Install Node</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#step-11-install-the-bullet-ui">Step 11: Install the Bullet UI</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#step-12-launch-the-ui">Step 12: Launch the UI</a>
+                                
+                            </li>
+                        
+                        </ul>
+                    </li>
             
-                <li class="third-level"><a href="#step-4-test-storm-optional">Step 4: Test Storm (Optional)</a></li>
+                    <li class="second-level">
+                        <a href="#what-did-we-do">What did we do?</a>
+                        <ul class="nav">
+                        
+                            <li class="third-level">
+                                <a href="#storm-topology">Storm topology</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#web-service">Web Service</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#ui">UI</a>
+                                
+                            </li>
+                        
+                        </ul>
+                    </li>
             
-        
-            <li class="second-level"><a href="#setting-up-the-example-bullet-topology">Setting up the example Bullet topology</a></li>
-            
-                <li class="third-level"><a href="#step-5-build-the-storm-example">Step 5: Build the Storm example</a></li>
-            
-                <li class="third-level"><a href="#step-6-launch-the-topology">Step 6: Launch the topology</a></li>
-            
-        
-            <li class="second-level"><a href="#setting-up-the-bullet-web-service">Setting up the Bullet Web Service</a></li>
-            
-                <li class="third-level"><a href="#step-7-install-jetty">Step 7: Install Jetty</a></li>
-            
-                <li class="third-level"><a href="#step-8-install-the-bullet-web-service">Step 8: Install the Bullet Web Service</a></li>
-            
-                <li class="third-level"><a href="#step-9-launch-the-web-service">Step 9: Launch the Web Service</a></li>
-            
-        
-            <li class="second-level"><a href="#setting-up-the-bullet-ui">Setting up the Bullet UI</a></li>
-            
-                <li class="third-level"><a href="#step-10-install-node">Step 10: Install Node</a></li>
-            
-                <li class="third-level"><a href="#step-11-install-the-bullet-ui">Step 11: Install the Bullet UI</a></li>
-            
-                <li class="third-level"><a href="#step-12-launch-the-ui">Step 12: Launch the UI</a></li>
-            
-        
-            <li class="second-level"><a href="#what-did-we-do">What did we do?</a></li>
-            
-                <li class="third-level"><a href="#storm-topology">Storm topology</a></li>
-            
-                <li class="third-level"><a href="#web-service">Web Service</a></li>
-            
-                <li class="third-level"><a href="#ui">UI</a></li>
-            
-        
+            </ul>
+        </li>
     
     </ul>
 </div></div>
@@ -575,12 +655,18 @@ columns.schema.version=1.0
         
     </div>
 
-    <footer class="col-md-12 text-center">
-        <hr>
-        <p>
-        <small>Bullet is licensed under the <a href='https://github.com/yahoo/bullet/blob/master/LICENSE'>Apache 2 license<br></small>
-        
-        <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p></small>
+    <footer class="col-md-12" >
+        <hr />
+        <div class="pull-left col-md-6">
+            
+            
+        </div>
+        <div class="pull-right col-md-4 text-right">
+            <p>
+            <small>Bullet is licensed under the <a href='https://github.com/yahoo/bullet/blob/master/LICENSE'>Apache 2 license<br></small>
+            
+            <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p></small>
+        </div>
     </footer>
 
     <script src="../js/jquery-1.10.2.min.js"></script>
