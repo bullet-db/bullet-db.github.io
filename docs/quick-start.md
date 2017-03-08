@@ -9,11 +9,11 @@ At the end of this section, you should have a full end-to-end Bullet instance wi
   * Setup the [Web Service](ws/setup.md) talking to the topology and serving a schema for your UI using [bullet-service-0.0.1](https://github.com/yahoo/bullet-service/releases/tag/bullet-service-0.0.1)
   * Setup the [UI](ui/setup.md) talking to the Web Service using [bullet-ui-0.1.0](https://github.com/yahoo/bullet-ui/releases/tag/v0.1.0)
 
-Prerequisites:
+**Prerequisites**
 
-  * You will need to be on an Unix-based system (Mac, Ubuntu ...) for most of these commands.
-  * You will need enough CPU and RAM on your machine to run about about 8-10 JVMs. You will be setting up a Storm cluster with multiple components, a couple of Jetty instances and a Node server.
-  * You will need [git](https://git-scm.com/downloads), [Maven 3](https://maven.apache.org/install.html) and [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html) installed. The example will walk you through installing [Node.js](http://nodejs.org).
+  * You will need to be on an Unix-based system (Mac, Ubuntu ...) for most of these commands
+  * You will need enough CPU and RAM on your machine to run about about 8-10 JVMs. You will be setting up a Storm cluster with multiple components, a couple of Jetty instances and a Node server
+  * You will need [git](https://git-scm.com/downloads), [Maven 3](https://maven.apache.org/install.html) and [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html) installed. The example will walk you through installing [Node.js](http://nodejs.org)
 
 ## Setting up Storm
 
@@ -34,7 +34,7 @@ export BULLET_EXAMPLES=$BULLET_HOME/bullet-docs/examples
 
 ```bash
 cd $BULLET_HOME/backend
-wget http://apache.org/dist/storm/apache-storm-1.0.3/apache-storm-1.0.3.zip
+curl -O http://apache.org/dist/storm/apache-storm-1.0.3/apache-storm-1.0.3.zip
 unzip apache-storm-1.0.3.zip
 export PATH=$(pwd)/apache-storm-1.0.3/bin/:$PATH
 ```
@@ -46,7 +46,7 @@ echo 'drpc.servers: ["127.0.0.1"]' >> apache-storm-1.0.3/conf/storm.yaml
 
 #### Step 3: Launch Storm components
 
-Launch each of the following components, in order and wait for the commands to go through. You will see a JVM being launched:
+Launch each of the following components, in order and wait for the commands to go through. You may have to do these one at a time. You will see a JVM being launched for each one.
 
 ```bash
 storm dev-zookeeper &
@@ -57,7 +57,7 @@ storm logviewer &
 storm supervisor &
 ```
 
-Once everything is up without errors, visit localhost:8080 and see if the Storm UI loads.
+Once everything is up without errors, visit [http://localhost:8080](http://localhost:8080) and see if the Storm UI loads.
 
 #### Step 4: Test Storm (Optional)
 
@@ -117,13 +117,17 @@ curl -s -X POST -d '{}' http://localhost:3774/drpc/bullet
 
 You should get a random record from Bullet produced by the custom spout that we plugged in.
 
+!!! note "What is this data?"
+
+    This data is produced by the [custom Storm spout](https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/java/com/yahoo/bullet/storm/examples/RandomSpout.java) you packaged in Step 5. See [below](#storm-topology) for details.
+
 ## Setting up the Bullet Web Service
 
 #### Step 7: Install Jetty
 
 ```bash
 cd $BULLET_HOME/service
-wget http://central.maven.org/maven2/org/eclipse/jetty/jetty-distribution/9.3.16.v20170120/jetty-distribution-9.3.16.v20170120.zip
+curl -O http://central.maven.org/maven2/org/eclipse/jetty/jetty-distribution/9.3.16.v20170120/jetty-distribution-9.3.16.v20170120.zip
 unzip jetty-distribution-9.3.16.v20170120.zip
 ```
 
@@ -131,7 +135,7 @@ unzip jetty-distribution-9.3.16.v20170120.zip
 
 ```bash
 cd jetty-distribution-9.3.16.v20170120
-wget -O webapps/bullet-service.war http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/0.0.1/bullet-service-0.0.1.war
+curl -L0 webapps/bullet-service.war http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/0.0.1/bullet-service-0.0.1.war
 cp $BULLET_EXAMPLES/web-service/example_* $BULLET_HOME/service/jetty-distribution-9.3.16.v20170120
 ```
 
@@ -153,7 +157,7 @@ curl -s http://localhost:9999/bullet-service/api/columns
 #### Step 10: Install Node
 
 ```bash
-wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
+curl -s https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
 source ~/.bashrc
 nvm install v6.9.4
 nvm use v6.9.4
@@ -163,7 +167,7 @@ nvm use v6.9.4
 
 ```bash
 cd $BULLET_HOME/ui
-wget https://github.com/yahoo/bullet-ui/releases/download/v0.1.0/bullet-ui-v0.1.0.tar.gz
+curl -O https://github.com/yahoo/bullet-ui/releases/download/v0.1.0/bullet-ui-v0.1.0.tar.gz
 tar -xzf bullet-ui-v0.1.0.tar.gz
 cp $BULLET_EXAMPLES/ui/env-settings.json config/
 ```
@@ -174,21 +178,23 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
 PORT=8800 node express-server.js &
 ```
 
-Visit http://localhost:8800 to query your topology with the UI. See [UI usage](ui/usage.md) for some example queries and interactions using this UI. You see what the Schema means by visiting the Schema section.
+Visit [http://localhost:8800](http://localhost:8800) to query your topology with the UI. See [UI usage](ui/usage.md) for some example queries and interactions using this UI. You see what the Schema means by visiting the Schema section.
 
 !!! note "Running it remotely?"
 
     If you access the UI from another machine than where your UI is actually running, you will need to edit ```config/env-settings.json```. Since the UI is a client-side app, the machine that your browser is running on will fetch the UI and attempt to use these settings to talk to the Web Service. Since they point to localhost by default, your browser will attempt to connect there and fail. An easy fix is to change ```localhost``` in your env-settings.json to point to the hostname where you will hosting the UI. This will be same UI you use in the browser.
 
-!!! note "Bringing it all down"
 
-    To kill the Bullet topology, run ```storm kill bullet```
+## Teardown
 
-    To kill the UI, run ```ps aux | grep [e]xpress-server | awk '{print $2}' | xargs kill```
+To cleanup all the components we bought up:
 
-    To kill the Web Service, run ```ps aux | grep [e]xample_context | awk '{print $2}' | xargs kill```
-
-    To kill Storm, run ```ps aux | grep [a]pache-storm-1.0.3 | awk '{print $2}' | xargs kill```
+|                |                                                                          |
+| -------------- | ------------------------------------------------------------------------ |
+| Storm Topology | ```storm kill bullet```                                                  |
+| UI             | ```ps aux | grep [e]xpress-server | awk '{print $2}' | xargs kill```     |
+| Web Service    | ```ps aux | grep [e]xample_context | awk '{print $2}' | xargs kill```    |
+| Storm          | ```ps aux | grep [a]pache-storm-1.0.3 | awk '{print $2}' | xargs kill``` |
 
 ## What did we do?
 
@@ -206,13 +212,13 @@ storm jar bullet-storm-example-1.0-SNAPSHOT-jar-with-dependencies.jar \
           --bullet-spout-parallelism 1 \
           ...
           --bullet-spout-arg 20 \
-          --bullet-spout-arg 100 \
+          --bullet-spout-arg 101 \
           ...
 ```
 
-This command launches the jar (an uber or "fat" jar) containing the custom spout code and all dependencies you built in Step 5. We pass the name of your spout class with ```--bullet-spout com.yahoo.bullet.storm.examples.RandomSpout``` to the Bullet main class ```com.yahoo.bullet.Topology``` with two arguments ```--bullet-spout-arg 20``` and ```--bullet-spout-arg 100```. The first argument tells the Spout to generate at most 20 tuples in a period and the second argument says a period is 100 ms long.
+This command launches the jar (an uber or "fat" jar) containing the custom spout code and all dependencies you built in Step 5. We pass the name of your spout class with ```--bullet-spout com.yahoo.bullet.storm.examples.RandomSpout``` to the Bullet main class ```com.yahoo.bullet.Topology``` with two arguments ```--bullet-spout-arg 20``` and ```--bullet-spout-arg 101```. The first argument tells the Spout to generate at most 20 tuples in a period and the second argument says a period is 101 ms long.
 
-The settings defined by ```--bullet-conf bullet_settings.yaml``` and the arguments here run all components in the topology with a parallelism of 1. So there will be one spout that is producing 200 tuples per second.
+The settings defined by ```--bullet-conf bullet_settings.yaml``` and the arguments here run all components in the topology with a parallelism of 1. So there will be one spout that is producing ~200 tuples per second.
 
 !!! note "I thought you said hundreds of thousands of records..."
 

@@ -1,7 +1,6 @@
 theme: cinder
 
 site_name: Bullet
-site_favicon: favicon.ico
 repo_url: https://github.com/yahoo/bullet-docs
 
 pages:
