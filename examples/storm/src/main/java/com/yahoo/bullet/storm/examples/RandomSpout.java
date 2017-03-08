@@ -26,7 +26,7 @@ import static java.util.Arrays.asList;
 
 /**
  * This spout does not read from a source of data and convert it to {@link BulletRecord}. It instead generates
- * random data. You can pass in how many
+ * random data. You can pass in how many tuples to generate per period and the length of a period as arguments.
  */
 @Slf4j
 public class RandomSpout extends BaseRichSpout {
