@@ -27,7 +27,7 @@ bullet.topology.join.bolt.memory.off.heap.load: 192.0
 bullet.topology.join.bolt.error.tick.timeout: 3
 bullet.topology.join.bolt.rule.tick.timeout: 3
 bullet.topology.tick.interval.secs: 1
-bullet.rule.aggregation.count.distinct.sketch.entries: 16584
+bullet.rule.aggregation.count.distinct.sketch.entries: 16384
 bullet.rule.aggregation.group.sketch.entries: 512
 bullet.result.metadata.enable: true
 bullet.result.metadata.metrics:
