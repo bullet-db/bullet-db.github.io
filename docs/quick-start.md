@@ -200,12 +200,14 @@ Visit [http://localhost:8800](http://localhost:8800) to query your topology with
 
 To cleanup all the components we bought up:
 
-|                |                                                                          |
-| -------------- | ------------------------------------------------------------------------ |
-| Storm Topology | ```storm kill bullet```                                                  |
-| UI             | ```ps aux | grep [e]xpress-server.js | awk '{print $2}' | xargs kill```     |
+|                |                                                                                     |
+| -------------- | ----------------------------------------------------------------------------------- |
+| Storm Topology | ```storm kill bullet```                                                             |
+| UI             | ```ps aux | grep [e]xpress-server.js | awk '{print $2}' | xargs kill```             |
 | Web Service    | ```ps aux | grep [e]xample_context.properties | awk '{print $2}' | xargs kill```    |
-| Storm          | ```ps aux | grep [a]pache-storm-1.0.3 | awk '{print $2}' | xargs kill``` |
+| Storm          | ```ps aux | grep [a]pache-storm-1.0.3 | awk '{print $2}' | xargs kill```            |
+
+You can also ```rm -rf $BULLET_HOME /tmp/dev-storm-zookeeper /tmp/jetty-*``` to clean up your file system too.
 
 ## What did we do?
 
