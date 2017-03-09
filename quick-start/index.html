@@ -447,7 +447,13 @@ cp $BULLET_EXAMPLES/storm/src/main/resources/bullet_settings.yaml $BULLET_HOME/b
 
 <div class="admonition note">
 <p class="admonition-title">Settings</p>
-<p>Take a look at bullet_settings.yaml for the settings that are being overridden for this example. You can add or change settings as you like by referring to <a href="https://github.com/yahoo/bullet-storm/blob/master/src/main/resources/bullet_defaults.yaml">bullet_defaults.yaml</a>.</p>
+<p>Take a look at bullet_settings.yaml for the settings that are being overridden for this example. You can add or change settings as you like by referring to <a href="https://github.com/yahoo/bullet-storm/blob/master/src/main/resources/bullet_defaults.yaml">bullet_defaults.yaml</a>. In particular, we
+have customized these settings that affect the Bullet queries you can run:</p>
+<p><code>bullet.rule.max.duration: 570000</code> Longest query time can be 570s. The Storm cluster default DRPC timeout is 600s.</p>
+<p><code>bullet.rule.aggregation.raw.max.size: 500</code> The max <code>RAW</code> records you can fetch is 500.</p>
+<p><code>bullet.rule.aggregation.max.size: 1024</code> The max records you can fetch for any query is 1024.</p>
+<p><code>bullet.rule.aggregation.count.distinct.sketch.entries: 16384</code> We can count 16384 unique values exactly. Approximates after.</p>
+<p><code>bullet.rule.aggregation.group.sketch.entries: 1024</code> The max unique groups can be 1024. Uniform sample after.</p>
 </div>
 <h4 id="step-6-launch-the-topology">Step 6: Launch the topology</h4>
 <pre><code class="bash">cd $BULLET_HOME/backend/storm &amp;&amp; ./launch.sh
@@ -538,6 +544,7 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
 </tr>
 </tbody>
 </table>
+<p>You can also <code>rm -rf $BULLET_HOME /tmp/dev-storm-zookeeper /tmp/jetty-*</code> to clean up your file system too.</p>
 <h2 id="what-did-we-do">What did we do?</h2>
 <p>This section will cover the various custom pieces this example plugged into Bullet, so you can better understand what we did.</p>
 <h3 id="storm-topology">Storm topology</h3>
@@ -603,27 +610,26 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
         booleanMap.put(uuid.substring(19, 23), random.nextBoolean());
         record.setBooleanMap(BOOLEAN_MAP, booleanMap);
 
-        STATS_MAP_VALUE.put(PERIOD_COUNT, periodCount);
-        STATS_MAP_VALUE.put(RECORD_NUMBER, periodCount * maxPerPeriod + generatedThisPeriod);
-        STATS_MAP_VALUE.put(NANO_TIME, System.nanoTime());
-        STATS_MAP_VALUE.put(TIMESTAMP, System.currentTimeMillis());
-        record.setLongMap(STATS_MAP, STATS_MAP_VALUE);
+        Map&lt;String, Long&gt; statsMap = new HashMap&lt;&gt;(4);
+        statsMap.put(PERIOD_COUNT, periodCount);
+        statsMap.put(RECORD_NUMBER, periodCount * maxPerPeriod + generatedThisPeriod);
+        statsMap.put(NANO_TIME, System.nanoTime());
+        statsMap.put(TIMESTAMP, System.currentTimeMillis());
+        record.setLongMap(STATS_MAP, statsMap);
 
-        RANDOM_MAP_VALUE_A.put(RANDOM_MAP_KEY_A, STRING_POOL[random.nextInt(STRING_POOL.length)]);
-        RANDOM_MAP_VALUE_A.put(RANDOM_MAP_KEY_B, STRING_POOL[random.nextInt(STRING_POOL.length)]);
-        RANDOM_MAP_VALUE_B.put(RANDOM_MAP_KEY_A, STRING_POOL[random.nextInt(STRING_POOL.length)]);
-        RANDOM_MAP_VALUE_B.put(RANDOM_MAP_KEY_B, STRING_POOL[random.nextInt(STRING_POOL.length)]);
-        record.setListOfStringMap(LIST, asList(RANDOM_MAP_VALUE_A, RANDOM_MAP_VALUE_B));
+        Map&lt;String, String&gt; randomMapA = new HashMap&lt;&gt;(2);
+        Map&lt;String, String&gt; randomMapB = new HashMap&lt;&gt;(2);
+        randomMapA.put(RANDOM_MAP_KEY_A, STRING_POOL[random.nextInt(STRING_POOL.length)]);
+        randomMapA.put(RANDOM_MAP_KEY_B, STRING_POOL[random.nextInt(STRING_POOL.length)]);
+        randomMapB.put(RANDOM_MAP_KEY_A, STRING_POOL[random.nextInt(STRING_POOL.length)]);
+        randomMapB.put(RANDOM_MAP_KEY_B, STRING_POOL[random.nextInt(STRING_POOL.length)]);
+        record.setListOfStringMap(LIST, asList(randomMapA, randomMapB));
 
         return record;
     }
 </code></pre>
 
 <p>This method generates some fields randomly and inserts them into a BulletRecord. Note that the BulletRecord is typed and all data must be inserted with the proper types. If you put Bullet on your data, you will need to write a Spout (or a topology if your reading is complex), that reads from your data source and emits BulletRecords with the fields you wish to be queryable placed into a BulletRecord.</p>
-<div class="admonition note">
-<p class="admonition-title">Reusing Maps?</p>
-<p>There is no need to reuse maps. This example tries to be as efficient as possible in order to allow variable throughputs.</p>
-</div>
 <h3 id="web-service">Web Service</h3>
 <p>We launched the Web Service using two custom files - a properties file and JSON schema file.</p>
 <p>The JSON columns file contains the schema for our data specified in JSON. Since our schema is not going to change, we use the Web Service to serve it from a file. If your schema changes dynamically, you will need to provide your own endpoint to the UI.</p>
