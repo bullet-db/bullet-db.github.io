@@ -24,6 +24,7 @@ git clone git@github.com:yahoo/bullet-docs.git
 cd bullet-docs
 mkdocs build
 ```
+
 ## Building the examples
 
 You will need [Maven 3](https://maven.apache.org/install.html) and [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html) installed to build the examples.

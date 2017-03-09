@@ -22,7 +22,7 @@
 
 How Bullet is used is largely determined by the data source it consumes. Depending on what kind of data you put Bullet on, the types of queries you run on it and your use-cases will change. As a look-forward query system with no persistence, you will not be able to repeat your queries on the same data. The next time you run your query, it will operate on the different data that arrives after that submission. If this usage pattern is what you need and you are looking for a light-weight system that can tap into your streaming data, then Bullet is for you!
 
-### How Bullet is used at Yahoo
+### Example: How Bullet is used at Yahoo
 
 Bullet is used in production internally at Yahoo by having it sit on raw user engagement events from Yahoo sites and apps. This lets Yahoo developers automatically validate *end-to-end* their instrumentation code in their Continuous Delivery pipelines. Validating instrumentation is critical since it powers pretty much all decisions and products including machine learning, corporate KPIs, analytics, personalization, targeting.
 
@@ -157,6 +157,6 @@ In the case of Bullet on Storm, the Web Service and UI talk to the backend using
 !!! note "Want to know more?"
     In practice, the backend is implemented using the basic components that the Stream processing framework provides. See [Storm Architecture](backend/storm-architecture.md) for details.
 
-# Releases
+# Past Releases and Source
 
-See the [Releases](about/releases.md) section where the various Bullet releases are collected in one place.
+See the [Releases](about/releases.md) section where the various Bullet releases and repository links are collected in one place.

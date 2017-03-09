@@ -12,7 +12,7 @@ At the end of this section, you should have a full end-to-end Bullet instance wi
 **Prerequisites**
 
   * You will need to be on an Unix-based system (Mac, Ubuntu ...) for most of these commands
-  * You will need enough CPU and RAM on your machine to run about about 8-10 JVMs. You will be setting up a Storm cluster with multiple components, a couple of Jetty instances and a Node server
+  * You will need enough CPU and RAM on your machine to run about 8-10 JVMs. You will be setting up a Storm cluster with multiple components, a couple of Jetty instances and a Node server
   * You will need [git](https://git-scm.com/downloads), [Maven 3](https://maven.apache.org/install.html) and [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html) installed. The example will walk you through installing [Node.js](http://nodejs.org)
 
 ## Setting up Storm
@@ -115,7 +115,7 @@ Test the Bullet topology by:
 curl -s -X POST -d '{}' http://localhost:3774/drpc/bullet
 ```
 
-You should get a random record from Bullet produced by the custom spout that we plugged in.
+You should get a random record from Bullet.
 
 !!! note "What is this data?"
 
@@ -167,7 +167,7 @@ nvm use v6.9.4
 
 ```bash
 cd $BULLET_HOME/ui
-curl -O https://github.com/yahoo/bullet-ui/releases/download/v0.1.0/bullet-ui-v0.1.0.tar.gz
+curl -LO https://github.com/yahoo/bullet-ui/releases/download/v0.1.0/bullet-ui-v0.1.0.tar.gz
 tar -xzf bullet-ui-v0.1.0.tar.gz
 cp $BULLET_EXAMPLES/ui/env-settings.json config/
 ```
@@ -192,8 +192,8 @@ To cleanup all the components we bought up:
 |                |                                                                          |
 | -------------- | ------------------------------------------------------------------------ |
 | Storm Topology | ```storm kill bullet```                                                  |
-| UI             | ```ps aux | grep [e]xpress-server | awk '{print $2}' | xargs kill```     |
-| Web Service    | ```ps aux | grep [e]xample_context | awk '{print $2}' | xargs kill```    |
+| UI             | ```ps aux | grep [e]xpress-server.js | awk '{print $2}' | xargs kill```     |
+| Web Service    | ```ps aux | grep [e]xample_context.properties | awk '{print $2}' | xargs kill```    |
 | Storm          | ```ps aux | grep [a]pache-storm-1.0.3 | awk '{print $2}' | xargs kill``` |
 
 ## What did we do?

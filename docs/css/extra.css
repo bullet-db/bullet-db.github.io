@@ -20,3 +20,15 @@
 .bs-sidebar .nav .nav > li > a {
   font-size: 100%;
 }
+
+@media (min-width: 1650px) {
+  body > .container {
+    width: 1400px;
+  }
+}
+
+@media (min-width: 1920px) {
+  body > .container {
+    width: 1680px;
+  }
+}

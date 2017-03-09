@@ -28,6 +28,8 @@ markdown_extensions:
 
 extra:
   collapse_toc: true
+  toc_depth: 5
+  include_search: true
 
 extra_css:
   - css/extra.css
