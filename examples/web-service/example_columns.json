@@ -21,7 +21,7 @@
         "description": "Contains four keys which are four fragments of the uuid. The values are randomly generated boolean values from Random#nextBoolean"
     },
     {
-        "name": "stats_map",
+        "name": "stats",
         "type": "MAP",
         "subtype": "LONG",
         "description": "This map contains some numeric information such as the current number of periods etc.",
