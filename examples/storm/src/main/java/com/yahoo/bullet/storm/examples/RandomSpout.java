@@ -66,21 +66,6 @@ public class RandomSpout extends BaseRichSpout {
 
     // Some static values in BulletRecord for the fields
     public static final String[] STRING_POOL = { "foo", "bar", "baz", "qux", "quux", "norf" };
-    public static final Map<String, Long> STATS_MAP_VALUE = new HashMap<>();
-    static {
-        STATS_MAP_VALUE.put(PERIOD_COUNT, null);
-        STATS_MAP_VALUE.put(RECORD_NUMBER, null);
-        STATS_MAP_VALUE.put(NANO_TIME, null);
-        STATS_MAP_VALUE.put(TIMESTAMP, null);
-    }
-    public static final Map<String, String> RANDOM_MAP_VALUE_A = new HashMap<>();
-    public static final Map<String, String> RANDOM_MAP_VALUE_B = new HashMap<>();
-    static {
-        RANDOM_MAP_VALUE_A.put(RANDOM_MAP_KEY_A, null);
-        RANDOM_MAP_VALUE_A.put(RANDOM_MAP_KEY_B, null);
-        RANDOM_MAP_VALUE_B.put(RANDOM_MAP_KEY_A, null);
-        RANDOM_MAP_VALUE_B.put(RANDOM_MAP_KEY_B, null);
-    }
 
     /**
      * @param args A List of Strings for your Spout. This example takes a number of messages to emit before sleeping and the amount
@@ -162,17 +147,20 @@ public class RandomSpout extends BaseRichSpout {
         booleanMap.put(uuid.substring(19, 23), random.nextBoolean());
         record.setBooleanMap(BOOLEAN_MAP, booleanMap);
 
-        STATS_MAP_VALUE.put(PERIOD_COUNT, periodCount);
-        STATS_MAP_VALUE.put(RECORD_NUMBER, periodCount * maxPerPeriod + generatedThisPeriod);
-        STATS_MAP_VALUE.put(NANO_TIME, System.nanoTime());
-        STATS_MAP_VALUE.put(TIMESTAMP, System.currentTimeMillis());
-        record.setLongMap(STATS_MAP, STATS_MAP_VALUE);
+        Map<String, Long> statsMap = new HashMap<>(4);
+        statsMap.put(PERIOD_COUNT, periodCount);
+        statsMap.put(RECORD_NUMBER, periodCount * maxPerPeriod + generatedThisPeriod);
+        statsMap.put(NANO_TIME, System.nanoTime());
+        statsMap.put(TIMESTAMP, System.currentTimeMillis());
+        record.setLongMap(STATS_MAP, statsMap);
 
-        RANDOM_MAP_VALUE_A.put(RANDOM_MAP_KEY_A, STRING_POOL[random.nextInt(STRING_POOL.length)]);
-        RANDOM_MAP_VALUE_A.put(RANDOM_MAP_KEY_B, STRING_POOL[random.nextInt(STRING_POOL.length)]);
-        RANDOM_MAP_VALUE_B.put(RANDOM_MAP_KEY_A, STRING_POOL[random.nextInt(STRING_POOL.length)]);
-        RANDOM_MAP_VALUE_B.put(RANDOM_MAP_KEY_B, STRING_POOL[random.nextInt(STRING_POOL.length)]);
-        record.setListOfStringMap(LIST, asList(RANDOM_MAP_VALUE_A, RANDOM_MAP_VALUE_B));
+        Map<String, String> randomMapA = new HashMap<>(2);
+        Map<String, String> randomMapB = new HashMap<>(2);
+        randomMapA.put(RANDOM_MAP_KEY_A, STRING_POOL[random.nextInt(STRING_POOL.length)]);
+        randomMapA.put(RANDOM_MAP_KEY_B, STRING_POOL[random.nextInt(STRING_POOL.length)]);
+        randomMapB.put(RANDOM_MAP_KEY_A, STRING_POOL[random.nextInt(STRING_POOL.length)]);
+        randomMapB.put(RANDOM_MAP_KEY_B, STRING_POOL[random.nextInt(STRING_POOL.length)]);
+        record.setListOfStringMap(LIST, asList(randomMapA, randomMapB));
 
         return record;
     }

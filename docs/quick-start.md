@@ -100,7 +100,18 @@ cp $BULLET_EXAMPLES/storm/src/main/resources/bullet_settings.yaml $BULLET_HOME/b
 
 !!! note "Settings"
 
-    Take a look at bullet_settings.yaml for the settings that are being overridden for this example. You can add or change settings as you like by referring to [bullet_defaults.yaml](https://github.com/yahoo/bullet-storm/blob/master/src/main/resources/bullet_defaults.yaml).
+    Take a look at bullet_settings.yaml for the settings that are being overridden for this example. You can add or change settings as you like by referring to [bullet_defaults.yaml](https://github.com/yahoo/bullet-storm/blob/master/src/main/resources/bullet_defaults.yaml). In particular, we
+    have customized these settings that affect the Bullet queries you can run:
+
+    ```bullet.rule.max.duration: 570000``` Longest query time can be 570s. The Storm cluster default DRPC timeout is 600s.
+
+    ```bullet.rule.aggregation.raw.max.size: 500``` The max ```RAW``` records you can fetch is 500.
+
+    ```bullet.rule.aggregation.max.size: 1024``` The max records you can fetch for any query is 1024.
+
+    ```bullet.rule.aggregation.count.distinct.sketch.entries: 16384``` We can count 16384 unique values exactly. Approximates after.
+
+    ```bullet.rule.aggregation.group.sketch.entries: 1024``` The max unique groups can be 1024. Uniform sample after.
 
 #### Step 6: Launch the topology
 
@@ -273,27 +284,26 @@ This method above emits the tuples. The Storm framework calls this method. This 
         booleanMap.put(uuid.substring(19, 23), random.nextBoolean());
         record.setBooleanMap(BOOLEAN_MAP, booleanMap);
 
-        STATS_MAP_VALUE.put(PERIOD_COUNT, periodCount);
-        STATS_MAP_VALUE.put(RECORD_NUMBER, periodCount * maxPerPeriod + generatedThisPeriod);
-        STATS_MAP_VALUE.put(NANO_TIME, System.nanoTime());
-        STATS_MAP_VALUE.put(TIMESTAMP, System.currentTimeMillis());
-        record.setLongMap(STATS_MAP, STATS_MAP_VALUE);
+        Map<String, Long> statsMap = new HashMap<>(4);
+        statsMap.put(PERIOD_COUNT, periodCount);
+        statsMap.put(RECORD_NUMBER, periodCount * maxPerPeriod + generatedThisPeriod);
+        statsMap.put(NANO_TIME, System.nanoTime());
+        statsMap.put(TIMESTAMP, System.currentTimeMillis());
+        record.setLongMap(STATS_MAP, statsMap);
 
-        RANDOM_MAP_VALUE_A.put(RANDOM_MAP_KEY_A, STRING_POOL[random.nextInt(STRING_POOL.length)]);
-        RANDOM_MAP_VALUE_A.put(RANDOM_MAP_KEY_B, STRING_POOL[random.nextInt(STRING_POOL.length)]);
-        RANDOM_MAP_VALUE_B.put(RANDOM_MAP_KEY_A, STRING_POOL[random.nextInt(STRING_POOL.length)]);
-        RANDOM_MAP_VALUE_B.put(RANDOM_MAP_KEY_B, STRING_POOL[random.nextInt(STRING_POOL.length)]);
-        record.setListOfStringMap(LIST, asList(RANDOM_MAP_VALUE_A, RANDOM_MAP_VALUE_B));
+        Map<String, String> randomMapA = new HashMap<>(2);
+        Map<String, String> randomMapB = new HashMap<>(2);
+        randomMapA.put(RANDOM_MAP_KEY_A, STRING_POOL[random.nextInt(STRING_POOL.length)]);
+        randomMapA.put(RANDOM_MAP_KEY_B, STRING_POOL[random.nextInt(STRING_POOL.length)]);
+        randomMapB.put(RANDOM_MAP_KEY_A, STRING_POOL[random.nextInt(STRING_POOL.length)]);
+        randomMapB.put(RANDOM_MAP_KEY_B, STRING_POOL[random.nextInt(STRING_POOL.length)]);
+        record.setListOfStringMap(LIST, asList(randomMapA, randomMapB));
 
         return record;
     }
 ```
 
 This method generates some fields randomly and inserts them into a BulletRecord. Note that the BulletRecord is typed and all data must be inserted with the proper types. If you put Bullet on your data, you will need to write a Spout (or a topology if your reading is complex), that reads from your data source and emits BulletRecords with the fields you wish to be queryable placed into a BulletRecord.
-
-!!! note "Reusing Maps?"
-
-    There is no need to reuse maps. This example tries to be as efficient as possible in order to allow variable throughputs.
 
 ### Web Service
 
