@@ -12,7 +12,7 @@
       }
     ],
     "bugLink": "https://github.com/yahoo/bullet-ui/issues",
-    "aggregateDataDefaultSize": 512,
+    "aggregateDataDefaultSize": 1024,
     "modelVersion": 1
   }
 }
