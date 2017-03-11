@@ -289,7 +289,7 @@
 
 <h1 id="the-ui-layer">The UI Layer</h1>
 <p>The Bullet UI lets you easily create and work with Bullet queries and results for your custom data. It stores all created queries, results and other metadata in the local browser storage or <a href="https://www.w3schools.com/html/html5_webstorage.asp">LocalStorage</a>.</p>
-<p>While LocalStorage is sufficient for simple usage, the UI users can run out of space when a lot of queries and results are being stored. We are looking into more robust solutions like <a href="https://localforage.github.io/localForage/">LocalForage</a>. See <a href="https://github.com/yahoo/bullet-ui/issues/9">#9</a>. This should be landing soon&trade;.</p>
+<p>While LocalStorage is sufficient for simple usage, UI users can run out of space when a lot of queries and results are being stored. We are looking into more robust solutions like <a href="https://localforage.github.io/localForage/">LocalForage</a>. See <a href="https://github.com/yahoo/bullet-ui/issues/9">#9</a>. This should be landing soon&trade;.</p>
 <div class="admonition note">
 <p class="admonition-title">Really!? LocalStorage only!?</p>
 <p>We're serious about the no persistence thing with Bullet! And while we're at it, we are also not interested in supporting old browsers. Joking aside though, we wanted to keep Bullet as light and simple as possible to start with. We can look into extending support from the server-side by adding a database or the like if needed. In practice, we have found that this isn't as important as it initially seems.</p>
@@ -324,7 +324,7 @@
 <p>The entire application with all its assets and dependencies are compiled and placed into dist/. You could point a web server directly at this folder but you will <strong>only</strong> be able to use the default configuration (see <a href="#configuration">below</a>).</p>
 <h2 id="running">Running</h2>
 <p>There is a Node.js server endpoint defined at <a href="../server/index.js">server/index.js</a> to serve the UI. This dynamically injects the settings (see configuration <a href="#configuration">below</a>) into the served UI based on the environment variable NODE_ENV. You should not need to worry about if you only have one environment.</p>
-<p>The entrypoint for the UI is the <a href="http://expressjs.com/">Express</a> endpoint defined as the main in package.json that simply adds the server/index.js as a middleware.</p>
+<p>The entry-point for the UI is the <a href="http://expressjs.com/">Express</a> endpoint defined as the main in package.json that simply adds the server/index.js as a middleware.</p>
 <p>Regardless of which <a href="#installation">installation</a> option you chose, you need the following folder structure in order to run the UI:</p>
 <pre><code>dist/*
 config/env-settings.json
@@ -343,8 +343,7 @@ express-server.js
 
 <p>Visit localhost:8800 to see your UI that should be configured with the right settings.</p>
 <h2 id="configuration">Configuration</h2>
-<p>All of the configuration for the UI is <strong>environment-specific</strong>. This lets you have different instances of Bullet for different environments (e.g. CI, Staging, Production).
-These settings can be found in <a href="https://github.com/yahoo/bullet-ui/blob/master/config/env-settings.json">env-settings.json</a>.</p>
+<p>All of the configuration for the UI is <strong>environment-specific</strong>. This lets you have different instances of Bullet for different environments (e.g. CI, Staging, Production). These settings can be found in <a href="https://github.com/yahoo/bullet-ui/blob/master/config/env-settings.json">env-settings.json</a>.</p>
 <p>Each property in the env-settings.json file will contain the settings that will be used when running a custom instance of the UI (see <a href="#Running">above</a>).</p>
 <p>The <code>default</code> property shows the default settings for the UI that can be selectively overridden based on which host you are running on. The file does not specify the <code>defaultFilter</code> setting shown below.</p>
 <pre><code class="json">&quot;default&quot;: {
@@ -380,15 +379,15 @@ These settings can be found in <a href="https://github.com/yahoo/bullet-ui/blob/
 <p><code>schemaHost</code> is the end point (port included) of your Web Service machine that is serving your schema in the JSON API format (see the <a href="../../ws/setup/">Web Service setup</a> for details.)</p>
 <p><code>schemaNamespace</code> is the fragment of the path to your schema Web Service on the <code>schemaHost</code>. There is no <code>schemaPath</code> because it <strong>must</strong> be "columns" in order for the UI to be able fetch the column resource (columns in your schema).</p>
 <p><code>modelVersion</code> is a way for you to control your UI users' Ember models saved in LocalStorage. If there is a need for you to purge all your user's created queries, results and other data stored in their LocalStorage, then you should increment this number. The UI, on startup, will compare this number with what it has seen before (your old version) and purge the LocalStorage.</p>
-<p><code>helpLinks</code> is a list of objects, where each object is a help link. These links drive the dropdown list when you click the "Help" button on the UI's top navbar. You can use this to point to your particular help links. For example, you could use this to point your users toward a page that
+<p><code>helpLinks</code> is a list of objects, where each object is a help link. These links drive the drop-down list when you click the "Help" button on the UI's top navbar. You can use this to point to your particular help links. For example, you could use this to point your users toward a page that
 helps them understand your data (that this UI is operating on).</p>
 <p><code>defaultFilter</code> can either be an <a href="../../ws/api/#filters">API Filter</a> or a URL from which one could be fetched dynamically. The UI adds this filter to every newly created Query. You could use this as a way to have user specific (for example, cookie based) filters created for your users when they create a new query in the UI.</p>
-<p><code>bugLink</code> is a url that by default points to the issues page for the UI GitHub repository (this). You can change it to point to your own custom JIRA queue or the like if you want to.</p>
-<p><code>aggregateDataDefaultSize</code> is the aggregation size for all queries that are not pulling raw data. In order to keep the
-aggregation size from being ambiguous for UI users when doing a Count Distinct or a Distinct or a Group By query, this is
-the size that is used. You should set this to your max size that you have configured for your non-raw aggregations in
-your topology configuration.</p>
-<p><strong>Note that all your Web Service endpoints must support CORS (return the right headers) in order for the UI to be able to communicate with it.</strong> The Bullet Web Service already does this for the DRPC and columns endpoints.</p>
+<p><code>bugLink</code> is a URL that by default points to the issues page for the UI GitHub repository (this). You can change it to point to your own custom JIRA queue or the like if you want to.</p>
+<p><code>aggregateDataDefaultSize</code> is the aggregation size for all queries that are not pulling raw data. In order to keep the aggregation size from being ambiguous for UI users when doing a Count Distinct or a Distinct or a Group By query, this is the size that is used. You should set this to your max size that you have configured for your non-raw aggregations in your topology configuration.</p>
+<div class="admonition note">
+<p class="admonition-title">CORS</p>
+<p>All your Web Service endpoints must support CORS (return the right headers) in order for the UI to be able to communicate with it. The Bullet Web Service already does this for the DRPC and columns endpoints.</p>
+</div>
 <p>To cement all this, if you wanted an instance of the UI in your CI environment, you could add this to the env-settings.json file.</p>
 <pre><code class="json">{
   &quot;default&quot;: {
@@ -419,7 +418,7 @@ your topology configuration.</p>
 <ul>
 <li>POST to <code>http://bullet-ws.development.domain.com:4080/bullet/api/drpc</code> for UI created Bullet queries</li>
 <li>GET the schema from <code>http://bullet-ws.development.domain.com:4080/bullet/api/columns</code></li>
-<li>Populate an additional link on the Help dropdown pointing to <code>http://data.docs.domain.com</code></li>
+<li>Populate an additional link on the Help drop-down pointing to <code>http://data.docs.domain.com</code></li>
 <li>GET and cache a defaultFilter from <code>http://bullet-ws.development.domain.com:4080/custom-endpoint/api/defaultQuery</code></li>
 </ul></div>
         

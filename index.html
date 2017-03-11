@@ -378,13 +378,13 @@
 <p>Is <strong>pluggable</strong>. Any data source that can be read from Storm can be converted into a standard data container letting you query that data. Data is <strong>typed</strong></p>
 </li>
 <li>
-<p>Is used at scale and in production at Yahoo with hundreds of queries simultaneously on hundreds of thousands of records per second and tested up to millions of records per second</p>
+<p>Is used at scale and in production at Yahoo with running 500+ queries simultaneously on 200,000 rps (records per second) and tested up to 2,000,000 rps</p>
 </li>
 </ul>
 <h2 id="how-is-this-useful">How is this useful</h2>
 <p>How Bullet is used is largely determined by the data source it consumes. Depending on what kind of data you put Bullet on, the types of queries you run on it and your use-cases will change. As a look-forward query system with no persistence, you will not be able to repeat your queries on the same data. The next time you run your query, it will operate on the different data that arrives after that submission. If this usage pattern is what you need and you are looking for a light-weight system that can tap into your streaming data, then Bullet is for you!</p>
 <h3 id="example-how-bullet-is-used-at-yahoo">Example: How Bullet is used at Yahoo</h3>
-<p>Bullet is used in production internally at Yahoo by having it sit on raw user engagement events from Yahoo sites and apps. This lets Yahoo developers automatically validate <em>end-to-end</em> their instrumentation code in their Continuous Delivery pipelines. Validating instrumentation is critical since it powers pretty much all decisions and products including machine learning, corporate KPIs, analytics, personalization, targeting.</p>
+<p>Bullet is used in production internally at Yahoo by having it sit on a subset of raw user engagement events from Yahoo sites and apps. This lets Yahoo developers automatically validate their instrumentation code <em>end-to-end</em> in their Continuous Delivery pipelines. Validating instrumentation is critical since it powers pretty much all decisions and products including machine learning, corporate KPIs, analytics, personalization, targeting.</p>
 <p>This instance of Bullet also powers other use-cases such as letting analysts validate assumptions about data, product managers verify launches instantly, debug issues and outages, or simply explore and play around with the data.</p>
 <hr />
 <h1 id="quick-start">Quick Start</h1>
@@ -407,14 +407,14 @@
 <hr />
 <h1 id="querying-in-bullet">Querying in Bullet</h1>
 <p>Bullet queries allow you to filter, project and aggregate data. It lets you fetch raw (the individual data records) as well as aggregated data.</p>
-<p>See the <a href="ui/usage/">UI Usage section</a> for using the UI to build Bullet queries.</p>
+<p>See the <a href="ui/usage/">UI Usage section</a> for using the UI to build Bullet queries. This is the same UI you will build in the <a href="quick-start/">Quick Start</a></p>
 <p>See the <a href="ws/api/">API section</a> for building Bullet API queries.</p>
-<p>For examples using the API, see <a href="ws/examples/">Examples</a>.</p>
+<p>For examples using the API, see <a href="ws/examples/">Examples</a>. These are actual albeit cleansed queries sourced from the instance at Yahoo.</p>
 <h2 id="termination-conditions">Termination conditions</h2>
 <p>A Bullet query terminates and returns whatever has been collected so far when:</p>
 <ol>
 <li>A maximum duration is reached. In other words, a query runs for a defined time window</li>
-<li>A maximum number of records is reached. (only applicable for queries that are fetching raw data records and not aggregating)</li>
+<li>A maximum number of records is reached (only applicable for queries that are fetching raw data records and not aggregating).</li>
 </ol>
 <h2 id="filters">Filters</h2>
 <p>Bullet supports two kinds of filters:</p>
@@ -437,7 +437,7 @@
 </tbody>
 </table>
 <h2 id="projections">Projections</h2>
-<p>Projections allow you to pull out only the fields needed and rename them when you are quering for raw data records.</p>
+<p>Projections allow you to pull out only the fields needed and rename them when you are querying for raw data records.</p>
 <h2 id="aggregations">Aggregations</h2>
 <p>Aggregations allow you to perform some operation on the collected records.</p>
 <p>The current aggregation types that are supported are:</p>
@@ -499,7 +499,7 @@
 <hr />
 <h1 id="approximate-computation">Approximate computation</h1>
 <p>It is often intractable to perform aggregations on an unbounded stream of data and still support arbitrary queries. However, it is possible if an exact answer is not required and the approximate answer's error is exactly quantifiable. There are stochastic algorithms and data structures that let us do this. We use <a href="https://datasketches.github.io/">Data Sketches</a> to perform aggregations such as counting uniques, and will be using Sketches to implement some future aggregations.</p>
-<p>Sketches let us be exact in our computation up to configured thresholds and approximate after. The error is very controllable and quantifiable. All Bullet queries that use Sketches return the error bounds with Standard Deviations as part of the results so you can quantify the error exactly. Using Sketches lets us address otherwise hard to solve problems in sublinear space.</p>
+<p>Sketches let us be exact in our computation up to configured thresholds and approximate after. The error is very controllable and quantifiable. All Bullet queries that use Sketches return the error bounds with Standard Deviations as part of the results so you can quantify the error exactly. Using Sketches lets us address otherwise hard to solve problems in sub-linear space.</p>
 <p>We also use Sketches as a way to control high cardinality grouping (group by a natural key column or related) and rely on the Sketching data structure to drop excess groups. It is up to you setting up Bullet to determine to set Sketch sizes large or small enough for to satisfy the queries that will be performed on that instance of Bullet.</p>
 <h2 id="new-query-types-coming-soon">New query types coming soon</h2>
 <p>Using Sketches, we have implemented <code>COUNT DISTINCT</code> and <code>GROUP</code> and are working on other aggregations including but not limited to:</p>
@@ -513,7 +513,7 @@
 <tbody>
 <tr>
 <td>TOP K</td>
-<td>Returns the top K most freqently appearing values in the column</td>
+<td>Returns the top K most frequently appearing values in the column</td>
 </tr>
 <tr>
 <td>DISTRIBUTION</td>
@@ -528,7 +528,7 @@
 <ol>
 <li>Request Processor - receives queries, adds metadata and sends it to the rest of the system</li>
 <li>Data Processor - converts the data from an stream and matches it against queries</li>
-<li>Combiner - combines results for different queries, perfoms final aggregations and returns results</li>
+<li>Combiner - combines results for different queries, performs final aggregations and returns results</li>
 </ol>
 <h2 id="web-service-and-ui">Web Service and UI</h2>
 <p>The rest of the pieces are just the standard other two pieces in a full-stack application:</p>
@@ -607,5 +607,5 @@
 
 <!--
 MkDocs version : 0.16.1
-Build Date UTC : 2017-03-09 05:29:15
+Build Date UTC : 2017-03-11 00:33:14
 -->
