@@ -16,7 +16,7 @@
 
 * Is **pluggable**. Any data source that can be read from Storm can be converted into a standard data container letting you query that data. Data is **typed**
 
-* Is used at scale and in production at Yahoo with hundreds of queries simultaneously on hundreds of thousands of records per second and tested up to millions of records per second
+* Is used at scale and in production at Yahoo with running 500+ queries simultaneously on 200,000 rps (records per second) and tested up to 2,000,000 rps
 
 ## How is this useful
 
@@ -24,7 +24,7 @@ How Bullet is used is largely determined by the data source it consumes. Dependi
 
 ### Example: How Bullet is used at Yahoo
 
-Bullet is used in production internally at Yahoo by having it sit on raw user engagement events from Yahoo sites and apps. This lets Yahoo developers automatically validate *end-to-end* their instrumentation code in their Continuous Delivery pipelines. Validating instrumentation is critical since it powers pretty much all decisions and products including machine learning, corporate KPIs, analytics, personalization, targeting.
+Bullet is used in production internally at Yahoo by having it sit on a subset of raw user engagement events from Yahoo sites and apps. This lets Yahoo developers automatically validate their instrumentation code *end-to-end* in their Continuous Delivery pipelines. Validating instrumentation is critical since it powers pretty much all decisions and products including machine learning, corporate KPIs, analytics, personalization, targeting.
 
 This instance of Bullet also powers other use-cases such as letting analysts validate assumptions about data, product managers verify launches instantly, debug issues and outages, or simply explore and play around with the data.
 
@@ -54,18 +54,18 @@ To set up Bullet on a real data stream, you need:
 
 Bullet queries allow you to filter, project and aggregate data. It lets you fetch raw (the individual data records) as well as aggregated data.
 
-See the [UI Usage section](ui/usage.md) for using the UI to build Bullet queries.
+See the [UI Usage section](ui/usage.md) for using the UI to build Bullet queries. This is the same UI you will build in the [Quick Start](quick-start.md)
 
 See the [API section](ws/api.md) for building Bullet API queries.
 
-For examples using the API, see [Examples](ws/examples.md).
+For examples using the API, see [Examples](ws/examples.md). These are actual albeit cleansed queries sourced from the instance at Yahoo.
 
 ## Termination conditions
 
 A Bullet query terminates and returns whatever has been collected so far when:
 
 1. A maximum duration is reached. In other words, a query runs for a defined time window
-2. A maximum number of records is reached. (only applicable for queries that are fetching raw data records and not aggregating)
+2. A maximum number of records is reached (only applicable for queries that are fetching raw data records and not aggregating).
 
 ## Filters
 
@@ -78,7 +78,7 @@ Bullet supports two kinds of filters:
 
 ## Projections
 
-Projections allow you to pull out only the fields needed and rename them when you are quering for raw data records.
+Projections allow you to pull out only the fields needed and rename them when you are querying for raw data records.
 
 ## Aggregations
 
@@ -112,7 +112,7 @@ The Bullet Web Service returns your query result as well as associated metadata 
 
 It is often intractable to perform aggregations on an unbounded stream of data and still support arbitrary queries. However, it is possible if an exact answer is not required and the approximate answer's error is exactly quantifiable. There are stochastic algorithms and data structures that let us do this. We use [Data Sketches](https://datasketches.github.io/) to perform aggregations such as counting uniques, and will be using Sketches to implement some future aggregations.
 
-Sketches let us be exact in our computation up to configured thresholds and approximate after. The error is very controllable and quantifiable. All Bullet queries that use Sketches return the error bounds with Standard Deviations as part of the results so you can quantify the error exactly. Using Sketches lets us address otherwise hard to solve problems in sublinear space.
+Sketches let us be exact in our computation up to configured thresholds and approximate after. The error is very controllable and quantifiable. All Bullet queries that use Sketches return the error bounds with Standard Deviations as part of the results so you can quantify the error exactly. Using Sketches lets us address otherwise hard to solve problems in sub-linear space.
 
 We also use Sketches as a way to control high cardinality grouping (group by a natural key column or related) and rely on the Sketching data structure to drop excess groups. It is up to you setting up Bullet to determine to set Sketch sizes large or small enough for to satisfy the queries that will be performed on that instance of Bullet.
 
@@ -122,7 +122,7 @@ Using Sketches, we have implemented ```COUNT DISTINCT``` and ```GROUP``` and are
 
 | Aggregation    | Meaning |
 | -------------- | ------- |
-| TOP K          | Returns the top K most freqently appearing values in the column |
+| TOP K          | Returns the top K most frequently appearing values in the column |
 | DISTRIBUTION   | Computes distributions of the elements in the column. E.g. Find the median value or the 95th percentile of a field or graph the entire distribution as a histogram |
 
 # Architecture
@@ -135,7 +135,7 @@ The Bullet backend can be split into three main sub-systems:
 
 1. Request Processor - receives queries, adds metadata and sends it to the rest of the system
 2. Data Processor - converts the data from an stream and matches it against queries
-3. Combiner - combines results for different queries, perfoms final aggregations and returns results
+3. Combiner - combines results for different queries, performs final aggregations and returns results
 
 ## Web Service and UI
 

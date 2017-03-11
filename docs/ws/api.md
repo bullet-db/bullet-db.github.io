@@ -195,8 +195,6 @@ Attributes for COUNT DISTINCT:
 
 Note that the new names you specify in the fields map for aggregations do not apply. You must use the attributes here to give your resulting output count column a name.
 
-See the [examples section](#examples) for a detailed description of how to perform these aggregations.
-
 ### Results
 
 Bullet results are JSON objects with two fields:
@@ -206,4 +204,4 @@ Bullet results are JSON objects with two fields:
 | records | This field contains the list of matching records |
 | meta    | This field is a map that contains meta information about the query, such as the time the query was received, error data, etc. These are configurable at launch time. |
 
-For example queries and results, see [Examples](examples.md).
+For a detailed description of how to perform these queries and see example results, see [Examples](examples.md).

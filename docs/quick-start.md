@@ -1,9 +1,8 @@
 # Quick Start
 
-This section gets you up and running with an mock instance of Bullet to play around with. The instance will be running using [Bullet on Storm](backend/setup-storm.md). Since we do not have an actual data source, we will produce some fake data and convert it into [Bullet Records](backend/ingestion.md) in a
-[custom Storm spout](https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/java/com/yahoo/bullet/storm/examples/RandomSpout.java). When you build Bullet for your data, you will need to do something similar after reading your data.
+This section gets you running a mock instance of Bullet to play around with. The instance will run using [Bullet on Storm](backend/setup-storm.md). Since we do not have an actual data source, we will produce some fake data and convert it into [Bullet Records](backend/ingestion.md) in a [custom Storm spout](https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/java/com/yahoo/bullet/storm/examples/RandomSpout.java). If you want to use Bullet for your data, you will need to do read and convert your data to Bullet Records in a similar manner.
 
-At the end of this section, you should have a full end-to-end Bullet instance with a Web Service and UI running on a machine. You will:
+By the following the steps in this section, you will:
 
   * Setup the Bullet topology using a custom spout on [bullet-storm-0.3.0](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.3.0)
   * Setup the [Web Service](ws/setup.md) talking to the topology and serving a schema for your UI using [bullet-service-0.0.1](https://github.com/yahoo/bullet-service/releases/tag/bullet-service-0.0.1)
@@ -11,13 +10,13 @@ At the end of this section, you should have a full end-to-end Bullet instance wi
 
 **Prerequisites**
 
-  * You will need to be on an Unix-based system (Mac, Ubuntu ...) for most of these commands
+  * You will need to be on an Unix-based system (Mac OS X, Ubuntu ...)
+  * You will need [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html) installed.
   * You will need enough CPU and RAM on your machine to run about 8-10 JVMs. You will be setting up a Storm cluster with multiple components, a couple of Jetty instances and a Node server
-  * You will need [git](https://git-scm.com/downloads), [Maven 3](https://maven.apache.org/install.html) and [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html) installed. The example will walk you through installing [Node.js](http://nodejs.org)
 
 ## Setting up Storm
 
-This section will deal with setting up Storm. To set up a clean working environment, start with creating an empty working directory.
+To set up a clean working environment, let's start with setting some directories.
 
 #### Step 1: Setup directories and examples
 
@@ -26,8 +25,10 @@ export BULLET_HOME=$(pwd)/bullet-quickstart
 mkdir -p $BULLET_HOME/backend/storm
 mkdir -p $BULLET_HOME/service
 mkdir -p $BULLET_HOME/ui
-cd $BULLET_HOME && git clone git@github.com:yahoo/bullet-docs.git
-export BULLET_EXAMPLES=$BULLET_HOME/bullet-docs/examples
+cd $BULLET_HOME
+curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.1.0/examples_artifacts.tar.gz
+tar -xzf examples_artifacts.tar.gz
+export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 ```
 
 #### Step 2: Install Storm 1.0
@@ -46,7 +47,7 @@ echo 'drpc.servers: ["127.0.0.1"]' >> apache-storm-1.0.3/conf/storm.yaml
 
 #### Step 3: Launch Storm components
 
-Launch each of the following components, in order and wait for the commands to go through. You may have to do these one at a time. You will see a JVM being launched for each one.
+Launch each of the following components, in order and wait for the commands to go through. You may have to do these one at a time. You will see a JVM being launched for each one and connection messages as the components communicate through Zookeeper.
 
 ```bash
 storm dev-zookeeper &
@@ -87,21 +88,17 @@ storm kill topology
 
 ## Setting up the example Bullet topology
 
-Now that Storm is up and running, we can put Bullet on it. We will build an example Spout that runs on Bullet 0.3.0 on our Storm cluster. The source is available [here](https://github.com/yahoo/bullet-docs/blob/master/examples/storm).
+Now that Storm is up and running, we can put Bullet on it. We will use an example Spout that runs on Bullet 0.3.0 on our Storm cluster. The source is available [here](https://github.com/yahoo/bullet-docs/blob/master/examples/storm). This was part of the artifact that you installed in Step 1.
 
-#### Step 5: Build the Storm example
+#### Step 5: Setup the Storm example
 
 ```bash
-cd $BULLET_EXAMPLES/storm && mvn package
-cp $BULLET_EXAMPLES/storm/bin/launch.sh $BULLET_HOME/backend/storm
-cp $BULLET_EXAMPLES/storm/target/*jar-with-dependencies.jar $BULLET_HOME/backend/storm
-cp $BULLET_EXAMPLES/storm/src/main/resources/bullet_settings.yaml $BULLET_HOME/backend/storm
+cp $BULLET_EXAMPLES/storm/* $BULLET_HOME/backend/storm
 ```
 
 !!! note "Settings"
 
-    Take a look at bullet_settings.yaml for the settings that are being overridden for this example. You can add or change settings as you like by referring to [bullet_defaults.yaml](https://github.com/yahoo/bullet-storm/blob/master/src/main/resources/bullet_defaults.yaml). In particular, we
-    have customized these settings that affect the Bullet queries you can run:
+    Take a look at bullet_settings.yaml for the settings that are being overridden for this example. You can add or change settings as you like by referring to [bullet_defaults.yaml](https://github.com/yahoo/bullet-storm/blob/master/src/main/resources/bullet_defaults.yaml). In particular, we have [customized these settings](https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/resources/bullet_settings.yaml) that affect the Bullet queries you can run:
 
     ```bullet.rule.max.duration: 570000``` Longest query time can be 570s. The Storm cluster default DRPC timeout is 600s.
 
@@ -112,6 +109,16 @@ cp $BULLET_EXAMPLES/storm/src/main/resources/bullet_settings.yaml $BULLET_HOME/b
     ```bullet.rule.aggregation.count.distinct.sketch.entries: 16384``` We can count 16384 unique values exactly. Approximates after.
 
     ```bullet.rule.aggregation.group.sketch.entries: 1024``` The max unique groups can be 1024. Uniform sample after.
+
+!!! note "Want to tweak the example topology code?"
+
+    You will need to clone the [examples repository](https://github.com/yahoo/bullet-docs/tree/master/examples/storm) and customize it. To build the examples, you'll need to install [Maven 3](https://maven.apache.org/install.html).
+
+    ```cd $BULLET_HOME && git clone git@github.com:yahoo/bullet-docs.git```
+
+    ```cd bullet-docs/examples/storm && mvn package```
+
+    You will find the ```bullet-storm-example-1.0-SNAPSHOT-jar-with-dependencies.jar``` in ```$BULLET_HOME/bullet-docs/examples/storm/target/```
 
 #### Step 6: Launch the topology
 
@@ -130,7 +137,7 @@ You should get a random record from Bullet.
 
 !!! note "What is this data?"
 
-    This data is produced by the [custom Storm spout](https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/java/com/yahoo/bullet/storm/examples/RandomSpout.java) you packaged in Step 5. See [below](#storm-topology) for details.
+    This data is randomly generated by the [custom Storm spout](https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/java/com/yahoo/bullet/storm/examples/RandomSpout.java) that is in the example topology you just launched. In practice, your spout would read from an actual data source such as Kafka instead. See [below](#storm-topology) for more details about this random data spout.
 
 ## Setting up the Bullet Web Service
 
@@ -156,7 +163,7 @@ cp $BULLET_EXAMPLES/web-service/example_* $BULLET_HOME/service/jetty-distributio
 cd $BULLET_HOME/service/jetty-distribution-9.3.16.v20170120
 java -jar -Dbullet.service.configuration.file="example_context.properties" -Djetty.http.port=9999 start.jar > logs/out 2>&1 &
 ```
-You can verify that it is up by running the Bullet query and getting the example_columns through the API:
+You can verify that it is up by running the Bullet query and getting the example columns through the API:
 
 ```bash
 curl -s -X POST -d '{}' http://localhost:9999/bullet-service/api/drpc
@@ -193,7 +200,7 @@ Visit [http://localhost:8800](http://localhost:8800) to query your topology with
 
 !!! note "Running it remotely?"
 
-    If you access the UI from another machine than where your UI is actually running, you will need to edit ```config/env-settings.json```. Since the UI is a client-side app, the machine that your browser is running on will fetch the UI and attempt to use these settings to talk to the Web Service. Since they point to localhost by default, your browser will attempt to connect there and fail. An easy fix is to change ```localhost``` in your env-settings.json to point to the hostname where you will hosting the UI. This will be same UI you use in the browser.
+    If you access the UI from another machine than where your UI is actually running, you will need to edit ```config/env-settings.json```. Since the UI is a client-side app, the machine that your browser is running on will fetch the UI and attempt to use these settings to talk to the Web Service. Since they point to localhost by default, your browser will attempt to connect there and fail. An easy fix is to change ```localhost``` in your env-settings.json to point to the host name where you will hosting the UI. This will be the same as the UI host you use in the browser.
 
 
 ## Teardown
@@ -215,7 +222,7 @@ This section will cover the various custom pieces this example plugged into Bull
 
 ### Storm topology
 
-The topology was the Bullet topology plugged in with a custom spout. This spout is implemented in this [example project](https://github.com/yahoo/bullet-docs/blob/master/examples/storm/) you built from source. This spout produces a maximum number of records in a given period. Both these arguments are configurable. If you examine $BULLET_HOME/backend/storm/launch.sh, you'll see the following:
+The topology was the Bullet topology plugged in with a custom spout. This spout is implemented in this [example project](https://github.com/yahoo/bullet-docs/blob/master/examples/storm/) was already built for you when you [downloaded the examples](#step-1-setup-directories-and-examples). This spout produces a maximum number of records in a given period. Both these arguments are configurable. If you examine $BULLET_HOME/backend/storm/launch.sh, you'll see the following:
 
 ```bash
 storm jar bullet-storm-example-1.0-SNAPSHOT-jar-with-dependencies.jar \
@@ -229,13 +236,13 @@ storm jar bullet-storm-example-1.0-SNAPSHOT-jar-with-dependencies.jar \
           ...
 ```
 
-This command launches the jar (an uber or "fat" jar) containing the custom spout code and all dependencies you built in Step 5. We pass the name of your spout class with ```--bullet-spout com.yahoo.bullet.storm.examples.RandomSpout``` to the Bullet main class ```com.yahoo.bullet.Topology``` with two arguments ```--bullet-spout-arg 20``` and ```--bullet-spout-arg 101```. The first argument tells the Spout to generate at most 20 tuples in a period and the second argument says a period is 101 ms long.
+This command launches the jar (an uber or "fat" jar) containing the custom spout code and all dependencies you copied in Step 5. We pass the name of your spout class with ```--bullet-spout com.yahoo.bullet.storm.examples.RandomSpout``` to the Bullet main class ```com.yahoo.bullet.Topology``` with two arguments ```--bullet-spout-arg 20``` and ```--bullet-spout-arg 101```. The first argument tells the Spout to generate at most 20 tuples (records) in a period and the second argument says a period is 101 ms long.
 
-The settings defined by ```--bullet-conf bullet_settings.yaml``` and the arguments here run all components in the topology with a parallelism of 1. So there will be one spout that is producing ~200 tuples per second.
+The settings defined by ```--bullet-conf bullet_settings.yaml``` and the arguments here run all components in the topology with a parallelism of 1. So there will be one spout that is producing ~200 rps.
 
 !!! note "I thought you said hundreds of thousands of records..."
 
-    200 tuples/s is not Big Data by any stretch of the imagination but this Quick Start is running everything on one machine and is meant to introduce you to what Bullet does. In practice, you would scale and run your components to accommodate for your data volume and querying needs.
+    200 records is not Big Data by any stretch of the imagination but this Quick Start is running everything on one machine and is meant to introduce you to what Bullet does. In practice, you would scale and run your components with CPU and memory configurations to accommodate for your data volume and querying needs.
 
 
 Let's look at the [custom spout code](https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/java/com/yahoo/bullet/storm/examples/RandomSpout.java) that generates the data.
@@ -305,7 +312,9 @@ This method above emits the tuples. The Storm framework calls this method. This 
     }
 ```
 
-This method generates some fields randomly and inserts them into a BulletRecord. Note that the BulletRecord is typed and all data must be inserted with the proper types. If you put Bullet on your data, you will need to write a Spout (or a topology if your reading is complex), that reads from your data source and emits BulletRecords with the fields you wish to be queryable placed into a BulletRecord.
+This method generates some fields randomly and inserts them into a BulletRecord. Note that the BulletRecord is typed and all data must be inserted with the proper types.
+
+If you put Bullet on your data, you will need to write a Spout (or a topology if your reading is complex), that reads from your data source and emits BulletRecords with the fields you wish to be query-able placed into a BulletRecord similar to this example.
 
 ### Web Service
 
@@ -353,7 +362,7 @@ columns.file=example_columns.json
 columns.schema.version=1.0
 ```
 
-```drpc.servers``` is a CSV entry that contains the various DRPC servers in your Storm cluster. If you visit the Storm UI and search in the ```Nimbus Configuration``` section, you can find the list of DRPC servers for your cluster. Similarly, ```drpc.port``` in the properties file is ```drpc.http.port``` in ```Nimbus Configuration```. The ```drpc.path``` is the constant string ```drpc/``` followed by the value of the ```topology.function``` setting in bullet_settings.yaml.
+```drpc.servers``` is a CSV entry that contains the various DRPC servers in your Storm cluster. If you [visit the Storm UI](http://localhost:8080) and search in the ```Nimbus Configuration``` section, you can find the list of DRPC servers for your cluster. Similarly, ```drpc.port``` in the properties file is ```drpc.http.port``` in ```Nimbus Configuration```. The ```drpc.path``` is the constant string ```drpc/``` followed by the value of the ```topology.function``` setting in bullet_settings.yaml.
 
 
 ### UI
@@ -375,7 +384,7 @@ Finally, we configured the UI with the custom environment specific settings file
       }
     ],
     "bugLink": "https://github.com/yahoo/bullet-ui/issues",
-    "aggregateDataDefaultSize": 512,
+    "aggregateDataDefaultSize": 1024,
     "modelVersion": 1
   }
 }
@@ -383,3 +392,4 @@ Finally, we configured the UI with the custom environment specific settings file
 
 Since we served our schema through the same Web Service as our queries, both these point to our Web Service. Note that there is no ```schemaPath``` because it must be the constant string ```columns```. If you define a custom endpoint for your schema, you must ensure that it can be obtained by making a GET request to ```schemaHost/schemaNamespace/columns```.
 
+The [UI Usage](ui/usage.md) page shows you some queries you can run using one such instance of the UI.

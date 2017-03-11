@@ -21,6 +21,10 @@
   font-size: 100%;
 }
 
+video {
+  width: 100%;
+}
+
 @media (min-width: 1650px) {
   body > .container {
     width: 1400px;
