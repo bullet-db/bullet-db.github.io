@@ -1,6 +1,6 @@
 # Contributing
 
-We welcome all contributions! We also welcome all usage experiences, stories, annoyances and whatever else you want to say. Head on over to our [Contact](contact.md) and let us know!
+We welcome all contributions! We also welcome all usage experiences, stories, annoyances and whatever else you want to say. Head on over to our [Contact Us page](contact.md) and let us know!
 
 ## Contributor License Agreement (CLA)
 
@@ -8,7 +8,7 @@ Bullet is hosted under the [Yahoo Github Organization](https://github.com/yahoo)
 
 ## Future plans
 
-Here is a list of features we are currently considering/working on. If the Status column is empty, we are still discussing how to approach/break them. They will be updated as they are solidified. Feel free to [contact us](contact.md) with any ideas/suggestions/PRs! 
+Here is a list of features we are currently considering/working on. If the Status column is empty, we are still discussing how to prioritize/approach/break them down. They will be updated as they are solidified. Feel free to [contact us](contact.md) with any ideas/suggestions/PRs!
 
 This list is neither comprehensive nor in any particular order.
 

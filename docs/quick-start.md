@@ -16,7 +16,7 @@ By the following the steps in this section, you will:
 
 ## Setting up Storm
 
-To set up a clean working environment, let's start with setting some directories.
+To set up a clean working environment, let's start with creating some directories.
 
 #### Step 1: Setup directories and examples
 
@@ -84,7 +84,7 @@ storm kill topology
 
 !!! note "Local mode cleanup"
 
-    If you notice any problems while setting up storm or while relaunching a topology, it may be because some state is corrupted. When running Storm in this fashion, states and serializations are stored in ```storm-local```. You may want to ```rm -rf storm-local/*``` to remove everything in this directory before relaunching Storm components.
+    If you notice any problems while setting up storm or while relaunching a topology, it may be because some state is corrupted. When running Storm in this fashion, states and serializations are stored in ```storm-local``` and ```/tmp/```. You may want to ```rm -rf storm-local/* /tmp/dev-storm-zookeeper``` to clean up this state before relaunching Storm components. See the [tear down section](#teardown) on how to kill any running instances.
 
 ## Setting up the example Bullet topology
 
@@ -214,15 +214,15 @@ To cleanup all the components we bought up:
 | Web Service    | ```ps aux | grep [e]xample_context.properties | awk '{print $2}' | xargs kill```    |
 | Storm          | ```ps aux | grep [a]pache-storm-1.0.3 | awk '{print $2}' | xargs kill```            |
 
-You can also ```rm -rf $BULLET_HOME /tmp/dev-storm-zookeeper /tmp/jetty-*``` to clean up your file system too.
+You can also ```rm -rf $BULLET_HOME /tmp/dev-storm-zookeeper /tmp/jetty-*``` to delete *everything* that we did so far.
 
 ## What did we do?
 
-This section will cover the various custom pieces this example plugged into Bullet, so you can better understand what we did.
+This section will go over the various custom pieces this example plugged into Bullet, so you can better understand what we did.
 
 ### Storm topology
 
-The topology was the Bullet topology plugged in with a custom spout. This spout is implemented in this [example project](https://github.com/yahoo/bullet-docs/blob/master/examples/storm/) was already built for you when you [downloaded the examples](#step-1-setup-directories-and-examples). This spout produces a maximum number of records in a given period. Both these arguments are configurable. If you examine $BULLET_HOME/backend/storm/launch.sh, you'll see the following:
+The topology was the Bullet topology plugged in with a custom spout. This spout is implemented in this [example project](https://github.com/yahoo/bullet-docs/blob/master/examples/storm/) and was already built for you when you [downloaded the examples](#step-1-setup-directories-and-examples). It does not read from any data source and just produces random, structured data. It also produces only up to a maximum number of records in a given period. Both this maximum and the length of a period are configurable. If you examine $BULLET_HOME/backend/storm/launch.sh, you'll see the following:
 
 ```bash
 storm jar bullet-storm-example-1.0-SNAPSHOT-jar-with-dependencies.jar \

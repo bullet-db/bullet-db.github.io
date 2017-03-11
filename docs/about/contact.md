@@ -14,7 +14,7 @@ If you have any issues with any of the particular Bullet sub-components, feel fr
 
 ## Mailing Lists
 
-If you have a general question, reach out to us at the Users list and at Developers if you have a particular question for the developers.
+If you have a general question, comment, or observation meant for general visibility, reach out to the Users list. If you want to keep it to just the developers, reach to that list instead.
 
 |            | Mail                                                                  | Forum                                                                                            |
 | ---------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |

@@ -158,3 +158,9 @@ In this example, we group by ```tuple_number```. Recall that this is the number 
 !!! note "Why no Count Distinct after Grouping"
 
     At this time, we do not support counting distinct values per field because with the current implementation of Grouping, it would involve storing Data Sketches within Data Sketches. We are considering this in a future release however.
+
+!!! note "Aha, sorting by tuple_number didn't sort properly!"
+
+    Good job, eagle eyes! Unfortunately, whenever we group on fields, those fields become strings under the current implementation. Rather than convert them back at the end, we have currently decided to leave it as is. This means that in your results, if you try and sort by a grouped field, it will perform a lexicographical sort.
+
+    This also means that you can actually group by any field - including non primitives such as maps and lists! The field will be converted to a string and that string will be used as the field's representation for uniqueness and grouping purposes.
