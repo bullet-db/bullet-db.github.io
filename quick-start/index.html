@@ -385,7 +385,7 @@
 <li>You will need enough CPU and RAM on your machine to run about 8-10 JVMs. You will be setting up a Storm cluster with multiple components, a couple of Jetty instances and a Node server</li>
 </ul>
 <h2 id="setting-up-storm">Setting up Storm</h2>
-<p>To set up a clean working environment, let's start with setting some directories.</p>
+<p>To set up a clean working environment, let's start with creating some directories.</p>
 <h4 id="step-1-setup-directories-and-examples">Step 1: Setup directories and examples</h4>
 <pre><code class="bash">export BULLET_HOME=$(pwd)/bullet-quickstart
 mkdir -p $BULLET_HOME/backend/storm
@@ -435,7 +435,7 @@ storm supervisor &amp;
 
 <div class="admonition note">
 <p class="admonition-title">Local mode cleanup</p>
-<p>If you notice any problems while setting up storm or while relaunching a topology, it may be because some state is corrupted. When running Storm in this fashion, states and serializations are stored in <code>storm-local</code>. You may want to <code>rm -rf storm-local/*</code> to remove everything in this directory before relaunching Storm components.</p>
+<p>If you notice any problems while setting up storm or while relaunching a topology, it may be because some state is corrupted. When running Storm in this fashion, states and serializations are stored in <code>storm-local</code> and <code>/tmp/</code>. You may want to <code>rm -rf storm-local/* /tmp/dev-storm-zookeeper</code> to clean up this state before relaunching Storm components. See the <a href="#teardown">tear down section</a> on how to kill any running instances.</p>
 </div>
 <h2 id="setting-up-the-example-bullet-topology">Setting up the example Bullet topology</h2>
 <p>Now that Storm is up and running, we can put Bullet on it. We will use an example Spout that runs on Bullet 0.3.0 on our Storm cluster. The source is available <a href="https://github.com/yahoo/bullet-docs/blob/master/examples/storm">here</a>. This was part of the artifact that you installed in Step 1.</p>
@@ -548,11 +548,11 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
 </tr>
 </tbody>
 </table>
-<p>You can also <code>rm -rf $BULLET_HOME /tmp/dev-storm-zookeeper /tmp/jetty-*</code> to clean up your file system too.</p>
+<p>You can also <code>rm -rf $BULLET_HOME /tmp/dev-storm-zookeeper /tmp/jetty-*</code> to delete <em>everything</em> that we did so far.</p>
 <h2 id="what-did-we-do">What did we do?</h2>
-<p>This section will cover the various custom pieces this example plugged into Bullet, so you can better understand what we did.</p>
+<p>This section will go over the various custom pieces this example plugged into Bullet, so you can better understand what we did.</p>
 <h3 id="storm-topology">Storm topology</h3>
-<p>The topology was the Bullet topology plugged in with a custom spout. This spout is implemented in this <a href="https://github.com/yahoo/bullet-docs/blob/master/examples/storm/">example project</a> was already built for you when you <a href="#step-1-setup-directories-and-examples">downloaded the examples</a>. This spout produces a maximum number of records in a given period. Both these arguments are configurable. If you examine $BULLET_HOME/backend/storm/launch.sh, you'll see the following:</p>
+<p>The topology was the Bullet topology plugged in with a custom spout. This spout is implemented in this <a href="https://github.com/yahoo/bullet-docs/blob/master/examples/storm/">example project</a> and was already built for you when you <a href="#step-1-setup-directories-and-examples">downloaded the examples</a>. It does not read from any data source and just produces random, structured data. It also produces only up to a maximum number of records in a given period. Both this maximum and the length of a period are configurable. If you examine $BULLET_HOME/backend/storm/launch.sh, you'll see the following:</p>
 <pre><code class="bash">storm jar bullet-storm-example-1.0-SNAPSHOT-jar-with-dependencies.jar \
           com.yahoo.bullet.Topology \
           --bullet-conf bullet_settings.yaml \
