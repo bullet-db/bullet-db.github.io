@@ -90,13 +90,17 @@ You can also optionally rename the result.
 **Example: Counting unique UUIDs for 20s**
 
 <video controls autoplay loop>
-  <source src="../../video/exact-count-distinct.mp4" type="video/mp4">
+  <source src="../../video/exact-count-distinct-2.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
-!!! note "Shouldn't the count be slightly less in the last example?"
+!!! note "Shouldn't the count be slightly more in the last example?"
 
-    The result is ```4040``` in the example is because of [the tick-based design](../backend/storm-architecture.md#topology). Everything in the Storm topology with respect to queries happens with ticks and since our tick granularity is set to 1s, that is our lowest visibility. Depending on when that last tick happened, the result could be off by as much as 1s worth of data. For this example, we should have had ```20000 ms / 101 ms``` or ```198``` periods or ```198 periods * 20 tuples/period``` or ```3960``` tuples.  But since we can be off by 1s and we can produce ```20 * 1000/101``` or ```80``` tuples in that time, the result is ```4040```. You can always account for this by running your query with a duration that is 1 s shorter than what you desired.
+    **Short answer:** Yes and it's because of the synthetic nature of the data generation.
+
+    **Long answer:** We should have had ```20000 ms / 101 ms``` or ```198``` periods or ```198 periods * 20 tuples/period``` or ```3960``` tuples with unique values for the```uuid``` field. The example spout generates data in bursts of 20 at the start of every period (101 ms). However, the delay isn't exactly 101 ms between periods; it's a bit more depending on when Storm decided to run the emission code. As a result, every period will slowly add a delay of a few ms. Eventually, this can lead us to missing an entire period. This increases the longer the query runs. Even a delay of 1 ms every period (a very likely scenario) can add up to 101 ms or 1 period in as short a time as a 101 periods or ```101 periods * 101 ms/period``` or ```~10 s```. A good rule of thumb is that for every 10 s your query runs, you are missing 20 tuples. You might also miss another 20 tuples at the beginning or the end of the window since the spout is bursty.
+
+    In most real streaming scenarios, data should be constantly flowing and there shouldn't delays building like this. Even so, for a distributed, streaming system like Bullet, you should always remember that data can be missed at either end of your query window due to inherent skews and timing issues.
 
 !!! note "Why did the Maximum Records input disappear?"
 
@@ -104,18 +108,18 @@ You can also optionally rename the result.
 
 ### Approximate
 
-When the result is approximate, it is shown as a decimal value. The Result Metadata section will reflect that the result was estimated and provide you standard deviations for the true value. The errors are derived from [DataSketches here](https://datasketches.github.io/docs/Theta/ThetaErrorTable.html). Note the line for ```16384```, which was what we configured for the maximum unique values for the Count Distinct operation. That means if we want 99.73% confidence for the result, the ```3``` standard deviation entry says that the true count could vary from ```38603``` to ```40017```. The backend should have produced ```20 * 200000/101``` or ```39603``` tuples with unique uuids. The result from Bullet was ```39304```, which is pretty close.
+When the result is approximate, it is shown as a decimal value. The Result Metadata section will reflect that the result was estimated and provide you standard deviations for the true value. The errors are derived from [DataSketches here](https://datasketches.github.io/docs/Theta/ThetaErrorTable.html). Note the line for ```16384```, which was what we configured for the maximum unique values for the Count Distinct operation. In the example below, this means if we want 99.73% confidence for the result, the ```3``` standard deviation entry says that the true count could vary from ```38194``` to ```39590```.
 
 **Example: Counting unique UUIDs for 200s**
 
 <video controls autoplay loop>
-  <source src="../../video/approx-count-distinct.mp4" type="video/mp4">
+  <source src="../../video/approx-count-distinct-2.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
-!!! note "What about the tick granularity here?"
+!!! note "So why is the approximate count what it is?"
 
-    The 1s tick granularity still only affects the data by 80, so it can be largely ignored here.
+    The backend should have produced ```20 * 200000/101``` or ```39603``` tuples with unique uuids. Due to the synthetic nature of the data generation and the building delays mentioned above, we estimated that we should subtract about 20 tuples for every 10 s the query runs. Since this query ran for ```200 s```, this makes the actual uuids generated to be at best ```39603 - (200/10) * 20``` or ```39203```. The result from Bullet was ```38886```, which is an error of ```~0.8 %```. The real error is probably about a *third* of that because we assumed the delay between periods to be 1 ms. It is more on the order of 2 or 3 ms, which makes the number of uuids actually generated even less.
 
 ##  Group all
 
@@ -126,7 +130,7 @@ When choosing the Grouped Data option, you can choose to add fields to group by.
 The metrics you apply on fields are all numeric presently. If you apply a metric on a non-numeric field, Bullet will try to **type-cast** your field into number and if it's not possible, the result will be ```null```. The result will also be ```null``` if the field was not present or no data matched your filters.
 
 <video controls autoplay loop>
-  <source src="../../video/group-all-error-duplicating.mp4" type="video/mp4">
+  <source src="../../video/group-all-error-duplicating-2.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
@@ -144,23 +148,23 @@ You can also choose Group fields and perform metrics per group. If you do not ad
 
 **Example: Grouping by tuple_number**
 
-In this example, we group by ```tuple_number```. Recall that this is the number assigned to a tuple within a period. They range from 0 to 19. If we group by this, we expect to have 20 unique groups. In 20s, we have ```20000/101``` or ```198``` periods. Each period has one of each ```tuple_number```. With the 1s tick granulaity, we expect ```199``` as the count for each group, which is what is seen in the results. Note that the average is also roughly ```0.50``` since the ```probability``` field is a uniformly distributed value between 0 and 1.
+In this example, we group by ```tuple_number```. Recall that this is the number assigned to a tuple within a period. They range from 0 to 19. If we group by this, we expect to have 20 unique groups. In 5s, we have ```5000/101``` or ```49``` periods. Each period has one of each ```tuple_number```. We expect ```49``` as the count for each group, and this what we see. The building delays mentioned [in the note above](#exact) has not really started affecting the data yet. Note that the average is also roughly ```0.50``` since the ```probability``` field is a uniformly distributed value between 0 and 1.
 
 <video controls autoplay loop>
-  <source src="../../video/group-by-with-cancel.mp4" type="video/mp4">
+  <source src="../../video/group-by-with-cancel-2.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
 !!! note "What happens if I group by uuid?"
 
-    Try it out! If the number of unique group values exceeds the [maximum configured](../quick-start.md#setting-up-the-example-bullet-topology) (we used 1024 for this example), you will receive a *uniform sample* across your unique group values. The results for your metrics however, are **not sampled**. It is the groups that are sampled on. This means that is **no** guarantee of order if you were expecting the *most popular* groups or something. We are working on adding a ```TOP K``` query that can support these kinds of use-cases.
+    Try it out! Nothing bad should happen. If the number of unique group values exceeds the [maximum configured](../quick-start.md#setting-up-the-example-bullet-topology) (we used 1024 for this example), you will receive a *uniform sample* across your unique group values. The results for your metrics however, are **not sampled**. It is the groups that are sampled on. This means that is **no** guarantee of order if you were expecting the *most popular* groups or similar. We are working on adding a ```TOP K``` query that can support these kinds of use-cases.
 
 !!! note "Why no Count Distinct after Grouping"
 
-    At this time, we do not support counting distinct values per field because with the current implementation of Grouping, it would involve storing Data Sketches within Data Sketches. We are considering this in a future release however.
+    At this time, we do not support counting distinct values per field because with the current implementation of Grouping, it would involve storing DataSketches within DataSketches. We are considering this in a future release however.
 
 !!! note "Aha, sorting by tuple_number didn't sort properly!"
 
-    Good job, eagle eyes! Unfortunately, whenever we group on fields, those fields become strings under the current implementation. Rather than convert them back at the end, we have currently decided to leave it as is. This means that in your results, if you try and sort by a grouped field, it will perform a lexicographical sort.
+    Good job, eagle eyes! Unfortunately, whenever we group on fields, those fields become strings under the current implementation. Rather than convert them back at the end, we have currently decided to leave it as is. This means that in your results, if you try and sort by a grouped field, it will perform a lexicographical sort even if it was originally a number.
 
-    This also means that you can actually group by any field - including non primitives such as maps and lists! The field will be converted to a string and that string will be used as the field's representation for uniqueness and grouping purposes.
+    However, this also means that you can actually group by any field - including non primitives such as maps and lists! The field will be converted to a string and that string will be used as the field's representation for uniqueness and grouping purposes.

@@ -4,7 +4,7 @@ This section gets you running a mock instance of Bullet to play around with. The
 
 By the following the steps in this section, you will:
 
-  * Setup the Bullet topology using a custom spout on [bullet-storm-0.3.0](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.3.0)
+  * Setup the Bullet topology using a custom spout on [bullet-storm-0.3.1](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.3.1)
   * Setup the [Web Service](ws/setup.md) talking to the topology and serving a schema for your UI using [bullet-service-0.0.1](https://github.com/yahoo/bullet-service/releases/tag/bullet-service-0.0.1)
   * Setup the [UI](ui/setup.md) talking to the Web Service using [bullet-ui-0.1.0](https://github.com/yahoo/bullet-ui/releases/tag/v0.1.0)
 
@@ -26,7 +26,7 @@ mkdir -p $BULLET_HOME/backend/storm
 mkdir -p $BULLET_HOME/service
 mkdir -p $BULLET_HOME/ui
 cd $BULLET_HOME
-curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.1.0/examples_artifacts.tar.gz
+curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.1.1/examples_artifacts.tar.gz
 tar -xzf examples_artifacts.tar.gz
 export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 ```
@@ -88,7 +88,7 @@ storm kill topology
 
 ## Setting up the example Bullet topology
 
-Now that Storm is up and running, we can put Bullet on it. We will use an example Spout that runs on Bullet 0.3.0 on our Storm cluster. The source is available [here](https://github.com/yahoo/bullet-docs/blob/master/examples/storm). This was part of the artifact that you installed in Step 1.
+Now that Storm is up and running, we can put Bullet on it. We will use an example Spout that runs on Bullet 0.3.1 on our Storm cluster. The source is available [here](https://github.com/yahoo/bullet-docs/blob/master/examples/storm). This was part of the artifact that you installed in Step 1.
 
 #### Step 5: Setup the Storm example
 

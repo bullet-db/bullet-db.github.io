@@ -26,6 +26,7 @@ certain CPU and memory related settings specific to RAS in its configuration. Th
 
 |    Date      |                               Storm 1.0                                            |                                      Storm 0.10                                         | Highlights |
 | ------------ | ---------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ---------- |
+| 2017-03-13   | [**0.3.1**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.3.1) | [**0.3.1**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.3.1) | Extra records accepted after query expiry bug fix |
 | 2017-02-27   | [**0.3.0**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.3.0) | [**0.3.0**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.3.0) | Metrics interface, config namespace, NPE bug fix |
 | 2017-02-15   | [**0.2.1**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.2.1) | [**0.2.1**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.2.1) | Acking support, Max size and other bug fixes |
 | 2017-01-26   | [**0.2.0**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.2.0) | [**0.2.0**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.2.0) | GROUP (DISTINCT, SUM, COUNT, MIN, MAX, AVG) |
