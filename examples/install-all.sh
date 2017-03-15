@@ -19,14 +19,7 @@ println() {
     printf "${FORMAT}\n" $*
 }
 
-export_vars() {
-    local PWD="$(pwd)"
-
-    println "Exporting some variables..."
-    export BULLET_HOME="${PWD}/bullet-quickstart"
-    export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
-    println "Done!"
-
+print_versions() {
     println "Using the following artifacts..."
     println "Bullet Examples:    ${BULLET_EXAMPLES_VERSION}"
     println "Bullet Web Service: ${BULLET_WS_VERSION}"
@@ -35,6 +28,15 @@ export_vars() {
     println "Storm:              ${STORM_VERSION}"
     println "NVM:                ${NVM_VERSION}"
     println "Node.js:            ${NODE_VERSION}"
+    println "Done!"
+}
+
+export_vars() {
+    local PWD="$(pwd)"
+
+    println "Exporting some variables..."
+    export BULLET_HOME="${PWD}/bullet-quickstart"
+    export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
     println "Done!"
 }
 
@@ -187,8 +189,6 @@ launch_bullet_ui() {
 cleanup() {
     set +eo pipefail
 
-    storm kill bullet && sleep 30
-
     ps aux | grep "[e]xpress-server.js" | awk '{print $2}' | xargs kill
 
     ps aux | grep "[e]xample_context.properties" | awk '{print $2}' | xargs kill
@@ -201,13 +201,13 @@ cleanup() {
 }
 
 teardown() {
-    println "Killing all Bullet components. This may take a while if the topology is up..."
+    println "Killing all Bullet components..."
     cleanup &> /dev/null
     println "Done!"
 }
 
 unset_all() {
-    unset -f println export_vars setup install_bullet_examples \
+    unset -f print_versions println export_vars setup install_bullet_examples \
              install_storm launch_storm launch_bullet_storm \
              install_jetty launch_bullet_web_service \
              install_node launch_bullet_ui \
@@ -215,6 +215,7 @@ unset_all() {
 }
 
 launch() {
+    print_versions
     export_vars
 
     teardown
@@ -236,5 +237,14 @@ launch() {
     unset_all
 }
 
-launch
+clean() {
+    export_vars
+    teardown
+    unset_all
+}
 
+if [ $# -eq 0]; then
+    launch
+else
+    clean
+fi

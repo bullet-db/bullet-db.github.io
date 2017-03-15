@@ -19,6 +19,7 @@ By the following the steps in this section, you will:
 Don't want to follow all these Steps? Make sure you have your prerequisites installed and you can just run:
 
 ```bash
+export BULLET_HOME=$(pwd)/bullet-quickstart
 curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.1.2/examples/install-all.sh | bash
 ```
 
@@ -224,12 +225,15 @@ To cleanup all the components we bought up:
 
 |                |                                                                                     |
 | -------------- | ----------------------------------------------------------------------------------- |
-| Storm Topology | ```storm kill bullet```                                                             |
 | UI             | ```ps aux | grep [e]xpress-server.js | awk '{print $2}' | xargs kill```             |
 | Web Service    | ```ps aux | grep [e]xample_context.properties | awk '{print $2}' | xargs kill```    |
 | Storm          | ```ps aux | grep [a]pache-storm-1.0.3 | awk '{print $2}' | xargs kill```            |
+| File System    | ```rm -rf $BULLET_HOME /tmp/dev-storm-zookeeper /tmp/jetty-*```                     |
 
-You can also ```rm -rf $BULLET_HOME /tmp/dev-storm-zookeeper /tmp/jetty-*``` to delete *everything* that we did so far.
+If you were following the [Quicker Start](#quicker-start) script, you can also do
+```bash
+curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.1.2/examples/install-all.sh | bash
+```
 
 ## What did we do?
 
