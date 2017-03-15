@@ -8,6 +8,7 @@ build:
 	mkdir -p bullet-examples/storm
 	mkdir -p bullet-examples/web-service
 	mkdir -p bullet-examples/ui
+	cp install-all.sh bullet-examples/
 	cd storm && mvn package
 	cp storm/target/*jar-with-dependencies.jar bullet-examples/storm
 	cp storm/bin/launch.sh bullet-examples/storm
