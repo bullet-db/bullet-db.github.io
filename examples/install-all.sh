@@ -201,7 +201,7 @@ cleanup() {
 }
 
 teardown() {
-    println "Killing all Bullet components..."
+    println "Killing and cleaning up all Bullet components..."
     cleanup &> /dev/null
     println "Done!"
 }
@@ -243,7 +243,7 @@ clean() {
     unset_all
 }
 
-if [ $# -eq 0]; then
+if [ $# -eq 0 ]; then
     launch
 else
     clean

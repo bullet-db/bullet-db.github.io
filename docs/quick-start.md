@@ -230,9 +230,9 @@ To cleanup all the components we bought up:
 | Storm          | ```ps aux | grep [a]pache-storm-1.0.3 | awk '{print $2}' | xargs kill```            |
 | File System    | ```rm -rf $BULLET_HOME /tmp/dev-storm-zookeeper /tmp/jetty-*```                     |
 
-If you were following the [Quicker Start](#quicker-start) script, you can also do
+You can also do:
 ```bash
-curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.1.2/examples/install-all.sh | bash
+curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.1.2/examples/install-all.sh | bash -s cleanup
 ```
 
 ## What did we do?
