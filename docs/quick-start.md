@@ -14,7 +14,22 @@ By the following the steps in this section, you will:
   * You will need [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html) installed.
   * You will need enough CPU and RAM on your machine to run about 8-10 JVMs. You will be setting up a Storm cluster with multiple components, a couple of Jetty instances and a Node server
 
+## Quicker Start
+
+Don't want to follow all these Steps? Make sure you have your prerequisites installed and you can just run:
+
+```bash
+curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.1.2/examples/install-all.sh | bash
+```
+
+This will run all the Steps for you. Once everything has launched, you should be able to go to the Bullet UI running locally at [http://localhost:8800](http://localhost:8800). You can then continue this guide from [here](#what-did-we-do).
+
+If you want to manually run all the commands  or if something failed above (might want to perform the [teardown](#teardown) first), you can continue below.
+
+---
+
 ## Setting up Storm
+
 
 To set up a clean working environment, let's start with creating some directories.
 
