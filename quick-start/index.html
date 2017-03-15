@@ -249,6 +249,11 @@
             <ul class="nav">
                 
                     <li class="second-level">
+                        <a href="#quicker-start">Quicker Start</a>
+                        
+                    </li>
+            
+                    <li class="second-level">
                         <a href="#setting-up-storm">Setting up Storm</a>
                         <ul class="nav">
                         
@@ -384,6 +389,14 @@
 <li>You will need <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">JDK 8</a> installed.</li>
 <li>You will need enough CPU and RAM on your machine to run about 8-10 JVMs. You will be setting up a Storm cluster with multiple components, a couple of Jetty instances and a Node server</li>
 </ul>
+<h2 id="quicker-start">Quicker Start</h2>
+<p>Don't want to follow all these Steps? Make sure you have your prerequisites installed and you can just run:</p>
+<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.1.2/examples/install-all.sh | bash
+</code></pre>
+
+<p>This will run all the Steps for you. Once everything has launched, you should be able to go to the Bullet UI running locally at <a href="http://localhost:8800">http://localhost:8800</a>. You can then continue this guide from <a href="#what-did-we-do">here</a>.</p>
+<p>If you want to manually run all the commands  or if something failed above (might want to perform the <a href="#teardown">teardown</a> first), you can continue below.</p>
+<hr />
 <h2 id="setting-up-storm">Setting up Storm</h2>
 <p>To set up a clean working environment, let's start with creating some directories.</p>
 <h4 id="step-1-setup-directories-and-examples">Step 1: Setup directories and examples</h4>
