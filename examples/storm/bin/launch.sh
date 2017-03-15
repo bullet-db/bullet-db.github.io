@@ -1,9 +1,5 @@
 #! /bin/bash
 
-storm kill bullet
-
-sleep 20
-
 # We pass 20 and 100 to the RandomSpout, which means it generates up to 20 random records every 100 ms.
 storm jar bullet-storm-example-1.0-SNAPSHOT-jar-with-dependencies.jar \
           com.yahoo.bullet.Topology \

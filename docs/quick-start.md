@@ -20,7 +20,7 @@ Don't want to follow all these Steps? Make sure you have your prerequisites inst
 
 ```bash
 export BULLET_HOME=$(pwd)/bullet-quickstart
-curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.1.2/examples/install-all.sh | bash
+curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.1.3/examples/install-all.sh | bash
 ```
 
 This will run all the Steps for you. Once everything has launched, you should be able to go to the Bullet UI running locally at [http://localhost:8800](http://localhost:8800). You can then continue this guide from [here](#what-did-we-do).
@@ -42,7 +42,7 @@ mkdir -p $BULLET_HOME/backend/storm
 mkdir -p $BULLET_HOME/service
 mkdir -p $BULLET_HOME/ui
 cd $BULLET_HOME
-curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.1.2/examples_artifacts.tar.gz
+curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.1.3/examples_artifacts.tar.gz
 tar -xzf examples_artifacts.tar.gz
 export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 ```
@@ -141,7 +141,7 @@ cp $BULLET_EXAMPLES/storm/* $BULLET_HOME/backend/storm
 ```bash
 cd $BULLET_HOME/backend/storm && ./launch.sh
 ```
-This script also kills any existing Bullet instances running (you may see an ignorable exception if there is nothing running). There can only be one topology in the cluster with a particular name. Visit the UI and see if the topology is up. You should see the ```DataSource``` spout begin emitting records.
+Visit the UI and see if the topology is up. You should see the ```DataSource``` spout begin emitting records.
 
 Test the Bullet topology by:
 
@@ -232,7 +232,7 @@ To cleanup all the components we bought up:
 
 You can also do:
 ```bash
-curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.1.2/examples/install-all.sh | bash -s cleanup
+curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.1.3/examples/install-all.sh | bash -s cleanup
 ```
 
 ## What did we do?
