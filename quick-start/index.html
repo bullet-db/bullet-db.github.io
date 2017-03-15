@@ -392,7 +392,7 @@
 <h2 id="quicker-start">Quicker Start</h2>
 <p>Don't want to follow all these Steps? Make sure you have your prerequisites installed and you can just run:</p>
 <pre><code class="bash">export BULLET_HOME=$(pwd)/bullet-quickstart
-curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.1.2/examples/install-all.sh | bash
+curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.1.3/examples/install-all.sh | bash
 </code></pre>
 
 <p>This will run all the Steps for you. Once everything has launched, you should be able to go to the Bullet UI running locally at <a href="http://localhost:8800">http://localhost:8800</a>. You can then continue this guide from <a href="#what-did-we-do">here</a>.</p>
@@ -406,7 +406,7 @@ mkdir -p $BULLET_HOME/backend/storm
 mkdir -p $BULLET_HOME/service
 mkdir -p $BULLET_HOME/ui
 cd $BULLET_HOME
-curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.1.2/examples_artifacts.tar.gz
+curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.1.3/examples_artifacts.tar.gz
 tar -xzf examples_artifacts.tar.gz
 export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 </code></pre>
@@ -477,7 +477,7 @@ storm supervisor &amp;
 <pre><code class="bash">cd $BULLET_HOME/backend/storm &amp;&amp; ./launch.sh
 </code></pre>
 
-<p>This script also kills any existing Bullet instances running (you may see an ignorable exception if there is nothing running). There can only be one topology in the cluster with a particular name. Visit the UI and see if the topology is up. You should see the <code>DataSource</code> spout begin emitting records.</p>
+<p>Visit the UI and see if the topology is up. You should see the <code>DataSource</code> spout begin emitting records.</p>
 <p>Test the Bullet topology by:</p>
 <pre><code class="bash">curl -s -X POST -d '{}' http://localhost:3774/drpc/bullet
 </code></pre>
@@ -563,7 +563,7 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
 </tbody>
 </table>
 <p>You can also do:</p>
-<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.1.2/examples/install-all.sh | bash -s cleanup
+<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.1.3/examples/install-all.sh | bash -s cleanup
 </code></pre>
 
 <h2 id="what-did-we-do">What did we do?</h2>
