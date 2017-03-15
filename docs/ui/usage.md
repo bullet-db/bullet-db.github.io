@@ -1,7 +1,6 @@
 # Navigating the UI
 
-The UI should (hopefully) be self-explanatory. Any particular section that requires additional information has the ![info](../img/info.png) icon next to it. Clicking this will display information relevant to that section. The interactions in this page are running on the topology that was set up in the [Quick Start](../quick-start.md). Recall that the example backend is configured to produce *20 data records every 101 ms.*
-
+The UI should (hopefully) be self-explanatory. Any particular section that requires additional information has the ![info](../img/info.png) icon next to it. Clicking this will display information relevant to that section. The interactions in this page are running on the topology that was set up in the [Quick Start](../quick-start.md). Recall that the example backend is configured to produce *20 data records every 101 ms.*.
 
 ## Landing page
 
