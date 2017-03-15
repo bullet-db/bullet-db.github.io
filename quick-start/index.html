@@ -391,7 +391,8 @@
 </ul>
 <h2 id="quicker-start">Quicker Start</h2>
 <p>Don't want to follow all these Steps? Make sure you have your prerequisites installed and you can just run:</p>
-<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.1.2/examples/install-all.sh | bash
+<pre><code class="bash">export BULLET_HOME=$(pwd)/bullet-quickstart
+curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.1.2/examples/install-all.sh | bash
 </code></pre>
 
 <p>This will run all the Steps for you. Once everything has launched, you should be able to go to the Bullet UI running locally at <a href="http://localhost:8800">http://localhost:8800</a>. You can then continue this guide from <a href="#what-did-we-do">here</a>.</p>
@@ -405,7 +406,7 @@ mkdir -p $BULLET_HOME/backend/storm
 mkdir -p $BULLET_HOME/service
 mkdir -p $BULLET_HOME/ui
 cd $BULLET_HOME
-curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.1.1/examples_artifacts.tar.gz
+curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.1.2/examples_artifacts.tar.gz
 tar -xzf examples_artifacts.tar.gz
 export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 </code></pre>
@@ -544,10 +545,6 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
 </thead>
 <tbody>
 <tr>
-<td>Storm Topology</td>
-<td><code>storm kill bullet</code></td>
-</tr>
-<tr>
 <td>UI</td>
 <td><code>ps aux | grep [e]xpress-server.js | awk '{print $2}' | xargs kill</code></td>
 </tr>
@@ -559,9 +556,16 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
 <td>Storm</td>
 <td><code>ps aux | grep [a]pache-storm-1.0.3 | awk '{print $2}' | xargs kill</code></td>
 </tr>
+<tr>
+<td>File System</td>
+<td><code>rm -rf $BULLET_HOME /tmp/dev-storm-zookeeper /tmp/jetty-*</code></td>
+</tr>
 </tbody>
 </table>
-<p>You can also <code>rm -rf $BULLET_HOME /tmp/dev-storm-zookeeper /tmp/jetty-*</code> to delete <em>everything</em> that we did so far.</p>
+<p>If you were following the <a href="#quicker-start">Quicker Start</a> script, you can also do</p>
+<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.1.2/examples/install-all.sh | bash
+</code></pre>
+
 <h2 id="what-did-we-do">What did we do?</h2>
 <p>This section will go over the various custom pieces this example plugged into Bullet, so you can better understand what we did.</p>
 <h3 id="storm-topology">Storm topology</h3>
