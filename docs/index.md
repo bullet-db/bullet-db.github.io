@@ -97,10 +97,10 @@ Currently we support ```GROUP``` aggregations on the following operations:
 | Operation      | Meaning |
 | -------------- | ------- |
 | COUNT          | Computes the number of the elements in the group |
-| SUM            | Computes the sum of the elements in the group |
-| MIN            | Returns the minimum of the elements in the group |
-| MAX            | Returns the maximum of the elements in the group |
-| AVG            | Computes the average of the elements in the group |
+| SUM            | Computes the sum of the non-null values in the provided field for all elements in the group |
+| MIN            | Returns the minimum of the non-null values in the provided field for all the elements in the group |
+| MAX            | Returns the maximum of the non-null values in the provided field for all the elements in the group |
+| AVG            | Computes the average of the non-null values in the provided field for all the elements in the group |
 
 # Results
 

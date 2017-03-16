@@ -2,8 +2,7 @@
 
 set -euo pipefail
 
-
-BULLET_EXAMPLES_VERSION=0.1.3
+BULLET_EXAMPLES_VERSION=0.1.4
 BULLET_UI_VERSION=0.1.0
 BULLET_WS_VERSION=0.0.1
 JETTY_VERSION=9.3.16.v20170120
@@ -15,7 +14,7 @@ println() {
     local DATE="$(date)"
     local FORMAT=$1
     shift
-    printf "\n${DATE} [BULLET-QUICKSTART]: "
+    printf "${DATE} [BULLET-QUICKSTART]: "
     printf "${FORMAT}\n" $*
 }
 
@@ -51,7 +50,7 @@ setup() {
 install_bullet_examples() {
     cd "${BULLET_HOME}"
     println "Downloading Bullet Examples ${BULLET_EXAMPLES_VERSION}..."
-    curl -#LO "https://github.com/yahoo/bullet-docs/releases/download/v${BULLET_EXAMPLES_VERSION}/examples_artifacts.tar.gz"
+    curl --retry 2 -#LO "https://github.com/yahoo/bullet-docs/releases/download/v${BULLET_EXAMPLES_VERSION}/examples_artifacts.tar.gz"
     println "Installing Bullet Examples..."
     tar -xzf examples_artifacts.tar.gz
     println "Done!"
@@ -63,7 +62,7 @@ install_storm() {
     cd "${BULLET_HOME}/backend"
 
     println "Downloading Storm ${STORM_VERSION}..."
-    curl -#O "http://apache.org/dist/storm/${STORM}/${STORM}.zip"
+    curl --retry 2 -#O "http://apache.org/dist/storm/${STORM}/${STORM}.zip"
 
     println "Installing Storm ..."
     unzip -qq "${STORM}.zip"
@@ -94,9 +93,10 @@ launch_storm() {
     storm supervisor &
 
     println "Sleeping for 60 s to ensure all components are up..."
-    println "====================================================================================================="
+    println "=============================================================================="
     sleep 60
-    println "====================================================================================================="
+    println "=============================================================================="
+    println ""
     println "Done!"
 }
 
@@ -110,6 +110,8 @@ launch_bullet_storm() {
     println "Sleeping for 30 s to ensure all Bullet Storm components are up..."
     sleep 30
 
+    println "Testing the Storm topology"
+    println ""
     println "Getting one random record from the Bullet topology..."
     curl -s -X POST -d '{}' http://localhost:3774/drpc/bullet
     println "Done!"
@@ -119,7 +121,7 @@ install_jetty() {
     cd "${BULLET_HOME}/service"
 
     println "Downloading Jetty ${JETTY_VERSION}..."
-    curl -#O "http://central.maven.org/maven2/org/eclipse/jetty/jetty-distribution/${JETTY_VERSION}/jetty-distribution-${JETTY_VERSION}.zip"
+    curl --retry 2 -#O "http://central.maven.org/maven2/org/eclipse/jetty/jetty-distribution/${JETTY_VERSION}/jetty-distribution-${JETTY_VERSION}.zip"
 
     println "Installing Jetty..."
     unzip -qq "jetty-distribution-${JETTY_VERSION}.zip"
@@ -130,7 +132,7 @@ launch_bullet_web_service() {
     cd "${BULLET_HOME}/service/jetty-distribution-${JETTY_VERSION}"
 
     println "Downloading Bullet Web Service ${BULLET_WS_VERSION}..."
-    curl -#Lo webapps/bullet-service.war \
+    curl --retry 2 -#Lo webapps/bullet-service.war \
              "http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/${BULLET_WS_VERSION}/bullet-service-${BULLET_WS_VERSION}.war"
 
     println "Configuring Bullet Web Service..."
@@ -143,22 +145,29 @@ launch_bullet_web_service() {
     println "Sleeping for 30 s to ensure Bullet Web Service is up..."
     sleep 30
 
+    println "Testing the Web Service"
+    println ""
     println "Getting one random record from Bullet through the Web Service..."
     curl -s -X POST -d '{}' http://localhost:9999/bullet-service/api/drpc
+    println ""
     println "Getting column schema from the Web Service..."
+    println ""
     curl -s http://localhost:9999/bullet-service/api/columns
     println "Finished Bullet Web Service test"
 }
 
 install_node() {
     println "Downloading and installing NVM ${NVM_VERSION}..."
-    curl -s "https://raw.githubusercontent.com/creationix/nvm/v${NVM_VERSION}/install.sh" | bash
-
-    source ~/.bashrc
-    println "Installing Node ${NODE_VERSION}..."
+    curl --retry 2 -s "https://raw.githubusercontent.com/creationix/nvm/v${NVM_VERSION}/install.sh" | bash
 
     # NVM unset var bug
     set +u
+    println "Loading nvm into current environment if installation successful..."
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+    println "Done!"
+
+    println "Installing Node ${NODE_VERSION}..."
     nvm install "v${NODE_VERSION}"
     nvm use "v${NODE_VERSION}"
     set -u
@@ -170,7 +179,7 @@ launch_bullet_ui() {
     cd "${BULLET_HOME}/ui"
 
     println "Downloading Bullet UI ${BULLET_UI_VERSION}..."
-    curl -#LO "https://github.com/yahoo/bullet-ui/releases/download/v${BULLET_UI_VERSION}/bullet-ui-v${BULLET_UI_VERSION}.tar.gz"
+    curl --retry 2 -#LO "https://github.com/yahoo/bullet-ui/releases/download/v${BULLET_UI_VERSION}/bullet-ui-v${BULLET_UI_VERSION}.tar.gz"
 
     println "Installing Bullet UI..."
     tar -xzf "bullet-ui-v${BULLET_UI_VERSION}.tar.gz"
@@ -189,11 +198,13 @@ launch_bullet_ui() {
 cleanup() {
     set +eo pipefail
 
+    ps aux | grep "[a]pache-storm-${STORM_VERSION}" | awk '{print $2}' | xargs kill
+
     ps aux | grep "[e]xpress-server.js" | awk '{print $2}' | xargs kill
 
     ps aux | grep "[e]xample_context.properties" | awk '{print $2}' | xargs kill
 
-    ps aux | grep "[a]pache-storm-${STORM_VERSION}" | awk '{print $2}' | xargs kill
+    sleep 3
 
     rm -rf "${BULLET_HOME}" /tmp/dev-storm-zookeeper /tmp/jetty-*
 
@@ -203,7 +214,7 @@ cleanup() {
 teardown() {
     println "Killing and cleaning up all Bullet components..."
     cleanup &> /dev/null
-    println "Done!"
+    println "Done! Not deleting $HOME/.nvm..."
 }
 
 unset_all() {

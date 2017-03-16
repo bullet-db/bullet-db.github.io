@@ -10,22 +10,21 @@ By the following the steps in this section, you will:
 
 **Prerequisites**
 
-  * You will need to be on an Unix-based system (Mac OS X, Ubuntu ...)
-  * You will need [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html) installed.
-  * You will need enough CPU and RAM on your machine to run about 8-10 JVMs. You will be setting up a Storm cluster with multiple components, a couple of Jetty instances and a Node server
+  * You will need to be on an Unix-based system (Mac OS X, Ubuntu ...) with ```curl``` installed
+  * You will need [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html) installed
+  * You will need enough CPU and RAM on your machine to run about 8-10 JVMs in ```server``` mode. You should have at least 2 GB free space on your disk. We will be setting up a Storm cluster with multiple components, a couple of Jetty instances and a Node server.
 
 ## Quicker Start
 
-Don't want to follow all these Steps? Make sure you have your prerequisites installed and you can just run:
+Don't want to follow all these Steps? Make sure you have your prerequisites and you can just run:
 
 ```bash
-export BULLET_HOME=$(pwd)/bullet-quickstart
-curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.1.3/examples/install-all.sh | bash
+curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.1.4/examples/install-all.sh | bash
 ```
 
 This will run all the Steps for you. Once everything has launched, you should be able to go to the Bullet UI running locally at [http://localhost:8800](http://localhost:8800). You can then continue this guide from [here](#what-did-we-do).
 
-If you want to manually run all the commands  or if something failed above (might want to perform the [teardown](#teardown) first), you can continue below.
+If you want to manually run all the commands or if something failed above (might want to perform the [teardown](#teardown) first), you can continue below.
 
 ---
 
@@ -42,7 +41,7 @@ mkdir -p $BULLET_HOME/backend/storm
 mkdir -p $BULLET_HOME/service
 mkdir -p $BULLET_HOME/ui
 cd $BULLET_HOME
-curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.1.3/examples_artifacts.tar.gz
+curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.1.4/examples_artifacts.tar.gz
 tar -xzf examples_artifacts.tar.gz
 export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 ```
@@ -221,7 +220,13 @@ Visit [http://localhost:8800](http://localhost:8800) to query your topology with
 
 ## Teardown
 
-To cleanup all the components we bought up:
+If you were following the [Quicker Start](#quicker-start) or if you don't want to manually bring down everything, you can run:
+
+```bash
+curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.1.4/examples/install-all.sh | bash -s cleanup
+```
+
+If you were performing the steps yourself, you can also manually cleanup all the components we bought up using:
 
 |                |                                                                                     |
 | -------------- | ----------------------------------------------------------------------------------- |
@@ -230,10 +235,7 @@ To cleanup all the components we bought up:
 | Storm          | ```ps aux | grep [a]pache-storm-1.0.3 | awk '{print $2}' | xargs kill```            |
 | File System    | ```rm -rf $BULLET_HOME /tmp/dev-storm-zookeeper /tmp/jetty-*```                     |
 
-You can also do:
-```bash
-curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.1.3/examples/install-all.sh | bash -s cleanup
-```
+This does *not* delete ```$HOME/.nvm``` and some extra lines nvm may have added to your ```$HOME/{.profile, .bash_profile, .zshrc, .bashrc}```.
 
 ## What did we do?
 
@@ -411,4 +413,6 @@ Finally, we configured the UI with the custom environment specific settings file
 
 Since we served our schema through the same Web Service as our queries, both these point to our Web Service. Note that there is no ```schemaPath``` because it must be the constant string ```columns```. If you define a custom endpoint for your schema, you must ensure that it can be obtained by making a GET request to ```schemaHost/schemaNamespace/columns```.
 
-The [UI Usage](ui/usage.md) page shows you some queries you can run using one such instance of the UI.
+##  Playing around with the instance
+
+The [UI Usage](ui/usage.md) page shows you some queries you can run using this UI.
