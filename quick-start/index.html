@@ -368,6 +368,11 @@
                         </ul>
                     </li>
             
+                    <li class="second-level">
+                        <a href="#playing-around-with-the-instance">Playing around with the instance</a>
+                        
+                    </li>
+            
             </ul>
         </li>
     
@@ -385,18 +390,17 @@
 </ul>
 <p><strong>Prerequisites</strong></p>
 <ul>
-<li>You will need to be on an Unix-based system (Mac OS X, Ubuntu ...)</li>
-<li>You will need <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">JDK 8</a> installed.</li>
-<li>You will need enough CPU and RAM on your machine to run about 8-10 JVMs. You will be setting up a Storm cluster with multiple components, a couple of Jetty instances and a Node server</li>
+<li>You will need to be on an Unix-based system (Mac OS X, Ubuntu ...) with <code>curl</code> installed</li>
+<li>You will need <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">JDK 8</a> installed</li>
+<li>You will need enough CPU and RAM on your machine to run about 8-10 JVMs in <code>server</code> mode. You should have at least 2 GB free space on your disk. We will be setting up a Storm cluster with multiple components, a couple of Jetty instances and a Node server.</li>
 </ul>
 <h2 id="quicker-start">Quicker Start</h2>
-<p>Don't want to follow all these Steps? Make sure you have your prerequisites installed and you can just run:</p>
-<pre><code class="bash">export BULLET_HOME=$(pwd)/bullet-quickstart
-curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.1.3/examples/install-all.sh | bash
+<p>Don't want to follow all these Steps? Make sure you have your prerequisites and you can just run:</p>
+<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.1.4/examples/install-all.sh | bash
 </code></pre>
 
 <p>This will run all the Steps for you. Once everything has launched, you should be able to go to the Bullet UI running locally at <a href="http://localhost:8800">http://localhost:8800</a>. You can then continue this guide from <a href="#what-did-we-do">here</a>.</p>
-<p>If you want to manually run all the commands  or if something failed above (might want to perform the <a href="#teardown">teardown</a> first), you can continue below.</p>
+<p>If you want to manually run all the commands or if something failed above (might want to perform the <a href="#teardown">teardown</a> first), you can continue below.</p>
 <hr />
 <h2 id="setting-up-storm">Setting up Storm</h2>
 <p>To set up a clean working environment, let's start with creating some directories.</p>
@@ -406,7 +410,7 @@ mkdir -p $BULLET_HOME/backend/storm
 mkdir -p $BULLET_HOME/service
 mkdir -p $BULLET_HOME/ui
 cd $BULLET_HOME
-curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.1.3/examples_artifacts.tar.gz
+curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.1.4/examples_artifacts.tar.gz
 tar -xzf examples_artifacts.tar.gz
 export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 </code></pre>
@@ -535,7 +539,11 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
 <p>If you access the UI from another machine than where your UI is actually running, you will need to edit <code>config/env-settings.json</code>. Since the UI is a client-side app, the machine that your browser is running on will fetch the UI and attempt to use these settings to talk to the Web Service. Since they point to localhost by default, your browser will attempt to connect there and fail. An easy fix is to change <code>localhost</code> in your env-settings.json to point to the host name where you will hosting the UI. This will be the same as the UI host you use in the browser.</p>
 </div>
 <h2 id="teardown">Teardown</h2>
-<p>To cleanup all the components we bought up:</p>
+<p>If you were following the <a href="#quicker-start">Quicker Start</a> or if you don't want to manually bring down everything, you can run:</p>
+<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.1.4/examples/install-all.sh | bash -s cleanup
+</code></pre>
+
+<p>If you were performing the steps yourself, you can also manually cleanup all the components we bought up using:</p>
 <table>
 <thead>
 <tr>
@@ -562,10 +570,7 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
 </tr>
 </tbody>
 </table>
-<p>You can also do:</p>
-<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.1.3/examples/install-all.sh | bash -s cleanup
-</code></pre>
-
+<p>This does <em>not</em> delete <code>$HOME/.nvm</code> and some extra lines nvm may have added to your <code>$HOME/{.profile, .bash_profile, .zshrc, .bashrc}</code>.</p>
 <h2 id="what-did-we-do">What did we do?</h2>
 <p>This section will go over the various custom pieces this example plugged into Bullet, so you can better understand what we did.</p>
 <h3 id="storm-topology">Storm topology</h3>
@@ -716,7 +721,8 @@ columns.schema.version=1.0
 </code></pre>
 
 <p>Since we served our schema through the same Web Service as our queries, both these point to our Web Service. Note that there is no <code>schemaPath</code> because it must be the constant string <code>columns</code>. If you define a custom endpoint for your schema, you must ensure that it can be obtained by making a GET request to <code>schemaHost/schemaNamespace/columns</code>.</p>
-<p>The <a href="../ui/usage/">UI Usage</a> page shows you some queries you can run using one such instance of the UI.</p></div>
+<h2 id="playing-around-with-the-instance">Playing around with the instance</h2>
+<p>The <a href="../ui/usage/">UI Usage</a> page shows you some queries you can run using this UI.</p></div>
         
     </div>
 
