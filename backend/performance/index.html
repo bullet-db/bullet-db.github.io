@@ -245,7 +245,61 @@
     <ul class="nav bs-sidenav">
     
         <li class="active">
-            <a href="#coming-soon">Coming soon!</a>
+            <a href="#performance-in-storm">Performance in Storm</a>
+            <ul class="nav">
+                
+                    <li class="second-level">
+                        <a href="#prerequisites">Prerequisites</a>
+                        
+                    </li>
+            
+                    <li class="second-level">
+                        <a href="#how-was-this-tested">How was this tested?</a>
+                        <ul class="nav">
+                        
+                            <li class="third-level">
+                                <a href="#cluster">Cluster</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#data">Data</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#configuration">Configuration</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#resource-utilization">Resource utilization</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#tools">Tools</a>
+                                
+                            </li>
+                        
+                        </ul>
+                    </li>
+            
+                    <li class="second-level">
+                        <a href="#measuring-the-inherent-latency-of-bullet">Measuring the inherent latency of Bullet</a>
+                        
+                    </li>
+            
+                    <li class="second-level">
+                        <a href="#measuring-the-time-to-find-a-record">Measuring the time to find a record</a>
+                        
+                    </li>
+            
+            </ul>
+        </li>
+    
+        <li class="">
+            <a href="#more-coming-soon">More coming soon!</a>
             
         </li>
     
@@ -253,7 +307,266 @@
 </div></div>
         <div class="col-md-9" role="main">
 
-<h1 id="coming-soon">Coming soon!</h1></div>
+<h1 id="performance-in-storm">Performance in Storm</h1>
+<p>Measuring performance of a Bullet instance running on a multi-tenant Storm cluster is not an easy task. There are a lot of independent variables that we could vary and have an effect including:</p>
+<ol>
+<li>The amount of data we consume</li>
+<li>The number of simultaneous queries Bullet runs</li>
+<li>The kinds of simultaneous queries - <code>RAW</code>, <code>GROUP</code>, <code>COUNT DISTINCT</code>, etc.</li>
+<li>Varying parallelisms of the components - increase the parallelisms of Filter bolts disproportionately to others</li>
+<li>The hardware configuration of machines</li>
+<li>The various Storm versions</li>
+<li>How free the cluster is and the kinds of topologies running on the cluster - CPU heavy, Disk/memory heavy, network heavy etc</li>
+<li>The source of the data and tuning consumption from it</li>
+</ol>
+<p>...and many more.</p>
+<p>In this section, we will focus on analyzing the effects of primarily 1 and 2, while keeping the others fixed or as fixed as possible while running on a multi-tenant Storm cluster.</p>
+<div class="admonition note">
+<p class="admonition-title">Work in Progress</p>
+<p>This page is a work in progress. It will continue to be updated and iterated upon. The idea to give users some insight into how Bullet runs in general and how to tweak Bullet components. This is <em>not</em> a benchmark and your mileage may vary.</p>
+</div>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>The rest of this document assumes that you are familiar with <a href="http://storm.apache.org">Storm</a>, <a href="http://kafka.apache.org">Kafka</a> and the <a href="../storm-architecture/">Bullet on Storm architecture</a>.</p>
+<h2 id="how-was-this-tested">How was this tested?</h2>
+<p>All tests run here were using <a href="https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.3.1">Bullet-Storm 0.3.1</a>. The intent is to test just the Storm piece without going through the Web Service or the UI. The DRPC REST endpoint provided by Storm lets us do just that.</p>
+<p>Using the pluggable metrics interface in Bullet on Storm, various worker level metrics such as CPU time, Heap usage, GC times and types, were captured and sent to a Yahoo in-house monitoring service for time-slicing and graphing. The graphs shown in the tests below use this service. See <a href="https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.3.0">0.3.0</a> for details on how to plug in your own metrics collection.</p>
+<h3 id="cluster">Cluster</h3>
+<ul>
+<li>Running a custom build of Storm - Storm 0.10.2 with Storm 1.0+ features backported. For all intents and purposes, it's Storm 1.0.3</li>
+<li>Machines were of different configurations but all Storm workers for Bullet were running on:<ul>
+<li>2 x Intel E5-2680v3 (12 core, 24 threads) - One reserved core gives each machine 47 cores from the Storm scheduler point of view</li>
+<li>256 GB RAM</li>
+<li>4 TB SATA Disk</li>
+<li>10 G Network Interface</li>
+</ul>
+</li>
+<li>Multi-tenant cluster with other topologies running. Average utilizations ranging from <em>70% - 90%</em></li>
+</ul>
+<h3 id="data">Data</h3>
+<ul>
+<li>Reading from a Kafka 0.9.0.1 topic partitioned into 64 partitions</li>
+<li>The Kafka cluster was located within the same datacenter as the Storm cluster - close network proximity gives us some measure of confidence that large data transmission delays aren't a factor.</li>
+<li>The metrics for the Kafka topic for the month before testing:<ul>
+<li>The data records or messages per second (mps) for the topic was 43,000 mps to 207,000 mps with an average of 172,000 mps</li>
+<li>The compressed data output of the topic was 22 MB/s to 128 MB/s with an average of 78 MB/s. Compressed data is roughly 80% the size of the uncompressed data</li>
+</ul>
+</li>
+</ul>
+<p>Since there is a lot of variance, for each of the tests below, the data volume at that time will be provided in this format: <code>Data: XX MPS and XX MB/s</code> , where each of the numbers are the average for each metric over the last hour of when the test was done.</p>
+<h3 id="configuration">Configuration</h3>
+<p>Here is the default configuration we used to launch the basic instance of Bullet on Storm:</p>
+<pre><code class="YAML">bullet.topology.metrics.enable: true
+bullet.topology.metrics.built.in.enable: true
+bullet.topology.metrics.built.in.emit.interval.mapping:
+   bullet_active_rules: 5
+   default: 60
+bullet.topology.metrics.classes:
+  - &quot;package.containing.our.custom.class.pushing.metrics&quot;
+bullet.topology.drpc.spout.parallelism: 2
+bullet.topology.drpc.spout.cpu.load: 20.0
+bullet.topology.drpc.spout.memory.on.heap.load: 128.0
+bullet.topology.drpc.spout.memory.off.heap.load: 192.0
+bullet.topology.prepare.bolt.parallelism: 1
+bullet.topology.prepare.bolt.cpu.load: 20.0
+bullet.topology.prepare.bolt.memory.on.heap.load: 128.0
+bullet.topology.prepare.bolt.memory.off.heap.load: 192.0
+bullet.topology.filter.bolt.parallelism: 128
+bullet.topology.filter.bolt.cpu.load: 100.0
+bullet.topology.filter.bolt.memory.on.heap.load: 1024.0
+bullet.topology.filter.bolt.memory.off.heap.load: 192.0
+bullet.topology.return.bolt.parallelism: 1
+bullet.topology.return.bolt.cpu.load: 20.0
+bullet.topology.return.bolt.memory.on.heap.load: 128.0
+bullet.topology.return.bolt.memory.off.heap.load: 192.0
+bullet.topology.join.bolt.parallelism: 2
+bullet.topology.join.bolt.cpu.load: 50.0
+bullet.topology.join.bolt.memory.on.heap.load: 512.0
+bullet.topology.join.bolt.memory.off.heap.load: 192.0
+bullet.topology.join.bolt.error.tick.timeout: 3
+bullet.topology.join.bolt.rule.tick.timeout: 3
+bullet.topology.tick.interval.secs: 1
+bullet.rule.default.duration: 30000
+bullet.rule.max.duration: 540000
+bullet.rule.aggregation.max.size: 512
+bullet.rule.aggregation.raw.max.size: 500
+</code></pre>
+
+<p>Any setting not listed here default to the defaults in <a href="https://github.com/yahoo/bullet-storm/blob/bullet-storm-0.3.0/src/main/resources/bullet_defaults.yaml">bullet_defaults.yaml</a>. In particular, <strong>metadata collection</strong> and <strong>timestamp injection</strong> is enabled. <code>RAW</code> type queries also micro-batch by size 1 (in other words, do not micro-batch).</p>
+<p>The topology was also launched (command-line args to Storm) with the following Storm settings:</p>
+<pre><code class="bash">storm jar
+    ...
+    --bullet-spout-parallelism 64
+    --bullet-spout-cpu-load 100.0 \
+    --bullet-spout-on-heap-memory-load 1536.0 \
+    --bullet-spout-off-heap-memory-load 192.0 \
+    -c topology.acker.executors=256 \
+    -c topology.max.spout.pending=20000 \
+    -c topology.backpressure.enable=false \
+    -c topology.worker.max.heap.size.mb=4096.0 \
+    -c topology.worker.gc.childopts=&quot;-XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:NewSize=128m -XX:CMSInitiatingOccupancyFraction=70 -XX:-CMSConcurrentMTEnabled -XX:NewRatio=1&quot; \
+    ...
+</code></pre>
+
+<ol>
+<li>The spout parallelism is 64 because it is going to read from a Kafka topic with 64 partitions (any more is meaningless since it cannot be split further). It reads and converts the data into Bullet Records.</li>
+<li>We've fanned out from the spouts to the Filter bolts by a ratio of 2. We will see if we actually need this ratio below.</li>
+<li>We use <code>topology.max.spout.pending=20000</code> to limit the number of in-flight tuples there can be from a DataSource Spout instance and throttle it if too many queries are slowing down processing downstream. This is set pretty high to account for catch-up and skew in our Kafka partitions</li>
+<li>We have set the max heap size for a worker to <code>4 GiB</code> since we do not want too large of a worker. If a component dies or causes a worker to be killed by RAS, it will not affect too many other workers. It also makes heap dumps etc manageable.</li>
+<li>We set <code>topology.worker.gc.childopts</code> to use <code>ParNewGC</code> and <code>CMS</code>. These are our cluster defaults but we are listing them here since this may not be true for all Storm clusters. We have also added the <code>-XX:NewRatio=1</code> to the defaults since most of our objects are short-lived and having a larger Young Generation reduces our Young Generation GC (ParNew) frequency.</li>
+</ol>
+<h3 id="resource-utilization">Resource utilization</h3>
+<p>With these configurations, the total resource usage is:</p>
+<div class="mostly-numeric-table"></div>
+
+<table>
+<thead>
+<tr>
+<th align="left">Component</th>
+<th align="right">Parallelism</th>
+<th align="right">CPU (cores)</th>
+<th align="right">Total Memory (MB)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">DataSource Spout</td>
+<td align="right">64</td>
+<td align="right">64</td>
+<td align="right">110592</td>
+</tr>
+<tr>
+<td align="left">Filter Bolt</td>
+<td align="right">128</td>
+<td align="right">128</td>
+<td align="right">155648</td>
+</tr>
+<tr>
+<td align="left">Join Bolt</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">1408</td>
+</tr>
+<tr>
+<td align="left">DRPC Spout</td>
+<td align="right">2</td>
+<td align="right">0.4</td>
+<td align="right">640</td>
+</tr>
+<tr>
+<td align="left">PrepareRequest Bolt</td>
+<td align="right">1</td>
+<td align="right">0.2</td>
+<td align="right">320</td>
+</tr>
+<tr>
+<td align="left">ReturnResults Bolt</td>
+<td align="right">1</td>
+<td align="right">0.2</td>
+<td align="right">320</td>
+</tr>
+<tr>
+<td align="left">IMetricsConsumer</td>
+<td align="right">1</td>
+<td align="right">0.1</td>
+<td align="right">256</td>
+</tr>
+<tr>
+<td align="left">Ackers</td>
+<td align="right">256</td>
+<td align="right">25.6</td>
+<td align="right">32768</td>
+</tr>
+<tr>
+<td align="left"><strong>Total</strong></td>
+<td align="right"><strong>455</strong></td>
+<td align="right"><strong>219.5</strong></td>
+<td align="right"><strong>334720</strong></td>
+</tr>
+</tbody>
+</table>
+<p>With these ~47 core machines, we would need <code>5</code> of these machines to run this instance of Bullet reading this data source and supporting a certain number of queries. What this certain number is, we will determine below.</p>
+<div class="admonition note">
+<p class="admonition-title">How will this work for different data and query loads?</p>
+<p>It won't. We will list changes to settings as we change data loads and queries. The settings listed above are the baseline.</p>
+</div>
+<h3 id="tools">Tools</h3>
+<ul>
+<li><a href="https://stedolan.github.io/jq/">jq</a> - a nice tool to parse Bullet JSON responses</li>
+<li>curl, bash and python - for running and analyzing Bullet queries</li>
+</ul>
+<h2 id="measuring-the-inherent-latency-of-bullet">Measuring the inherent latency of Bullet</h2>
+<p>This test runs with the <a href="#configuration">standard configuration</a> above.</p>
+<p>We are <a href="../../ws/examples/#simplest-query">running this query</a> in this test. While not particularly a common query normal users would run, this <code>RAW</code> query without any filters will serve to measure the intrinsic delay added by Bullet. Since the data record pulled out has a timestamp for when the record was emitted into Kafka and Bullet will inject the timestamp into the record when the Filter bolt receives it and the metadata collection log timestamps for when the query was received and terminated, we can measure the end-to-end latency for getting one record through Bullet. We can also use the timestamp of query submission to determine what the end-to-end latency of getting a query through Bullet.</p>
+<p>The following table shows the timestamps averaged by running <strong>100</strong> of these queries. The delays below are shown <em>relative</em> to the Query Received timestamp (when the query was received by Bullet at the Join bolt).</p>
+<div class="mostly-numeric-table"></div>
+
+<table>
+<thead>
+<tr>
+<th align="left">Timestamp</th>
+<th align="right">Delay (ms)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Kafka Received</td>
+<td align="right">-705.79</td>
+</tr>
+<tr>
+<td align="left">Bullet Received</td>
+<td align="right">-1.01</td>
+</tr>
+<tr>
+<td align="left">Query Received</td>
+<td align="right">0</td>
+</tr>
+<tr>
+<td align="left">Query Finished</td>
+<td align="right">1.74</td>
+</tr>
+</tbody>
+</table>
+<p>This table shows that Bullet adds a delay of <code>1.74 ms</code> to just pull out a record. Note that the Bullet Received timestamp above is negative. This is because the Filter bolt received the query and emitted an arbitrary record <code>1.01 ms</code> before the Join bolt received the query. The data was submitted into Kafka about <code>705.79 ms</code> before the query was received by Bullet and that difference is the processing time of Kafka and the time for our spouts to read the data into Bullet.</p>
+<p>This result shows that this is the fastest Bullet can be. It cannot return data any faster than this for meaningful queries.</p>
+<h2 id="measuring-the-time-to-find-a-record">Measuring the time to find a record</h2>
+<p>This test runs with the <a href="#configuration">standard configuration</a> above.</p>
+<p>The <a href="#measuring-the-inherent-latency-of-bullet">last test</a> attempted to measure how long Bullet takes to pick out a record. Here we will measure how long it takes to find a record <em>that we generate</em>. This is the average of running <strong>100</strong> queries across a time interval of 30 minutes trying to filter for a record with a single unique value in a field <a href="../../ws/examples/#simple-filtering">similar to this query</a>.</p>
+<p>Since this query actually requires us to be looking at the values in the data, we should also mention that the average data volume across this test was: <code>Data: 164,000 MPS and 107 MB/s</code></p>
+<div class="mostly-numeric-table"></div>
+
+<table>
+<thead>
+<tr>
+<th align="left">Timestamp</th>
+<th align="right">Delay (ms)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Kafka Received</td>
+<td align="right">519.25</td>
+</tr>
+<tr>
+<td align="left">Bullet Received</td>
+<td align="right">1161.43</td>
+</tr>
+<tr>
+<td align="left">Query Received</td>
+<td align="right">0</td>
+</tr>
+<tr>
+<td align="left">Query Finished</td>
+<td align="right">1165.96</td>
+</tr>
+</tbody>
+</table>
+<p>Now, we're getting somewhere! We see that Bullet took on average <code>1165.96 ms - 1161.43 ms = 4.53 ms</code> from the time it saw the record in the Filter bolt to finishing up the query and returning it. Notice that the record was emitted into Kafka <code>519.25 ms</code> after the query was received. The delay is the time it takes for the generated record to flow through our network and into Kafka.</p>
+<p>It is difficult to isolate how long of the <code>1161.43 ms - 519.25 ms = 642.18 ms</code> was spent in Kafka and how long was spent reading the record and sending it to the Filter bolt from our spout. However, we can look this time as a whole and include it into the time to get data into Bullet.</p>
+<div class="admonition note">
+<p class="admonition-title">So, Bullet takes ~5 ms to find a record?</p>
+<p>No, not really. Remember that we are only including the time from which the record was matched in the Filter bolt to when it was sent out from the Join bolt. We can only conclude that the true delay is less than <code>1165.96 ms - 519.25 ms = 646.71 ms</code> because that is the difference in time from when the record was emitted into Kafka and when it was emitted out of Bullet. It is less than that because a part of that time is Kafka accepting the record and making it available for consumption. Nevertheless, finding a single record in data stream of <code>164,000 mps</code> in about half a second with about <a href="#resource-utilization">5 machines</a> is not bad at all!</p>
+</div>
+<h1 id="more-coming-soon">More coming soon!</h1></div>
         
     </div>
 
