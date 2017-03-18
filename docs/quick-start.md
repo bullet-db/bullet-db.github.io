@@ -415,4 +415,4 @@ Since we served our schema through the same Web Service as our queries, both the
 
 ##  Playing around with the instance
 
-The [UI Usage](ui/usage.md) page shows you some queries you can run using this UI.
+Check out and follow along with the [UI Usage](ui/usage.md) page as it shows you some queries you can run using this UI.

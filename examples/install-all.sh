@@ -106,9 +106,11 @@ launch_bullet_storm() {
 
     println "Launching the Bullet topology..."
     cd "${BULLET_HOME}/backend/storm" && ./launch.sh
-
     println "Sleeping for 30 s to ensure all Bullet Storm components are up..."
+    println "=============================================================================="
     sleep 30
+    println "=============================================================================="
+    println ""
 
     println "Testing the Storm topology"
     println ""
@@ -214,7 +216,7 @@ cleanup() {
 teardown() {
     println "Killing and cleaning up all Bullet components..."
     cleanup &> /dev/null
-    println "Done! Not deleting $HOME/.nvm..."
+    println "Done! Not deleting $HOME/.nvm or nvm additions to $HOME/{.profile, .bash_profile, .zshrc, .bashrc}..."
 }
 
 unset_all() {
@@ -244,7 +246,7 @@ launch() {
     install_node
     launch_bullet_ui
 
-    println "All components launched! Visit localhost:8800 (default) for the UI"
+    println "All components launched! Visit http://localhost:8800 (default) for the UI"
     unset_all
 }
 

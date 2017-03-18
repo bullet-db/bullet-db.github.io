@@ -1,7 +1,7 @@
 all: clean build
 
 clean:
-	rm -rf bullet-examples
+	rm -rf examples_artifacts.tar.gz bullet-examples
 	cd storm && mvn clean
 
 build:
