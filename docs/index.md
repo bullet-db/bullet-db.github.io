@@ -8,7 +8,7 @@
 
 * Is a **look-forward** query system. Queries are submitted first and they operate on data that arrive after the query is submitted
 
-* Is **multi-tenant** and can scale independently for more queries and for more data in the first order
+* Is **multi-tenant** and can scale for more queries and/or for more data
 
 * Provides a **UI and Web Service** that are also pluggable for a full end-to-end solution to your querying needs
 

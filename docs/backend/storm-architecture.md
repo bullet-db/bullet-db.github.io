@@ -61,8 +61,8 @@ Since the data from the Prepare Request bolt (a query and a piece of return info
 The topology set up this way scales horizontally and has some nice properties:
 
   * If you want to scale for processing more data but the same amount of queries, you only need to scale the components that read your data (the spout reading the data or your custom topology) and the Filter bolts.
-  * If you want to scale for more queries but the same amount of data, you only need to scale up the DRPC spouts, Prepare Request bolts, Join bolts and Return Results bolts (first order). These components generally have low parallelism compared to your data since the data is generally much higher.
+  * If you want to scale for more queries but the same amount of data, you need to scale up the DRPC spouts, Prepare Request bolts, Join bolts and Return Results bolts. These components generally have low parallelism compared to your data since the data is generally much higher.
 
-!!! note "First order?"
+!!! note "More queries and Filter bolts"
 
-    If you send more queries to the Filter bolt, it will be limited by at most how many queries a Filter bolt can store and still process data efficiently. Factors like CPU, memory allocations etc for the Filter bolts come in to the picture in addition to the parallelism. Generally, if you have allocated enough Filter bolts to process your data with enough head room, this should let you run hundreds of queries simultaneously before you run into these issues.
+    If you send more queries to the Filter bolt, it will be limited by at most how many queries a Filter bolt can store and still process data efficiently. Factors like CPU, memory allocations etc for the Filter bolts come in to the picture in addition to the parallelism. Generally, if you have allocated enough Filter bolts to process your data with enough head room, this should let you run hundreds of queries simultaneously before you run into these issues. In practice, since most usage is expected to be on large data volumes and 100s of queries simultaneously, you will need to scale the the Filter bolts out so that they are not slowed down by the large number of queries in each.
