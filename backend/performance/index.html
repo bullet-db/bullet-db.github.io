@@ -286,12 +286,95 @@
                     </li>
             
                     <li class="second-level">
-                        <a href="#measuring-the-inherent-latency-of-bullet">Measuring the inherent latency of Bullet</a>
+                        <a href="#test-1-measuring-the-inherent-latency-of-bullet">Test 1: Measuring the inherent latency of Bullet</a>
+                        <ul class="nav">
                         
+                            <li class="third-level">
+                                <a href="#result">Result</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#conclusion">Conclusion</a>
+                                
+                            </li>
+                        
+                        </ul>
                     </li>
             
                     <li class="second-level">
-                        <a href="#measuring-the-time-to-find-a-record">Measuring the time to find a record</a>
+                        <a href="#test-2-measuring-the-time-to-find-a-record">Test 2: Measuring the time to find a record</a>
+                        <ul class="nav">
+                        
+                            <li class="third-level">
+                                <a href="#result_1">Result</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#conclusion_1">Conclusion</a>
+                                
+                            </li>
+                        
+                        </ul>
+                    </li>
+            
+                    <li class="second-level">
+                        <a href="#test-3-measuring-the-maximum-number-of-parallel-raw-queries">Test 3: Measuring the maximum number of parallel RAW queries</a>
+                        <ul class="nav">
+                        
+                            <li class="third-level">
+                                <a href="#what-is-meant-by-maximum">What is meant by maximum?</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#query">Query</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#script">Script</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#results">Results</a>
+                                <ul class="nav">
+                                
+                                    <li class="fourth-level">
+                                        <a href="#figure-1-queries-running">Figure 1. Queries running</a>
+                                        
+                                    </li>
+                                
+                                    <li class="fourth-level">
+                                        <a href="#figure-2-cpu-user-time-usage">Figure 2. CPU user-time usage</a>
+                                        
+                                    </li>
+                                
+                                    <li class="fourth-level">
+                                        <a href="#figure-3-on-heap-usage-bytes">Figure 3. On Heap usage (bytes)</a>
+                                        
+                                    </li>
+                                
+                                    <li class="fourth-level">
+                                        <a href="#figure-4-garbage-collection-times">Figure 4. Garbage Collection times</a>
+                                        
+                                    </li>
+                                
+                                </ul>
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#conclusion_2">Conclusion</a>
+                                
+                            </li>
+                        
+                        </ul>
+                    </li>
+            
+                    <li class="second-level">
+                        <a href="#test-4-improving-the-maximum-number-of-simultaneous-raw-queries">Test 4: Improving the maximum number of simultaneous RAW queries</a>
                         
                     </li>
             
@@ -299,7 +382,7 @@
         </li>
     
         <li class="">
-            <a href="#more-coming-soon">More coming soon!</a>
+            <a href="#coming-soon">Coming soon!</a>
             
         </li>
     
@@ -372,7 +455,7 @@ bullet.topology.prepare.bolt.memory.on.heap.load: 128.0
 bullet.topology.prepare.bolt.memory.off.heap.load: 192.0
 bullet.topology.filter.bolt.parallelism: 128
 bullet.topology.filter.bolt.cpu.load: 100.0
-bullet.topology.filter.bolt.memory.on.heap.load: 1024.0
+bullet.topology.filter.bolt.memory.on.heap.load: 384.0
 bullet.topology.filter.bolt.memory.off.heap.load: 192.0
 bullet.topology.return.bolt.parallelism: 1
 bullet.topology.return.bolt.cpu.load: 20.0
@@ -380,7 +463,7 @@ bullet.topology.return.bolt.memory.on.heap.load: 128.0
 bullet.topology.return.bolt.memory.off.heap.load: 192.0
 bullet.topology.join.bolt.parallelism: 2
 bullet.topology.join.bolt.cpu.load: 50.0
-bullet.topology.join.bolt.memory.on.heap.load: 512.0
+bullet.topology.join.bolt.memory.on.heap.load: 384.0
 bullet.topology.join.bolt.memory.off.heap.load: 192.0
 bullet.topology.join.bolt.error.tick.timeout: 3
 bullet.topology.join.bolt.rule.tick.timeout: 3
@@ -397,9 +480,9 @@ bullet.rule.aggregation.raw.max.size: 500
     ...
     --bullet-spout-parallelism 64
     --bullet-spout-cpu-load 100.0 \
-    --bullet-spout-on-heap-memory-load 1536.0 \
+    --bullet-spout-on-heap-memory-load 768.0 \
     --bullet-spout-off-heap-memory-load 192.0 \
-    -c topology.acker.executors=256 \
+    -c topology.acker.executors=128 \
     -c topology.max.spout.pending=20000 \
     -c topology.backpressure.enable=false \
     -c topology.worker.max.heap.size.mb=4096.0 \
@@ -411,7 +494,7 @@ bullet.rule.aggregation.raw.max.size: 500
 <li>The spout parallelism is 64 because it is going to read from a Kafka topic with 64 partitions (any more is meaningless since it cannot be split further). It reads and converts the data into Bullet Records.</li>
 <li>We've fanned out from the spouts to the Filter bolts by a ratio of 2. We will see if we actually need this ratio below.</li>
 <li>We use <code>topology.max.spout.pending=20000</code> to limit the number of in-flight tuples there can be from a DataSource Spout instance and throttle it if too many queries are slowing down processing downstream. This is set pretty high to account for catch-up and skew in our Kafka partitions</li>
-<li>We have set the max heap size for a worker to <code>4 GiB</code> since we do not want too large of a worker. If a component dies or causes a worker to be killed by RAS, it will not affect too many other workers. It also makes heap dumps etc manageable.</li>
+<li>We have set the max heap size for a worker to <code>4 GiB</code> since we do not want too large of a worker. If a component dies or a worker is killed by RAS, it will not affect too many other components. It also makes heap dumps etc manageable.</li>
 <li>We set <code>topology.worker.gc.childopts</code> to use <code>ParNewGC</code> and <code>CMS</code>. These are our cluster defaults but we are listing them here since this may not be true for all Storm clusters. We have also added the <code>-XX:NewRatio=1</code> to the defaults since most of our objects are short-lived and having a larger Young Generation reduces our Young Generation GC (ParNew) frequency.</li>
 </ol>
 <h3 id="resource-utilization">Resource utilization</h3>
@@ -432,19 +515,19 @@ bullet.rule.aggregation.raw.max.size: 500
 <td align="left">DataSource Spout</td>
 <td align="right">64</td>
 <td align="right">64</td>
-<td align="right">110592</td>
+<td align="right">61440</td>
 </tr>
 <tr>
 <td align="left">Filter Bolt</td>
 <td align="right">128</td>
 <td align="right">128</td>
-<td align="right">155648</td>
+<td align="right">73728</td>
 </tr>
 <tr>
 <td align="left">Join Bolt</td>
 <td align="right">2</td>
 <td align="right">1</td>
-<td align="right">1408</td>
+<td align="right">1152</td>
 </tr>
 <tr>
 <td align="left">DRPC Spout</td>
@@ -468,7 +551,7 @@ bullet.rule.aggregation.raw.max.size: 500
 <td align="left">IMetricsConsumer</td>
 <td align="right">1</td>
 <td align="right">0.1</td>
-<td align="right">256</td>
+<td align="right">128</td>
 </tr>
 <tr>
 <td align="left">Ackers</td>
@@ -480,11 +563,12 @@ bullet.rule.aggregation.raw.max.size: 500
 <td align="left"><strong>Total</strong></td>
 <td align="right"><strong>455</strong></td>
 <td align="right"><strong>219.5</strong></td>
-<td align="right"><strong>334720</strong></td>
+<td align="right"><strong>170496</strong></td>
 </tr>
 </tbody>
 </table>
-<p>With these ~47 core machines, we would need <code>5</code> of these machines to run this instance of Bullet reading this data source and supporting a certain number of queries. What this certain number is, we will determine below.</p>
+<p>With these ~47 virtual core machines, we would need <code>5</code> of these machines to run this instance of Bullet reading this data source and supporting a certain number of queries. What this certain number is, we will determine below.</p>
+<p>RAS used our configuration to allocate <code>45</code> workers on Storm.</p>
 <div class="admonition note">
 <p class="admonition-title">How will this work for different data and query loads?</p>
 <p>It won't. We will list changes to settings as we change data loads and queries. The settings listed above are the baseline.</p>
@@ -494,9 +578,10 @@ bullet.rule.aggregation.raw.max.size: 500
 <li><a href="https://stedolan.github.io/jq/">jq</a> - a nice tool to parse Bullet JSON responses</li>
 <li>curl, bash and python - for running and analyzing Bullet queries</li>
 </ul>
-<h2 id="measuring-the-inherent-latency-of-bullet">Measuring the inherent latency of Bullet</h2>
+<h2 id="test-1-measuring-the-inherent-latency-of-bullet">Test 1: Measuring the inherent latency of Bullet</h2>
 <p>This test runs with the <a href="#configuration">standard configuration</a> above.</p>
 <p>We are <a href="../../ws/examples/#simplest-query">running this query</a> in this test. While not particularly a common query normal users would run, this <code>RAW</code> query without any filters will serve to measure the intrinsic delay added by Bullet. Since the data record pulled out has a timestamp for when the record was emitted into Kafka and Bullet will inject the timestamp into the record when the Filter bolt receives it and the metadata collection log timestamps for when the query was received and terminated, we can measure the end-to-end latency for getting one record through Bullet. We can also use the timestamp of query submission to determine what the end-to-end latency of getting a query through Bullet.</p>
+<h3 id="result">Result</h3>
 <p>The following table shows the timestamps averaged by running <strong>100</strong> of these queries. The delays below are shown <em>relative</em> to the Query Received timestamp (when the query was received by Bullet at the Join bolt).</p>
 <div class="mostly-numeric-table"></div>
 
@@ -526,12 +611,14 @@ bullet.rule.aggregation.raw.max.size: 500
 </tr>
 </tbody>
 </table>
-<p>This table shows that Bullet adds a delay of <code>1.74 ms</code> to just pull out a record. Note that the Bullet Received timestamp above is negative. This is because the Filter bolt received the query and emitted an arbitrary record <code>1.01 ms</code> before the Join bolt received the query. The data was submitted into Kafka about <code>705.79 ms</code> before the query was received by Bullet and that difference is the processing time of Kafka and the time for our spouts to read the data into Bullet.</p>
-<p>This result shows that this is the fastest Bullet can be. It cannot return data any faster than this for meaningful queries.</p>
-<h2 id="measuring-the-time-to-find-a-record">Measuring the time to find a record</h2>
+<p>The Bullet Received timestamp above is negative because the Filter bolt received the query and emitted an arbitrary record <code>1.01 ms</code> before the Join bolt received the query. The data was submitted into Kafka about <code>705.79 ms</code> before the query was received by Bullet and that difference is the processing time of Kafka and the time for our spouts to read the data into Bullet.</p>
+<h3 id="conclusion">Conclusion</h3>
+<p>Bullet adds a delay of <code>1.74 ms</code> to just pull out a record. This result shows that this is the fastest Bullet can be. It cannot return data any faster than this for meaningful queries.</p>
+<h2 id="test-2-measuring-the-time-to-find-a-record">Test 2: Measuring the time to find a record</h2>
 <p>This test runs with the <a href="#configuration">standard configuration</a> above.</p>
-<p>The <a href="#measuring-the-inherent-latency-of-bullet">last test</a> attempted to measure how long Bullet takes to pick out a record. Here we will measure how long it takes to find a record <em>that we generate</em>. This is the average of running <strong>100</strong> queries across a time interval of 30 minutes trying to filter for a record with a single unique value in a field <a href="../../ws/examples/#simple-filtering">similar to this query</a>.</p>
+<p>The <a href="#test-1-measuring-the-inherent-latency-of-bullet">last test</a> attempted to measure how long Bullet takes to pick out a record. Here we will measure how long it takes to find a record <em>that we generate</em>. This is the average of running <strong>100</strong> queries across a time interval of 30 minutes trying to filter for a record with a single unique value in a field <a href="../../ws/examples/#simple-filtering">similar to this query</a>.</p>
 <p>Since this query actually requires us to be looking at the values in the data, we should also mention that the average data volume across this test was: <code>Data: 164,000 MPS and 107 MB/s</code></p>
+<h3 id="result_1">Result</h3>
 <div class="mostly-numeric-table"></div>
 
 <table>
@@ -560,13 +647,161 @@ bullet.rule.aggregation.raw.max.size: 500
 </tr>
 </tbody>
 </table>
-<p>Now, we're getting somewhere! We see that Bullet took on average <code>1165.96 ms - 1161.43 ms = 4.53 ms</code> from the time it saw the record in the Filter bolt to finishing up the query and returning it. Notice that the record was emitted into Kafka <code>519.25 ms</code> after the query was received. The delay is the time it takes for the generated record to flow through our network and into Kafka.</p>
+<p>The record was emitted into Kafka <code>519.25 ms</code> after the query was received. The delay is the time it takes for the generated record to flow through our network and into Kafka.</p>
 <p>It is difficult to isolate how long of the <code>1161.43 ms - 519.25 ms = 642.18 ms</code> was spent in Kafka and how long was spent reading the record and sending it to the Filter bolt from our spout. However, we can look this time as a whole and include it into the time to get data into Bullet.</p>
+<h3 id="conclusion_1">Conclusion</h3>
+<p>We see that Bullet took on average <code>1165.96 ms - 1161.43 ms = 4.53 ms</code> from the time it saw the record in the Filter bolt to finishing up the query and returning it.</p>
 <div class="admonition note">
 <p class="admonition-title">So, Bullet takes ~5 ms to find a record?</p>
 <p>No, not really. Remember that we are only including the time from which the record was matched in the Filter bolt to when it was sent out from the Join bolt. We can only conclude that the true delay is less than <code>1165.96 ms - 519.25 ms = 646.71 ms</code> because that is the difference in time from when the record was emitted into Kafka and when it was emitted out of Bullet. It is less than that because a part of that time is Kafka accepting the record and making it available for consumption. Nevertheless, finding a single record in data stream of <code>164,000 mps</code> in about half a second with about <a href="#resource-utilization">5 machines</a> is not bad at all!</p>
 </div>
-<h1 id="more-coming-soon">More coming soon!</h1></div>
+<h2 id="test-3-measuring-the-maximum-number-of-parallel-raw-queries">Test 3: Measuring the maximum number of parallel <code>RAW</code> queries</h2>
+<p>This test runs with the <a href="#configuration">standard configuration</a> above.</p>
+<p>This test runs a query similar to the <a href="../../ws/examples/#simple-filtering">simple filtering query</a>. The query looks for <code>10</code> records that match the filter or runs for <code>30</code> seconds, whichever comes first. The average, uncompressed record size was about <code>1.8 KiB</code>.</p>
+<h3 id="what-is-meant-by-maximum">What is meant by maximum?</h3>
+<p>We have set the parallelism of the Filter bolts to be 2 x the amount of spouts we have. We want to see how many of these queries we can have running simultaneously till the Filter bolt is unable to process records from the spouts in time. For example, if we have 1000 queries running at once, each data record in the Filter bolt will be operated on by all the 1000 queries. If a Filter bolt is unable to keep up with the rate of data produced by the spouts, our queries will not find all 10 records. Workers may start dying (killed by RAS for exceeding capacity) as well. We will be trying to find the number of queries in parallel that we can run without these happening.</p>
+<p>The average data volume across this test was: <code>Data: 170,000 MPS and 126 MB/s</code></p>
+<h3 id="query">Query</h3>
+<pre><code class="javascript">{
+ &quot;filters&quot; : [
+              {&quot;field&quot; : &quot;id&quot;, &quot;operation&quot; : &quot;==&quot;, &quot;values&quot;: [&quot;c39ba8cfe8&quot;]}
+             ],
+ &quot;aggregation&quot; : {&quot;type&quot; : &quot;LIMIT&quot;, &quot;size&quot; : 10},
+ &quot;duration&quot; : 30000
+}
+</code></pre>
+
+<p>We will run a certain number of these queries then generate a record matching this query every 2 s. After ~20 s, we should have captured all 10. We will validate that we have all 10 records for all queries at the end.</p>
+<h3 id="script">Script</h3>
+<p>This script takes in a single numeric argument to run a number of queries in parallel (you may have to use <code>ulimit</code> to change maximum user processes if you specify a large number). It runs till you kill it performing the following:</p>
+<ol>
+<li>It generates your provided number of the <a href="#query">query above</a> and runs them in parallel against a randomly chosen DRPC server</li>
+<li>It generates data for your query evenly across 20 s</li>
+<li>It waits out the rest of the time and uses jq to validate that all the generated data was found</li>
+</ol>
+<p>Here is a version of the script with the specifics to our data generation and Storm topology removed:</p>
+<pre><code class="bash">#! /bin/bash
+
+SERVERS=(&quot;drpc_server_1&quot; &quot;drpc_server_2&quot; &quot;drpc_server_3&quot;)
+NUM_QUERIES=$1
+NUM_RESULTS=10
+DURATION=30
+
+let &quot;SLEEP_TIME = ( DURATION - 10 )/ NUM_RESULTS&quot;
+
+mkdir -p results
+
+ATTEMPT=0
+
+echo -e &quot;Running $NUM_QUERIES queries and looking for $NUM_RESULTS results over $DURATION seconds...&quot;
+
+while true; do
+    rm results/*.json
+    ps aux | grep [c]url | awk '{print $2}' | xargs kill
+
+    ((ATTEMPT++))
+    echo -e &quot;\nAttempt: $ATTEMPT&quot;
+    for i in `seq 1 $NUM_QUERIES`; do
+        echo -en &quot;\rRunning query $i/$NUM_QUERIES...&quot;
+        SERVER=${SERVERS[$RANDOM % 3]}
+        curl -s -X POST -d @queries/query.json $SERVER:4080/drpc/function &gt; results/result_$i.json &amp;
+    done
+
+    # Sleep for a bit to make sure the query has reached Bullet. Cover some network transfer delays...
+    sleep 2
+    echo &quot;&quot;
+    for i in `seq 1 $NUM_RESULTS`; do
+            # Run curl to generate result
+            echo -en &quot;\rGenerating result $i/$NUM_RESULTS...&quot;
+            sleep $SLEEP_TIME
+    done
+
+    # Sleep 10 seconds to run out the query duration
+    sleep 10
+    # Sleep 3 seconds to make sure results are emitted after 3 ticks (1 s each) : if all records were not found
+    sleep 3
+
+    COUNTS=`jq '.records | length' ./results/result_*.json | sort | uniq -c`
+
+    echo -e &quot;\n$COUNTS&quot;
+
+    TRIMMED=`echo &quot;$COUNTS&quot; | xargs`
+    if [ &quot;$TRIMMED&quot; == &quot;$NUM_QUERIES $NUM_RESULTS&quot; ]; then
+        echo &quot;Passed!&quot;
+    else
+        echo &quot;Failed!&quot;
+    fi
+done
+</code></pre>
+
+<h3 id="results">Results</h3>
+<p>For this configuration, we were able to run 200 queries successfully but 300 and higher started causing our Filter bolts to slow down. This slow down caused our spouts to be throttled and fall behind reading data. This in-turn caused the matching data to not show up in time during the queries. Since we ran our script above for about 10 - 20 attempts at each number of simultaneous queries, some of our attempts would not return all the expected 10 records.</p>
+<p>Using our metrics that were captured using our in-house metrics aggregation system (that our IMetricsConsumer publishes to), let's take a look at the CPU, Heap utilizations.</p>
+<p>Before you look at the figures:</p>
+<ol>
+<li>All the figures below are for the same time interval. The X-axis represents time in <code>1 minute</code> intervals</li>
+<li><a href="#figure-1-queries-running">Figure 1</a> shows the number of queries running for a time interval</li>
+<li>The other figures show a metric across <strong>all</strong> the workers (JVMs) in the Storm topology. There were <code>45</code> workers for this topology using our configuration, each running a mix of a components (spouts running from Kafka, Filter bolts etc)</li>
+<li>The majority of the components (excluding ackers) are spouts reading from Kafka or Filter bolts, so the figures can be taken to be primarily describing those workers</li>
+</ol>
+<h5 id="figure-1-queries-running">Figure 1. Queries running</h5>
+<p><img alt="Queries" src="../../img/raw-perf-queries.png" /></p>
+<h5 id="figure-2-cpu-user-time-usage">Figure 2. CPU user-time usage</h5>
+<p><img alt="CPU Utilization" src="../../img/raw-perf-cpu.png" /></p>
+<h5 id="figure-3-on-heap-usage-bytes">Figure 3. On Heap usage (bytes)</h5>
+<p><img alt="Heap Utilization" src="../../img/raw-perf-heap.png" /></p>
+<h5 id="figure-4-garbage-collection-times">Figure 4. Garbage Collection times</h5>
+<p><img alt="GC Time" src="../../img/raw-perf-gc.png" /></p>
+<p>From <a href="#figure-1-queries-running">Figure 1</a>, we first ran 100 queries, then 200, then 400 and finally 300. The fact that the numbers go over their target is because we only added a 2 s buffer in our script. Network and tick delays caused some queries to not be entirely purged before the next set of N simultaneous queries came in.</p>
+<p><a href="#figure-2-cpu-user-time-usage">Figure 2</a> shows the milliseconds of CPU time used per minute. For example, a value of <code>300K ms</code> ms for a line (worker) means that the worker used <code>300K ms/min</code>  or <code>300s/60s</code> or <code>5</code> CPU cores (virtual) in that minute. The other figures show raw numbers for Heap utilizations and Garbage collection times.</p>
+<div class="admonition note">
+<p class="admonition-title">What's with the zig-zags in the Heap graph?</p>
+<p>As we increase the number of queries sent into Bullet, more objects are created in the Filter and Join bolts. These quickly fill up our heap and cause GCs. The zig-zags represents heaps being cleared after GC and filling back up quickly. Also, note that the CPU usage is directly related to the GC times. In other words, performance is pretty much directly correlated with the amount of GC we do.</p>
+</div>
+<p>The following table summarizes these figures:</p>
+<div class="mostly-numeric-table"></div>
+
+<table>
+<thead>
+<tr>
+<th align="left">Simultaneous Queries</th>
+<th align="right">Average CPU (ms)</th>
+<th align="right">Average Result size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">0</td>
+<td align="right">90K</td>
+<td align="right">N/A</td>
+</tr>
+<tr>
+<td align="left">100</td>
+<td align="right">130K</td>
+<td align="right">10</td>
+</tr>
+<tr>
+<td align="left">200</td>
+<td align="right">170K</td>
+<td align="right">10</td>
+</tr>
+<tr>
+<td align="left">300</td>
+<td align="right">230K</td>
+<td align="right">8.9</td>
+</tr>
+<tr>
+<td align="left">400</td>
+<td align="right">270K</td>
+<td align="right">7.3</td>
+</tr>
+</tbody>
+</table>
+<h3 id="conclusion_2">Conclusion</h3>
+<p>We are able to run somewhere between 200 and 300 <code>RAW</code> queries simultaneously before losing data.</p>
+<h2 id="test-4-improving-the-maximum-number-of-simultaneous-raw-queries">Test 4: Improving the maximum number of simultaneous <code>RAW</code> queries</h2>
+<p>The <a href="#test-3-measuring-the-maximum-number-of-parallel-raw-queries">last test</a> showed us that the <a href="#configuration">standard configuration</a> lets us run somewhere from 200 and 300 <code>RAW</code> queries. Let's see what we have to do to improve that.</p>
+<h1 id="coming-soon">Coming soon!</h1></div>
         
     </div>
 
