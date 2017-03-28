@@ -19,7 +19,7 @@ By the following the steps in this section, you will:
 Don't want to follow all these Steps? Make sure you have your prerequisites and you can just run:
 
 ```bash
-curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.1.4/examples/install-all.sh | bash
+curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.2.0/examples/install-all.sh | bash
 ```
 
 This will run all the Steps for you. Once everything has launched, you should be able to go to the Bullet UI running locally at [http://localhost:8800](http://localhost:8800). You can then continue this guide from [here](#what-did-we-do).
@@ -41,7 +41,7 @@ mkdir -p $BULLET_HOME/backend/storm
 mkdir -p $BULLET_HOME/service
 mkdir -p $BULLET_HOME/ui
 cd $BULLET_HOME
-curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.1.4/examples_artifacts.tar.gz
+curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.2.0/examples_artifacts.tar.gz
 tar -xzf examples_artifacts.tar.gz
 export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 ```
@@ -223,7 +223,7 @@ Visit [http://localhost:8800](http://localhost:8800) to query your topology with
 If you were following the [Quicker Start](#quicker-start) or if you don't want to manually bring down everything, you can run:
 
 ```bash
-curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.1.4/examples/install-all.sh | bash -s cleanup
+curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.2.0/examples/install-all.sh | bash -s cleanup
 ```
 
 If you were performing the steps yourself, you can also manually cleanup **all the components and all the downloads** using:
