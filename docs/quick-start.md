@@ -226,14 +226,14 @@ If you were following the [Quicker Start](#quicker-start) or if you don't want t
 curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.1.4/examples/install-all.sh | bash -s cleanup
 ```
 
-If you were performing the steps yourself, you can also manually cleanup all the components we bought up using:
+If you were performing the steps yourself, you can also manually cleanup **all the components and all the downloads** using:
 
-|                |                                                                                     |
-| -------------- | ----------------------------------------------------------------------------------- |
-| UI             | ```ps aux | grep [e]xpress-server.js | awk '{print $2}' | xargs kill```             |
-| Web Service    | ```ps aux | grep [e]xample_context.properties | awk '{print $2}' | xargs kill```    |
-| Storm          | ```ps aux | grep [a]pache-storm-1.0.3 | awk '{print $2}' | xargs kill```            |
-| File System    | ```rm -rf $BULLET_HOME /tmp/dev-storm-zookeeper /tmp/jetty-*```                     |
+|                |                                                                  |
+| -------------- | ---------------------------------------------------------------- |
+| UI             | ```pkill -f [e]xpress-server.js```                               |
+| Web Service    | ```pkill -f [e]xample_context.properties```                      |
+| Storm          | ```pkill -f [a]pache-storm-1.0.3```                              |
+| File System    | ```rm -rf $BULLET_HOME /tmp/dev-storm-zookeeper /tmp/jetty-*```  |
 
 This does *not* delete ```$HOME/.nvm``` and some extra lines nvm may have added to your ```$HOME/{.profile, .bash_profile, .zshrc, .bashrc}```.
 
