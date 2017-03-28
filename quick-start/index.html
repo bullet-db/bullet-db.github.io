@@ -396,7 +396,7 @@
 </ul>
 <h2 id="quicker-start">Quicker Start</h2>
 <p>Don't want to follow all these Steps? Make sure you have your prerequisites and you can just run:</p>
-<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.1.4/examples/install-all.sh | bash
+<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.2.0/examples/install-all.sh | bash
 </code></pre>
 
 <p>This will run all the Steps for you. Once everything has launched, you should be able to go to the Bullet UI running locally at <a href="http://localhost:8800">http://localhost:8800</a>. You can then continue this guide from <a href="#what-did-we-do">here</a>.</p>
@@ -410,7 +410,7 @@ mkdir -p $BULLET_HOME/backend/storm
 mkdir -p $BULLET_HOME/service
 mkdir -p $BULLET_HOME/ui
 cd $BULLET_HOME
-curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.1.4/examples_artifacts.tar.gz
+curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.2.0/examples_artifacts.tar.gz
 tar -xzf examples_artifacts.tar.gz
 export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 </code></pre>
@@ -540,10 +540,10 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
 </div>
 <h2 id="teardown">Teardown</h2>
 <p>If you were following the <a href="#quicker-start">Quicker Start</a> or if you don't want to manually bring down everything, you can run:</p>
-<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.1.4/examples/install-all.sh | bash -s cleanup
+<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.2.0/examples/install-all.sh | bash -s cleanup
 </code></pre>
 
-<p>If you were performing the steps yourself, you can also manually cleanup all the components we bought up using:</p>
+<p>If you were performing the steps yourself, you can also manually cleanup <strong>all the components and all the downloads</strong> using:</p>
 <table>
 <thead>
 <tr>
@@ -554,15 +554,15 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
 <tbody>
 <tr>
 <td>UI</td>
-<td><code>ps aux | grep [e]xpress-server.js | awk '{print $2}' | xargs kill</code></td>
+<td><code>pkill -f [e]xpress-server.js</code></td>
 </tr>
 <tr>
 <td>Web Service</td>
-<td><code>ps aux | grep [e]xample_context.properties | awk '{print $2}' | xargs kill</code></td>
+<td><code>pkill -f [e]xample_context.properties</code></td>
 </tr>
 <tr>
 <td>Storm</td>
-<td><code>ps aux | grep [a]pache-storm-1.0.3 | awk '{print $2}' | xargs kill</code></td>
+<td><code>pkill -f [a]pache-storm-1.0.3</code></td>
 </tr>
 <tr>
 <td>File System</td>
