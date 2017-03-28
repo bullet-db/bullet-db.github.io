@@ -278,7 +278,7 @@
                             </li>
                         
                             <li class="third-level">
-                                <a href="#tools">Tools</a>
+                                <a href="#tools-used">Tools used</a>
                                 
                             </li>
                         
@@ -339,7 +339,7 @@
                             </li>
                         
                             <li class="third-level">
-                                <a href="#results">Results</a>
+                                <a href="#result_2">Result</a>
                                 <ul class="nav">
                                 
                                     <li class="fourth-level">
@@ -353,7 +353,7 @@
                                     </li>
                                 
                                     <li class="fourth-level">
-                                        <a href="#figure-3-on-heap-usage-bytes">Figure 3. On Heap usage (bytes)</a>
+                                        <a href="#figure-3-on-heap-usage">Figure 3. On Heap usage</a>
                                         
                                     </li>
                                 
@@ -375,15 +375,44 @@
             
                     <li class="second-level">
                         <a href="#test-4-improving-the-maximum-number-of-simultaneous-raw-queries">Test 4: Improving the maximum number of simultaneous RAW queries</a>
+                        <ul class="nav">
                         
+                            <li class="third-level">
+                                <a href="#result_3">Result</a>
+                                <ul class="nav">
+                                
+                                    <li class="fourth-level">
+                                        <a href="#figure-5-queries-running">Figure 5. Queries running</a>
+                                        
+                                    </li>
+                                
+                                    <li class="fourth-level">
+                                        <a href="#figure-6-cpu-user-time-usage">Figure 6. CPU user-time usage</a>
+                                        
+                                    </li>
+                                
+                                    <li class="fourth-level">
+                                        <a href="#figure-7-on-heap-usage">Figure 7. On Heap usage</a>
+                                        
+                                    </li>
+                                
+                                    <li class="fourth-level">
+                                        <a href="#figure-8-garbage-collection-times">Figure 8. Garbage Collection times</a>
+                                        
+                                    </li>
+                                
+                                </ul>
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#conclusion_3">Conclusion</a>
+                                
+                            </li>
+                        
+                        </ul>
                     </li>
             
             </ul>
-        </li>
-    
-        <li class="">
-            <a href="#coming-soon">Coming soon!</a>
-            
         </li>
     
     </ul>
@@ -403,7 +432,8 @@
 <li>The source of the data and tuning consumption from it</li>
 </ol>
 <p>...and many more.</p>
-<p>In this section, we will focus on analyzing the effects of primarily 1 and 2, while keeping the others fixed or as fixed as possible while running on a multi-tenant Storm cluster.</p>
+<p>As a streaming system, the two main features to measure from a user perspective is how much data it operates on and how many queries can you run simultaneously, namely 1 and 2 above.</p>
+<p>In this section, we will focus on analyzing the effects of primarily 1 and 2, while keeping the others fixed or as fixed as possible. We will run on a multi-tenant Storm cluster.</p>
 <div class="admonition note">
 <p class="admonition-title">Work in Progress</p>
 <p>This page is a work in progress. It will continue to be updated and iterated upon. The idea to give users some insight into how Bullet runs in general and how to tweak Bullet components. This is <em>not</em> a benchmark and your mileage may vary.</p>
@@ -474,7 +504,7 @@ bullet.rule.aggregation.max.size: 512
 bullet.rule.aggregation.raw.max.size: 500
 </code></pre>
 
-<p>Any setting not listed here default to the defaults in <a href="https://github.com/yahoo/bullet-storm/blob/bullet-storm-0.3.0/src/main/resources/bullet_defaults.yaml">bullet_defaults.yaml</a>. In particular, <strong>metadata collection</strong> and <strong>timestamp injection</strong> is enabled. <code>RAW</code> type queries also micro-batch by size 1 (in other words, do not micro-batch).</p>
+<p>Any setting not listed here default to the defaults in <a href="https://github.com/yahoo/bullet-storm/blob/bullet-storm-0.3.1/src/main/resources/bullet_defaults.yaml">bullet_defaults.yaml</a>. In particular, <strong>metadata collection</strong> and <strong>timestamp injection</strong> is enabled. <code>RAW</code> type queries also micro-batch by size 1 (in other words, do not micro-batch).</p>
 <p>The topology was also launched (command-line args to Storm) with the following Storm settings:</p>
 <pre><code class="bash">storm jar
     ...
@@ -482,7 +512,7 @@ bullet.rule.aggregation.raw.max.size: 500
     --bullet-spout-cpu-load 100.0 \
     --bullet-spout-on-heap-memory-load 768.0 \
     --bullet-spout-off-heap-memory-load 192.0 \
-    -c topology.acker.executors=128 \
+    -c topology.acker.executors=256 \
     -c topology.max.spout.pending=20000 \
     -c topology.backpressure.enable=false \
     -c topology.worker.max.heap.size.mb=4096.0 \
@@ -496,6 +526,7 @@ bullet.rule.aggregation.raw.max.size: 500
 <li>We use <code>topology.max.spout.pending=20000</code> to limit the number of in-flight tuples there can be from a DataSource Spout instance and throttle it if too many queries are slowing down processing downstream. This is set pretty high to account for catch-up and skew in our Kafka partitions</li>
 <li>We have set the max heap size for a worker to <code>4 GiB</code> since we do not want too large of a worker. If a component dies or a worker is killed by RAS, it will not affect too many other components. It also makes heap dumps etc manageable.</li>
 <li>We set <code>topology.worker.gc.childopts</code> to use <code>ParNewGC</code> and <code>CMS</code>. These are our cluster defaults but we are listing them here since this may not be true for all Storm clusters. We have also added the <code>-XX:NewRatio=1</code> to the defaults since most of our objects are short-lived and having a larger Young Generation reduces our Young Generation GC (ParNew) frequency.</li>
+<li>We are using 256 acker tasks. There is acking from the DataSource spout to the Filter bolt and from the DRPCSpout and the PrepareRequestBolt, so about ~130 components will be acking. We could get away with using 128 ackers.</li>
 </ol>
 <h3 id="resource-utilization">Resource utilization</h3>
 <p>With these configurations, the total resource usage is:</p>
@@ -568,12 +599,12 @@ bullet.rule.aggregation.raw.max.size: 500
 </tbody>
 </table>
 <p>With these ~47 virtual core machines, we would need <code>5</code> of these machines to run this instance of Bullet reading this data source and supporting a certain number of queries. What this certain number is, we will determine below.</p>
-<p>RAS used our configuration to allocate <code>45</code> workers on Storm.</p>
+<p>RAS used our configuration to allocate <code>71</code> workers on Storm.</p>
 <div class="admonition note">
 <p class="admonition-title">How will this work for different data and query loads?</p>
-<p>It won't. We will list changes to settings as we change data loads and queries. The settings listed above are the baseline.</p>
+<p>This is an example, baseline configuration that we guessed at based on the data load. We will list changes to these settings as we find that changing data loads and queries cause issues.</p>
 </div>
-<h3 id="tools">Tools</h3>
+<h3 id="tools-used">Tools used</h3>
 <ul>
 <li><a href="https://stedolan.github.io/jq/">jq</a> - a nice tool to parse Bullet JSON responses</li>
 <li>curl, bash and python - for running and analyzing Bullet queries</li>
@@ -675,8 +706,8 @@ bullet.rule.aggregation.raw.max.size: 500
 <h3 id="script">Script</h3>
 <p>This script takes in a single numeric argument to run a number of queries in parallel (you may have to use <code>ulimit</code> to change maximum user processes if you specify a large number). It runs till you kill it performing the following:</p>
 <ol>
-<li>It generates your provided number of the <a href="#query">query above</a> and runs them in parallel against a randomly chosen DRPC server</li>
-<li>It generates data for your query evenly across 20 s</li>
+<li>It generates a provided number of the <a href="#query">query above</a> and runs them in parallel against a randomly chosen DRPC server</li>
+<li>It generates data for the query </li>
 <li>It waits out the rest of the time and uses jq to validate that all the generated data was found</li>
 </ol>
 <p>Here is a version of the script with the specifics to our data generation and Storm topology removed:</p>
@@ -685,15 +716,12 @@ bullet.rule.aggregation.raw.max.size: 500
 SERVERS=(&quot;drpc_server_1&quot; &quot;drpc_server_2&quot; &quot;drpc_server_3&quot;)
 NUM_QUERIES=$1
 NUM_RESULTS=10
-DURATION=30
-
-let &quot;SLEEP_TIME = ( DURATION - 10 )/ NUM_RESULTS&quot;
 
 mkdir -p results
 
 ATTEMPT=0
 
-echo -e &quot;Running $NUM_QUERIES queries and looking for $NUM_RESULTS results over $DURATION seconds...&quot;
+echo -e &quot;Running $NUM_QUERIES queries and generating $NUM_RESULTS results...&quot;
 
 while true; do
     rm results/*.json
@@ -707,17 +735,17 @@ while true; do
         curl -s -X POST -d @queries/query.json $SERVER:4080/drpc/function &gt; results/result_$i.json &amp;
     done
 
-    # Sleep for a bit to make sure the query has reached Bullet. Cover some network transfer delays...
-    sleep 2
+    # Sleep for a bit to make sure the queries have reached Bullet
+    sleep 10
+
     echo &quot;&quot;
     for i in `seq 1 $NUM_RESULTS`; do
             # Run curl to generate result
             echo -en &quot;\rGenerating result $i/$NUM_RESULTS...&quot;
-            sleep $SLEEP_TIME
     done
 
-    # Sleep 10 seconds to run out the query duration
-    sleep 10
+    # Sleep for the query duration
+    sleep 30
     # Sleep 3 seconds to make sure results are emitted after 3 ticks (1 s each) : if all records were not found
     sleep 3
 
@@ -734,7 +762,7 @@ while true; do
 done
 </code></pre>
 
-<h3 id="results">Results</h3>
+<h3 id="result_2">Result</h3>
 <p>For this configuration, we were able to run 200 queries successfully but 300 and higher started causing our Filter bolts to slow down. This slow down caused our spouts to be throttled and fall behind reading data. This in-turn caused the matching data to not show up in time during the queries. Since we ran our script above for about 10 - 20 attempts at each number of simultaneous queries, some of our attempts would not return all the expected 10 records.</p>
 <p>Using our metrics that were captured using our in-house metrics aggregation system (that our IMetricsConsumer publishes to), let's take a look at the CPU, Heap utilizations.</p>
 <p>Before you look at the figures:</p>
@@ -748,14 +776,16 @@ done
 <p><img alt="Queries" src="../../img/raw-perf-queries.png" /></p>
 <h5 id="figure-2-cpu-user-time-usage">Figure 2. CPU user-time usage</h5>
 <p><img alt="CPU Utilization" src="../../img/raw-perf-cpu.png" /></p>
-<h5 id="figure-3-on-heap-usage-bytes">Figure 3. On Heap usage (bytes)</h5>
+<h5 id="figure-3-on-heap-usage">Figure 3. On Heap usage</h5>
 <p><img alt="Heap Utilization" src="../../img/raw-perf-heap.png" /></p>
 <h5 id="figure-4-garbage-collection-times">Figure 4. Garbage Collection times</h5>
 <p><img alt="GC Time" src="../../img/raw-perf-gc.png" /></p>
-<p>From <a href="#figure-1-queries-running">Figure 1</a>, we first ran 100 queries, then 200, then 400 and finally 300. The fact that the numbers go over their target is because we only added a 2 s buffer in our script. Network and tick delays caused some queries to not be entirely purged before the next set of N simultaneous queries came in.</p>
-<p><a href="#figure-2-cpu-user-time-usage">Figure 2</a> shows the milliseconds of CPU time used per minute. For example, a value of <code>300K ms</code> ms for a line (worker) means that the worker used <code>300K ms/min</code>  or <code>300s/60s</code> or <code>5</code> CPU cores (virtual) in that minute. The other figures show raw numbers for Heap utilizations and Garbage collection times.</p>
+<p><a href="#figure-1-queries-running">Figure 1</a> shows that we first ran 100 queries, then 200, then 400 and finally 300. The numbers go over their target because we only added a 2 s buffer in our script. Network and tick delays caused some queries to not be entirely purged before the next set of N simultaneous queries came in.</p>
+<p><a href="#figure-2-cpu-user-time-usage">Figure 2</a> shows the milliseconds of CPU time used per minute. For example, a value of <code>300K ms</code> ms for a line (worker) means that the worker used <code>300K ms/min</code>  or <code>300s/60s</code> or <code>5</code> CPU cores (virtual) in that minute.</p>
+<p><a href="#figure-3-on-heap-usage">Figure 3</a> shows raw numbers for Heap utilizations in bytes.</p>
+<p><a href="#figure-4-garbage-collection-times">Figure 4</a> shows the time spent garbage collecting in ms.</p>
 <div class="admonition note">
-<p class="admonition-title">What's with the zig-zags in the Heap graph?</p>
+<p class="admonition-title">Garbage collection</p>
 <p>As we increase the number of queries sent into Bullet, more objects are created in the Filter and Join bolts. These quickly fill up our heap and cause GCs. The zig-zags represents heaps being cleared after GC and filling back up quickly. Also, note that the CPU usage is directly related to the GC times. In other words, performance is pretty much directly correlated with the amount of GC we do.</p>
 </div>
 <p>The following table summarizes these figures:</p>
@@ -800,8 +830,155 @@ done
 <h3 id="conclusion_2">Conclusion</h3>
 <p>We are able to run somewhere between 200 and 300 <code>RAW</code> queries simultaneously before losing data.</p>
 <h2 id="test-4-improving-the-maximum-number-of-simultaneous-raw-queries">Test 4: Improving the maximum number of simultaneous <code>RAW</code> queries</h2>
-<p>The <a href="#test-3-measuring-the-maximum-number-of-parallel-raw-queries">last test</a> showed us that the <a href="#configuration">standard configuration</a> lets us run somewhere from 200 and 300 <code>RAW</code> queries. Let's see what we have to do to improve that.</p>
-<h1 id="coming-soon">Coming soon!</h1></div>
+<p>The <a href="#test-3-measuring-the-maximum-number-of-parallel-raw-queries">last test</a> showed us that the <a href="#configuration">standard configuration</a> lets us run somewhere from 200 and 300 <code>RAW</code> queries. Let's see what we have to do to improve that. The <a href="#figure-4-garbage-collection-times">GC times</a> and the <a href="#figure-3-on-heap-usage">heap usage</a> tell us that a larger heap may help. Also, since each of our machines has 256 GB of RAM and we have a lot of unused heap being wasted per machine (since we use up all the CPU cores), we can be use a lot more heap and not have to GC so much. Let's also try to make the worker even leaner by decreasing the max worker size so that slow components don't block others.</p>
+<p>Changes:</p>
+<pre><code>-bullet.topology.filter.bolt.memory.on.heap.load: 384.0
++bullet.topology.filter.bolt.memory.on.heap.load: 1024.0
+
+- --bullet-spout-on-heap-memory-load 768.0 \
++ --bullet-spout-on-heap-memory-load 1280.0 \
+
+- -c topology.worker.max.heap.size.mb=4096.0 \
++ -c topology.worker.max.heap.size.mb=3072.0 \
+</code></pre>
+
+<p>Our resource utilization is now:</p>
+<div class="mostly-numeric-table"></div>
+
+<table>
+<thead>
+<tr>
+<th align="left">Component</th>
+<th align="right">Parallelism</th>
+<th align="right">CPU (cores)</th>
+<th align="right">Total Memory (MB)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">DataSource Spout</td>
+<td align="right">64</td>
+<td align="right">64</td>
+<td align="right">94208</td>
+</tr>
+<tr>
+<td align="left">Filter Bolt</td>
+<td align="right">128</td>
+<td align="right">128</td>
+<td align="right">155648</td>
+</tr>
+<tr>
+<td align="left">Join Bolt</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">1152</td>
+</tr>
+<tr>
+<td align="left">DRPC Spout</td>
+<td align="right">2</td>
+<td align="right">0.4</td>
+<td align="right">640</td>
+</tr>
+<tr>
+<td align="left">PrepareRequest Bolt</td>
+<td align="right">1</td>
+<td align="right">0.2</td>
+<td align="right">320</td>
+</tr>
+<tr>
+<td align="left">ReturnResults Bolt</td>
+<td align="right">1</td>
+<td align="right">0.2</td>
+<td align="right">320</td>
+</tr>
+<tr>
+<td align="left">IMetricsConsumer</td>
+<td align="right">1</td>
+<td align="right">0.1</td>
+<td align="right">128</td>
+</tr>
+<tr>
+<td align="left">Ackers</td>
+<td align="right">256</td>
+<td align="right">25.6</td>
+<td align="right">32768</td>
+</tr>
+<tr>
+<td align="left"><strong>Total</strong></td>
+<td align="right"><strong>455</strong></td>
+<td align="right"><strong>219.5</strong></td>
+<td align="right"><strong>285184</strong></td>
+</tr>
+</tbody>
+</table>
+<p>We now have <code>108</code> workers instead of <code>71</code>.</p>
+<p>Our data volume across this test was: <code>Data: 168,000 MPS and 124 MB/s</code></p>
+<h3 id="result_3">Result</h3>
+<p>With this configuration, we were able to run 700 queries simultaneously and failed at some where between 700 and 800. See below for why.</p>
+<p>We notice that the GC times have improved a lot (down to ~12K ms from ~35K ms in <a href="#figure-4-garbage-collection-times">Figure 4</a>). While our overall CPU usage seems to have gone down since we GC a lot less, remember that our changes to the maximum worker size makes our workers run less components and as a result, use less CPU. This is why there are more lines overall (more workers).</p>
+<h5 id="figure-5-queries-running">Figure 5. Queries running</h5>
+<p><img alt="Queries" src="../../img/raw-perf-2-queries.png" /></p>
+<h5 id="figure-6-cpu-user-time-usage">Figure 6. CPU user-time usage</h5>
+<p><img alt="CPU Utilization" src="../../img/raw-perf-2-cpu.png" /></p>
+<h5 id="figure-7-on-heap-usage">Figure 7. On Heap usage</h5>
+<p><img alt="Heap Utilization" src="../../img/raw-perf-2-heap.png" /></p>
+<h5 id="figure-8-garbage-collection-times">Figure 8. Garbage Collection times</h5>
+<p><img alt="GC Time" src="../../img/raw-perf-2-gc.png" /></p>
+<div class="mostly-numeric-table"></div>
+
+<table>
+<thead>
+<tr>
+<th align="left">Simultaneous Queries</th>
+<th align="right">Average CPU (ms)</th>
+<th align="right">Average Result size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">0</td>
+<td align="right">50K</td>
+<td align="right">N/A</td>
+</tr>
+<tr>
+<td align="left">300</td>
+<td align="right">80K</td>
+<td align="right">10</td>
+</tr>
+<tr>
+<td align="left">500</td>
+<td align="right">95K</td>
+<td align="right">10</td>
+</tr>
+<tr>
+<td align="left">600</td>
+<td align="right">100K</td>
+<td align="right">10</td>
+</tr>
+<tr>
+<td align="left">700</td>
+<td align="right">100K</td>
+<td align="right">10</td>
+</tr>
+<tr>
+<td align="left">735</td>
+<td align="right">105K</td>
+<td align="right">10</td>
+</tr>
+<tr>
+<td align="left">800</td>
+<td align="right">105K</td>
+<td align="right">9.19</td>
+</tr>
+</tbody>
+</table>
+<p>Note that we seem to cap out at 735 queries. <strong>This is actually due to a design decision in Storm DRPC.</strong> Storm DRPC currently dedicates a thread to each DRPC request and does not allow more requests till they are finished. For Bullet, when we ran 800 queries for the test, only the first 735 would even be sent to Bullet. The rest 65 would be sent after some of the first return but all of those 65 would return 0 records because the data that they are looking for had long since been processed.</p>
+<h3 id="conclusion_3">Conclusion</h3>
+<p>With this change in heap usage, we could get to <code>735</code> of these queries simultaneously without any issues. We could possibly do more but are currently limited by DRPC.</p>
+<div class="admonition note">
+<p class="admonition-title">735 is a hard limit then?</p>
+<p>We are currently discussing this with the Storm folks to perhaps switch DRPC to a non-blocking implementation. Also, depending on if and how Bullet is implemented on other Stream processors, an alternative to DRPC may be required anyway - such as using a Pub/Sub queue like Kafka to deliver queries and retrieve results from Bullet. Stay tuned for updates!</p>
+</div></div>
         
     </div>
 
