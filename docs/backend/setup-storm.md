@@ -19,7 +19,7 @@ To use Bullet, you need to implement a way to read from your data source and con
 1. You can implement a Spout that reads from your data source and emits Bullet Record. This spout must have a constructor that takes a List of Strings.
 2. You can pipe your existing Storm topology directly into Bullet. In other words, you convert the data you wish to be query-able through Bullet into Bullet Records from a bolt in your topology.
 
-Option 2 *directly* couples your topology to Bullet and as such, you would need to watch out for things like back-pressure etc.
+Option 1 is the simplest to start with and should accommodate most scenarios. See [Pros and Cons](storm-architecture.md#data-processing).
 
 You need a JVM based project that implements one of the two options above. You include the Bullet artifact and Storm dependencies in your pom.xml or other dependency management system. The artifacts are available through JCenter, so you will need to add the repository.
 

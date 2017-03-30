@@ -12,7 +12,7 @@
 
 * Provides a **UI and Web Service** that are also pluggable for a full end-to-end solution to your querying needs
 
-* Can be implemented on different Stream processing frameworks. Bullet on [Storm](http://storm.apache.org) is currently available
+* Has an implementation on [Storm](http://storm.apache.org) currently. There are plans to implement it on other Stream Processors.
 
 * Is **pluggable**. Any data source that can be read from Storm can be converted into a standard data container letting you query that data. Data is **typed**
 
@@ -32,15 +32,15 @@ This instance of Bullet also powers other use-cases such as letting analysts val
 
 # Quick Start
 
-See [Quick Start](quick-start.md) to set up Bullet on a local Storm topology. We will generate some fake streaming data that you can then query with Bullet.
+See [Quick Start](quick-start.md) to set up Bullet on a local Storm topology. We will generate some synthetic streaming data that you can then query with Bullet.
 
 # Setting up Bullet on your streaming data
 
 To set up Bullet on a real data stream, you need:
 
-1. The backend set up on a Stream processor:
+1. To setup the Bullet backend on a stream processing framework. Currently, we support [Bullet on Storm](backend/setup-storm.md):
     1. Plug in your source of data. See [Getting your data into Bullet](backend/ingestion.md) for details
-    2. Consume your data stream. Currently, we support [Bullet on Storm](backend/setup-storm.md)
+    2. Consume your data stream
 2. The [Web Service](ws/setup.md) set up to convey queries and return results back from the backend
 3. The optional [UI](ui/setup.md) set up to talk to your Web Service. You can skip the UI if all your access is programmatic
 
@@ -54,11 +54,11 @@ To set up Bullet on a real data stream, you need:
 
 Bullet queries allow you to filter, project and aggregate data. It lets you fetch raw (the individual data records) as well as aggregated data.
 
-See the [UI Usage section](ui/usage.md) for using the UI to build Bullet queries. This is the same UI you will build in the [Quick Start](quick-start.md)
+* See the [UI Usage section](ui/usage.md) for using the UI to build Bullet queries. This is the same UI you will build in the [Quick Start](quick-start.md)
 
-See the [API section](ws/api.md) for building Bullet API queries.
+* See the [API section](ws/api.md) for building Bullet API queries
 
-For examples using the API, see [Examples](ws/examples.md). These are actual albeit cleansed queries sourced from the instance at Yahoo.
+* For examples using the API, see [Examples](ws/examples.md). These are actual albeit cleansed queries sourced from the instance at Yahoo.
 
 ## Termination conditions
 
@@ -134,7 +134,7 @@ Using Sketches, we have implemented ```COUNT DISTINCT``` and ```GROUP``` and are
 The Bullet backend can be split into three main sub-systems:
 
 1. Request Processor - receives queries, adds metadata and sends it to the rest of the system
-2. Data Processor - converts the data from an stream and matches it against queries
+2. Data Processor - reads data from a input stream, converts it to an unified data format and matches it against queries
 3. Combiner - combines results for different queries, performs final aggregations and returns results
 
 ## Web Service and UI
