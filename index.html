@@ -372,7 +372,7 @@
 <p>Provides a <strong>UI and Web Service</strong> that are also pluggable for a full end-to-end solution to your querying needs</p>
 </li>
 <li>
-<p>Can be implemented on different Stream processing frameworks. Bullet on <a href="http://storm.apache.org">Storm</a> is currently available</p>
+<p>Has an implementation on <a href="http://storm.apache.org">Storm</a> currently. There are plans to implement it on other Stream Processors.</p>
 </li>
 <li>
 <p>Is <strong>pluggable</strong>. Any data source that can be read from Storm can be converted into a standard data container letting you query that data. Data is <strong>typed</strong></p>
@@ -388,13 +388,13 @@
 <p>This instance of Bullet also powers other use-cases such as letting analysts validate assumptions about data, product managers verify launches instantly, debug issues and outages, or simply explore and play around with the data.</p>
 <hr />
 <h1 id="quick-start">Quick Start</h1>
-<p>See <a href="quick-start/">Quick Start</a> to set up Bullet on a local Storm topology. We will generate some fake streaming data that you can then query with Bullet.</p>
+<p>See <a href="quick-start/">Quick Start</a> to set up Bullet on a local Storm topology. We will generate some synthetic streaming data that you can then query with Bullet.</p>
 <h1 id="setting-up-bullet-on-your-streaming-data">Setting up Bullet on your streaming data</h1>
 <p>To set up Bullet on a real data stream, you need:</p>
 <ol>
-<li>The backend set up on a Stream processor:<ol>
+<li>To setup the Bullet backend on a stream processing framework. Currently, we support <a href="backend/setup-storm/">Bullet on Storm</a>:<ol>
 <li>Plug in your source of data. See <a href="backend/ingestion/">Getting your data into Bullet</a> for details</li>
-<li>Consume your data stream. Currently, we support <a href="backend/setup-storm/">Bullet on Storm</a></li>
+<li>Consume your data stream</li>
 </ol>
 </li>
 <li>The <a href="ws/setup/">Web Service</a> set up to convey queries and return results back from the backend</li>
@@ -407,9 +407,17 @@
 <hr />
 <h1 id="querying-in-bullet">Querying in Bullet</h1>
 <p>Bullet queries allow you to filter, project and aggregate data. It lets you fetch raw (the individual data records) as well as aggregated data.</p>
+<ul>
+<li>
 <p>See the <a href="ui/usage/">UI Usage section</a> for using the UI to build Bullet queries. This is the same UI you will build in the <a href="quick-start/">Quick Start</a></p>
-<p>See the <a href="ws/api/">API section</a> for building Bullet API queries.</p>
+</li>
+<li>
+<p>See the <a href="ws/api/">API section</a> for building Bullet API queries</p>
+</li>
+<li>
 <p>For examples using the API, see <a href="ws/examples/">Examples</a>. These are actual albeit cleansed queries sourced from the instance at Yahoo.</p>
+</li>
+</ul>
 <h2 id="termination-conditions">Termination conditions</h2>
 <p>A Bullet query terminates and returns whatever has been collected so far when:</p>
 <ol>
@@ -527,7 +535,7 @@
 <p>The Bullet backend can be split into three main sub-systems:</p>
 <ol>
 <li>Request Processor - receives queries, adds metadata and sends it to the rest of the system</li>
-<li>Data Processor - converts the data from an stream and matches it against queries</li>
+<li>Data Processor - reads data from a input stream, converts it to an unified data format and matches it against queries</li>
 <li>Combiner - combines results for different queries, performs final aggregations and returns results</li>
 </ol>
 <h2 id="web-service-and-ui">Web Service and UI</h2>
@@ -607,5 +615,5 @@
 
 <!--
 MkDocs version : 0.16.1
-Build Date UTC : 2017-03-28 21:56:29
+Build Date UTC : 2017-03-30 18:12:11
 -->
