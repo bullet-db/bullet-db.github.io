@@ -11,8 +11,9 @@ You need [mkdocs](http://www.mkdocs.org/#installation) installed to build the do
 This also uses the mkdocs theme : [Cinder](http://sourcefoundry.org/cinder/).
 
 Since Cinder has not been upgraded in a while, you will need to bring in changes in this [PR](https://github.com/chrissimpkins/cinder/pull/26) of Cinder found here: [twardoch/clinker-mktheme](https://github.com/twardoch/clinker-mktheme/tree/2016-12-22)
+and add on this fix in this [PR](https://github.com/twardoch/clinker-mktheme/pull/10)
 
-You will need Python installed.
+You will also need Python installed.
 
 ```bash
 sudo pip install virtualenv
@@ -30,7 +31,7 @@ mkdocs build
 You will need [Maven 3](https://maven.apache.org/install.html) and [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html) installed to build the examples.
 
 ```bash
-cd bullet-docs/examples/storm && mvn package
+cd bullet-docs/examples/ && make
 ```
 
 Code licensed under the Apache 2 license. See LICENSE file for terms.

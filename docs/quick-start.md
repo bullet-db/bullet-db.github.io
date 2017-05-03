@@ -4,9 +4,9 @@ This section gets you running a mock instance of Bullet to play around with. The
 
 By the following the steps in this section, you will:
 
-  * Setup the Bullet topology using a custom spout on [bullet-storm-0.3.1](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.3.1)
+  * Setup the Bullet topology using a custom spout on [bullet-storm-0.4.2](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.4.2)
   * Setup the [Web Service](ws/setup.md) talking to the topology and serving a schema for your UI using [bullet-service-0.0.1](https://github.com/yahoo/bullet-service/releases/tag/bullet-service-0.0.1)
-  * Setup the [UI](ui/setup.md) talking to the Web Service using [bullet-ui-0.1.0](https://github.com/yahoo/bullet-ui/releases/tag/v0.1.0)
+  * Setup the [UI](ui/setup.md) talking to the Web Service using [bullet-ui-0.2.0](https://github.com/yahoo/bullet-ui/releases/tag/v0.2.0)
 
 **Prerequisites**
 
@@ -19,7 +19,7 @@ By the following the steps in this section, you will:
 Don't want to follow all these Steps? Make sure you have your prerequisites and you can just run:
 
 ```bash
-curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.2.0/examples/install-all.sh | bash
+curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.3.0/examples/install-all.sh | bash
 ```
 
 This will run all the Steps for you. Once everything has launched, you should be able to go to the Bullet UI running locally at [http://localhost:8800](http://localhost:8800). You can then continue this guide from [here](#what-did-we-do).
@@ -29,7 +29,6 @@ If you want to manually run all the commands or if something failed above (might
 ---
 
 ## Setting up Storm
-
 
 To set up a clean working environment, let's start with creating some directories.
 
@@ -41,7 +40,7 @@ mkdir -p $BULLET_HOME/backend/storm
 mkdir -p $BULLET_HOME/service
 mkdir -p $BULLET_HOME/ui
 cd $BULLET_HOME
-curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.2.0/examples_artifacts.tar.gz
+curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.3.0/examples_artifacts.tar.gz
 tar -xzf examples_artifacts.tar.gz
 export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 ```
@@ -103,7 +102,7 @@ storm kill topology
 
 ## Setting up the example Bullet topology
 
-Now that Storm is up and running, we can put Bullet on it. We will use an example Spout that runs on Bullet 0.3.1 on our Storm cluster. The source is available [here](https://github.com/yahoo/bullet-docs/blob/master/examples/storm). This was part of the artifact that you installed in Step 1.
+Now that Storm is up and running, we can put Bullet on it. We will use an example Spout that runs on Bullet 0.4.2 on our Storm cluster. The source is available [here](https://github.com/yahoo/bullet-docs/blob/master/examples/storm). This was part of the artifact that you installed in Step 1.
 
 #### Step 5: Setup the Storm example
 
@@ -125,6 +124,12 @@ cp $BULLET_EXAMPLES/storm/* $BULLET_HOME/backend/storm
 
     ```bullet.rule.aggregation.group.sketch.entries: 1024``` The max unique groups can be 1024. Uniform sample after.
 
+    ```bullet.query.aggregation.distribution.sketch.entries: 1024``` Determines the normalized rank error for distributions.
+
+    ```bullet.query.aggregation.top.k.sketch.entries: 1024``` 0.75 times this number is the number of unique items for which counts can be done exactly. Approximates after.
+
+    ```bullet.query.aggregation.distribution.max.points: 100``` The maximum number of points you can generate, use or provide for a Distribution aggregation.
+
 !!! note "Want to tweak the example topology code?"
 
     You will need to clone the [examples repository](https://github.com/yahoo/bullet-docs/tree/master/examples/storm) and customize it. To build the examples, you'll need to install [Maven 3](https://maven.apache.org/install.html).
@@ -134,6 +139,8 @@ cp $BULLET_EXAMPLES/storm/* $BULLET_HOME/backend/storm
     ```cd bullet-docs/examples/storm && mvn package```
 
     You will find the ```bullet-storm-example-1.0-SNAPSHOT-jar-with-dependencies.jar``` in ```$BULLET_HOME/bullet-docs/examples/storm/target/```
+
+    You can also make the ```examples_artifacts.tar.gz``` file with all the settings that is placed in ```$BULLET_EXAMPLES``` by just running ```make``` in the ```bullet-docs/examples/``` folder.
 
 #### Step 6: Launch the topology
 
@@ -215,7 +222,8 @@ Visit [http://localhost:8800](http://localhost:8800) to query your topology with
 
 !!! note "Running it remotely?"
 
-    If you access the UI from another machine than where your UI is actually running, you will need to edit ```config/env-settings.json```. Since the UI is a client-side app, the machine that your browser is running on will fetch the UI and attempt to use these settings to talk to the Web Service. Since they point to localhost by default, your browser will attempt to connect there and fail. An easy fix is to change ```localhost``` in your env-settings.json to point to the host name where you will hosting the UI. This will be the same as the UI host you use in the browser.
+    If you access the UI from another machine than where your UI is actually running, you will need to edit ```config/env-settings.json```. Since the UI is a client-side app, the machine that your browser is running on will fetch the UI and attempt to use these settings to talk to the Web Service. Since they point to localhost by default, your browser will attempt to connect there and fail. An easy fix is to change ```localhost``` in your env-settings.json to point to the host name where you will hosting the UI. This will be the same as the UI host you use in the browser. You can also do a local port forward on the machine accessing the UI by running:
+    ```ssh -N -L 8800:localhost:8800 -L 9999:localhost:9999 hostname-of-the-quickstart-components 2>&1```
 
 
 ## Teardown
@@ -306,6 +314,8 @@ This method above emits the tuples. The Storm framework calls this method. This 
         record.setString(STRING, uuid);
         record.setLong(LONG, (long) generatedThisPeriod);
         record.setDouble(DOUBLE, random.nextDouble());
+        record.setString(TYPE, STRING_POOL[random.nextInt(STRING_POOL.length)]);
+        record.setLong(DURATION, System.currentTimeMillis() % INTEGER_POOL[random.nextInt(INTEGER_POOL.length)]);
 
         Map<String, Boolean> booleanMap = new HashMap<>(4);
         booleanMap.put(uuid.substring(0, 8), random.nextBoolean());
@@ -400,13 +410,44 @@ Finally, we configured the UI with the custom environment specific settings file
     "schemaNamespace": "bullet-service/api",
     "helpLinks": [
       {
-        "name": "Example Docs Page",
-        "link": ""
+        "name": "Examples",
+        "link": "https://yahoo.github.io/bullet-docs/ui/usage"
       }
     ],
     "bugLink": "https://github.com/yahoo/bullet-ui/issues",
-    "aggregateDataDefaultSize": 1024,
-    "modelVersion": 1
+    "modelVersion": 1,
+    "defaultValues": {
+      "aggregationMaxSize": 1024,
+      "rawMaxSize": 500,
+      "durationMaxSecs": 540,
+      "distributionNumberOfPoints": 11,
+      "distributionQuantilePoints": "0, 0.25, 0.5, 0.75, 0.9, 1",
+      "distributionQuantileStart": 0,
+      "distributionQuantileEnd": 1,
+      "distributionQuantileIncrement": 0.1,
+      "queryTimeoutSecs": 3,
+      "sketches": {
+        "countDistinctMaxEntries": 16384,
+        "groupByMaxEntries": 512,
+        "distributionMaxEntries": 1024,
+        "distributionMaxNumberOfPoints": 200,
+        "topKMaxEntries": 1024,
+        "topKErrorType": "No False Negatives"
+      },
+      "metadataKeyMapping": {
+        "theta": "theta",
+        "uniquesEstimate": "uniques_estimate",
+        "queryCreationTime": "query_receive_time",
+        "queryTerminationTime": "query_finish_time",
+        "estimatedResult": "was_estimated",
+        "standardDeviations": "standard_deviations",
+        "normalizedRankError": "normalized_rank_error",
+        "maximumCountError": "maximum_count_error",
+        "itemsSeen": "items_seen",
+        "minimumValue": "minimum_value",
+        "maximumValue": "maximum_value"
+      }
+    }
   }
 }
 ```

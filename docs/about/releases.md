@@ -12,7 +12,7 @@ certain CPU and memory related settings specific to RAS in its configuration. Th
 
 !!! note "Future support"
 
-    We will support Storm 0.10 for a bit longer till Storm 2.0 is up and stable. Storm 1.0+ have a lot of performance fixes and features that you should be running with.
+    We will support Storm 0.10 for a bit longer till Storm 2.0 is up and stable. Storm versions 1.0+ have a lot of performance fixes and features that you should be running with.
 
 |                               |                 |
 | ----------------------------- | --------------- |
@@ -26,6 +26,9 @@ certain CPU and memory related settings specific to RAS in its configuration. Th
 
 |    Date      |                               Storm 1.0                                            |                                      Storm 0.10                                         | Highlights |
 | ------------ | ---------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ---------- |
+| 2017-04-28   | [**0.4.2**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.4.2) | [**0.4.2**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.4.2) | Strict JSON output and fix for no data distributions |
+| 2017-04-26   | [**0.4.1**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.4.1) | [**0.4.1**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.4.1) | Result Metadata Concept name mismatch fix |
+| 2017-04-21   | [**0.4.0**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.4.0) | [**0.4.0**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.4.0) | DISTRIBUTION and TOP K release. Configuration renames. |
 | 2017-03-13   | [**0.3.1**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.3.1) | [**0.3.1**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.3.1) | Extra records accepted after query expiry bug fix |
 | 2017-02-27   | [**0.3.0**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.3.0) | [**0.3.0**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.3.0) | Metrics interface, config namespace, NPE bug fix |
 | 2017-02-15   | [**0.2.1**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.2.1) | [**0.2.1**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.2.1) | Acking support, Max size and other bug fixes |
@@ -42,6 +45,8 @@ The Web Service implementation that can serve a static schema from a file and ta
 | **Issues**          | [https://github.com/yahoo/bullet-service/issues](https://github.com/yahoo/bullet-service/issues) |
 | **Last Tag**        | [![Latest tag](https://img.shields.io/github/release/yahoo/bullet-service.svg)](https://github.com/yahoo/bullet-service/releases/latest) |
 | **Latest Artifact** | [![Download](https://api.bintray.com/packages/yahoo/maven/bullet-service/images/download.svg)](https://bintray.com/yahoo/maven/bullet-service/_latestVersion) |
+
+### Releases
 
 |    Date      |                                      Release                                           | Highlights |
 | ------------ | -------------------------------------------------------------------------------------- | ---------- |
@@ -62,6 +67,7 @@ The Bullet UI that lets you build, run, save and visualize results from Bullet.
 
 |    Date      |                                      Release                                           | Highlights |
 | ------------ | -------------------------------------------------------------------------------------- | ---------- |
+| 2016-05-01   | [**0.2.0**](https://github.com/yahoo/bullet-ui/releases/tag/v0.2.0) | Release for Top K and Distribution. Supports Bullet Storm 0.4.2+ |
 | 2016-02-21   | [**0.1.0**](https://github.com/yahoo/bullet-ui/releases/tag/v0.1.0) | The first release with support for all features included in Bullet Storm 0.2.1+ |
 
 ## Bullet Record
@@ -79,4 +85,5 @@ The AVRO container that you need to convert your data into to be consumed by Bul
 
 |    Date      |                                  Release                                             | Highlights |
 | ------------ | ------------------------------------------------------------------------------------ | ---------- |
+| 2017-04-17   | [**0.1.1**](https://github.com/yahoo/bullet-record/releases/tag/bullet-record-0.1.0) | Helper methods to remove, rename, check presence and count fields in the Record |
 | 2017-02-09   | [**0.1.0**](https://github.com/yahoo/bullet-record/releases/tag/bullet-record-0.1.0) | Map constructor |

@@ -8,6 +8,8 @@
 
 * Is a **look-forward** query system. Queries are submitted first and they operate on data that arrive after the query is submitted
 
+* Supports rich queries for filtering and getting **Raw data, Counting Distincts, Distincts, Grouping (Sum, Count, Min, Max, Avg), Distributions, and Top K**
+
 * Is **multi-tenant** and can scale for more queries and/or for more data
 
 * Provides a **UI and Web Service** that are also pluggable for a full end-to-end solution to your querying needs
@@ -91,8 +93,10 @@ The current aggregation types that are supported are:
 | GROUP          | The resulting output would be a record containing the result of an operation for each unique value combination in your specified fields |
 | COUNT DISTINCT | Computes the number of distinct elements in the fields. (May be approximate) |
 | LIMIT or RAW   | The resulting output would be at most the number specified in size. |
+| DISTRIBUTION   | Computes distributions of the elements in the field. E.g. Find the median value or various percentile of a field, or get frequency or cumulative frequency distributions |
+| TOP K          | Returns the top K most frequently appearing values in the column |
 
-Currently we support ```GROUP``` aggregations on the following operations:
+Currently we support ```GROUP``` aggregations with the following operations:
 
 | Operation      | Meaning |
 | -------------- | ------- |
@@ -112,18 +116,9 @@ The Bullet Web Service returns your query result as well as associated metadata 
 
 It is often intractable to perform aggregations on an unbounded stream of data and still support arbitrary queries. However, it is possible if an exact answer is not required and the approximate answer's error is exactly quantifiable. There are stochastic algorithms and data structures that let us do this. We use [Data Sketches](https://datasketches.github.io/) to perform aggregations such as counting uniques, and will be using Sketches to implement some future aggregations.
 
-Sketches let us be exact in our computation up to configured thresholds and approximate after. The error is very controllable and quantifiable. All Bullet queries that use Sketches return the error bounds with Standard Deviations as part of the results so you can quantify the error exactly. Using Sketches lets us address otherwise hard to solve problems in sub-linear space.
+Sketches let us be exact in our computation up to configured thresholds and approximate after. The error is very controllable and quantifiable. All Bullet queries that use Sketches return the error bounds with Standard Deviations as part of the results so you can quantify the error exactly. Using Sketches lets us address otherwise hard to solve problems in sub-linear space. We uses Sketches to compute ```COUNT DISTINCT```, ```GROUP```, ```DISTRIBUTION``` and ```TOP K``` queries.
 
 We also use Sketches as a way to control high cardinality grouping (group by a natural key column or related) and rely on the Sketching data structure to drop excess groups. It is up to you setting up Bullet to determine to set Sketch sizes large or small enough for to satisfy the queries that will be performed on that instance of Bullet.
-
-## New query types coming soon
-
-Using Sketches, we have implemented ```COUNT DISTINCT``` and ```GROUP``` and are working on other aggregations including but not limited to:
-
-| Aggregation    | Meaning |
-| -------------- | ------- |
-| TOP K          | Returns the top K most frequently appearing values in the column |
-| DISTRIBUTION   | Computes distributions of the elements in the column. E.g. Find the median value or the 95th percentile of a field or graph the entire distribution as a histogram |
 
 # Architecture
 

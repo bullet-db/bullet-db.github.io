@@ -2,8 +2,6 @@
 
 See the [UI Usage section](../ui/usage.md) for using the UI to build Bullet queries. This section deals with examples of the JSON query format that the API currently exposes (and the UI uses underneath).
 
-## Querying
-
 Bullet queries allow you to filter, project and aggregate data. It lets you fetch raw and aggregated data. Fields inside maps can be accessed using the '.' notation in queries. For example, myMap.key will access the key field inside the myMap map. There is no support for accessing fields inside Lists or inside nested Maps as of yet. Only the entire object can be operated on for now.
 
 The three main sections of a Bullet query are:
@@ -17,16 +15,16 @@ The three main sections of a Bullet query are:
 ```
 The duration represents how long the query runs for (a window from when you submit it to that many milliseconds into the future). See the [Filters](#filters), [Projections](#projections) and [Aggregation](#aggregations) sections for their respective specifications. Each of those sections are objects.
 
-### Filters
+## Filters
 
 Bullet supports two kinds of filters:
 
 1. Logical filters
 2. Relational filters
 
-#### Logical Filters
+### Logical Filters
 
-Logical filters allow you to combine other filter clauses with logical operations like AND, OR and NOT.
+Logical filters allow you to combine other filter clauses with logical operations like ```AND```, ```OR``` and ```NOT```.
 
 The current logical operators allowed in filters are:
 
@@ -52,7 +50,7 @@ The format for a Logical filter is:
 
 Any other type of filter may be provided as a clause in clauses.
 
-#### Relational Filters
+### Relational Filters
 
 Relational filters allow you to specify conditions on a field, using a comparison operator and a list of values.
 
@@ -86,9 +84,9 @@ The format for a Relational filter is:
     ]
 }
 ```
-*Multiple top level relational filters behave as if they are ANDed together.*
+*Multiple top level relational filters behave as if they are ANDed together.* This is supported as a convenience to do a bunch of ```AND```ed relational filters without having to nest them in a logical clause.
 
-### Projections
+## Projections
 Projections allow you to pull out only the fields needed and rename them (renaming is being supported in order to give
 better names to fields pulled out from maps). If projections are not specified, the entire record is returned. If you are querying
 for raw records, you can use projections to help reduce the load on the system and network.
@@ -102,7 +100,7 @@ for raw records, you can use projections to help reduce the load on the system a
 }
 ```
 
-### Aggregations
+## Aggregations
 
 Aggregations allow you to perform some operation on the collected records. They take an optional size to restrict
 the size of the aggregation (this applies for aggregations high cardinality aggregations and raw records).
@@ -114,8 +112,10 @@ The current aggregation types that are supported are:
 | GROUP          | The resulting output would be a record containing the result of an operation for each unique group in the specified fields |
 | COUNT DISTINCT | Computes the number of distinct elements in the fields. (May be approximate) |
 | LIMIT          | The resulting output would be at most the number specified in size. |
+| DISTRIBUTION   | Computes distributions of the elements in the field. E.g. Find the median value or various percentile of a field, or get frequency or cumulative frequency distributions |
+| TOP K          | Returns the top K most frequently appearing values in the column |
 
-The current format for an aggregation is (**note see above for what is supported at the moment**):
+The current format for an aggregation is:
 
 ```javascript
 {
@@ -136,7 +136,7 @@ The current format for an aggregation is (**note see above for what is supported
 }
 ```
 
-You can also use LIMIT as an alias for RAW. DISTINCT is also an alias for GROUP. These exist to make some queries read a bit better.
+You can also use ```LIMIT``` as an alias for ```RAW```. ```DISTINCT``` is also an alias for ```GROUP```. These exist to make some queries read a bit better.
 
 Currently we support GROUP aggregations on the following operations:
 
@@ -148,9 +148,15 @@ Currently we support GROUP aggregations on the following operations:
 | MAX            | Returns the maximum of the elements in the group |
 | AVG            | Computes the average of the elements in the group |
 
-The following attributes are supported for GROUP:
 
-Attributes for GROUP:
+### Attributes
+
+The ```attributes``` section changes per aggregation ```type```.
+
+#### GROUP
+
+The following attributes are supported for ```GROUP```:
+
 ```javascript
     "attributes": {
         "operations": [
@@ -182,20 +188,80 @@ Attributes for GROUP:
     }
 ```
 
-You can perform SUM, MIN, MAX, AVG on non-numeric fields. **Bullet will attempt to cast the field to a number first.** If it cannot, that record with the field will be ignored for the operation. For the purposes of AVG, Bullet will
+You can perform ```SUM```, ```MIN```, ```MAX```, ```AVG``` on non-numeric fields. Bullet will attempt to *cast the field to a number first.* If it cannot, that record with the field will be ignored for the operation. For the purposes of ```AVG```, Bullet will
 perform the average across the numeric values for a field only.
 
-Attributes for COUNT DISTINCT:
+#### COUNT DISTINCT
+
+The following attributes are supported for ```COUNT DISTINCT```:
 
 ```javascript
     "attributes": {
-        "newName": "the name of the resulting count column"
+        "newName": "resultCountColumnName"
     }
 ```
 
 Note that the new names you specify in the fields map for aggregations do not apply. You must use the attributes here to give your resulting output count column a name.
 
-### Results
+#### DISTRIBUTION
+
+The following attributes are supported for ```DISTRIBUTION```:
+
+```javascript
+    "attributes": {
+        "type": "QUANTILE | PMF | CDF",
+        "numberOfPoints": <a number of evenly generated points to generate>,
+        "points": [ a, free, form, list, of, numbers ],
+        "start": <a start of the range to generate points>,
+        "end": <the end of the range to generate points>,
+        "increment": <the increment between the generated points>,
+    }
+```
+
+You *must* specify one and only one field using the ```fields``` section in ```aggregation```. Any ```newName``` you provide will be ignored.
+
+The ```type``` field picks the type of distribution to apply.
+
+|   Type   |    Meaning    |
+| -------- | ------------- |
+| QUANTILE | Lets you pick out percentiles of the numeric field you provide. |
+| PMF      | The Probability Mass Function distribution lets you get frequency counts and probabilities of ranges or intervals of your numeric field |
+| CDF      | The Cumulative Distribution Function distribution lets you get cumulative frequency counts instead and is otherwise similar to PMF |
+
+Depending on what ```type``` you have chosen, the rest of the attributes define *points in the domain* of that distribution.
+
+For ```QUANTILE```, the points you define will be the *values* to get the percentiles from. These percentiles are represented as numbers between 0 and 1. This means that your points *must* be between 0 and 1.
+
+For ```PMF``` and ```CDF```, the points you define will *partition* the range of your field values into intervals, with the first interval going from -&infin; to the first point and the last interval from your last point to +&infin;. This means that if you generate *N* points, you will receive *N+1* intervals. The points you define should be in the range of the values for your field to get a meaningful distribution. The domain for your points is therefore, all real numbers but you should narrow down to valid values for the field to get meaningful results.
+
+You have three options to generate points.
+
+|           Method           |    Keys          |
+| -------------------------- | ---------------- |
+| Number of Points           | You can use the ```numberOfPoints``` key to provide a number of points to generate evenly distributed in the full range of your domain |  
+| Generate Points in a range | You can use ```start```, ```end``` and ```increment``` (```start``` < ```end```, ```increment``` > 0) to specify numbers to generate points in a narrower region of your domain |
+| Specify free-form points   | You can specify a free-form *array* of numbers which will be used as the points |
+
+Note that If you specify more than one way to generate points, the API will use ```numberOfPoints```, followed by ```points```, followed by ```start```, ```end``` and ```increment``` and whichever creates valid points will be used first.
+
+For ```PMF``` and ```CDF```, no matter how you specify your points, the first interval will always be *(-&infin;, first point)* and the last interval will be *[last point, +&infin;)*. You will also get a probability of how likely a value will land in the interval per interval in addition to a frequency (or cumulative frequency) count.
+
+As with ```GROUP```, Bullet will attempt to *cast* your field into a numeric type and ignore it if it cannot.
+
+#### TOP K
+
+The following attributes are supported for ```TOP K```:
+
+```javascript
+  "attributes": {
+      "threshold": <restrict results to having at least this count value>,
+      "newName": "resultCountColumnName"
+  }
+```
+
+Note that the ```K``` in ```TOP K``` is specified using the ```size``` field in the ```aggregation``` object.
+
+## Results
 
 Bullet results are JSON objects with two fields:
 
