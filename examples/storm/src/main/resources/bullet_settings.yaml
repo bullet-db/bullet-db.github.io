@@ -25,7 +25,7 @@ bullet.topology.join.bolt.cpu.load: 20.0
 bullet.topology.join.bolt.memory.on.heap.load: 128.0
 bullet.topology.join.bolt.memory.off.heap.load: 192.0
 bullet.topology.join.bolt.error.tick.timeout: 3
-bullet.topology.join.bolt.rule.tick.timeout: 3
+bullet.topology.join.bolt.query.tick.timeout: 3
 bullet.topology.tick.interval.secs: 1
 bullet.query.aggregation.raw.max.size: 500
 bullet.query.aggregation.max.size: 1024
