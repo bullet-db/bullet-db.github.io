@@ -55,6 +55,8 @@ public class RandomSpout extends BaseRichSpout {
     public static final String BOOLEAN_MAP = "tags";
     public static final String STATS_MAP = "stats";
     public static final String LIST = "classifiers";
+    public static final String DURATION = "duration";
+    public static final String TYPE = "type";
 
     public static final String RANDOM_MAP_KEY_A = "field_A";
     public static final String RANDOM_MAP_KEY_B = "field_B";
@@ -66,6 +68,7 @@ public class RandomSpout extends BaseRichSpout {
 
     // Some static values in BulletRecord for the fields
     public static final String[] STRING_POOL = { "foo", "bar", "baz", "qux", "quux", "norf" };
+    public static final Integer[] INTEGER_POOL = { 2057, 13, 10051, 2, 1059, 187 };
 
     /**
      * @param args A List of Strings for your Spout. This example takes a number of messages to emit before sleeping and the amount
@@ -139,6 +142,8 @@ public class RandomSpout extends BaseRichSpout {
         record.setString(STRING, uuid);
         record.setLong(LONG, (long) generatedThisPeriod);
         record.setDouble(DOUBLE, random.nextDouble());
+        record.setString(TYPE, STRING_POOL[random.nextInt(STRING_POOL.length)]);
+        record.setLong(DURATION, System.currentTimeMillis() % INTEGER_POOL[random.nextInt(INTEGER_POOL.length)]);
 
         Map<String, Boolean> booleanMap = new HashMap<>(4);
         booleanMap.put(uuid.substring(0, 8), random.nextBoolean());

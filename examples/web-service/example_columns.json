@@ -15,6 +15,16 @@
         "description": "A numeric id for the tuple generated in a monotonically increasing fashion in this period"
     },
     {
+        "name": "duration",
+        "type": "LONG",
+        "description": "A random number ranging from 0 to 10050 with a tendency to have a high frequency on lower values"
+    },
+    {
+        "name": "type",
+        "type": "STRING",
+        "description": "A random string chosen from: foo, bar, baz, qux, quux, norf"
+    },
+    {
         "name": "tags",
         "type": "MAP",
         "subtype": "BOOLEAN",

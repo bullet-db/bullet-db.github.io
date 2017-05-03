@@ -27,30 +27,49 @@ bullet.topology.join.bolt.memory.off.heap.load: 192.0
 bullet.topology.join.bolt.error.tick.timeout: 3
 bullet.topology.join.bolt.rule.tick.timeout: 3
 bullet.topology.tick.interval.secs: 1
-bullet.rule.aggregation.raw.max.size: 500
-bullet.rule.aggregation.max.size: 1024
-bullet.rule.aggregation.count.distinct.sketch.entries: 16384
-bullet.rule.aggregation.group.sketch.entries: 1024
-bullet.rule.max.duration: 570000
+bullet.query.aggregation.raw.max.size: 500
+bullet.query.aggregation.max.size: 1024
+bullet.query.aggregation.count.distinct.sketch.entries: 16384
+bullet.query.aggregation.group.sketch.entries: 1024
+bullet.query.aggregation.distribution.sketch.entries: 1024
+bullet.query.aggregation.top.k.sketch.entries: 1024
+bullet.query.aggregation.top.k.sketch.error.type: "NFN"
+bullet.query.max.duration: 570000
 bullet.result.metadata.enable: true
 bullet.result.metadata.metrics:
-    - name: "Rule Identifier"
-      key: "rule_id"
-    - name: "Creation Time"
-      key: "rule_receive_time"
-    - name: "Termination Time"
-      key: "rule_finish_time"
-    - name: "Aggregation Metadata"
-      key: "aggregation"
+    - name: "Query Identifier"
+      key: "query_id"
+    - name: "Query Body"
+      key: "query"
+    - name: "Query Creation Time"
+      key: "query_receive_time"
+    - name: "Query Termination Time"
+      key: "query_finish_time"
+    - name: "Sketch Metadata"
+      key: "sketches"
     - name: "Estimated Result"
-      key: "wasEstimated"
+      key: "was_estimated"
     - name: "Standard Deviations"
-      key: "standardDeviations"
-    - name: "Sketch Size"
-      key: "sketchSize"
-    - name: "Sketch Theta"
-      key: "sketchTheta"
+      key: "standard_deviations"
+    - name: "Family"
+      key: "family"
+    - name: "Size"
+      key: "size"
+    - name: "Theta"
+      key: "theta"
     - name: "Uniques Estimate"
-      key: "uniquesEstimate"
+      key: "uniques_estimate"
+    - name: "Minimum Value"
+      key: "minimum_value"
+    - name: "Maximum Value"
+      key: "maximum_value"
+    - name: "Items Seen"
+      key: "items_seen"
+    - name: "Normalized Rank Error"
+      key: "normalized_rank_error"
+    - name: "Maximum Count Error"
+      key: "maximum_count_error"
+    - name: "Active Items"
+      key: "active_items"
 bullet.record.inject.timestamp.enable: true
-bullet.record.inject.timestamp.key: "__receive_timestamp"
+bullet.record.inject.timestamp.key: "receive_timestamp"
