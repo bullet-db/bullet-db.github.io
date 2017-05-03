@@ -6,7 +6,7 @@ By the following the steps in this section, you will:
 
   * Setup the Bullet topology using a custom spout on [bullet-storm-0.4.2](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.4.2)
   * Setup the [Web Service](ws/setup.md) talking to the topology and serving a schema for your UI using [bullet-service-0.0.1](https://github.com/yahoo/bullet-service/releases/tag/bullet-service-0.0.1)
-  * Setup the [UI](ui/setup.md) talking to the Web Service using [bullet-ui-0.2.0](https://github.com/yahoo/bullet-ui/releases/tag/v0.2.0)
+  * Setup the [UI](ui/setup.md) talking to the Web Service using [bullet-ui-0.2.2](https://github.com/yahoo/bullet-ui/releases/tag/v0.2.2)
 
 **Prerequisites**
 
@@ -128,7 +128,7 @@ cp $BULLET_EXAMPLES/storm/* $BULLET_HOME/backend/storm
 
     ```bullet.query.aggregation.top.k.sketch.entries: 1024``` 0.75 times this number is the number of unique items for which counts can be done exactly. Approximates after.
 
-    ```bullet.query.aggregation.distribution.max.points: 100``` The maximum number of points you can generate, use or provide for a Distribution aggregation.
+    ```bullet.query.aggregation.distribution.max.points: 200``` The maximum number of points you can generate, use or provide for a Distribution aggregation.
 
 !!! note "Want to tweak the example topology code?"
 
@@ -207,8 +207,8 @@ nvm use v6.9.4
 
 ```bash
 cd $BULLET_HOME/ui
-curl -LO https://github.com/yahoo/bullet-ui/releases/download/v0.1.0/bullet-ui-v0.1.0.tar.gz
-tar -xzf bullet-ui-v0.1.0.tar.gz
+curl -LO https://github.com/yahoo/bullet-ui/releases/download/v0.2.2/bullet-ui-v0.2.2.tar.gz
+tar -xzf bullet-ui-v0.2.2.tar.gz
 cp $BULLET_EXAMPLES/ui/env-settings.json config/
 ```
 
@@ -231,7 +231,7 @@ Visit [http://localhost:8800](http://localhost:8800) to query your topology with
 If you were following the [Quicker Start](#quicker-start) or if you don't want to manually bring down everything, you can run:
 
 ```bash
-curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.2.0/examples/install-all.sh | bash -s cleanup
+curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.3.0/examples/install-all.sh | bash -s cleanup
 ```
 
 If you were performing the steps yourself, you can also manually cleanup **all the components and all the downloads** using:
