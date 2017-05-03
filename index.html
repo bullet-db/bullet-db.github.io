@@ -312,14 +312,7 @@
     
         <li class="">
             <a href="#approximate-computation">Approximate computation</a>
-            <ul class="nav">
-                
-                    <li class="second-level">
-                        <a href="#new-query-types-coming-soon">New query types coming soon</a>
-                        
-                    </li>
             
-            </ul>
         </li>
     
         <li class="">
@@ -364,6 +357,9 @@
 </li>
 <li>
 <p>Is a <strong>look-forward</strong> query system. Queries are submitted first and they operate on data that arrive after the query is submitted</p>
+</li>
+<li>
+<p>Supports rich queries for filtering and getting <strong>Raw data, Counting Distincts, Distincts, Grouping (Sum, Count, Min, Max, Avg), Distributions, and Top K</strong></p>
 </li>
 <li>
 <p>Is <strong>multi-tenant</strong> and can scale for more queries and/or for more data</p>
@@ -469,9 +465,17 @@
 <td>LIMIT or RAW</td>
 <td>The resulting output would be at most the number specified in size.</td>
 </tr>
+<tr>
+<td>DISTRIBUTION</td>
+<td>Computes distributions of the elements in the field. E.g. Find the median value or various percentile of a field, or get frequency or cumulative frequency distributions</td>
+</tr>
+<tr>
+<td>TOP K</td>
+<td>Returns the top K most frequently appearing values in the column</td>
+</tr>
 </tbody>
 </table>
-<p>Currently we support <code>GROUP</code> aggregations on the following operations:</p>
+<p>Currently we support <code>GROUP</code> aggregations with the following operations:</p>
 <table>
 <thead>
 <tr>
@@ -507,28 +511,8 @@
 <hr />
 <h1 id="approximate-computation">Approximate computation</h1>
 <p>It is often intractable to perform aggregations on an unbounded stream of data and still support arbitrary queries. However, it is possible if an exact answer is not required and the approximate answer's error is exactly quantifiable. There are stochastic algorithms and data structures that let us do this. We use <a href="https://datasketches.github.io/">Data Sketches</a> to perform aggregations such as counting uniques, and will be using Sketches to implement some future aggregations.</p>
-<p>Sketches let us be exact in our computation up to configured thresholds and approximate after. The error is very controllable and quantifiable. All Bullet queries that use Sketches return the error bounds with Standard Deviations as part of the results so you can quantify the error exactly. Using Sketches lets us address otherwise hard to solve problems in sub-linear space.</p>
+<p>Sketches let us be exact in our computation up to configured thresholds and approximate after. The error is very controllable and quantifiable. All Bullet queries that use Sketches return the error bounds with Standard Deviations as part of the results so you can quantify the error exactly. Using Sketches lets us address otherwise hard to solve problems in sub-linear space. We uses Sketches to compute <code>COUNT DISTINCT</code>, <code>GROUP</code>, <code>DISTRIBUTION</code> and <code>TOP K</code> queries.</p>
 <p>We also use Sketches as a way to control high cardinality grouping (group by a natural key column or related) and rely on the Sketching data structure to drop excess groups. It is up to you setting up Bullet to determine to set Sketch sizes large or small enough for to satisfy the queries that will be performed on that instance of Bullet.</p>
-<h2 id="new-query-types-coming-soon">New query types coming soon</h2>
-<p>Using Sketches, we have implemented <code>COUNT DISTINCT</code> and <code>GROUP</code> and are working on other aggregations including but not limited to:</p>
-<table>
-<thead>
-<tr>
-<th>Aggregation</th>
-<th>Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>TOP K</td>
-<td>Returns the top K most frequently appearing values in the column</td>
-</tr>
-<tr>
-<td>DISTRIBUTION</td>
-<td>Computes distributions of the elements in the column. E.g. Find the median value or the 95th percentile of a field or graph the entire distribution as a histogram</td>
-</tr>
-</tbody>
-</table>
 <h1 id="architecture">Architecture</h1>
 <h2 id="backend">Backend</h2>
 <p><img alt="High Level Architecture" src="./img/higharch.png" /></p>
@@ -615,5 +599,5 @@
 
 <!--
 MkDocs version : 0.16.1
-Build Date UTC : 2017-03-30 18:12:11
+Build Date UTC : 2017-05-03 23:47:11
 -->

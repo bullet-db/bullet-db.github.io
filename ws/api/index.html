@@ -249,42 +249,64 @@
             <ul class="nav">
                 
                     <li class="second-level">
-                        <a href="#querying">Querying</a>
+                        <a href="#filters">Filters</a>
                         <ul class="nav">
                         
                             <li class="third-level">
-                                <a href="#filters">Filters</a>
+                                <a href="#logical-filters">Logical Filters</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#relational-filters">Relational Filters</a>
+                                
+                            </li>
+                        
+                        </ul>
+                    </li>
+            
+                    <li class="second-level">
+                        <a href="#projections">Projections</a>
+                        
+                    </li>
+            
+                    <li class="second-level">
+                        <a href="#aggregations">Aggregations</a>
+                        <ul class="nav">
+                        
+                            <li class="third-level">
+                                <a href="#attributes">Attributes</a>
                                 <ul class="nav">
                                 
                                     <li class="fourth-level">
-                                        <a href="#logical-filters">Logical Filters</a>
+                                        <a href="#group">GROUP</a>
                                         
                                     </li>
                                 
                                     <li class="fourth-level">
-                                        <a href="#relational-filters">Relational Filters</a>
+                                        <a href="#count-distinct">COUNT DISTINCT</a>
+                                        
+                                    </li>
+                                
+                                    <li class="fourth-level">
+                                        <a href="#distribution">DISTRIBUTION</a>
+                                        
+                                    </li>
+                                
+                                    <li class="fourth-level">
+                                        <a href="#top-k">TOP K</a>
                                         
                                     </li>
                                 
                                 </ul>
                             </li>
                         
-                            <li class="third-level">
-                                <a href="#projections">Projections</a>
-                                
-                            </li>
-                        
-                            <li class="third-level">
-                                <a href="#aggregations">Aggregations</a>
-                                
-                            </li>
-                        
-                            <li class="third-level">
-                                <a href="#results">Results</a>
-                                
-                            </li>
-                        
                         </ul>
+                    </li>
+            
+                    <li class="second-level">
+                        <a href="#results">Results</a>
+                        
                     </li>
             
             </ul>
@@ -296,7 +318,6 @@
 
 <h1 id="api">API</h1>
 <p>See the <a href="../../ui/usage/">UI Usage section</a> for using the UI to build Bullet queries. This section deals with examples of the JSON query format that the API currently exposes (and the UI uses underneath).</p>
-<h2 id="querying">Querying</h2>
 <p>Bullet queries allow you to filter, project and aggregate data. It lets you fetch raw and aggregated data. Fields inside maps can be accessed using the '.' notation in queries. For example, myMap.key will access the key field inside the myMap map. There is no support for accessing fields inside Lists or inside nested Maps as of yet. Only the entire object can be operated on for now.</p>
 <p>The three main sections of a Bullet query are:</p>
 <pre><code class="javascript">{
@@ -308,14 +329,14 @@
 </code></pre>
 
 <p>The duration represents how long the query runs for (a window from when you submit it to that many milliseconds into the future). See the <a href="#filters">Filters</a>, <a href="#projections">Projections</a> and <a href="#aggregations">Aggregation</a> sections for their respective specifications. Each of those sections are objects.</p>
-<h3 id="filters">Filters</h3>
+<h2 id="filters">Filters</h2>
 <p>Bullet supports two kinds of filters:</p>
 <ol>
 <li>Logical filters</li>
 <li>Relational filters</li>
 </ol>
-<h4 id="logical-filters">Logical Filters</h4>
-<p>Logical filters allow you to combine other filter clauses with logical operations like AND, OR and NOT.</p>
+<h3 id="logical-filters">Logical Filters</h3>
+<p>Logical filters allow you to combine other filter clauses with logical operations like <code>AND</code>, <code>OR</code> and <code>NOT</code>.</p>
 <p>The current logical operators allowed in filters are:</p>
 <table>
 <thead>
@@ -352,7 +373,7 @@
 </code></pre>
 
 <p>Any other type of filter may be provided as a clause in clauses.</p>
-<h4 id="relational-filters">Relational Filters</h4>
+<h3 id="relational-filters">Relational Filters</h3>
 <p>Relational filters allow you to specify conditions on a field, using a comparison operator and a list of values.</p>
 <p>The current comparisons allowed in filters are:</p>
 <table>
@@ -409,8 +430,8 @@ casted to the types on the LHS, those items will be ignored for the comparison.<
 }
 </code></pre>
 
-<p><em>Multiple top level relational filters behave as if they are ANDed together.</em></p>
-<h3 id="projections">Projections</h3>
+<p><em>Multiple top level relational filters behave as if they are ANDed together.</em> This is supported as a convenience to do a bunch of <code>AND</code>ed relational filters without having to nest them in a logical clause.</p>
+<h2 id="projections">Projections</h2>
 <p>Projections allow you to pull out only the fields needed and rename them (renaming is being supported in order to give
 better names to fields pulled out from maps). If projections are not specified, the entire record is returned. If you are querying
 for raw records, you can use projections to help reduce the load on the system and network.</p>
@@ -422,7 +443,7 @@ for raw records, you can use projections to help reduce the load on the system a
 }
 </code></pre>
 
-<h3 id="aggregations">Aggregations</h3>
+<h2 id="aggregations">Aggregations</h2>
 <p>Aggregations allow you to perform some operation on the collected records. They take an optional size to restrict
 the size of the aggregation (this applies for aggregations high cardinality aggregations and raw records).</p>
 <p>The current aggregation types that are supported are:</p>
@@ -446,9 +467,17 @@ the size of the aggregation (this applies for aggregations high cardinality aggr
 <td>LIMIT</td>
 <td>The resulting output would be at most the number specified in size.</td>
 </tr>
+<tr>
+<td>DISTRIBUTION</td>
+<td>Computes distributions of the elements in the field. E.g. Find the median value or various percentile of a field, or get frequency or cumulative frequency distributions</td>
+</tr>
+<tr>
+<td>TOP K</td>
+<td>Returns the top K most frequently appearing values in the column</td>
+</tr>
 </tbody>
 </table>
-<p>The current format for an aggregation is (<strong>note see above for what is supported at the moment</strong>):</p>
+<p>The current format for an aggregation is:</p>
 <pre><code class="javascript">{
     &quot;type&quot;: &quot;GROUP | COUNT DISTINCT | TOP | PERCENTILE | RAW&quot;,
     &quot;size&quot;: &lt;a limit on the number of resulting records&gt;,
@@ -467,7 +496,7 @@ the size of the aggregation (this applies for aggregations high cardinality aggr
 }
 </code></pre>
 
-<p>You can also use LIMIT as an alias for RAW. DISTINCT is also an alias for GROUP. These exist to make some queries read a bit better.</p>
+<p>You can also use <code>LIMIT</code> as an alias for <code>RAW</code>. <code>DISTINCT</code> is also an alias for <code>GROUP</code>. These exist to make some queries read a bit better.</p>
 <p>Currently we support GROUP aggregations on the following operations:</p>
 <table>
 <thead>
@@ -499,8 +528,10 @@ the size of the aggregation (this applies for aggregations high cardinality aggr
 </tr>
 </tbody>
 </table>
-<p>The following attributes are supported for GROUP:</p>
-<p>Attributes for GROUP:</p>
+<h3 id="attributes">Attributes</h3>
+<p>The <code>attributes</code> section changes per aggregation <code>type</code>.</p>
+<h4 id="group">GROUP</h4>
+<p>The following attributes are supported for <code>GROUP</code>:</p>
 <pre><code class="javascript">    &quot;attributes&quot;: {
         &quot;operations&quot;: [
             {
@@ -531,16 +562,91 @@ the size of the aggregation (this applies for aggregations high cardinality aggr
     }
 </code></pre>
 
-<p>You can perform SUM, MIN, MAX, AVG on non-numeric fields. <strong>Bullet will attempt to cast the field to a number first.</strong> If it cannot, that record with the field will be ignored for the operation. For the purposes of AVG, Bullet will
+<p>You can perform <code>SUM</code>, <code>MIN</code>, <code>MAX</code>, <code>AVG</code> on non-numeric fields. Bullet will attempt to <em>cast the field to a number first.</em> If it cannot, that record with the field will be ignored for the operation. For the purposes of <code>AVG</code>, Bullet will
 perform the average across the numeric values for a field only.</p>
-<p>Attributes for COUNT DISTINCT:</p>
+<h4 id="count-distinct">COUNT DISTINCT</h4>
+<p>The following attributes are supported for <code>COUNT DISTINCT</code>:</p>
 <pre><code class="javascript">    &quot;attributes&quot;: {
-        &quot;newName&quot;: &quot;the name of the resulting count column&quot;
+        &quot;newName&quot;: &quot;resultCountColumnName&quot;
     }
 </code></pre>
 
 <p>Note that the new names you specify in the fields map for aggregations do not apply. You must use the attributes here to give your resulting output count column a name.</p>
-<h3 id="results">Results</h3>
+<h4 id="distribution">DISTRIBUTION</h4>
+<p>The following attributes are supported for <code>DISTRIBUTION</code>:</p>
+<pre><code class="javascript">    &quot;attributes&quot;: {
+        &quot;type&quot;: &quot;QUANTILE | PMF | CDF&quot;,
+        &quot;numberOfPoints&quot;: &lt;a number of evenly generated points to generate&gt;,
+        &quot;points&quot;: [ a, free, form, list, of, numbers ],
+        &quot;start&quot;: &lt;a start of the range to generate points&gt;,
+        &quot;end&quot;: &lt;the end of the range to generate points&gt;,
+        &quot;increment&quot;: &lt;the increment between the generated points&gt;,
+    }
+</code></pre>
+
+<p>You <em>must</em> specify one and only one field using the <code>fields</code> section in <code>aggregation</code>. Any <code>newName</code> you provide will be ignored.</p>
+<p>The <code>type</code> field picks the type of distribution to apply.</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>QUANTILE</td>
+<td>Lets you pick out percentiles of the numeric field you provide.</td>
+</tr>
+<tr>
+<td>PMF</td>
+<td>The Probability Mass Function distribution lets you get frequency counts and probabilities of ranges or intervals of your numeric field</td>
+</tr>
+<tr>
+<td>CDF</td>
+<td>The Cumulative Distribution Function distribution lets you get cumulative frequency counts instead and is otherwise similar to PMF</td>
+</tr>
+</tbody>
+</table>
+<p>Depending on what <code>type</code> you have chosen, the rest of the attributes define <em>points in the domain</em> of that distribution.</p>
+<p>For <code>QUANTILE</code>, the points you define will be the <em>values</em> to get the percentiles from. These percentiles are represented as numbers between 0 and 1. This means that your points <em>must</em> be between 0 and 1.</p>
+<p>For <code>PMF</code> and <code>CDF</code>, the points you define will <em>partition</em> the range of your field values into intervals, with the first interval going from -&infin; to the first point and the last interval from your last point to +&infin;. This means that if you generate <em>N</em> points, you will receive <em>N+1</em> intervals. The points you define should be in the range of the values for your field to get a meaningful distribution. The domain for your points is therefore, all real numbers but you should narrow down to valid values for the field to get meaningful results.</p>
+<p>You have three options to generate points.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Keys</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of Points</td>
+<td>You can use the <code>numberOfPoints</code> key to provide a number of points to generate evenly distributed in the full range of your domain</td>
+</tr>
+<tr>
+<td>Generate Points in a range</td>
+<td>You can use <code>start</code>, <code>end</code> and <code>increment</code> (<code>start</code> &lt; <code>end</code>, <code>increment</code> &gt; 0) to specify numbers to generate points in a narrower region of your domain</td>
+</tr>
+<tr>
+<td>Specify free-form points</td>
+<td>You can specify a free-form <em>array</em> of numbers which will be used as the points</td>
+</tr>
+</tbody>
+</table>
+<p>Note that If you specify more than one way to generate points, the API will use <code>numberOfPoints</code>, followed by <code>points</code>, followed by <code>start</code>, <code>end</code> and <code>increment</code> and whichever creates valid points will be used first.</p>
+<p>For <code>PMF</code> and <code>CDF</code>, no matter how you specify your points, the first interval will always be <em>(-&infin;, first point)</em> and the last interval will be <em>[last point, +&infin;)</em>. You will also get a probability of how likely a value will land in the interval per interval in addition to a frequency (or cumulative frequency) count.</p>
+<p>As with <code>GROUP</code>, Bullet will attempt to <em>cast</em> your field into a numeric type and ignore it if it cannot.</p>
+<h4 id="top-k">TOP K</h4>
+<p>The following attributes are supported for <code>TOP K</code>:</p>
+<pre><code class="javascript">  &quot;attributes&quot;: {
+      &quot;threshold&quot;: &lt;restrict results to having at least this count value&gt;,
+      &quot;newName&quot;: &quot;resultCountColumnName&quot;
+  }
+</code></pre>
+
+<p>Note that the <code>K</code> in <code>TOP K</code> is specified using the <code>size</code> field in the <code>aggregation</code> object.</p>
+<h2 id="results">Results</h2>
 <p>Bullet results are JSON objects with two fields:</p>
 <table>
 <thead>

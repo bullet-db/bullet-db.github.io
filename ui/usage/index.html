@@ -311,6 +311,40 @@
                         
                     </li>
             
+                    <li class="second-level">
+                        <a href="#distributions">Distributions</a>
+                        <ul class="nav">
+                        
+                            <li class="third-level">
+                                <a href="#exact_1">Exact</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#approximate_1">Approximate</a>
+                                
+                            </li>
+                        
+                        </ul>
+                    </li>
+            
+                    <li class="second-level">
+                        <a href="#top-k">Top K</a>
+                        <ul class="nav">
+                        
+                            <li class="third-level">
+                                <a href="#exact_2">Exact</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#approximate_2">Approximate</a>
+                                
+                            </li>
+                        
+                        </ul>
+                    </li>
+            
             </ul>
         </li>
     
@@ -327,7 +361,7 @@
 <p>The schema you <a href="../setup/#configuration">plug into the UI</a> is shown here so the users can better understand what the columns mean. Enumerated map fails can be expanded and their nested fields are also described.</p>
 <p><strong>Example: The landing and schema pages</strong></p>
 <video controls autoplay loop>
-  <source src="../../video/schema.mp4" type="video/mp4">
+  <source src="../../video/schema-2.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
@@ -342,12 +376,12 @@
 <p>You can also download the results in JSON, CSV or flattened CSV (fields inside maps and lists are exploded). Any metadata returned for the query is collapsed by default. Any relevant metadata for the query <a href="../../quick-start/#setting-up-the-example-bullet-topology">as configured</a> is shown here. As always the help icons display help messages for each section.</p>
 <p><strong>Example: Picking a random record from the stream</strong></p>
 <video controls autoplay loop>
-  <source src="../../video/first-query.mp4" type="video/mp4">
+  <source src="../../video/first-query-2.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
 <div class="admonition note">
-<p class="admonition-title">__receive_timestamp</p>
+<p class="admonition-title">receive_timestamp</p>
 <p>This was enabled as part of the configuration for the example backend. This was the timestamp when Bullet first saw this record. If you have timestamps in your data (as this example does), you will be able to tell exactly when your data was received by Bullet. This coupled with the timestamps in the Result Metadata for when your query was submitted and terminated, you will be able to tell why or why not a particular record was or was not seen in Bullet.</p>
 </div>
 <h2 id="filtering-and-projecting-data">Filtering and projecting data</h2>
@@ -355,7 +389,7 @@
 <p>The Output Data section lets you aggregate or choose to see raw data records. You can either get all the data as <a href="#a-simple-first-query">above</a> or you can select a subset of fields (and optionally rename them) that you would like to see.</p>
 <p><strong>Example: Finding and picking out fields from events that have probability &gt; 0.5</strong></p>
 <video controls autoplay loop>
-  <source src="../../video/filter-project.mp4" type="video/mp4">
+  <source src="../../video/filter-project-2.mp4" type="video/mp4">
   Your browser does not support the video tag
 </video>
 
@@ -368,7 +402,7 @@
 <p>The querybuilder is also type aware. The operations you can perform change based on the type. Numeric fields only allow numeric values. String fields allow you to apply regular expressions to them or specify multiple values at the same time using a <code>,</code>. Boolean fields only allow you to choose a radio button etc.</p>
 <p><strong>Example: Finding and picking out the first and second events in each period that also have probability &gt; 0.5</strong></p>
 <video controls autoplay loop>
-  <source src="../../video/query-building.mp4" type="video/mp4">
+  <source src="../../video/query-building-2.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
@@ -382,7 +416,7 @@
 <p>You can also optionally rename the result.</p>
 <p><strong>Example: Counting unique UUIDs for 20s</strong></p>
 <video controls autoplay loop>
-  <source src="../../video/exact-count-distinct-2.mp4" type="video/mp4">
+  <source src="../../video/exact-count-distinct-3.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
@@ -400,20 +434,20 @@
 <p>When the result is approximate, it is shown as a decimal value. The Result Metadata section will reflect that the result was estimated and provide you standard deviations for the true value. The errors are derived from <a href="https://datasketches.github.io/docs/Theta/ThetaErrorTable.html">DataSketches here</a>. Note the line for <code>16384</code>, which was what we configured for the maximum unique values for the Count Distinct operation. In the example below, this means if we want 99.73% confidence for the result, the <code>3</code> standard deviation entry says that the true count could vary from <code>38194</code> to <code>39590</code>.</p>
 <p><strong>Example: Counting unique UUIDs for 200s</strong></p>
 <video controls autoplay loop>
-  <source src="../../video/approx-count-distinct-2.mp4" type="video/mp4">
+  <source src="../../video/approx-count-distinct-3.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
 <div class="admonition note">
 <p class="admonition-title">So why is the approximate count what it is?</p>
-<p>The backend should have produced <code>20 * 200000/101</code> or <code>39603</code> tuples with unique uuids. Due to the synthetic nature of the data generation and the building delays mentioned above, we estimated that we should subtract about 20 tuples for every 10 s the query runs. Since this query ran for <code>200 s</code>, this makes the actual uuids generated to be at best <code>39603 - (200/10) * 20</code> or <code>39203</code>. The result from Bullet was <code>38886</code>, which is an error of <code>~0.8 %</code>. The real error is probably about a <em>third</em> of that because we assumed the delay between periods to be 1 ms. It is more on the order of 2 or 3 ms, which makes the number of uuids actually generated even less.</p>
+<p>The backend should have produced <code>20 * 200000/101</code> or <code>39603</code> tuples with unique uuids. Due to the synthetic nature of the data generation and the building delays mentioned above, we estimated that we should subtract about 20 tuples for every 10 s the query runs. Since this query ran for <code>200 s</code>, this makes the actual uuids generated to be at best <code>39603 - (200/10) * 20</code> or <code>39203</code>. The result from Bullet was <code>39069</code>, which is an error of <code>~0.3 %</code>. The real error is probably less than that because we assumed the delay between periods to be 1 ms to get the <code>39203</code> number. It's probably slightly larger making the actual uuids generated lower and closer to our estimate.</p>
 </div>
 <h2 id="group-all">Group all</h2>
 <p>When choosing the Grouped Data option, you can choose to add fields to group by. If you do not and you add metrics, they will apply to all the data that matches your filters (or the whole data set if you don't have any).</p>
 <p><strong>Example: Counting, summing and averaging on the whole dataset</strong></p>
 <p>The metrics you apply on fields are all numeric presently. If you apply a metric on a non-numeric field, Bullet will try to <strong>type-cast</strong> your field into number and if it's not possible, the result will be <code>null</code>. The result will also be <code>null</code> if the field was not present or no data matched your filters.</p>
 <video controls autoplay loop>
-  <source src="../../video/group-all-error-duplicating-2.mp4" type="video/mp4">
+  <source src="../../video/group-all-error-2.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
@@ -436,7 +470,7 @@
 
 <div class="admonition note">
 <p class="admonition-title">What happens if I group by uuid?</p>
-<p>Try it out! Nothing bad should happen. If the number of unique group values exceeds the <a href="../../quick-start/#setting-up-the-example-bullet-topology">maximum configured</a> (we used 1024 for this example), you will receive a <em>uniform sample</em> across your unique group values. The results for your metrics however, are <strong>not sampled</strong>. It is the groups that are sampled on. This means that is <strong>no</strong> guarantee of order if you were expecting the <em>most popular</em> groups or similar. We are working on adding a <code>TOP K</code> query that can support these kinds of use-cases.</p>
+<p>Try it out! Nothing bad should happen. If the number of unique group values exceeds the <a href="../../quick-start/#setting-up-the-example-bullet-topology">maximum configured</a> (we used 1024 for this example), you will receive a <em>uniform sample</em> across your unique group values. The results for your metrics however, are <strong>not sampled</strong>. It is the groups that are sampled on. This means that is <strong>no</strong> guarantee of order if you were expecting the <em>most popular</em> groups or similar. You should use the Top K query in that scenario.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Why no Count Distinct after Grouping</p>
@@ -446,6 +480,64 @@
 <p class="admonition-title">Aha, sorting by tuple_number didn't sort properly!</p>
 <p>Good job, eagle eyes! Unfortunately, whenever we group on fields, those fields become strings under the current implementation. Rather than convert them back at the end, we have currently decided to leave it as is. This means that in your results, if you try and sort by a grouped field, it will perform a lexicographical sort even if it was originally a number.</p>
 <p>However, this also means that you can actually group by any field - including non primitives such as maps and lists! The field will be converted to a string and that string will be used as the field's representation for uniqueness and grouping purposes.</p>
+</div>
+<h2 id="distributions">Distributions</h2>
+<p>In this example, we find distributions of the <code>duration</code>  field. This field is generated randomly from 0 to 10,049, with a tendency to have values that are closer to 0 than 10,049. Let's see if this is true. Note that since this field has random values, the results you see per query are the values generated during that query's duration.</p>
+<p>The distribution type of output data requires you to pick a type of distribution: <code>Quantiles</code>, <code>Frequencies</code> or <code>Cumulative Frequencies</code>. <code>Quantiles</code> lets you get various percentiles (e.g. 25th, 99th) of your numeric field. <code>Frequencies</code> lets you break up the range of values of your field into intervals and get a count of how many values fell into each interval. <code>Cumulative Frequencies</code> does the same as <code>Frequencies</code> but each interval includes the counts of all the intervals prior to it. Both <code>Frequencies</code> and <code>Cumulative Frequencies</code> also give you a probability of how likely a value is to fall into the interval.</p>
+<p>All the distributions require you to specify some numeric points. For <code>Quantiles</code>, these points are between 0 and 1 and the value denotes the percentile you are looking for. (0.25 for 25th percentile, 0.99 for 99th etc). For <code>Frequencies</code> and <code>Cumulative Frequencies</code>, the points are between the minimum and maximum value of your field and every 2 contiguous points create an interval. However, the first interval always starts from <em>-&infin;</em> to the first point and the last interval always starts from your last point to <em>+&infin;</em>.</p>
+<p>You can read much more about this in the UI help by clicking the <code>Need more help?</code> link.</p>
+<h3 id="exact_1">Exact</h3>
+<p><strong>Example: Finding the various percentiles of duration</strong></p>
+<p>This example shows all 3 values of specifying points and shows <em>exact</em> distribution results for the <code>duration</code> field.</p>
+<video controls autoplay loop>
+  <source src="../../video/quantiles-all-point-formats.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+<hr />
+<p><strong>Example: Finding some frequency counts of duration values in an interval</strong></p>
+<p>The last example showed that the 90th percentile of <code>duration</code> was around 4000. This example gets some frequencies in various intervals.</p>
+<video controls autoplay loop>
+  <source src="../../video/frequency-distribution.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+<p>Try out and see what <code>Cumulative Frequencies</code> does yourself!</p>
+<h3 id="approximate_1">Approximate</h3>
+<p>This next example shows how an approximate distribution result looks.</p>
+<p><strong>Example: Approximate quantile distribution</strong></p>
+<video controls autoplay loop>
+  <source src="../../video/approx-quantile.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+<div class="admonition note">
+<p class="admonition-title">Normalized Rank Error</p>
+<p>To understand what this means, refer to the <a href="../../ws/examples/#normalized-rank-error">explanation here</a>. You can also refer to the help in the Result Metadata section.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Wouldn't it be nice to graph these?</p>
+<p>This is in the works! We plan to add pivoting and graphing as a general option in the results pages. Feel free to follow <a href="https://github.com/yahoo/bullet-ui/issues/24">the issue here</a>.</p>
+</div>
+<h2 id="top-k">Top K</h2>
+<p>Top K lets you get the most <em>frequent items</em> or the <em>heavy hitters</em> for the values in a set of a fields.</p>
+<h3 id="exact_2">Exact</h3>
+<p>This example gets the Top 3 most popular <code>type</code> values (there are only 6 but this illustrates the idea).</p>
+<video controls autoplay loop>
+  <source src="../../video/exact-top-k.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+<h3 id="approximate_2">Approximate</h3>
+<p>By adding <code>duration</code> into the fields, the number of unique values for <code>(type, duration)</code> is increased. However, because <code>duration</code> has a tendency to have low values, we will have some <em>frequent items</em>. The counts are now estimated. We ask for the top 300 results but we also say that they should have a count of at least 20. This restricts the overall number of results to 12.</p>
+<video controls autoplay loop>
+  <source src="../../video/approx-top-k.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+<div class="admonition note">
+<p class="admonition-title">Maximum Count Error</p>
+<p>The <code>maximum_count_error</code> value for the query above was <code>3</code>. This means that the difference between the upper bound and the lower bound of each count estimate is <code>3</code>. Bullet returns the upper bound as the estimate so subtracting <code>3</code> from each count gives you the lower bound of the count. Note that some counts are closer to each other than the count error. For instance, <code>(quux, 1)</code> and <code>(baz, 0)</code> have counts <code>67</code> and <code>66</code> but their true counts could be from <code>64 to 67</code> and <code>63 to 66</code> respectively. This means that <code>(baz, 0)</code> could well be the most frequent item for this query.</p>
 </div></div>
         
     </div>

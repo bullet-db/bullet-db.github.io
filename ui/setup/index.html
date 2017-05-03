@@ -277,7 +277,14 @@
             
                     <li class="second-level">
                         <a href="#configuration">Configuration</a>
+                        <ul class="nav">
                         
+                            <li class="third-level">
+                                <a href="#example">Example</a>
+                                
+                            </li>
+                        
+                        </ul>
                     </li>
             
             </ul>
@@ -344,83 +351,307 @@ express-server.js
 <p>Visit localhost:8800 to see your UI that should be configured with the right settings.</p>
 <h2 id="configuration">Configuration</h2>
 <p>All of the configuration for the UI is <strong>environment-specific</strong>. This lets you have different instances of Bullet for different environments (e.g. CI, Staging, Production). These settings can be found in <a href="https://github.com/yahoo/bullet-ui/blob/master/config/env-settings.json">env-settings.json</a>.</p>
-<p>Each property in the env-settings.json file will contain the settings that will be used when running a custom instance of the UI (see <a href="#Running">above</a>).</p>
-<p>The <code>default</code> property shows the default settings for the UI that can be selectively overridden based on which host you are running on. The file does not specify the <code>defaultFilter</code> setting shown below.</p>
-<pre><code class="json">&quot;default&quot;: {
-  &quot;drpcHost&quot;: &quot;http://foo.bar.com:4080&quot;,
-  &quot;drpcNamespace&quot;: &quot;bullet/api&quot;,
-  &quot;drpcPath&quot;: &quot;drpc&quot;,
-  &quot;schemaHost&quot;: &quot;http://foo.bar.com:4080&quot;,
-  &quot;schemaNamespace&quot;: &quot;bullet/api&quot;,
-  &quot;helpLinks&quot;: [
-    {
-      &quot;name&quot;: &quot;Example Docs Page&quot;,
-      &quot;link&quot;: &quot;&quot;
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>drpcHost</td>
+<td>The end point (port included) of your Web Service machine that is talking to the Bullet backend</td>
+</tr>
+<tr>
+<td>drpcNamespace</td>
+<td>The path fragment on your Web Service running on your <code>drpcHost</code></td>
+</tr>
+<tr>
+<td>schemaHost</td>
+<td>The end point (port included) of your Web Service machine that is serving your schema in the JSON API format (see <a href="../../ws/setup/">Web Service setup</a> for details.)</td>
+</tr>
+<tr>
+<td>schemaNamespace</td>
+<td>The path fragment on your schema Web Service running on the <code>schemaHost</code>. There is no <code>schemaPath</code> because it <strong>must</strong> be <code>columns</code> in order for the UI to be able fetch the column resource (the fields in your schema).</td>
+</tr>
+<tr>
+<td>modelVersion</td>
+<td>If there is a need for you to purge all your user's created queries, results and other data, then you should increment this number. The UI, on startup, will purge its storage if this number is higher than what it has seen before</td>
+</tr>
+<tr>
+<td>helpLinks</td>
+<td>Is a list of objects, where each object is a help link. These links populate the "Help" drop-down on the UI's top navbar. You can add links to explain your data for example</td>
+</tr>
+<tr>
+<td>defaultFilter</td>
+<td>Can either be a <a href="../../ws/api/#filters">API Filter</a> or a URL from which one could be fetched dynamically. The UI adds this to every newly created Query. You could use this as a way to have user specific (for example, cookie based) filters created for your users when they create a new query in the UI</td>
+</tr>
+<tr>
+<td>bugLink</td>
+<td>Is a URL that by default points to the issues page for the UI GitHub repository. You can change it to point to your own custom JIRA queue or something else</td>
+</tr>
+<tr>
+<td>defaultValues</td>
+<td>Is an object that lets you configures defaults for various query parameters and lets you tie your custom backend settings to the UI.</td>
+</tr>
+</tbody>
+</table>
+<p>These are the properties in the <code>defaultValues</code> object. The Validated column denotes if the value is used when validating a query for correctness and the In Help column denotes if the value is displayed in the popover help messages in the UI.</p>
+<table>
+<thead>
+<tr>
+<th>Default Values</th>
+<th>Validated</th>
+<th>In Help</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>aggregationMaxSize</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>The size used when doing a Count Distinct, Distinct, Group By, or Distribution query. Set this to your max aggregations size in your backend configuration</td>
+</tr>
+<tr>
+<td>rawMaxSize</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>The maximum size for a Raw query. Set this to your max raw aggregation size in your backend configuration</td>
+</tr>
+<tr>
+<td>durationMaxSecs</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>The maximum duration for a query. Set this to the seconds version of milliseconds max duration in your backend configuration</td>
+</tr>
+<tr>
+<td>distributionNumberOfPoints</td>
+<td>Yes</td>
+<td>No</td>
+<td>The default value filled in for the Number of Points field for all Distribution aggregations</td>
+</tr>
+<tr>
+<td>distributionQuantilePoints</td>
+<td>No</td>
+<td>No</td>
+<td>The default value filled in for the Points field for Quantile Distribution aggregations</td>
+</tr>
+<tr>
+<td>distributionQuantileStart</td>
+<td>No</td>
+<td>No</td>
+<td>The default value filled in for the Start field for Quantile Distribution aggregations</td>
+</tr>
+<tr>
+<td>distributionQuantileEnd</td>
+<td>No</td>
+<td>No</td>
+<td>The default value filled in for the End field for Quantile Distribution aggregations</td>
+</tr>
+<tr>
+<td>distributionQuantileIncrement</td>
+<td>No</td>
+<td>No</td>
+<td>The default value filled in for the Increment field for Quantile Distribution aggregations</td>
+</tr>
+<tr>
+<td>queryTimeoutSecs</td>
+<td>No</td>
+<td>Yes</td>
+<td>The additional time past the duration of the query for Bullet to timeout the query. This is number of ticks * the tick interval</td>
+</tr>
+<tr>
+<td>sketches.countDistinctMaxEntries</td>
+<td>No</td>
+<td>Yes</td>
+<td>The maximum entries configured for your Count Distinct sketch in your backend configuration</td>
+</tr>
+<tr>
+<td>sketches.groupByMaxEntries</td>
+<td>No</td>
+<td>Yes</td>
+<td>The maximum entries configured for your Group sketch in your backend configuration</td>
+</tr>
+<tr>
+<td>sketches.distributionMaxEntries</td>
+<td>No</td>
+<td>Yes</td>
+<td>The maximum entries configured for your Distribution sketch in your backend configuration</td>
+</tr>
+<tr>
+<td>sketches.distributionMaxNumberOfPoints</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>The maximum number of points allowed for Distribution aggregations in your backend configuration</td>
+</tr>
+<tr>
+<td>sketches.topKMaxEntries</td>
+<td>No</td>
+<td>Yes</td>
+<td>The maximum entries configured for your Top K sketch in your backend configuration</td>
+</tr>
+<tr>
+<td>sketches.topKErrorType</td>
+<td>No</td>
+<td>Yes</td>
+<td>The ErrorType used for your Top K sketch in your backend configuration. You should set this to the full String rather than <code>NFN</code> or <code>NFP</code></td>
+</tr>
+<tr>
+<td>metadataKeyMapping.theta</td>
+<td>No</td>
+<td>Yes</td>
+<td>The name of the Metadata key for the Theta Concept in your backend configuration</td>
+</tr>
+<tr>
+<td>metadataKeyMapping.uniquesEstimate</td>
+<td>No</td>
+<td>Yes</td>
+<td>The name of the Metadata key for the Uniques Estimate Concept in your backend configuration</td>
+</tr>
+<tr>
+<td>metadataKeyMapping.queryCreationTime</td>
+<td>No</td>
+<td>Yes</td>
+<td>The name of the Metadata key for the Query Creation Time Concept in your backend configuration</td>
+</tr>
+<tr>
+<td>metadataKeyMapping.queryTerminationTime</td>
+<td>No</td>
+<td>Yes</td>
+<td>The name of the Metadata key for the Query Termination Time Concept in your backend configuration</td>
+</tr>
+<tr>
+<td>metadataKeyMapping.estimatedResult</td>
+<td>No</td>
+<td>Yes</td>
+<td>The name of the Metadata key for the Estimated Result Concept in your backend configuration</td>
+</tr>
+<tr>
+<td>metadataKeyMapping.standardDeviations</td>
+<td>No</td>
+<td>Yes</td>
+<td>The name of the Metadata key for the Standard Deviations Concept in your backend configuration</td>
+</tr>
+<tr>
+<td>metadataKeyMapping.normalizedRankError</td>
+<td>No</td>
+<td>Yes</td>
+<td>The name of the Metadata key for the Normalized Rank Error Concept in your backend configuration</td>
+</tr>
+<tr>
+<td>metadataKeyMapping.maximumCountError</td>
+<td>No</td>
+<td>Yes</td>
+<td>The name of the Metadata key for the Maximum Count Error Concept in your backend configuration</td>
+</tr>
+<tr>
+<td>metadataKeyMapping.itemsSeen</td>
+<td>No</td>
+<td>Yes</td>
+<td>The name of the Metadata key for the Items Seen Concept in your backend configuration</td>
+</tr>
+<tr>
+<td>metadataKeyMapping.minimumValue</td>
+<td>No</td>
+<td>Yes</td>
+<td>The name of the Metadata key for the Minimum Value Concept in your backend configuration</td>
+</tr>
+<tr>
+<td>metadataKeyMapping.maximumValue</td>
+<td>No</td>
+<td>Yes</td>
+<td>The name of the Metadata key for the Maximum Value Concept in your backend configuration</td>
+</tr>
+</tbody>
+</table>
+<p>You can specify values for each property above in the <code>env-settings.json</code> file. These will be used when running a custom instance of the UI (see <a href="#Running">above</a>).</p>
+<p>The <code>default</code> property in the <code>env-settings.json</code> that loads default settings for the UI that can be selectively overridden based on which environment you are running on. All settings explained above have default values
+that are the same as the <a href="https://github.com/yahoo/bullet-storm/blob/master/src/main/resources/bullet_defaults.yaml">default backend settings</a>. However, the defaults do not add the <code>defaultFilter</code> setting explained above.</p>
+<pre><code class="json">{
+  &quot;default&quot;: {
+    &quot;drpcHost&quot;: &quot;https://foo.bar.com:4443&quot;,
+    &quot;drpcNamespace&quot;: &quot;bullet/api&quot;,
+    &quot;drpcPath&quot;: &quot;drpc&quot;,
+    &quot;schemaHost&quot;: &quot;https://foo.bar.com:4443&quot;,
+    &quot;schemaNamespace&quot;: &quot;bullet/api&quot;,
+    &quot;helpLinks&quot;: [
+      {
+        &quot;name&quot;: &quot;Tutorials&quot;,
+        &quot;link&quot;: &quot;https://yahoo.github.io/bullet-docs/ui/usage&quot;
+      }
+    ],
+    &quot;bugLink&quot;: &quot;https://github.com/yahoo/bullet-ui/issues&quot;,
+    &quot;modelVersion&quot;: 1,
+    &quot;defaultValues&quot;: {
+      &quot;aggregationMaxSize&quot;: 512,
+      &quot;rawMaxSize&quot;: 100,
+      &quot;durationMaxSecs&quot;: 120,
+      &quot;distributionNumberOfPoints&quot;: 11,
+      &quot;distributionQuantilePoints&quot;: &quot;0, 0.25, 0.5, 0.75, 0.9, 1&quot;,
+      &quot;distributionQuantileStart&quot;: 0,
+      &quot;distributionQuantileEnd&quot;: 1,
+      &quot;distributionQuantileIncrement&quot;: 0.1,
+      &quot;queryTimeoutSecs&quot;: 3,
+      &quot;sketches&quot;: {
+        &quot;countDistinctMaxEntries&quot;: 16384,
+        &quot;groupByMaxEntries&quot;: 512,
+        &quot;distributionMaxEntries&quot;: 1024,
+        &quot;distributionMaxNumberOfPoints&quot;: 100,
+        &quot;topKMaxEntries&quot;: 1024,
+        &quot;topKErrorType&quot;: &quot;No False Negatives&quot;
+      },
+      &quot;metadataKeyMapping&quot;: {
+        &quot;theta&quot;: &quot;theta&quot;,
+        &quot;uniquesEstimate&quot;: &quot;uniques_estimate&quot;,
+        &quot;queryCreationTime&quot;: &quot;query_receive_time&quot;,
+        &quot;queryTerminationTime&quot;: &quot;query_finish_time&quot;,
+        &quot;estimatedResult&quot;: &quot;was_estimated&quot;,
+        &quot;standardDeviations&quot;: &quot;standard_deviations&quot;,
+        &quot;normalizedRankError&quot;: &quot;normalized_rank_error&quot;,
+        &quot;maximumCountError&quot;: &quot;maximum_count_error&quot;,
+        &quot;itemsSeen&quot;: &quot;items_seen&quot;,
+        &quot;minimumValue&quot;: &quot;minimum_value&quot;,
+        &quot;maximumValue&quot;: &quot;maximum_value&quot;
+      }
     }
-  ],
-  &quot;defaultFilter&quot;: {
-      &quot;clauses&quot;: [
-          {
-              &quot;field&quot;: &quot;primary_key&quot;,
-              &quot;values&quot;:[&quot;123123123321321&quot;],
-              &quot;operation&quot;:&quot;==&quot;
-          }
-      ],
-      &quot;operation&quot;:&quot;AND&quot;
-  },
-  &quot;aggregateDataDefaultSize&quot;: 512,
-  &quot;modelVersion&quot;: 1
+  }
 }
 </code></pre>
 
-<p>You can add more configuration at the top level for each host you have the UI running on.</p>
-<p><code>drpcHost</code> is the end point (port included) of your Web Service machine that is proxying to the Bullet topology.</p>
-<p><code>drpcNamespace</code> is the fragment of the path to your Web Service on the <code>drpcHost</code>.</p>
-<p><code>schemaHost</code> is the end point (port included) of your Web Service machine that is serving your schema in the JSON API format (see the <a href="../../ws/setup/">Web Service setup</a> for details.)</p>
-<p><code>schemaNamespace</code> is the fragment of the path to your schema Web Service on the <code>schemaHost</code>. There is no <code>schemaPath</code> because it <strong>must</strong> be "columns" in order for the UI to be able fetch the column resource (columns in your schema).</p>
-<p><code>modelVersion</code> is a way for you to control your UI users' Ember models saved in LocalStorage. If there is a need for you to purge all your user's created queries, results and other data stored in their LocalStorage, then you should increment this number. The UI, on startup, will compare this number with what it has seen before (your old version) and purge the LocalStorage.</p>
-<p><code>helpLinks</code> is a list of objects, where each object is a help link. These links drive the drop-down list when you click the "Help" button on the UI's top navbar. You can use this to point to your particular help links. For example, you could use this to point your users toward a page that
-helps them understand your data (that this UI is operating on).</p>
-<p><code>defaultFilter</code> can either be an <a href="../../ws/api/#filters">API Filter</a> or a URL from which one could be fetched dynamically. The UI adds this filter to every newly created Query. You could use this as a way to have user specific (for example, cookie based) filters created for your users when they create a new query in the UI.</p>
-<p><code>bugLink</code> is a URL that by default points to the issues page for the UI GitHub repository (this). You can change it to point to your own custom JIRA queue or the like if you want to.</p>
-<p><code>aggregateDataDefaultSize</code> is the aggregation size for all queries that are not pulling raw data. In order to keep the aggregation size from being ambiguous for UI users when doing a Count Distinct or a Distinct or a Group By query, this is the size that is used. You should set this to your max size that you have configured for your non-raw aggregations in your topology configuration.</p>
+<p>You can add more top level properties for each environment you have the UI running on and <em>override</em> the top level properties in the <code>default</code> object. See <a href="#example">below</a> for an example.</p>
 <div class="admonition note">
 <p class="admonition-title">CORS</p>
 <p>All your Web Service endpoints must support CORS (return the right headers) in order for the UI to be able to communicate with it. The Bullet Web Service already does this for the DRPC and columns endpoints.</p>
 </div>
-<p>To cement all this, if you wanted an instance of the UI in your CI environment, you could add this to the env-settings.json file.</p>
+<h3 id="example">Example</h3>
+<p>To cement all this, if you wanted an instance of the UI in your CI environment, you could add another property to the <code>env-settings.json</code> file.</p>
 <pre><code class="json">{
-  &quot;default&quot;: {
-      &quot;drpcHost&quot;: &quot;&quot;,
-      &quot;drpcNamespace&quot;: &quot;bullet/api&quot;,
-      &quot;drpcPath&quot;: &quot;drpc&quot;,
-      &quot;schemaHost&quot;: &quot;&quot;,
-      &quot;schemaNamespace&quot;: &quot;bullet/api&quot;,
-      &quot;helpLinks&quot;: [
-        {
-          &quot;name&quot;: &quot;Data Documentation&quot;,
-          &quot;link&quot;: &quot;http://data.docs.domain.com&quot;
-        }
-      ],
-      &quot;bugLink&quot;: &quot;http://your.issues.page.com&quot;,
-      &quot;aggregateDataDefaultSize&quot;: 500,
-      &quot;modelVersion&quot;: 1
-  },
-   &quot;ci&quot;: {
-        &quot;drpcHost&quot;: &quot;http://bullet-ws.development.domain.com:4080&quot;,
-        &quot;schemaHost&quot;: &quot;http://bullet-ws.development.domain.com:4080&quot;,
-        &quot;defaultFilter&quot;: &quot;http://bullet-ws.development.domain.com:4080/custom-endpoint/api/defaultQuery&quot;
-      }
+    &quot;ci&quot;: {
+        &quot;drpcHost&quot;: &quot;http://bullet-ws.dev.domain.com:4080&quot;,
+        &quot;schemaHost&quot;: &quot;http://bullet-ws.dev.domain.com:4080&quot;,
+        &quot;helpLinks&quot;: [
+          {
+            &quot;name&quot;: &quot;Custom Documentation&quot;,
+            &quot;link&quot;: &quot;http://data.docs.domain.com&quot;
+          }
+        ],
+        &quot;defaultFilter&quot;: &quot;http://bullet-ws.dev.domain.com:4080/custom-endpoint/api/defaultQuery&quot;
+    }
 }
 </code></pre>
 
 <p>Your UI on your CI environment will:</p>
 <ul>
-<li>POST to <code>http://bullet-ws.development.domain.com:4080/bullet/api/drpc</code> for UI created Bullet queries</li>
-<li>GET the schema from <code>http://bullet-ws.development.domain.com:4080/bullet/api/columns</code></li>
+<li>POST to <code>http://bullet-ws.dev.domain.com:4080/bullet/api/drpc</code> for UI created Bullet queries</li>
+<li>GET the schema from <code>http://bullet-ws.dev.domain.com:4080/bullet/api/columns</code></li>
 <li>Populate an additional link on the Help drop-down pointing to <code>http://data.docs.domain.com</code></li>
-<li>GET and cache a defaultFilter from <code>http://bullet-ws.development.domain.com:4080/custom-endpoint/api/defaultQuery</code></li>
-</ul></div>
+<li>GET and cache a defaultFilter from <code>http://bullet-ws.dev.domain.com:4080/custom-endpoint/api/defaultQuery</code></li>
+</ul>
+<p>You would make express use these settings by running</p>
+<pre><code class="bash">NODE_ENV=ci PORT=8800 node express-server.js
+</code></pre></div>
         
     </div>
 

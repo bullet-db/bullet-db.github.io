@@ -384,9 +384,9 @@
 <p>This section gets you running a mock instance of Bullet to play around with. The instance will run using <a href="../backend/setup-storm/">Bullet on Storm</a>. Since we do not have an actual data source, we will produce some fake data and convert it into <a href="../backend/ingestion/">Bullet Records</a> in a <a href="https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/java/com/yahoo/bullet/storm/examples/RandomSpout.java">custom Storm spout</a>. If you want to use Bullet for your data, you will need to do read and convert your data to Bullet Records in a similar manner.</p>
 <p>By the following the steps in this section, you will:</p>
 <ul>
-<li>Setup the Bullet topology using a custom spout on <a href="https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.3.1">bullet-storm-0.3.1</a></li>
+<li>Setup the Bullet topology using a custom spout on <a href="https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.4.2">bullet-storm-0.4.2</a></li>
 <li>Setup the <a href="../ws/setup/">Web Service</a> talking to the topology and serving a schema for your UI using <a href="https://github.com/yahoo/bullet-service/releases/tag/bullet-service-0.0.1">bullet-service-0.0.1</a></li>
-<li>Setup the <a href="../ui/setup/">UI</a> talking to the Web Service using <a href="https://github.com/yahoo/bullet-ui/releases/tag/v0.1.0">bullet-ui-0.1.0</a></li>
+<li>Setup the <a href="../ui/setup/">UI</a> talking to the Web Service using <a href="https://github.com/yahoo/bullet-ui/releases/tag/v0.2.2">bullet-ui-0.2.2</a></li>
 </ul>
 <p><strong>Prerequisites</strong></p>
 <ul>
@@ -396,7 +396,7 @@
 </ul>
 <h2 id="quicker-start">Quicker Start</h2>
 <p>Don't want to follow all these Steps? Make sure you have your prerequisites and you can just run:</p>
-<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.2.0/examples/install-all.sh | bash
+<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.3.0/examples/install-all.sh | bash
 </code></pre>
 
 <p>This will run all the Steps for you. Once everything has launched, you should be able to go to the Bullet UI running locally at <a href="http://localhost:8800">http://localhost:8800</a>. You can then continue this guide from <a href="#what-did-we-do">here</a>.</p>
@@ -410,7 +410,7 @@ mkdir -p $BULLET_HOME/backend/storm
 mkdir -p $BULLET_HOME/service
 mkdir -p $BULLET_HOME/ui
 cd $BULLET_HOME
-curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.2.0/examples_artifacts.tar.gz
+curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.3.0/examples_artifacts.tar.gz
 tar -xzf examples_artifacts.tar.gz
 export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 </code></pre>
@@ -456,7 +456,7 @@ storm supervisor &amp;
 <p>If you notice any problems while setting up storm or while relaunching a topology, it may be because some state is corrupted. When running Storm in this fashion, states and serializations are stored in <code>storm-local</code> and <code>/tmp/</code>. You may want to <code>rm -rf storm-local/* /tmp/dev-storm-zookeeper</code> to clean up this state before relaunching Storm components. See the <a href="#teardown">tear down section</a> on how to kill any running instances.</p>
 </div>
 <h2 id="setting-up-the-example-bullet-topology">Setting up the example Bullet topology</h2>
-<p>Now that Storm is up and running, we can put Bullet on it. We will use an example Spout that runs on Bullet 0.3.1 on our Storm cluster. The source is available <a href="https://github.com/yahoo/bullet-docs/blob/master/examples/storm">here</a>. This was part of the artifact that you installed in Step 1.</p>
+<p>Now that Storm is up and running, we can put Bullet on it. We will use an example Spout that runs on Bullet 0.4.2 on our Storm cluster. The source is available <a href="https://github.com/yahoo/bullet-docs/blob/master/examples/storm">here</a>. This was part of the artifact that you installed in Step 1.</p>
 <h4 id="step-5-setup-the-storm-example">Step 5: Setup the Storm example</h4>
 <pre><code class="bash">cp $BULLET_EXAMPLES/storm/* $BULLET_HOME/backend/storm
 </code></pre>
@@ -469,6 +469,9 @@ storm supervisor &amp;
 <p><code>bullet.rule.aggregation.max.size: 1024</code> The max records you can fetch for any query is 1024.</p>
 <p><code>bullet.rule.aggregation.count.distinct.sketch.entries: 16384</code> We can count 16384 unique values exactly. Approximates after.</p>
 <p><code>bullet.rule.aggregation.group.sketch.entries: 1024</code> The max unique groups can be 1024. Uniform sample after.</p>
+<p><code>bullet.query.aggregation.distribution.sketch.entries: 1024</code> Determines the normalized rank error for distributions.</p>
+<p><code>bullet.query.aggregation.top.k.sketch.entries: 1024</code> 0.75 times this number is the number of unique items for which counts can be done exactly. Approximates after.</p>
+<p><code>bullet.query.aggregation.distribution.max.points: 200</code> The maximum number of points you can generate, use or provide for a Distribution aggregation.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Want to tweak the example topology code?</p>
@@ -476,6 +479,7 @@ storm supervisor &amp;
 <p><code>cd $BULLET_HOME &amp;&amp; git clone git@github.com:yahoo/bullet-docs.git</code></p>
 <p><code>cd bullet-docs/examples/storm &amp;&amp; mvn package</code></p>
 <p>You will find the <code>bullet-storm-example-1.0-SNAPSHOT-jar-with-dependencies.jar</code> in <code>$BULLET_HOME/bullet-docs/examples/storm/target/</code></p>
+<p>You can also make the <code>examples_artifacts.tar.gz</code> file with all the settings that is placed in <code>$BULLET_EXAMPLES</code> by just running <code>make</code> in the <code>bullet-docs/examples/</code> folder.</p>
 </div>
 <h4 id="step-6-launch-the-topology">Step 6: Launch the topology</h4>
 <pre><code class="bash">cd $BULLET_HOME/backend/storm &amp;&amp; ./launch.sh
@@ -524,8 +528,8 @@ nvm use v6.9.4
 
 <h4 id="step-11-install-the-bullet-ui">Step 11: Install the Bullet UI</h4>
 <pre><code class="bash">cd $BULLET_HOME/ui
-curl -LO https://github.com/yahoo/bullet-ui/releases/download/v0.1.0/bullet-ui-v0.1.0.tar.gz
-tar -xzf bullet-ui-v0.1.0.tar.gz
+curl -LO https://github.com/yahoo/bullet-ui/releases/download/v0.2.2/bullet-ui-v0.2.2.tar.gz
+tar -xzf bullet-ui-v0.2.2.tar.gz
 cp $BULLET_EXAMPLES/ui/env-settings.json config/
 </code></pre>
 
@@ -536,11 +540,12 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
 <p>Visit <a href="http://localhost:8800">http://localhost:8800</a> to query your topology with the UI. See <a href="../ui/usage/">UI usage</a> for some example queries and interactions using this UI. You see what the Schema means by visiting the Schema section.</p>
 <div class="admonition note">
 <p class="admonition-title">Running it remotely?</p>
-<p>If you access the UI from another machine than where your UI is actually running, you will need to edit <code>config/env-settings.json</code>. Since the UI is a client-side app, the machine that your browser is running on will fetch the UI and attempt to use these settings to talk to the Web Service. Since they point to localhost by default, your browser will attempt to connect there and fail. An easy fix is to change <code>localhost</code> in your env-settings.json to point to the host name where you will hosting the UI. This will be the same as the UI host you use in the browser.</p>
+<p>If you access the UI from another machine than where your UI is actually running, you will need to edit <code>config/env-settings.json</code>. Since the UI is a client-side app, the machine that your browser is running on will fetch the UI and attempt to use these settings to talk to the Web Service. Since they point to localhost by default, your browser will attempt to connect there and fail. An easy fix is to change <code>localhost</code> in your env-settings.json to point to the host name where you will hosting the UI. This will be the same as the UI host you use in the browser. You can also do a local port forward on the machine accessing the UI by running:
+<code>ssh -N -L 8800:localhost:8800 -L 9999:localhost:9999 hostname-of-the-quickstart-components 2&gt;&amp;1</code></p>
 </div>
 <h2 id="teardown">Teardown</h2>
 <p>If you were following the <a href="#quicker-start">Quicker Start</a> or if you don't want to manually bring down everything, you can run:</p>
-<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.2.0/examples/install-all.sh | bash -s cleanup
+<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.3.0/examples/install-all.sh | bash -s cleanup
 </code></pre>
 
 <p>If you were performing the steps yourself, you can also manually cleanup <strong>all the components and all the downloads</strong> using:</p>
@@ -628,6 +633,8 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
         record.setString(STRING, uuid);
         record.setLong(LONG, (long) generatedThisPeriod);
         record.setDouble(DOUBLE, random.nextDouble());
+        record.setString(TYPE, STRING_POOL[random.nextInt(STRING_POOL.length)]);
+        record.setLong(DURATION, System.currentTimeMillis() % INTEGER_POOL[random.nextInt(INTEGER_POOL.length)]);
 
         Map&lt;String, Boolean&gt; booleanMap = new HashMap&lt;&gt;(4);
         booleanMap.put(uuid.substring(0, 8), random.nextBoolean());
@@ -709,13 +716,44 @@ columns.schema.version=1.0
     &quot;schemaNamespace&quot;: &quot;bullet-service/api&quot;,
     &quot;helpLinks&quot;: [
       {
-        &quot;name&quot;: &quot;Example Docs Page&quot;,
-        &quot;link&quot;: &quot;&quot;
+        &quot;name&quot;: &quot;Examples&quot;,
+        &quot;link&quot;: &quot;https://yahoo.github.io/bullet-docs/ui/usage&quot;
       }
     ],
     &quot;bugLink&quot;: &quot;https://github.com/yahoo/bullet-ui/issues&quot;,
-    &quot;aggregateDataDefaultSize&quot;: 1024,
-    &quot;modelVersion&quot;: 1
+    &quot;modelVersion&quot;: 1,
+    &quot;defaultValues&quot;: {
+      &quot;aggregationMaxSize&quot;: 1024,
+      &quot;rawMaxSize&quot;: 500,
+      &quot;durationMaxSecs&quot;: 540,
+      &quot;distributionNumberOfPoints&quot;: 11,
+      &quot;distributionQuantilePoints&quot;: &quot;0, 0.25, 0.5, 0.75, 0.9, 1&quot;,
+      &quot;distributionQuantileStart&quot;: 0,
+      &quot;distributionQuantileEnd&quot;: 1,
+      &quot;distributionQuantileIncrement&quot;: 0.1,
+      &quot;queryTimeoutSecs&quot;: 3,
+      &quot;sketches&quot;: {
+        &quot;countDistinctMaxEntries&quot;: 16384,
+        &quot;groupByMaxEntries&quot;: 512,
+        &quot;distributionMaxEntries&quot;: 1024,
+        &quot;distributionMaxNumberOfPoints&quot;: 200,
+        &quot;topKMaxEntries&quot;: 1024,
+        &quot;topKErrorType&quot;: &quot;No False Negatives&quot;
+      },
+      &quot;metadataKeyMapping&quot;: {
+        &quot;theta&quot;: &quot;theta&quot;,
+        &quot;uniquesEstimate&quot;: &quot;uniques_estimate&quot;,
+        &quot;queryCreationTime&quot;: &quot;query_receive_time&quot;,
+        &quot;queryTerminationTime&quot;: &quot;query_finish_time&quot;,
+        &quot;estimatedResult&quot;: &quot;was_estimated&quot;,
+        &quot;standardDeviations&quot;: &quot;standard_deviations&quot;,
+        &quot;normalizedRankError&quot;: &quot;normalized_rank_error&quot;,
+        &quot;maximumCountError&quot;: &quot;maximum_count_error&quot;,
+        &quot;itemsSeen&quot;: &quot;items_seen&quot;,
+        &quot;minimumValue&quot;: &quot;minimum_value&quot;,
+        &quot;maximumValue&quot;: &quot;maximum_value&quot;
+      }
+    }
   }
 }
 </code></pre>
