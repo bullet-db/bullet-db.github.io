@@ -2,11 +2,11 @@
 
 This section gets you running a mock instance of Bullet to play around with. The instance will run using [Bullet on Storm](backend/setup-storm.md). Since we do not have an actual data source, we will produce some fake data and convert it into [Bullet Records](backend/ingestion.md) in a [custom Storm spout](https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/java/com/yahoo/bullet/storm/examples/RandomSpout.java). If you want to use Bullet for your data, you will need to do read and convert your data to Bullet Records in a similar manner.
 
-By the following the steps in this section, you will:
+At the end of this section, you will have:
 
   * Setup the Bullet topology using a custom spout on [bullet-storm-0.4.2](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.4.2)
   * Setup the [Web Service](ws/setup.md) talking to the topology and serving a schema for your UI using [bullet-service-0.0.1](https://github.com/yahoo/bullet-service/releases/tag/bullet-service-0.0.1)
-  * Setup the [UI](ui/setup.md) talking to the Web Service using [bullet-ui-0.2.2](https://github.com/yahoo/bullet-ui/releases/tag/v0.2.2)
+  * Setup the [UI](ui/setup.md) talking to the Web Service using [bullet-ui-0.3.1](https://github.com/yahoo/bullet-ui/releases/tag/v0.3.1)
 
 **Prerequisites**
 
@@ -14,21 +14,23 @@ By the following the steps in this section, you will:
   * You will need [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html) installed
   * You will need enough CPU and RAM on your machine to run about 8-10 JVMs in ```server``` mode. You should have at least 2 GB free space on your disk. We will be setting up a Storm cluster with multiple components, a couple of Jetty instances and a Node server.
 
-## Quicker Start
+## Install Script
 
-Don't want to follow all these Steps? Make sure you have your prerequisites and you can just run:
+Simply run:
 
 ```bash
-curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.3.0/examples/install-all.sh | bash
+curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.3.1/examples/install-all.sh | bash
 ```
 
-This will run all the Steps for you. Once everything has launched, you should be able to go to the Bullet UI running locally at [http://localhost:8800](http://localhost:8800). You can then continue this guide from [here](#what-did-we-do).
+This will setup a local Storm cluster, a Bullet running on it, the Bullet Web Service and a Bullet UI for you. Once everything has launched, you should be able to go to the Bullet UI running locally at [http://localhost:8800](http://localhost:8800). You can then [**continue this guide from here**](#what-did-we-do).
 
-If you want to manually run all the commands or if something failed above (might want to perform the [teardown](#teardown) first), you can continue below.
+!!! note "Want to DIY?"
+    If you want to manually run all the commands or if the script died while doing something above (might want to perform the [teardown](#teardown) first), you can continue below.
 
----
 
-## Setting up Storm
+## Manual Installation
+
+### Setting up Storm
 
 To set up a clean working environment, let's start with creating some directories.
 
@@ -40,7 +42,7 @@ mkdir -p $BULLET_HOME/backend/storm
 mkdir -p $BULLET_HOME/service
 mkdir -p $BULLET_HOME/ui
 cd $BULLET_HOME
-curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.3.0/examples_artifacts.tar.gz
+curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.3.1/examples_artifacts.tar.gz
 tar -xzf examples_artifacts.tar.gz
 export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 ```
@@ -100,7 +102,7 @@ storm kill topology
 
     If you notice any problems while setting up storm or while relaunching a topology, it may be because some state is corrupted. When running Storm in this fashion, states and serializations are stored in ```storm-local``` and ```/tmp/```. You may want to ```rm -rf storm-local/* /tmp/dev-storm-zookeeper``` to clean up this state before relaunching Storm components. See the [tear down section](#teardown) on how to kill any running instances.
 
-## Setting up the example Bullet topology
+### Setting up the example Bullet topology
 
 Now that Storm is up and running, we can put Bullet on it. We will use an example Spout that runs on Bullet 0.4.2 on our Storm cluster. The source is available [here](https://github.com/yahoo/bullet-docs/blob/master/examples/storm). This was part of the artifact that you installed in Step 1.
 
@@ -114,15 +116,15 @@ cp $BULLET_EXAMPLES/storm/* $BULLET_HOME/backend/storm
 
     Take a look at bullet_settings.yaml for the settings that are being overridden for this example. You can add or change settings as you like by referring to [bullet_defaults.yaml](https://github.com/yahoo/bullet-storm/blob/master/src/main/resources/bullet_defaults.yaml). In particular, we have [customized these settings](https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/resources/bullet_settings.yaml) that affect the Bullet queries you can run:
 
-    ```bullet.rule.max.duration: 570000``` Longest query time can be 570s. The Storm cluster default DRPC timeout is 600s.
+    ```bullet.query.max.duration: 570000``` Longest query time can be 570s. The Storm cluster default DRPC timeout is 600s.
 
-    ```bullet.rule.aggregation.raw.max.size: 500``` The max ```RAW``` records you can fetch is 500.
+    ```bullet.query.aggregation.raw.max.size: 500``` The max ```RAW``` records you can fetch is 500.
 
-    ```bullet.rule.aggregation.max.size: 1024``` The max records you can fetch for any query is 1024.
+    ```bullet.query.aggregation.max.size: 1024``` The max records you can fetch for any query is 1024.
 
-    ```bullet.rule.aggregation.count.distinct.sketch.entries: 16384``` We can count 16384 unique values exactly. Approximates after.
+    ```bullet.query.aggregation.count.distinct.sketch.entries: 16384``` We can count 16384 unique values exactly. Approximates after.
 
-    ```bullet.rule.aggregation.group.sketch.entries: 1024``` The max unique groups can be 1024. Uniform sample after.
+    ```bullet.query.aggregation.group.sketch.entries: 1024``` The max unique groups can be 1024. Uniform sample after.
 
     ```bullet.query.aggregation.distribution.sketch.entries: 1024``` Determines the normalized rank error for distributions.
 
@@ -161,7 +163,7 @@ You should get a random record from Bullet.
 
     This data is randomly generated by the [custom Storm spout](https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/java/com/yahoo/bullet/storm/examples/RandomSpout.java) that is in the example topology you just launched. In practice, your spout would read from an actual data source such as Kafka instead. See [below](#storm-topology) for more details about this random data spout.
 
-## Setting up the Bullet Web Service
+### Setting up the Bullet Web Service
 
 #### Step 7: Install Jetty
 
@@ -192,7 +194,7 @@ curl -s -X POST -d '{}' http://localhost:9999/bullet-service/api/drpc
 curl -s http://localhost:9999/bullet-service/api/columns
 ```
 
-## Setting up the Bullet UI
+### Setting up the Bullet UI
 
 #### Step 10: Install Node
 
@@ -207,8 +209,8 @@ nvm use v6.9.4
 
 ```bash
 cd $BULLET_HOME/ui
-curl -LO https://github.com/yahoo/bullet-ui/releases/download/v0.2.2/bullet-ui-v0.2.2.tar.gz
-tar -xzf bullet-ui-v0.2.2.tar.gz
+curl -LO https://github.com/yahoo/bullet-ui/releases/download/v0.3.1/bullet-ui-v0.3.1.tar.gz
+tar -xzf bullet-ui-v0.3.1.tar.gz
 cp $BULLET_EXAMPLES/ui/env-settings.json config/
 ```
 
@@ -228,10 +230,10 @@ Visit [http://localhost:8800](http://localhost:8800) to query your topology with
 
 ## Teardown
 
-If you were following the [Quicker Start](#quicker-start) or if you don't want to manually bring down everything, you can run:
+If you were using the [Install Script](#install-script) or if you don't want to manually bring down everything, you can run:
 
 ```bash
-curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.3.0/examples/install-all.sh | bash -s cleanup
+curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.3.1/examples/install-all.sh | bash -s cleanup
 ```
 
 If you were performing the steps yourself, you can also manually cleanup **all the components and all the downloads** using:
@@ -415,7 +417,11 @@ Finally, we configured the UI with the custom environment specific settings file
       }
     ],
     "bugLink": "https://github.com/yahoo/bullet-ui/issues",
-    "modelVersion": 1,
+    "modelVersion": 2,
+    "migrations": {
+      "deletions": "result"
+    },
+    "defaultValues": {
     "defaultValues": {
       "aggregationMaxSize": 1024,
       "rawMaxSize": 500,

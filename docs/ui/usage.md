@@ -1,6 +1,8 @@
 # Navigating the UI
 
-The UI should (hopefully) be self-explanatory. Any particular section that requires additional information has the ![info](../img/info.png) icon next to it. Clicking this will display information relevant to that section. The interactions in this page are running on the topology that was set up in the [Quick Start](../quick-start.md). Recall that the example backend is configured to produce *20 data records every 101 ms.*.
+The UI should (hopefully) be self-explanatory. Any particular section that requires additional information has the ![info](../img/info.png) icon next to it. Clicking this will display information relevant to that section. The interactions in this page are running on the topology that was set up in the [Quick Start](../quick-start.md).  Recall that the example backend is configured to produce *20 data records every 101 ms.*.
+
+The examples that show the various query types below were done on [Bullet UI v0.2.2](https://github.com/yahoo/bullet-ui/releases/tag/v0.2.2). Any example that uses a different version will make that explicit.
 
 ## Landing page
 
@@ -63,7 +65,7 @@ The Output Data section lets you aggregate or choose to see raw data records. Yo
 
 ### Complex Filtering
 
-The querybuilder also lets you easily create nested filters. You can add rules to add basic relational filters or group a set of filters by connecting them with ANDs and ORs. You can also drag and drop rules and groups.
+The querybuilder also lets you easily create nested filters. You can add basic relational filters or group a set of basic filters by connecting them with ANDs and ORs. You can also drag and drop filters and groups.
 
 The querybuilder is also type aware. The operations you can perform change based on the type. Numeric fields only allow numeric values. String fields allow you to apply regular expressions to them or specify multiple values at the same time using a ```,```. Boolean fields only allow you to choose a radio button etc.
 
@@ -217,10 +219,6 @@ This next example shows how an approximate distribution result looks.
 
     To understand what this means, refer to the [explanation here](../ws/examples.md#normalized-rank-error). You can also refer to the help in the Result Metadata section.
 
-!!! note "Wouldn't it be nice to graph these?"
-
-    This is in the works! We plan to add pivoting and graphing as a general option in the results pages. Feel free to follow [the issue here](https://github.com/yahoo/bullet-ui/issues/24).
-
 ## Top K
 
 Top K lets you get the most *frequent items* or the *heavy hitters* for the values in a set of a fields.
@@ -246,3 +244,7 @@ By adding ```duration``` into the fields, the number of unique values for ```(ty
 !!! note "Maximum Count Error"
 
     The ```maximum_count_error``` value for the query above was ```3```. This means that the difference between the upper bound and the lower bound of each count estimate is ```3```. Bullet returns the upper bound as the estimate so subtracting ```3``` from each count gives you the lower bound of the count. Note that some counts are closer to each other than the count error. For instance, ```(quux, 1)``` and ```(baz, 0)``` have counts ```67``` and ```66``` but their true counts could be from ```64 to 67``` and ```63 to 66``` respectively. This means that ```(baz, 0)``` could well be the most frequent item for this query.
+
+## Coming soon
+
+[Bullet UI v0.3.0 and above](https://github.com/yahoo/bullet-ui/releases/tag/v0.3.0) added support for charting and pivoting. Stay tuned for some tutorials on this feature.

@@ -28,7 +28,7 @@ The rest of this document assumes that you are familiar with [Storm](http://stor
 
 ##  How was this tested?
 
-All tests run here were using [Bullet-Storm 0.3.1](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.3.1). The intent is to test just the Storm piece without going through the Web Service or the UI. The DRPC REST endpoint provided by Storm lets us do just that.
+All tests run here were using [Bullet-Storm 0.4.2](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.4.2). The intent is to test just the Storm piece without going through the Web Service or the UI. The DRPC REST endpoint provided by Storm lets us do just that.
 
 Using the pluggable metrics interface in Bullet on Storm, various worker level metrics such as CPU time, Heap usage, GC times and types, were captured and sent to a Yahoo in-house monitoring service for time-slicing and graphing. The graphs shown in the tests below use this service. See [0.3.0](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.3.0) for details on how to plug in your own metrics collection.
 
@@ -60,7 +60,7 @@ Here is the default configuration we used to launch the basic instance of Bullet
 bullet.topology.metrics.enable: true
 bullet.topology.metrics.built.in.enable: true
 bullet.topology.metrics.built.in.emit.interval.mapping:
-   bullet_active_rules: 5
+   bullet_active_queries: 5
    default: 60
 bullet.topology.metrics.classes:
   - "package.containing.our.custom.class.pushing.metrics"
@@ -85,14 +85,15 @@ bullet.topology.join.bolt.cpu.load: 50.0
 bullet.topology.join.bolt.memory.on.heap.load: 384.0
 bullet.topology.join.bolt.memory.off.heap.load: 192.0
 bullet.topology.join.bolt.error.tick.timeout: 3
-bullet.topology.join.bolt.rule.tick.timeout: 3
+bullet.topology.join.bolt.query.tick.timeout: 3
 bullet.topology.tick.interval.secs: 1
-bullet.rule.default.duration: 30000
-bullet.rule.max.duration: 540000
-bullet.rule.aggregation.max.size: 512
-bullet.rule.aggregation.raw.max.size: 500
+bullet.query.default.duration: 30000
+bullet.query.max.duration: 540000
+bullet.query.aggregation.max.size: 512
+bullet.query.aggregation.raw.max.size: 500
+bullet.query.aggregation.distribution.max.points: 200
 ```
-Any setting not listed here default to the defaults in [bullet_defaults.yaml](https://github.com/yahoo/bullet-storm/blob/bullet-storm-0.3.1/src/main/resources/bullet_defaults.yaml). In particular, **metadata collection** and **timestamp injection** is enabled. ```RAW``` type queries also micro-batch by size 1 (in other words, do not micro-batch).
+Any setting not listed here default to the defaults in [bullet_defaults.yaml](https://github.com/yahoo/bullet-storm/blob/bullet-storm-0.4.2/src/main/resources/bullet_defaults.yaml). In particular, **metadata collection** and **timestamp injection** is enabled. ```RAW``` type queries also micro-batch by size 1 (in other words, do not micro-batch).
 
 The topology was also launched (command-line args to Storm) with the following Storm settings:
 
@@ -163,16 +164,16 @@ The following table shows the timestamps averaged by running **100** of these qu
 
 |    Timestamp    | Delay (ms) |
 | :-------------- | ---------: |
-| Kafka Received  | -705.79    |
-| Bullet Received | -1.01      |
+| Kafka Received  | -710.75    |
+| Bullet Received | -2.16      |
 | Query Received  | 0          |
-| Query Finished  | 1.74       |
+| Query Finished  | 1.66       |
 
-The Bullet Received timestamp above is negative because the Filter bolt received the query and emitted an arbitrary record ```1.01 ms``` before the Join bolt received the query. The data was submitted into Kafka about ```705.79 ms``` before the query was received by Bullet and that difference is the processing time of Kafka and the time for our spouts to read the data into Bullet.
+The Bullet Received timestamp above is negative because the Filter bolt received the query and emitted an arbitrary record ```2.16 ms``` before the Join bolt received the query. The data was submitted into Kafka about ```710.75 ms``` before the query was received by Bullet and that difference is the processing time of Kafka and the time for our spouts to read the data into Bullet.
 
 ### Conclusion
 
-Bullet adds a delay of ```1.74 ms``` to just pull out a record. This result shows that this is the fastest Bullet can be. It cannot return data any faster than this for meaningful queries.
+Bullet adds a delay of a few ms - ```1.66 ms``` in the test above - to just pull out a record. This result shows that this is the fastest Bullet can be. It cannot return data any faster than this for meaningful queries.
 
 ## Test 2: Measuring the time to find a record
 
@@ -180,7 +181,7 @@ This test runs with the [standard configuration](#configuration) above.
 
 The [last test](#test-1-measuring-the-inherent-latency-of-bullet) attempted to measure how long Bullet takes to pick out a record. Here we will measure how long it takes to find a record *that we generate*. This is the average of running **100** queries across a time interval of 30 minutes trying to filter for a record with a single unique value in a field [similar to this query](../ws/examples.md#simple-filtering).
 
-Since this query actually requires us to be looking at the values in the data, we should also mention that the average data volume across this test was: ```Data: 164,000 MPS and 107 MB/s```
+Since this query actually requires us to be looking at the values in the data, we should also mention that the average data volume across this test was: ```Data: 163,000 MPS and 105 MB/s```
 
 ### Result
 
@@ -188,23 +189,23 @@ Since this query actually requires us to be looking at the values in the data, w
 
 |    Timestamp    | Delay (ms) |
 | :-------------- | ---------: |
-| Kafka Received  | 519.25     |
-| Bullet Received | 1161.43    |
+| Kafka Received  | 465.81     |
+| Bullet Received | 1072.84    |
 | Query Received  | 0          |
-| Query Finished  | 1165.96    |
+| Query Finished  | 1077.85    |
 
 
-The record was emitted into Kafka ```519.25 ms``` after the query was received. The delay is the time it takes for the generated record to flow through our network and into Kafka.
+The record was emitted into Kafka ```465.81 ms``` after the query was received. The delay is the time it takes for the generated record to flow through our network and into Kafka.
 
-It is difficult to isolate how long of the ```1161.43 ms - 519.25 ms = 642.18 ms``` was spent in Kafka and how long was spent reading the record and sending it to the Filter bolt from our spout. However, we can look this time as a whole and include it into the time to get data into Bullet.
+It is difficult to isolate how long of the ```1072.84 ms - 465.81 ms = 607.03 ms``` was spent in Kafka and how long was spent reading the record and sending it to the Filter bolt from our spout. However, we can look this time as a whole and include it into the time to get data into Bullet.
 
 ### Conclusion
 
-We see that Bullet took on average ```1165.96 ms - 1161.43 ms = 4.53 ms``` from the time it saw the record in the Filter bolt to finishing up the query and returning it.
+We see that Bullet took on average ```1077.85 ms - 1072.84 ms = 5.01 ms``` from the time it saw the record in the Filter bolt to finishing up the query and returning it.
 
 !!! note "So, Bullet takes ~5 ms to find a record?"
 
-    No, not really. Remember that we are only including the time from which the record was matched in the Filter bolt to when it was sent out from the Join bolt. We can only conclude that the true delay is less than ```1165.96 ms - 519.25 ms = 646.71 ms``` because that is the difference in time from when the record was emitted into Kafka and when it was emitted out of Bullet. It is less than that because a part of that time is Kafka accepting the record and making it available for consumption. Nevertheless, finding a single record in data stream of ```164,000 mps``` in about half a second with about [5 machines](#resource-utilization) is not bad at all!
+    No, not really. Remember that we are only including the time from which the record was matched in the Filter bolt to when it was sent out from the Join bolt. We can only conclude that the true delay is less than ```1077.85 ms - 465.81 ms = 612.04 ms``` because that is the difference in time from when the record was emitted into Kafka and when it was emitted out of Bullet. It is less than that because a part of that time is Kafka accepting the record and making it available for consumption. Nevertheless, finding a single record in data stream of ```163,000 mps``` in about half a second with about [5 machines](#resource-utilization) is not bad at all!
 
 ## Test 3: Measuring the maximum number of parallel ```RAW``` queries
 
@@ -237,7 +238,7 @@ We will run a certain number of these queries then generate a record matching th
 This script takes in a single numeric argument to run a number of queries in parallel (you may have to use ```ulimit``` to change maximum user processes if you specify a large number). It runs till you kill it performing the following:
 
 1. It generates a provided number of the [query above](#query) and runs them in parallel against a randomly chosen DRPC server
-2. It generates data for the query 
+2. It generates data for the query
 3. It waits out the rest of the time and uses jq to validate that all the generated data was found
 
 Here is a version of the script with the specifics to our data generation and Storm topology removed:
@@ -423,4 +424,3 @@ With this change in heap usage, we could get to ```735``` of these queries simul
 !!! note "735 is a hard limit then?"
 
     We are currently discussing this with the Storm folks to perhaps switch DRPC to a non-blocking implementation. Also, depending on if and how Bullet is implemented on other Stream processors, an alternative to DRPC may be required anyway - such as using a Pub/Sub queue like Kafka to deliver queries and retrieve results from Bullet. Stay tuned for updates!
-

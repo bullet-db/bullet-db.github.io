@@ -81,7 +81,8 @@ All of the configuration for the UI is **environment-specific**. This lets you h
 | drpcNamespace   | The path fragment on your Web Service running on your ```drpcHost``` |
 | schemaHost      | The end point (port included) of your Web Service machine that is serving your schema in the JSON API format (see [Web Service setup](../ws/setup.md) for details.)|
 | schemaNamespace | The path fragment on your schema Web Service running on the ```schemaHost```. There is no ```schemaPath``` because it **must** be ```columns``` in order for the UI to be able fetch the column resource (the fields in your schema).|
-| modelVersion    | If there is a need for you to purge all your user's created queries, results and other data, then you should increment this number. The UI, on startup, will purge its storage if this number is higher than what it has seen before |
+| modelVersion    | This is used an indicator to apply changes to the stored queries, results etc. It is monotonically increasing. On startup, changes specified in ```migrations``` will be applied if the old modelVersion is not present or is < than this number |
+| migrations      | is an object that currently supports one key: ```deletions``` of type string. The value can be set to either ```result``` or ```query```. The former wipes all existing results. The latter wipes everything. See ```modelVersion``` above. |
 | helpLinks       | Is a list of objects, where each object is a help link. These links populate the "Help" drop-down on the UI's top navbar. You can add links to explain your data for example |
 | defaultFilter   | Can either be a [API Filter](../ws/api.md#filters) or a URL from which one could be fetched dynamically. The UI adds this to every newly created Query. You could use this as a way to have user specific (for example, cookie based) filters created for your users when they create a new query in the UI |
 | bugLink         | Is a URL that by default points to the issues page for the UI GitHub repository. You can change it to point to your own custom JIRA queue or something else |
@@ -175,7 +176,7 @@ that are the same as the [default backend settings](https://github.com/yahoo/bul
 }
 ```
 
-You can add more top level properties for each environment you have the UI running on and *override* the top level properties in the ```default``` object. See [below](#example) for an example.
+You can add more properties for each environment you have the UI running on and *override* the properties in the ```default``` object. See [below](#example) for an example.
 
 !!! note "CORS"
 
@@ -196,6 +197,13 @@ To cement all this, if you wanted an instance of the UI in your CI environment, 
             "link": "http://data.docs.domain.com"
           }
         ],
+        "defaultValues" : {
+            "durationMaxSecs": 300,
+            "sketches": {
+                "countDistinctMaxEntries": 32768,
+                "distributionMaxNumberOfPoints": 50
+            }
+        },
         "defaultFilter": "http://bullet-ws.dev.domain.com:4080/custom-endpoint/api/defaultQuery"
     }
 }
@@ -206,6 +214,9 @@ Your UI on your CI environment will:
   * POST to ```http://bullet-ws.dev.domain.com:4080/bullet/api/drpc``` for UI created Bullet queries
   * GET the schema from ```http://bullet-ws.dev.domain.com:4080/bullet/api/columns```
   * Populate an additional link on the Help drop-down pointing to ```http://data.docs.domain.com```
+  * Allow queries to run as long as 300 seconds
+  * Use 32768 in the help menu for the max number of unique elements that can be counted exactly
+  * Allow only 50 points to be generated for Distribution queries
   * GET and cache a defaultFilter from ```http://bullet-ws.dev.domain.com:4080/custom-endpoint/api/defaultQuery```
 
 You would make express use these settings by running
