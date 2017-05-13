@@ -441,7 +441,7 @@
 <h2 id="prerequisites">Prerequisites</h2>
 <p>The rest of this document assumes that you are familiar with <a href="http://storm.apache.org">Storm</a>, <a href="http://kafka.apache.org">Kafka</a> and the <a href="../storm-architecture/">Bullet on Storm architecture</a>.</p>
 <h2 id="how-was-this-tested">How was this tested?</h2>
-<p>All tests run here were using <a href="https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.3.1">Bullet-Storm 0.3.1</a>. The intent is to test just the Storm piece without going through the Web Service or the UI. The DRPC REST endpoint provided by Storm lets us do just that.</p>
+<p>All tests run here were using <a href="https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.4.2">Bullet-Storm 0.4.2</a>. The intent is to test just the Storm piece without going through the Web Service or the UI. The DRPC REST endpoint provided by Storm lets us do just that.</p>
 <p>Using the pluggable metrics interface in Bullet on Storm, various worker level metrics such as CPU time, Heap usage, GC times and types, were captured and sent to a Yahoo in-house monitoring service for time-slicing and graphing. The graphs shown in the tests below use this service. See <a href="https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.3.0">0.3.0</a> for details on how to plug in your own metrics collection.</p>
 <h3 id="cluster">Cluster</h3>
 <ul>
@@ -471,7 +471,7 @@
 <pre><code class="YAML">bullet.topology.metrics.enable: true
 bullet.topology.metrics.built.in.enable: true
 bullet.topology.metrics.built.in.emit.interval.mapping:
-   bullet_active_rules: 5
+   bullet_active_queries: 5
    default: 60
 bullet.topology.metrics.classes:
   - &quot;package.containing.our.custom.class.pushing.metrics&quot;
@@ -496,15 +496,16 @@ bullet.topology.join.bolt.cpu.load: 50.0
 bullet.topology.join.bolt.memory.on.heap.load: 384.0
 bullet.topology.join.bolt.memory.off.heap.load: 192.0
 bullet.topology.join.bolt.error.tick.timeout: 3
-bullet.topology.join.bolt.rule.tick.timeout: 3
+bullet.topology.join.bolt.query.tick.timeout: 3
 bullet.topology.tick.interval.secs: 1
-bullet.rule.default.duration: 30000
-bullet.rule.max.duration: 540000
-bullet.rule.aggregation.max.size: 512
-bullet.rule.aggregation.raw.max.size: 500
+bullet.query.default.duration: 30000
+bullet.query.max.duration: 540000
+bullet.query.aggregation.max.size: 512
+bullet.query.aggregation.raw.max.size: 500
+bullet.query.aggregation.distribution.max.points: 200
 </code></pre>
 
-<p>Any setting not listed here default to the defaults in <a href="https://github.com/yahoo/bullet-storm/blob/bullet-storm-0.3.1/src/main/resources/bullet_defaults.yaml">bullet_defaults.yaml</a>. In particular, <strong>metadata collection</strong> and <strong>timestamp injection</strong> is enabled. <code>RAW</code> type queries also micro-batch by size 1 (in other words, do not micro-batch).</p>
+<p>Any setting not listed here default to the defaults in <a href="https://github.com/yahoo/bullet-storm/blob/bullet-storm-0.4.2/src/main/resources/bullet_defaults.yaml">bullet_defaults.yaml</a>. In particular, <strong>metadata collection</strong> and <strong>timestamp injection</strong> is enabled. <code>RAW</code> type queries also micro-batch by size 1 (in other words, do not micro-batch).</p>
 <p>The topology was also launched (command-line args to Storm) with the following Storm settings:</p>
 <pre><code class="bash">storm jar
     ...
@@ -626,11 +627,11 @@ bullet.rule.aggregation.raw.max.size: 500
 <tbody>
 <tr>
 <td align="left">Kafka Received</td>
-<td align="right">-705.79</td>
+<td align="right">-710.75</td>
 </tr>
 <tr>
 <td align="left">Bullet Received</td>
-<td align="right">-1.01</td>
+<td align="right">-2.16</td>
 </tr>
 <tr>
 <td align="left">Query Received</td>
@@ -638,17 +639,17 @@ bullet.rule.aggregation.raw.max.size: 500
 </tr>
 <tr>
 <td align="left">Query Finished</td>
-<td align="right">1.74</td>
+<td align="right">1.66</td>
 </tr>
 </tbody>
 </table>
-<p>The Bullet Received timestamp above is negative because the Filter bolt received the query and emitted an arbitrary record <code>1.01 ms</code> before the Join bolt received the query. The data was submitted into Kafka about <code>705.79 ms</code> before the query was received by Bullet and that difference is the processing time of Kafka and the time for our spouts to read the data into Bullet.</p>
+<p>The Bullet Received timestamp above is negative because the Filter bolt received the query and emitted an arbitrary record <code>2.16 ms</code> before the Join bolt received the query. The data was submitted into Kafka about <code>710.75 ms</code> before the query was received by Bullet and that difference is the processing time of Kafka and the time for our spouts to read the data into Bullet.</p>
 <h3 id="conclusion">Conclusion</h3>
-<p>Bullet adds a delay of <code>1.74 ms</code> to just pull out a record. This result shows that this is the fastest Bullet can be. It cannot return data any faster than this for meaningful queries.</p>
+<p>Bullet adds a delay of a few ms - <code>1.66 ms</code> in the test above - to just pull out a record. This result shows that this is the fastest Bullet can be. It cannot return data any faster than this for meaningful queries.</p>
 <h2 id="test-2-measuring-the-time-to-find-a-record">Test 2: Measuring the time to find a record</h2>
 <p>This test runs with the <a href="#configuration">standard configuration</a> above.</p>
 <p>The <a href="#test-1-measuring-the-inherent-latency-of-bullet">last test</a> attempted to measure how long Bullet takes to pick out a record. Here we will measure how long it takes to find a record <em>that we generate</em>. This is the average of running <strong>100</strong> queries across a time interval of 30 minutes trying to filter for a record with a single unique value in a field <a href="../../ws/examples/#simple-filtering">similar to this query</a>.</p>
-<p>Since this query actually requires us to be looking at the values in the data, we should also mention that the average data volume across this test was: <code>Data: 164,000 MPS and 107 MB/s</code></p>
+<p>Since this query actually requires us to be looking at the values in the data, we should also mention that the average data volume across this test was: <code>Data: 163,000 MPS and 105 MB/s</code></p>
 <h3 id="result_1">Result</h3>
 <div class="mostly-numeric-table"></div>
 
@@ -662,11 +663,11 @@ bullet.rule.aggregation.raw.max.size: 500
 <tbody>
 <tr>
 <td align="left">Kafka Received</td>
-<td align="right">519.25</td>
+<td align="right">465.81</td>
 </tr>
 <tr>
 <td align="left">Bullet Received</td>
-<td align="right">1161.43</td>
+<td align="right">1072.84</td>
 </tr>
 <tr>
 <td align="left">Query Received</td>
@@ -674,17 +675,17 @@ bullet.rule.aggregation.raw.max.size: 500
 </tr>
 <tr>
 <td align="left">Query Finished</td>
-<td align="right">1165.96</td>
+<td align="right">1077.85</td>
 </tr>
 </tbody>
 </table>
-<p>The record was emitted into Kafka <code>519.25 ms</code> after the query was received. The delay is the time it takes for the generated record to flow through our network and into Kafka.</p>
-<p>It is difficult to isolate how long of the <code>1161.43 ms - 519.25 ms = 642.18 ms</code> was spent in Kafka and how long was spent reading the record and sending it to the Filter bolt from our spout. However, we can look this time as a whole and include it into the time to get data into Bullet.</p>
+<p>The record was emitted into Kafka <code>465.81 ms</code> after the query was received. The delay is the time it takes for the generated record to flow through our network and into Kafka.</p>
+<p>It is difficult to isolate how long of the <code>1072.84 ms - 465.81 ms = 607.03 ms</code> was spent in Kafka and how long was spent reading the record and sending it to the Filter bolt from our spout. However, we can look this time as a whole and include it into the time to get data into Bullet.</p>
 <h3 id="conclusion_1">Conclusion</h3>
-<p>We see that Bullet took on average <code>1165.96 ms - 1161.43 ms = 4.53 ms</code> from the time it saw the record in the Filter bolt to finishing up the query and returning it.</p>
+<p>We see that Bullet took on average <code>1077.85 ms - 1072.84 ms = 5.01 ms</code> from the time it saw the record in the Filter bolt to finishing up the query and returning it.</p>
 <div class="admonition note">
 <p class="admonition-title">So, Bullet takes ~5 ms to find a record?</p>
-<p>No, not really. Remember that we are only including the time from which the record was matched in the Filter bolt to when it was sent out from the Join bolt. We can only conclude that the true delay is less than <code>1165.96 ms - 519.25 ms = 646.71 ms</code> because that is the difference in time from when the record was emitted into Kafka and when it was emitted out of Bullet. It is less than that because a part of that time is Kafka accepting the record and making it available for consumption. Nevertheless, finding a single record in data stream of <code>164,000 mps</code> in about half a second with about <a href="#resource-utilization">5 machines</a> is not bad at all!</p>
+<p>No, not really. Remember that we are only including the time from which the record was matched in the Filter bolt to when it was sent out from the Join bolt. We can only conclude that the true delay is less than <code>1077.85 ms - 465.81 ms = 612.04 ms</code> because that is the difference in time from when the record was emitted into Kafka and when it was emitted out of Bullet. It is less than that because a part of that time is Kafka accepting the record and making it available for consumption. Nevertheless, finding a single record in data stream of <code>163,000 mps</code> in about half a second with about <a href="#resource-utilization">5 machines</a> is not bad at all!</p>
 </div>
 <h2 id="test-3-measuring-the-maximum-number-of-parallel-raw-queries">Test 3: Measuring the maximum number of parallel <code>RAW</code> queries</h2>
 <p>This test runs with the <a href="#configuration">standard configuration</a> above.</p>
@@ -707,7 +708,7 @@ bullet.rule.aggregation.raw.max.size: 500
 <p>This script takes in a single numeric argument to run a number of queries in parallel (you may have to use <code>ulimit</code> to change maximum user processes if you specify a large number). It runs till you kill it performing the following:</p>
 <ol>
 <li>It generates a provided number of the <a href="#query">query above</a> and runs them in parallel against a randomly chosen DRPC server</li>
-<li>It generates data for the query </li>
+<li>It generates data for the query</li>
 <li>It waits out the rest of the time and uses jq to validate that all the generated data was found</li>
 </ol>
 <p>Here is a version of the script with the specifics to our data generation and Storm topology removed:</p>

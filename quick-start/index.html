@@ -249,93 +249,100 @@
             <ul class="nav">
                 
                     <li class="second-level">
-                        <a href="#quicker-start">Quicker Start</a>
+                        <a href="#install-script">Install Script</a>
                         
                     </li>
             
                     <li class="second-level">
-                        <a href="#setting-up-storm">Setting up Storm</a>
+                        <a href="#manual-installation">Manual Installation</a>
                         <ul class="nav">
                         
                             <li class="third-level">
-                                <a href="#step-1-setup-directories-and-examples">Step 1: Setup directories and examples</a>
+                                <a href="#setting-up-storm">Setting up Storm</a>
+                                <ul class="nav">
                                 
+                                    <li class="fourth-level">
+                                        <a href="#step-1-setup-directories-and-examples">Step 1: Setup directories and examples</a>
+                                        
+                                    </li>
+                                
+                                    <li class="fourth-level">
+                                        <a href="#step-2-install-storm-10">Step 2: Install Storm 1.0</a>
+                                        
+                                    </li>
+                                
+                                    <li class="fourth-level">
+                                        <a href="#step-3-launch-storm-components">Step 3: Launch Storm components</a>
+                                        
+                                    </li>
+                                
+                                    <li class="fourth-level">
+                                        <a href="#step-4-test-storm-optional">Step 4: Test Storm (Optional)</a>
+                                        
+                                    </li>
+                                
+                                </ul>
                             </li>
                         
                             <li class="third-level">
-                                <a href="#step-2-install-storm-10">Step 2: Install Storm 1.0</a>
+                                <a href="#setting-up-the-example-bullet-topology">Setting up the example Bullet topology</a>
+                                <ul class="nav">
                                 
+                                    <li class="fourth-level">
+                                        <a href="#step-5-setup-the-storm-example">Step 5: Setup the Storm example</a>
+                                        
+                                    </li>
+                                
+                                    <li class="fourth-level">
+                                        <a href="#step-6-launch-the-topology">Step 6: Launch the topology</a>
+                                        
+                                    </li>
+                                
+                                </ul>
                             </li>
                         
                             <li class="third-level">
-                                <a href="#step-3-launch-storm-components">Step 3: Launch Storm components</a>
+                                <a href="#setting-up-the-bullet-web-service">Setting up the Bullet Web Service</a>
+                                <ul class="nav">
                                 
+                                    <li class="fourth-level">
+                                        <a href="#step-7-install-jetty">Step 7: Install Jetty</a>
+                                        
+                                    </li>
+                                
+                                    <li class="fourth-level">
+                                        <a href="#step-8-install-the-bullet-web-service">Step 8: Install the Bullet Web Service</a>
+                                        
+                                    </li>
+                                
+                                    <li class="fourth-level">
+                                        <a href="#step-9-launch-the-web-service">Step 9: Launch the Web Service</a>
+                                        
+                                    </li>
+                                
+                                </ul>
                             </li>
                         
                             <li class="third-level">
-                                <a href="#step-4-test-storm-optional">Step 4: Test Storm (Optional)</a>
+                                <a href="#setting-up-the-bullet-ui">Setting up the Bullet UI</a>
+                                <ul class="nav">
                                 
-                            </li>
-                        
-                        </ul>
-                    </li>
-            
-                    <li class="second-level">
-                        <a href="#setting-up-the-example-bullet-topology">Setting up the example Bullet topology</a>
-                        <ul class="nav">
-                        
-                            <li class="third-level">
-                                <a href="#step-5-setup-the-storm-example">Step 5: Setup the Storm example</a>
+                                    <li class="fourth-level">
+                                        <a href="#step-10-install-node">Step 10: Install Node</a>
+                                        
+                                    </li>
                                 
-                            </li>
-                        
-                            <li class="third-level">
-                                <a href="#step-6-launch-the-topology">Step 6: Launch the topology</a>
+                                    <li class="fourth-level">
+                                        <a href="#step-11-install-the-bullet-ui">Step 11: Install the Bullet UI</a>
+                                        
+                                    </li>
                                 
-                            </li>
-                        
-                        </ul>
-                    </li>
-            
-                    <li class="second-level">
-                        <a href="#setting-up-the-bullet-web-service">Setting up the Bullet Web Service</a>
-                        <ul class="nav">
-                        
-                            <li class="third-level">
-                                <a href="#step-7-install-jetty">Step 7: Install Jetty</a>
+                                    <li class="fourth-level">
+                                        <a href="#step-12-launch-the-ui">Step 12: Launch the UI</a>
+                                        
+                                    </li>
                                 
-                            </li>
-                        
-                            <li class="third-level">
-                                <a href="#step-8-install-the-bullet-web-service">Step 8: Install the Bullet Web Service</a>
-                                
-                            </li>
-                        
-                            <li class="third-level">
-                                <a href="#step-9-launch-the-web-service">Step 9: Launch the Web Service</a>
-                                
-                            </li>
-                        
-                        </ul>
-                    </li>
-            
-                    <li class="second-level">
-                        <a href="#setting-up-the-bullet-ui">Setting up the Bullet UI</a>
-                        <ul class="nav">
-                        
-                            <li class="third-level">
-                                <a href="#step-10-install-node">Step 10: Install Node</a>
-                                
-                            </li>
-                        
-                            <li class="third-level">
-                                <a href="#step-11-install-the-bullet-ui">Step 11: Install the Bullet UI</a>
-                                
-                            </li>
-                        
-                            <li class="third-level">
-                                <a href="#step-12-launch-the-ui">Step 12: Launch the UI</a>
-                                
+                                </ul>
                             </li>
                         
                         </ul>
@@ -382,11 +389,11 @@
 
 <h1 id="quick-start">Quick Start</h1>
 <p>This section gets you running a mock instance of Bullet to play around with. The instance will run using <a href="../backend/setup-storm/">Bullet on Storm</a>. Since we do not have an actual data source, we will produce some fake data and convert it into <a href="../backend/ingestion/">Bullet Records</a> in a <a href="https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/java/com/yahoo/bullet/storm/examples/RandomSpout.java">custom Storm spout</a>. If you want to use Bullet for your data, you will need to do read and convert your data to Bullet Records in a similar manner.</p>
-<p>By the following the steps in this section, you will:</p>
+<p>At the end of this section, you will have:</p>
 <ul>
 <li>Setup the Bullet topology using a custom spout on <a href="https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.4.2">bullet-storm-0.4.2</a></li>
 <li>Setup the <a href="../ws/setup/">Web Service</a> talking to the topology and serving a schema for your UI using <a href="https://github.com/yahoo/bullet-service/releases/tag/bullet-service-0.0.1">bullet-service-0.0.1</a></li>
-<li>Setup the <a href="../ui/setup/">UI</a> talking to the Web Service using <a href="https://github.com/yahoo/bullet-ui/releases/tag/v0.2.2">bullet-ui-0.2.2</a></li>
+<li>Setup the <a href="../ui/setup/">UI</a> talking to the Web Service using <a href="https://github.com/yahoo/bullet-ui/releases/tag/v0.3.1">bullet-ui-0.3.1</a></li>
 </ul>
 <p><strong>Prerequisites</strong></p>
 <ul>
@@ -394,15 +401,18 @@
 <li>You will need <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">JDK 8</a> installed</li>
 <li>You will need enough CPU and RAM on your machine to run about 8-10 JVMs in <code>server</code> mode. You should have at least 2 GB free space on your disk. We will be setting up a Storm cluster with multiple components, a couple of Jetty instances and a Node server.</li>
 </ul>
-<h2 id="quicker-start">Quicker Start</h2>
-<p>Don't want to follow all these Steps? Make sure you have your prerequisites and you can just run:</p>
-<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.3.0/examples/install-all.sh | bash
+<h2 id="install-script">Install Script</h2>
+<p>Simply run:</p>
+<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.3.1/examples/install-all.sh | bash
 </code></pre>
 
-<p>This will run all the Steps for you. Once everything has launched, you should be able to go to the Bullet UI running locally at <a href="http://localhost:8800">http://localhost:8800</a>. You can then continue this guide from <a href="#what-did-we-do">here</a>.</p>
-<p>If you want to manually run all the commands or if something failed above (might want to perform the <a href="#teardown">teardown</a> first), you can continue below.</p>
-<hr />
-<h2 id="setting-up-storm">Setting up Storm</h2>
+<p>This will setup a local Storm cluster, a Bullet running on it, the Bullet Web Service and a Bullet UI for you. Once everything has launched, you should be able to go to the Bullet UI running locally at <a href="http://localhost:8800">http://localhost:8800</a>. You can then <a href="#what-did-we-do"><strong>continue this guide from here</strong></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Want to DIY?</p>
+<p>If you want to manually run all the commands or if the script died while doing something above (might want to perform the <a href="#teardown">teardown</a> first), you can continue below.</p>
+</div>
+<h2 id="manual-installation">Manual Installation</h2>
+<h3 id="setting-up-storm">Setting up Storm</h3>
 <p>To set up a clean working environment, let's start with creating some directories.</p>
 <h4 id="step-1-setup-directories-and-examples">Step 1: Setup directories and examples</h4>
 <pre><code class="bash">export BULLET_HOME=$(pwd)/bullet-quickstart
@@ -410,7 +420,7 @@ mkdir -p $BULLET_HOME/backend/storm
 mkdir -p $BULLET_HOME/service
 mkdir -p $BULLET_HOME/ui
 cd $BULLET_HOME
-curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.3.0/examples_artifacts.tar.gz
+curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.3.1/examples_artifacts.tar.gz
 tar -xzf examples_artifacts.tar.gz
 export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 </code></pre>
@@ -455,7 +465,7 @@ storm supervisor &amp;
 <p class="admonition-title">Local mode cleanup</p>
 <p>If you notice any problems while setting up storm or while relaunching a topology, it may be because some state is corrupted. When running Storm in this fashion, states and serializations are stored in <code>storm-local</code> and <code>/tmp/</code>. You may want to <code>rm -rf storm-local/* /tmp/dev-storm-zookeeper</code> to clean up this state before relaunching Storm components. See the <a href="#teardown">tear down section</a> on how to kill any running instances.</p>
 </div>
-<h2 id="setting-up-the-example-bullet-topology">Setting up the example Bullet topology</h2>
+<h3 id="setting-up-the-example-bullet-topology">Setting up the example Bullet topology</h3>
 <p>Now that Storm is up and running, we can put Bullet on it. We will use an example Spout that runs on Bullet 0.4.2 on our Storm cluster. The source is available <a href="https://github.com/yahoo/bullet-docs/blob/master/examples/storm">here</a>. This was part of the artifact that you installed in Step 1.</p>
 <h4 id="step-5-setup-the-storm-example">Step 5: Setup the Storm example</h4>
 <pre><code class="bash">cp $BULLET_EXAMPLES/storm/* $BULLET_HOME/backend/storm
@@ -464,11 +474,11 @@ storm supervisor &amp;
 <div class="admonition note">
 <p class="admonition-title">Settings</p>
 <p>Take a look at bullet_settings.yaml for the settings that are being overridden for this example. You can add or change settings as you like by referring to <a href="https://github.com/yahoo/bullet-storm/blob/master/src/main/resources/bullet_defaults.yaml">bullet_defaults.yaml</a>. In particular, we have <a href="https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/resources/bullet_settings.yaml">customized these settings</a> that affect the Bullet queries you can run:</p>
-<p><code>bullet.rule.max.duration: 570000</code> Longest query time can be 570s. The Storm cluster default DRPC timeout is 600s.</p>
-<p><code>bullet.rule.aggregation.raw.max.size: 500</code> The max <code>RAW</code> records you can fetch is 500.</p>
-<p><code>bullet.rule.aggregation.max.size: 1024</code> The max records you can fetch for any query is 1024.</p>
-<p><code>bullet.rule.aggregation.count.distinct.sketch.entries: 16384</code> We can count 16384 unique values exactly. Approximates after.</p>
-<p><code>bullet.rule.aggregation.group.sketch.entries: 1024</code> The max unique groups can be 1024. Uniform sample after.</p>
+<p><code>bullet.query.max.duration: 570000</code> Longest query time can be 570s. The Storm cluster default DRPC timeout is 600s.</p>
+<p><code>bullet.query.aggregation.raw.max.size: 500</code> The max <code>RAW</code> records you can fetch is 500.</p>
+<p><code>bullet.query.aggregation.max.size: 1024</code> The max records you can fetch for any query is 1024.</p>
+<p><code>bullet.query.aggregation.count.distinct.sketch.entries: 16384</code> We can count 16384 unique values exactly. Approximates after.</p>
+<p><code>bullet.query.aggregation.group.sketch.entries: 1024</code> The max unique groups can be 1024. Uniform sample after.</p>
 <p><code>bullet.query.aggregation.distribution.sketch.entries: 1024</code> Determines the normalized rank error for distributions.</p>
 <p><code>bullet.query.aggregation.top.k.sketch.entries: 1024</code> 0.75 times this number is the number of unique items for which counts can be done exactly. Approximates after.</p>
 <p><code>bullet.query.aggregation.distribution.max.points: 200</code> The maximum number of points you can generate, use or provide for a Distribution aggregation.</p>
@@ -495,7 +505,7 @@ storm supervisor &amp;
 <p class="admonition-title">What is this data?</p>
 <p>This data is randomly generated by the <a href="https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/java/com/yahoo/bullet/storm/examples/RandomSpout.java">custom Storm spout</a> that is in the example topology you just launched. In practice, your spout would read from an actual data source such as Kafka instead. See <a href="#storm-topology">below</a> for more details about this random data spout.</p>
 </div>
-<h2 id="setting-up-the-bullet-web-service">Setting up the Bullet Web Service</h2>
+<h3 id="setting-up-the-bullet-web-service">Setting up the Bullet Web Service</h3>
 <h4 id="step-7-install-jetty">Step 7: Install Jetty</h4>
 <pre><code class="bash">cd $BULLET_HOME/service
 curl -O http://central.maven.org/maven2/org/eclipse/jetty/jetty-distribution/9.3.16.v20170120/jetty-distribution-9.3.16.v20170120.zip
@@ -518,7 +528,7 @@ java -jar -Dbullet.service.configuration.file=&quot;example_context.properties&q
 curl -s http://localhost:9999/bullet-service/api/columns
 </code></pre>
 
-<h2 id="setting-up-the-bullet-ui">Setting up the Bullet UI</h2>
+<h3 id="setting-up-the-bullet-ui">Setting up the Bullet UI</h3>
 <h4 id="step-10-install-node">Step 10: Install Node</h4>
 <pre><code class="bash">curl -s https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
 source ~/.bashrc
@@ -528,8 +538,8 @@ nvm use v6.9.4
 
 <h4 id="step-11-install-the-bullet-ui">Step 11: Install the Bullet UI</h4>
 <pre><code class="bash">cd $BULLET_HOME/ui
-curl -LO https://github.com/yahoo/bullet-ui/releases/download/v0.2.2/bullet-ui-v0.2.2.tar.gz
-tar -xzf bullet-ui-v0.2.2.tar.gz
+curl -LO https://github.com/yahoo/bullet-ui/releases/download/v0.3.1/bullet-ui-v0.3.1.tar.gz
+tar -xzf bullet-ui-v0.3.1.tar.gz
 cp $BULLET_EXAMPLES/ui/env-settings.json config/
 </code></pre>
 
@@ -544,8 +554,8 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
 <code>ssh -N -L 8800:localhost:8800 -L 9999:localhost:9999 hostname-of-the-quickstart-components 2&gt;&amp;1</code></p>
 </div>
 <h2 id="teardown">Teardown</h2>
-<p>If you were following the <a href="#quicker-start">Quicker Start</a> or if you don't want to manually bring down everything, you can run:</p>
-<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.3.0/examples/install-all.sh | bash -s cleanup
+<p>If you were using the <a href="#install-script">Install Script</a> or if you don't want to manually bring down everything, you can run:</p>
+<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.3.1/examples/install-all.sh | bash -s cleanup
 </code></pre>
 
 <p>If you were performing the steps yourself, you can also manually cleanup <strong>all the components and all the downloads</strong> using:</p>
@@ -721,7 +731,11 @@ columns.schema.version=1.0
       }
     ],
     &quot;bugLink&quot;: &quot;https://github.com/yahoo/bullet-ui/issues&quot;,
-    &quot;modelVersion&quot;: 1,
+    &quot;modelVersion&quot;: 2,
+    &quot;migrations&quot;: {
+      &quot;deletions&quot;: &quot;result&quot;
+    },
+    &quot;defaultValues&quot;: {
     &quot;defaultValues&quot;: {
       &quot;aggregationMaxSize&quot;: 1024,
       &quot;rawMaxSize&quot;: 500,

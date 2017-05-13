@@ -377,7 +377,11 @@ express-server.js
 </tr>
 <tr>
 <td>modelVersion</td>
-<td>If there is a need for you to purge all your user's created queries, results and other data, then you should increment this number. The UI, on startup, will purge its storage if this number is higher than what it has seen before</td>
+<td>This is used an indicator to apply changes to the stored queries, results etc. It is monotonically increasing. On startup, changes specified in <code>migrations</code> will be applied if the old modelVersion is not present or is &lt; than this number</td>
+</tr>
+<tr>
+<td>migrations</td>
+<td>is an object that currently supports one key: <code>deletions</code> of type string. The value can be set to either <code>result</code> or <code>query</code>. The former wipes all existing results. The latter wipes everything. See <code>modelVersion</code> above.</td>
 </tr>
 <tr>
 <td>helpLinks</td>
@@ -620,7 +624,7 @@ that are the same as the <a href="https://github.com/yahoo/bullet-storm/blob/mas
 }
 </code></pre>
 
-<p>You can add more top level properties for each environment you have the UI running on and <em>override</em> the top level properties in the <code>default</code> object. See <a href="#example">below</a> for an example.</p>
+<p>You can add more properties for each environment you have the UI running on and <em>override</em> the properties in the <code>default</code> object. See <a href="#example">below</a> for an example.</p>
 <div class="admonition note">
 <p class="admonition-title">CORS</p>
 <p>All your Web Service endpoints must support CORS (return the right headers) in order for the UI to be able to communicate with it. The Bullet Web Service already does this for the DRPC and columns endpoints.</p>
@@ -637,6 +641,13 @@ that are the same as the <a href="https://github.com/yahoo/bullet-storm/blob/mas
             &quot;link&quot;: &quot;http://data.docs.domain.com&quot;
           }
         ],
+        &quot;defaultValues&quot; : {
+            &quot;durationMaxSecs&quot;: 300,
+            &quot;sketches&quot;: {
+                &quot;countDistinctMaxEntries&quot;: 32768,
+                &quot;distributionMaxNumberOfPoints&quot;: 50
+            }
+        },
         &quot;defaultFilter&quot;: &quot;http://bullet-ws.dev.domain.com:4080/custom-endpoint/api/defaultQuery&quot;
     }
 }
@@ -647,6 +658,9 @@ that are the same as the <a href="https://github.com/yahoo/bullet-storm/blob/mas
 <li>POST to <code>http://bullet-ws.dev.domain.com:4080/bullet/api/drpc</code> for UI created Bullet queries</li>
 <li>GET the schema from <code>http://bullet-ws.dev.domain.com:4080/bullet/api/columns</code></li>
 <li>Populate an additional link on the Help drop-down pointing to <code>http://data.docs.domain.com</code></li>
+<li>Allow queries to run as long as 300 seconds</li>
+<li>Use 32768 in the help menu for the max number of unique elements that can be counted exactly</li>
+<li>Allow only 50 points to be generated for Distribution queries</li>
 <li>GET and cache a defaultFilter from <code>http://bullet-ws.dev.domain.com:4080/custom-endpoint/api/defaultQuery</code></li>
 </ul>
 <p>You would make express use these settings by running</p>

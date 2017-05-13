@@ -345,6 +345,11 @@
                         </ul>
                     </li>
             
+                    <li class="second-level">
+                        <a href="#coming-soon">Coming soon</a>
+                        
+                    </li>
+            
             </ul>
         </li>
     
@@ -353,7 +358,8 @@
         <div class="col-md-9" role="main">
 
 <h1 id="navigating-the-ui">Navigating the UI</h1>
-<p>The UI should (hopefully) be self-explanatory. Any particular section that requires additional information has the <img alt="info" src="../../img/info.png" /> icon next to it. Clicking this will display information relevant to that section. The interactions in this page are running on the topology that was set up in the <a href="../../quick-start/">Quick Start</a>. Recall that the example backend is configured to produce <em>20 data records every 101 ms.</em>.</p>
+<p>The UI should (hopefully) be self-explanatory. Any particular section that requires additional information has the <img alt="info" src="../../img/info.png" /> icon next to it. Clicking this will display information relevant to that section. The interactions in this page are running on the topology that was set up in the <a href="../../quick-start/">Quick Start</a>.  Recall that the example backend is configured to produce <em>20 data records every 101 ms.</em>.</p>
+<p>The examples that show the various query types below were done on <a href="https://github.com/yahoo/bullet-ui/releases/tag/v0.2.2">Bullet UI v0.2.2</a>. Any example that uses a different version will make that explicit.</p>
 <h2 id="landing-page">Landing page</h2>
 <p>Loading the UI takes you to a page that shows all the queries and past results. You can edit, delete and copy your existing queries here. You can also view or clear your past results for the queries.</p>
 <p>The help links you <a href="../setup/#configuration">configure  for the UI</a> are shown in the Help menu.</p>
@@ -398,7 +404,7 @@
 <p>If you choose the Show All Fields selection in the Output Data option, the results will default to the JSON data view. Otherwise, it defaults to the table.</p>
 </div>
 <h3 id="complex-filtering">Complex Filtering</h3>
-<p>The querybuilder also lets you easily create nested filters. You can add rules to add basic relational filters or group a set of filters by connecting them with ANDs and ORs. You can also drag and drop rules and groups.</p>
+<p>The querybuilder also lets you easily create nested filters. You can add basic relational filters or group a set of basic filters by connecting them with ANDs and ORs. You can also drag and drop filters and groups.</p>
 <p>The querybuilder is also type aware. The operations you can perform change based on the type. Numeric fields only allow numeric values. String fields allow you to apply regular expressions to them or specify multiple values at the same time using a <code>,</code>. Boolean fields only allow you to choose a radio button etc.</p>
 <p><strong>Example: Finding and picking out the first and second events in each period that also have probability &gt; 0.5</strong></p>
 <video controls autoplay loop>
@@ -515,10 +521,6 @@
 <p class="admonition-title">Normalized Rank Error</p>
 <p>To understand what this means, refer to the <a href="../../ws/examples/#normalized-rank-error">explanation here</a>. You can also refer to the help in the Result Metadata section.</p>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Wouldn't it be nice to graph these?</p>
-<p>This is in the works! We plan to add pivoting and graphing as a general option in the results pages. Feel free to follow <a href="https://github.com/yahoo/bullet-ui/issues/24">the issue here</a>.</p>
-</div>
 <h2 id="top-k">Top K</h2>
 <p>Top K lets you get the most <em>frequent items</em> or the <em>heavy hitters</em> for the values in a set of a fields.</p>
 <h3 id="exact_2">Exact</h3>
@@ -538,7 +540,9 @@
 <div class="admonition note">
 <p class="admonition-title">Maximum Count Error</p>
 <p>The <code>maximum_count_error</code> value for the query above was <code>3</code>. This means that the difference between the upper bound and the lower bound of each count estimate is <code>3</code>. Bullet returns the upper bound as the estimate so subtracting <code>3</code> from each count gives you the lower bound of the count. Note that some counts are closer to each other than the count error. For instance, <code>(quux, 1)</code> and <code>(baz, 0)</code> have counts <code>67</code> and <code>66</code> but their true counts could be from <code>64 to 67</code> and <code>63 to 66</code> respectively. This means that <code>(baz, 0)</code> could well be the most frequent item for this query.</p>
-</div></div>
+</div>
+<h2 id="coming-soon">Coming soon</h2>
+<p><a href="https://github.com/yahoo/bullet-ui/releases/tag/v0.3.0">Bullet UI v0.3.0 and above</a> added support for charting and pivoting. Stay tuned for some tutorials on this feature.</p></div>
         
     </div>
 
