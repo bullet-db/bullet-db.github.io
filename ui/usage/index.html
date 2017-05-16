@@ -346,7 +346,12 @@
                     </li>
             
                     <li class="second-level">
-                        <a href="#coming-soon">Coming soon</a>
+                        <a href="#charting">Charting</a>
+                        
+                    </li>
+            
+                    <li class="second-level">
+                        <a href="#pivoting">Pivoting</a>
                         
                     </li>
             
@@ -541,8 +546,24 @@
 <p class="admonition-title">Maximum Count Error</p>
 <p>The <code>maximum_count_error</code> value for the query above was <code>3</code>. This means that the difference between the upper bound and the lower bound of each count estimate is <code>3</code>. Bullet returns the upper bound as the estimate so subtracting <code>3</code> from each count gives you the lower bound of the count. Note that some counts are closer to each other than the count error. For instance, <code>(quux, 1)</code> and <code>(baz, 0)</code> have counts <code>67</code> and <code>66</code> but their true counts could be from <code>64 to 67</code> and <code>63 to 66</code> respectively. This means that <code>(baz, 0)</code> could well be the most frequent item for this query.</p>
 </div>
-<h2 id="coming-soon">Coming soon</h2>
-<p><a href="https://github.com/yahoo/bullet-ui/releases/tag/v0.3.0">Bullet UI v0.3.0 and above</a> added support for charting and pivoting. Stay tuned for some tutorials on this feature.</p></div>
+<h2 id="charting">Charting</h2>
+<p><a href="https://github.com/yahoo/bullet-ui/releases/tag/v0.3.0">Bullet UI v0.3.0 and above</a> added support for charting and pivoting. This example shows how to get a basic chart on <a href="https://github.com/yahoo/bullet-ui/releases/tag/v0.3.1">Bullet UI v0.3.1</a>. If you are following the <a href="../../quick-start/">Quick Start</a>, then this should be in your UI. The charting and pivoting modes are only enabled for queries that are <em>not</em> Count Distinct or Group without Group Fields. This is because these results only have a single row and it does not make sense to graph them. They are enabled for all other queries.</p>
+<p>The charting example below shows how to get a quick chart of a <code>Group</code> query with 3 metrics.</p>
+<video controls autoplay loop>
+  <source src="../../video/charting.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+<h2 id="pivoting">Pivoting</h2>
+<p>If the regular chart option is insufficient for your result (for instance, you have too many groups and metrics or you want to post-aggregate your results or remove outliers etc), then there is a advanced Pivot mode available when you are in the Chart option. The Pivot option provides a drag-and-drop interface to drag fields to breakdown and aggregate by their values. Operations such as finding standard deviations, variance, average, median, sum over sums etc are available as well as easily viewing them as tables and charts. The following example shows a <code>Group</code> query with multiple groups and metrics and some interactions with the Pivot table.</p>
+<div class="admonition note">
+<p class="admonition-title">Raw data does not seem to have a regular chart mode option</p>
+<p>This is deliberate since the Chart option tries to infer your independent and dependent columns. When you fetch raw data, this is prone to errors so only the Pivot option is allowed. You can always graph within the Pivot option if you need to.</p>
+</div>
+<p><video controls autoplay loop>
+  <source src="../../video/pivoting.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video></p></div>
         
     </div>
 
