@@ -67,7 +67,7 @@ The Bullet UI that lets you build, run, save and visualize results from Bullet.
 
 |    Date      |                                      Release                                           | Highlights |
 | ------------ | -------------------------------------------------------------------------------------- | ---------- |
-| 2016-05-12   | [**0.3.1**](https://github.com/yahoo/bullet-ui/releases/tag/v0.3.1) | Adds styles to the Pivot table. Fixes some minor UI interactions |
+| 2016-05-15   | [**0.3.1**](https://github.com/yahoo/bullet-ui/releases/tag/v0.3.1) | Adds styles to the Pivot table. Fixes some minor UI interactions |
 | 2016-05-10   | [**0.3.0**](https://github.com/yahoo/bullet-ui/releases/tag/v0.3.0) | Adds Charting and Pivoting support. Migrations enhanced. Support for overriding nested default settings |
 | 2016-05-03   | [**0.2.2**](https://github.com/yahoo/bullet-ui/releases/tag/v0.2.2) | Fixes maxlength of the input for points |
 | 2016-05-02   | [**0.2.1**](https://github.com/yahoo/bullet-ui/releases/tag/v0.2.1) | Fixes a bug with a dependency that broke sorting the Filters |

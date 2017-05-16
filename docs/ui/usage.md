@@ -245,6 +245,25 @@ By adding ```duration``` into the fields, the number of unique values for ```(ty
 
     The ```maximum_count_error``` value for the query above was ```3```. This means that the difference between the upper bound and the lower bound of each count estimate is ```3```. Bullet returns the upper bound as the estimate so subtracting ```3``` from each count gives you the lower bound of the count. Note that some counts are closer to each other than the count error. For instance, ```(quux, 1)``` and ```(baz, 0)``` have counts ```67``` and ```66``` but their true counts could be from ```64 to 67``` and ```63 to 66``` respectively. This means that ```(baz, 0)``` could well be the most frequent item for this query.
 
-## Coming soon
+## Charting
 
-[Bullet UI v0.3.0 and above](https://github.com/yahoo/bullet-ui/releases/tag/v0.3.0) added support for charting and pivoting. Stay tuned for some tutorials on this feature.
+[Bullet UI v0.3.0 and above](https://github.com/yahoo/bullet-ui/releases/tag/v0.3.0) added support for charting and pivoting. This example shows how to get a basic chart on [Bullet UI v0.3.1](https://github.com/yahoo/bullet-ui/releases/tag/v0.3.1). If you are following the [Quick Start](../quick-start.md), then this should be in your UI. The charting and pivoting modes are only enabled for queries that are *not* Count Distinct or Group without Group Fields. This is because these results only have a single row and it does not make sense to graph them. They are enabled for all other queries.
+
+The charting example below shows how to get a quick chart of a ```Group``` query with 3 metrics.
+
+<video controls autoplay loop>
+  <source src="../../video/charting.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+## Pivoting
+
+If the regular chart option is insufficient for your result (for instance, you have too many groups and metrics or you want to post-aggregate your results or remove outliers etc), then there is a advanced Pivot mode available when you are in the Chart option. The Pivot option provides a drag-and-drop interface to drag fields to breakdown and aggregate by their values. Operations such as finding standard deviations, variance, average, median, sum over sums etc are available as well as easily viewing them as tables and charts. The following example shows a ```Group``` query with multiple groups and metrics and some interactions with the Pivot table.
+
+!!! note "Raw data does not seem to have a regular chart mode option"
+
+    This is deliberate since the Chart option tries to infer your independent and dependent columns. When you fetch raw data, this is prone to errors so only the Pivot option is allowed. You can always graph within the Pivot option if you need to.
+<video controls autoplay loop>
+  <source src="../../video/pivoting.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
