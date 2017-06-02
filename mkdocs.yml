@@ -10,7 +10,7 @@ pages:
   - Storm Architecture: backend/storm-architecture.md
   - Getting your data into Bullet: backend/ingestion.md
   - Setup on Storm: backend/setup-storm.md
-  - Performance: backend/performance.md
+  - Tuning: backend/tuning.md
 - REST API:
   - Setup: ws/setup.md
   - API: ws/api.md
