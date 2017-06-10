@@ -26,6 +26,7 @@ certain CPU and memory related settings specific to RAS in its configuration. Th
 
 |    Date      |                               Storm 1.0                                            |                                      Storm 0.10                                         | Highlights |
 | ------------ | ---------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ---------- |
+| 2017-06-09   | [**0.4.3**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.4.3) | [**0.4.3**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.4.3) | Adding rounding for DISTRIBUTION. Latency metric |
 | 2017-04-28   | [**0.4.2**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.4.2) | [**0.4.2**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.4.2) | Strict JSON output and fix for no data distributions |
 | 2017-04-26   | [**0.4.1**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.4.1) | [**0.4.1**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.4.1) | Result Metadata Concept name mismatch fix |
 | 2017-04-21   | [**0.4.0**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.4.0) | [**0.4.0**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.4.0) | DISTRIBUTION and TOP K release. Configuration renames. |
