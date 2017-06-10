@@ -4,7 +4,7 @@ This section gets you running a mock instance of Bullet to play around with. The
 
 At the end of this section, you will have:
 
-  * Setup the Bullet topology using a custom spout on [bullet-storm-0.4.2](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.4.2)
+  * Setup the Bullet topology using a custom spout on [bullet-storm-0.4.3](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.4.3)
   * Setup the [Web Service](ws/setup.md) talking to the topology and serving a schema for your UI using [bullet-service-0.0.1](https://github.com/yahoo/bullet-service/releases/tag/bullet-service-0.0.1)
   * Setup the [UI](ui/setup.md) talking to the Web Service using [bullet-ui-0.3.1](https://github.com/yahoo/bullet-ui/releases/tag/v0.3.1)
 
@@ -19,7 +19,7 @@ At the end of this section, you will have:
 Simply run:
 
 ```bash
-curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.3.1/examples/install-all.sh | bash
+curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.3.2/examples/install-all.sh | bash
 ```
 
 This will setup a local Storm cluster, a Bullet running on it, the Bullet Web Service and a Bullet UI for you. Once everything has launched, you should be able to go to the Bullet UI running locally at [http://localhost:8800](http://localhost:8800). You can then [**continue this guide from here**](#what-did-we-do).
@@ -42,7 +42,7 @@ mkdir -p $BULLET_HOME/backend/storm
 mkdir -p $BULLET_HOME/service
 mkdir -p $BULLET_HOME/ui
 cd $BULLET_HOME
-curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.3.1/examples_artifacts.tar.gz
+curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.3.2/examples_artifacts.tar.gz
 tar -xzf examples_artifacts.tar.gz
 export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 ```
@@ -104,7 +104,7 @@ storm kill topology
 
 ### Setting up the example Bullet topology
 
-Now that Storm is up and running, we can put Bullet on it. We will use an example Spout that runs on Bullet 0.4.2 on our Storm cluster. The source is available [here](https://github.com/yahoo/bullet-docs/blob/master/examples/storm). This was part of the artifact that you installed in Step 1.
+Now that Storm is up and running, we can put Bullet on it. We will use an example Spout that runs on Bullet 0.4.3 on our Storm cluster. The source is available [here](https://github.com/yahoo/bullet-docs/blob/master/examples/storm). This was part of the artifact that you installed in Step 1.
 
 #### Step 5: Setup the Storm example
 
@@ -233,7 +233,7 @@ Visit [http://localhost:8800](http://localhost:8800) to query your topology with
 If you were using the [Install Script](#install-script) or if you don't want to manually bring down everything, you can run:
 
 ```bash
-curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.3.1/examples/install-all.sh | bash -s cleanup
+curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.3.2/examples/install-all.sh | bash -s cleanup
 ```
 
 If you were performing the steps yourself, you can also manually cleanup **all the components and all the downloads** using:

@@ -33,6 +33,7 @@ bullet.query.aggregation.count.distinct.sketch.entries: 16384
 bullet.query.aggregation.group.sketch.entries: 1024
 bullet.query.aggregation.distribution.sketch.entries: 1024
 bullet.query.aggregation.distribution.max.points: 200
+bullet.query.aggregation.distribution.generated.points.rounding: 6
 bullet.query.aggregation.top.k.sketch.entries: 1024
 bullet.query.aggregation.top.k.sketch.error.type: "NFN"
 bullet.query.max.duration: 570000
