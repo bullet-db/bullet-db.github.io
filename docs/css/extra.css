@@ -37,11 +37,15 @@ video {
   }
 }
 
-/* Hack to fix alignment for table headers that have the first column string and the rest right aligned numeric */
-.mostly-numeric-table + table th {
+/* Fix alignment for table headers that have the first n columns strings and the rest right aligned numeric */
+div[class$="text-numeric-table"] + table th {
   text-align: right;
 }
 
-.mostly-numeric-table + table th:first-child {
+div[class$="one-text-numeric-table"] + table th:nth-child(1) {
+  text-align: left;
+}
+
+div[class$="two-one-text-numeric-table"] + table th:nth-child(2) {
   text-align: left;
 }

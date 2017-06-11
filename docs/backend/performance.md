@@ -13,11 +13,7 @@ The performance of a Bullet instance running on a multi-tenant Storm cluster has
 
 ...and many more.
 
-As a streaming system, the two main features to measure is how much data it operates on and how many queries can you run simultaneously (1 and 2 above). For these results, see [performance][../performance.md]. This section will deal with determining what these are and how they vary.
-
-!!! note "Not a benchmark"
-
-    We will focus on 1 and 2, while keeping the others as fixed as possible. This section is to give you some insight as to what to tune to improve performance. This is not meant to be a rigorous benchmark.
+As a streaming system, the two main features to measure is how much data it operates on and how many queries can you run simultaneously (1 and 2 above). For these results, see [performance][../performance.md]. This section will deal with determining what these are and how they vary. We will focus on 1 and 2, while keeping the others as fixed as possible. This section is to give you some insight as to what to tune to improve performance. This is not meant to be a rigorous benchmark.
 
 ## Prerequisites
 
@@ -45,13 +41,19 @@ See [0.3.0](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.3.
     - 4 TB SATA Disk
     - 10 G Network Interface
 * Multi-tenant cluster with other topologies running. Average cluster utilization ranged from *70% - 90%*
+* The DRPC servers in the cluster:
+    - 2 x Intel E5620 (4 cores, 8 Threads) - 16 cores
+    - 24 GB RAM
+    - 1 TB SATA Disk
+    - 10 G Network Interface
 
 ### Data
 
 * Our data was read from a Kafka cluster. We test with both Kafka 0.9.0.1 and 0.10.0.1
 * The Kafka cluster was located within the same datacenter as the Storm cluster - close network proximity gives us some measure of confidence that large data transmission delays aren't a factor.
-
-Since there is variance in the volume of data over time, for each of the tests below, the data volume at that time will be provided in this format: ```Data: XX MPS and XX MB/s```, where each of the numbers are the average for each metric over the hour of when the test was done. The data is compressed with a compression ratio of ```1.2```.
+* The data volume can be measured by measuring how many individual records are being produced per second and what the size of the data throughput is per second.
+* There is variance in the volume of data over time as this is real data. For each of the tests below, the data volume at that time will be provided in this format: ```Data: XX R/s and XX MiB/s```, where each of the numbers are the average for each metric over the hour of when the test was done. ```R/s``` is ```Records per second``` and ```MiB/s``` is ```MebiBytes per second```. The data is compressed with a compression ratio of ```1.2```.
+* Our data schema contained ```92``` fields with ```62``` Strings, ```4``` Longs, ```23``` Maps and ```3``` Lists of Maps. Most of the data is generally present in the Maps and Lists of Maps.
 
 ### Configuration
 
@@ -82,7 +84,7 @@ For Tests 1 through 4, we read from a Kafka 0.9 cluster with the following confi
 
 ### Resource utilization
 
-<div class="mostly-numeric-table"></div>
+<div class="one-text-numeri-table"></div>
 
 |     Component       | Parallelism |CPU (cores) | On Heap Memory (MiB) | Off Heap Memory (MiB) |Total Memory (MiB) |
 | :------------------ | ----------: | ---------: | -------------------: | --------------------: | ----------------: |
@@ -130,7 +132,7 @@ We are [running this query](../ws/examples.md#simplest-query) in this test. This
 
 The following table shows the timestamps averaged by running **100** of these queries. The delays below are shown *relative* to the Query Received timestamp (when the query was received by Bullet at the Join Bolt).
 
-<div class="mostly-numeric-table"></div>
+<div class="one-text-numeri-table"></div>
 
 |    Timestamp    | Delay (ms) |
 | :-------------- | ---------: |
@@ -151,11 +153,11 @@ The [last test](#test-1-measuring-the-minimum-latency-of-bullet) attempted to me
 
 We added a timestamp into the record when the record was initially read by the DataSource Spout. Using this and the Bullet Filtered timestamp and Query Finished timestamps, we can easily track the record through Bullet.
 
-Since we are looking at values in the data, the average data volume across this test was: ```Data: 76,000 MPS and 101 MB/s```
+Since we are looking at values in the data, the average data volume across this test was: ```Data: 76,000 R/s and 101 MiB/s```
 
 ### Result
 
-<div class="mostly-numeric-table"></div>
+<div class="one-text-numeri-table"></div>
 
 |    Timestamp    | Delay (ms) |
 | :-------------- | ---------: |
@@ -181,7 +183,7 @@ This test runs a query similar to the [simple filtering query](../ws/examples.md
 
 We want to see how many of these queries we can have running simultaneously till the Filter Bolt is unable to process records from the spouts in time. If a Filter Bolt is unable to keep up with the rate of data produced by the spouts, our queries will not find all 10 records. Workers may start dying (killed by RAS for exceeding capacity) as well. We will be trying to find the number of queries in parallel that we can run without these happening.
 
-The average data volume across this test was: ```Data: 85,000 MPS and 126 MB/s```
+The average data volume across this test was: ```Data: 85,000 R/s and 126 MiB/s```
 
 ### Query
 
@@ -217,15 +219,19 @@ Before you look at the figures:
 4. The majority of the components (excluding ackers) are spouts reading from Kafka or Filter Bolts, so the figures can be taken to be primarily describing those workers
 
 #### Figure 1. Queries running
+
 ![Queries](../img/raw-perf-queries.png)
 
 #### Figure 2. CPU user-time usage
+
 ![CPU Utilization](../img/raw-perf-cpu.png)
 
 #### Figure 3. On Heap usage
+
 ![Heap Utilization](../img/raw-perf-heap.png)
 
 #### Figure 4. Garbage Collection times
+
 ![GC Time](../img/raw-perf-gc.png)
 
 [Figure 1](#figure-1-queries-running) shows that we first ran 100 queries, then 200, then 400 and finally 300. The numbers go over their target because we only added a 2 s buffer in our script. Network and tick delays caused some queries to not be entirely purged before the next set of N simultaneous queries came in.
@@ -242,7 +248,7 @@ Before you look at the figures:
 
 The following table summarizes these figures:
 
-<div class="mostly-numeric-table"></div>
+<div class="one-text-numeri-table"></div>
 
 |  Simultaneous Queries  | Average CPU (ms)| Average Result size |
 | :--------------------- | --------------: | ------------------: |
@@ -275,7 +281,7 @@ Changes:
 
 Our resource utilization is now:
 
-<div class="mostly-numeric-table"></div>
+<div class="one-text-numeri-table"></div>
 
 |     Component       | Parallelism |CPU (cores) |On Heap Memory (MiB) | Off Heap Memory (MiB) | Total Memory (MiB) |
 | :------------------ | ----------: | ---------: | ------------------: | --------------------: | -----------------: |
@@ -289,7 +295,7 @@ Our resource utilization is now:
 | Ackers              |256          |25.6        |128.0                |0                      | 32768              |
 | **Total**           |**455**      |**219.5**   |                     |                       | **285184**         |
 
-Our data volume across this test was: ```Data: 84,000 MPS and 124 MB/s```
+Our data volume across this test was: ```Data: 84,000 R/s and 124 MiB/s```
 
 ### Result
 
@@ -298,18 +304,22 @@ With this configuration, we were able to run 700 queries simultaneously and fail
 We notice that the GC times have improved a lot (down to ~12K ms from ~35K ms in [Figure 4](#figure-4-garbage-collection-times)). While our overall CPU usage seems to have gone down since we GC a lot less, remember that our changes to the maximum worker size makes our workers run less components and as a result, use less CPU. This is why there are more lines overall (more workers).
 
 #### Figure 5. Queries running
+
 ![Queries](../img/raw-perf-2-queries.png)
 
 #### Figure 6. CPU user-time usage
+
 ![CPU Utilization](../img/raw-perf-2-cpu.png)
 
 #### Figure 7. On Heap usage
+
 ![Heap Utilization](../img/raw-perf-2-heap.png)
 
 #### Figure 8. Garbage Collection times
+
 ![GC Time](../img/raw-perf-2-gc.png)
 
-<div class="mostly-numeric-table"></div>
+<div class="one-text-numeri-table"></div>
 
 |  Simultaneous Queries  | Average CPU (ms)| Average Result size |
 | :--------------------- | --------------: | ------------------: |
@@ -339,9 +349,9 @@ To read more data, we will be trying to read a topic that is a superset of our d
 
 ## Test 5: Reading more Data
 
-Our average data volume across this test was: ```Data: 756,000 MPS and 3080 MB/s```
+Our average data volume across this test was: ```Data: 756,000 R/s and 3080 MiB/s```
 
-<div class="mostly-numeric-table"></div>
+<div class="one-text-numeri-table"></div>
 
 |     Component       | Parallelism |CPU (cores) |On Heap Memory (MiB) |Off Heap Memory (MiB) | Total Memory (MiB) |
 | :------------------ | ----------: | ---------: | ------------------: | -------------------: | -----------------: |
@@ -384,18 +394,22 @@ We capped the GC threads to ```8``` and ```4```, which helps performance on our 
 We were able to run over 600 queries with this configuration and failed in the high 600s due to hitting the DRPC limit again. With our improved reading model and GC configs, our base resource footprint has improved from ```50K``` CPU ms/min to around ```25K``` CPU ms/min.
 
 #### Figure 9. Queries running
+
 ![Queries](../img/raw-perf-3-queries.png)
 
 #### Figure 10. CPU user-time usage
+
 ![CPU Utilization](../img/raw-perf-3-cpu.png)
 
 #### Figure 11. On Heap usage
+
 ![Heap Utilization](../img/raw-perf-3-heap.png)
 
 #### Figure 12. Garbage Collection times
+
 ![GC Time](../img/raw-perf-3-gc.png)
 
-<div class="mostly-numeric-table"></div>
+<div class="one-text-numeri-table"></div>
 
 |  Simultaneous Queries  | Average CPU (ms)| Average Result size |
 | :--------------------- | --------------: | ------------------: |
@@ -431,16 +445,16 @@ For this test, we'll establish how much resources we need to read various data v
 
 For reading the data, we have to first scale the DataSource spouts and bolts and then set the parallelism of the Filter bolts to support the minimum 400 queries we want at the data volume. We leave the rest of the components at their default values as seen in in [Test 5](#test-5-reading-more-data).
 
-To get various data volumes, we read a large Kafka topic with (256 partitions) with over 1 million MPS and sample various percentages to get less data. The sampling is done in our DataSource Spouts.
+To get various data volumes, we read a large Kafka topic with (256 partitions) with over 1 million R/s and sample various percentages to get less data. The sampling is done in our DataSource Spouts.
 
 ### Result
 
 The following table summarizes the results:
 
-<div class="mostly-numeric-table"></div>
+<div class="two-one-text-numeric-table"></div>
 
-| Data (MiB/s, MPS) | Component      | Parallelism | CPU cores | On Heap (MiB) | Total CPU cores | Total Memory (MiB) |
-| :---------------- | -------------: | ----------: | --------: | ------------: | --------------: | -----------------: |
+| Data (MiB/s, R/s) | Component      | Parallelism | CPU cores | On Heap (MiB) | Total CPU cores | Total Memory (MiB) |
+| :---------------- | :------------- | ----------: | --------: | ------------: | --------------: | -----------------: |
 |**307, 69700**     |                |             |           |               |**98.3**         |**123648**          |
 |                   |DataSource Spout|16           |0.5        |1024           |                 |                    |
 |                   |DataSource Bolt |32           |2          |2048           |                 |                    |
@@ -466,12 +480,109 @@ The following table summarizes the results:
 |                   |DataSource Bolt |384          |2          |2580           |                 |                    |
 |                   |Filter Bolt     |320          |1          |1024           |                 |                    |
 
-The following graphs show how the data volume relates to the total CPU and Memory needed.
+The following figures graphs how the data volume relates to the total CPU and Memory needed.
 
 #### Figure 13. Data Volume vs CPU
-![Queries](../img/raw-perf-2-queries.png)
+
+![Queries](../img/data-cpu.png)
 
 #### Figure 14. Data Volume vs Memory
-![Queries](../img/raw-perf-2-queries.png)
+![Queries](../img/data-memory.png)
+
+As these figures show, Bullet scales pretty linearly for more data.  For each core of CPU core, we need about 1.2 GiB of Memory. That is the, CPU to Memory ratio is ```1 core : 1.2 GiB```. The slopes of figures show that the CPU to data ratio is ```1 core : 850 R/s``` or ```1 core : 3.4 MiB/s```.
+
+### Conclusion
+
+This test demonstrates that Bullet scales pretty linearly for reading more data. We were able to support at least ```400```queries with plenty of headroom for each configuration. Each CPU core required about 1.2 GiB of Memory and gave us roughly 800 R/s or 3.4 MiB/s processing capability. Of course, this is particular to our data. As mentioned in the [data section](#data), most of our data was concentrated in random maps. This means that in memory, the data is generally not contiguous. This creates memory fragmentation and more GC pressure. Depending on your data schema, your performance may be a lot better.
 
 ## Test 7: Scaling for More Queries
+
+For this test, we'll establish how much resources we need to support more queries for a fixed data volume: ```Data: 68,400 R/s and 105 MiB/s```.
+
+As our 3 server DRPC cluster currently does not let us do more than ```680 RAW``` queries, in this test, we will:
+
+* Vary the number of Filter Bolts as they are the primary bottleneck for supporting more queries.
+* To simplify things, we will only vary the **parallelism** and fix the CPU and memory of each Filter Bolt to ```1 Core``` and ```1 GiB Memory```
+* We will use ```RAW``` queries as the queries to scale
+* Each ```RAW``` query will run for ```30 s``` and search for ```10``` records that we generate. The query will actually look for *11* records to force it to run for the full ```30 s```. This is because we want to stress the Filter Bolt as much as possible. As long as there is a query in the system, the Filter Bolt will deserialize and check every record that it processes
+* We will measure the same filtering latency: the time taken from the record read in DataSource Spout to its emission in the Filter Bolt. We want the maximum latency to be less than ```200 ms```
+
+### Results
+
+The following table summarizes the results:
+
+<div class="two-one-text-numeric-table"></div>
+
+| Filter Bolt Parallelism | Queries | Average Latency (ms) | Status | Topology CPU (cores) | Topology Memory (MiB) |
+| :---------------------- | ------: | -------------------: | -----: | -------------------: | --------------------: |
+|**4**                    |         |                      |        |**78.3**              |**112256**             |
+|                         |1        |7                     |OK      |                      |                       |
+|                         |10       |8                     |OK      |                      |                       |
+|                         |20       |8                     |OK      |                      |                       |
+|                         |30       |10                    |OK      |                      |                       |
+|                         |40       |12                    |OK      |                      |                       |
+|                         |**50**   |167                   |OK      |                      |                       |
+|                         |60       |1002                  |FAIL    |                      |                       |
+|**8**                    |         |                      |        |**82.3**              |**117120**             |
+|                         |40       |9                     |OK      |                      |                       |
+|                         |60       |9                     |OK      |                      |                       |
+|                         |80       |9                     |OK      |                      |                       |
+|                         |100      |10                    |OK      |                      |                       |
+|                         |120      |14                    |OK      |                      |                       |
+|                         |**140**  |18                    |OK      |                      |                       |
+|                         |160      |298                   |FAIL    |                      |                       |
+|                         |170      |2439                  |FAIL    |                      |                       |
+|**12**                   |         |                      |        |**86.3**              |**121984**             |
+|                         |160      |13                    |OK      |                      |                       |
+|                         |200      |14                    |OK      |                      |                       |
+|                         |**240**  |78                    |OK      |                      |                       |
+|                         |280      |274                   |FAIL    |                      |                       |
+|                         |320      |680                   |FAIL    |                      |                       |
+|                         |360      |1700                  |FAIL    |                      |                       |
+|                         |400      |2685                  |FAIL    |                      |                       |
+|**16**                   |         |                      |        |**90.3**              |**126848**             |
+|                         |300      |30                    |OK      |                      |                       |
+|                         |**350**  |44                    |OK      |                      |                       |
+|                         |400      |481                   |FAIL    |                      |                       |
+|                         |450      |935                   |FAIL    |                      |                       |
+|                         |500      |1968                  |FAIL    |                      |                       |
+|                         |550      |3267                  |FAIL    |                      |                       |
+|**20**                   |         |                      |        |**94.3**              |**131712**             |
+|                         |350      |15                    |OK      |                      |                       |
+|                         |400      |18                    |OK      |                      |                       |
+|                         |450      |28                    |OK      |                      |                       |
+|                         |**500**  |40                    |OK      |                      |                       |
+|                         |550      |670                   |FAIL    |                      |                       |
+|                         |600      |1183                  |FAIL    |                      |                       |
+|                         |650      |1924                  |FAIL    |                      |                       |
+|**24**                   |         |                      |        |**98.3**              |**136576**             |
+|                         |450      |17                    |OK      |                      |                       |
+|                         |500      |22                    |OK      |                      |                       |
+|                         |**550**  |30                    |OK      |                      |                       |
+|                         |600      |377                   |FAIL    |                      |                       |
+|                         |650      |490                   |FAIL    |                      |                       |
+|**28**                   |         |                      |        |**102.3**             |**141440**             |
+|                         |550      |39                    |OK      |                      |                       |
+|                         |**600**  |53                    |OK      |                      |                       |
+|                         |650      |468                   |FAIL    |                      |                       |
+|**32**                   |         |                      |        |**106.3**             |**146304**             |
+|                         |600      |26                    |OK      |                      |                       |
+|                         |**650**  |32                    |OK      |                      |                       |
+
+The following figure summarizes the minimum number of CPU cores (which are also the number of Filter Bolts) needed to support the the maximum number of ```RAW``` queries with latency < 200 ms.
+
+#### Figure 15. Data Volume vs Memory
+
+![Queries](../img/queries-cpu.png)
+
+This shows that the queries supported also scale pretty linearly.
+
+You may have noticed how when latency starts to increase, it increases pretty rapidly. This suggests that there is a *knee* or *exponential* curve for latency. The following figure shows this in the graph of the latency for queries with ```20``` Filter Bolts.
+
+#### Figure 16. Data Volume vs Memory
+
+![Queries](../img/queries-20-fb.png)
+
+### Conclusion
+
+Since Filter Bolts tend to be the most CPU intensive of the query processing components, this test measured how scaling Filter Bolts affected the number of queries that can be supported. For the fixed data volume, this relationship is linear.
