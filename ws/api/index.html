@@ -328,7 +328,8 @@
 }
 </code></pre>
 
-<p>The duration represents how long the query runs for (a window from when you submit it to that many milliseconds into the future). See the <a href="#filters">Filters</a>, <a href="#projections">Projections</a> and <a href="#aggregations">Aggregation</a> sections for their respective specifications. Each of those sections are objects.</p>
+<p>The duration represents how long the query runs for (a window from when you submit it to that many milliseconds into the future).</p>
+<p>See the <a href="#filters">Filters</a>, <a href="#projections">Projections</a> and <a href="#aggregations">Aggregation</a> sections for their respective specifications. Each of those sections are objects and you will need to be place the entire object in the respective sections above.</p>
 <h2 id="filters">Filters</h2>
 <p>Bullet supports two kinds of filters:</p>
 <ol>
@@ -436,7 +437,7 @@ casted to the types on the LHS, those items will be ignored for the comparison.<
 better names to fields pulled out from maps). If projections are not specified, the entire record is returned. If you are querying
 for raw records, you can use projections to help reduce the load on the system and network.</p>
 <pre><code class="javascript">{
-    &quot;projection&quot;: {
+    &quot;fields&quot;: {
         &quot;fieldA&quot;: &quot;newNameA&quot;,
         &quot;fieldB&quot;: &quot;newNameB&quot;
     }
