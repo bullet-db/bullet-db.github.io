@@ -13,7 +13,9 @@ The three main sections of a Bullet query are:
     "duration": 20000
 }
 ```
-The duration represents how long the query runs for (a window from when you submit it to that many milliseconds into the future). See the [Filters](#filters), [Projections](#projections) and [Aggregation](#aggregations) sections for their respective specifications. Each of those sections are objects.
+The duration represents how long the query runs for (a window from when you submit it to that many milliseconds into the future).
+
+See the [Filters](#filters), [Projections](#projections) and [Aggregation](#aggregations) sections for their respective specifications. Each of those sections are objects and you will need to be place the entire object in the respective sections above.
 
 ## Filters
 
@@ -93,7 +95,7 @@ for raw records, you can use projections to help reduce the load on the system a
 
 ```javascript
 {
-    "projection": {
+    "fields": {
         "fieldA": "newNameA",
         "fieldB": "newNameB"
     }
@@ -238,7 +240,7 @@ You have three options to generate points.
 
 |           Method           |    Keys          |
 | -------------------------- | ---------------- |
-| Number of Points           | You can use the ```numberOfPoints``` key to provide a number of points to generate evenly distributed in the full range of your domain |  
+| Number of Points           | You can use the ```numberOfPoints``` key to provide a number of points to generate evenly distributed in the full range of your domain |
 | Generate Points in a range | You can use ```start```, ```end``` and ```increment``` (```start``` < ```end```, ```increment``` > 0) to specify numbers to generate points in a narrower region of your domain |
 | Specify free-form points   | You can specify a free-form *array* of numbers which will be used as the points |
 
