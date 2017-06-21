@@ -57,7 +57,7 @@ Since the data from the Prepare Request bolt (a query and a piece of return info
 
 !!! note "Combining and operations"
 
-    In order to be able to combine intermediate results and process data in any order, all aggregations that Bullet does need to be associative and have an identity. In other words, they need to be [Monoids](https://en.wikipedia.org/wiki/Monoid). Luckily for us, the [DataSketches](http://datasketches.github.io) that we use are monoids (actually are commutative monoids). Sketches can be unioned and thus all the aggregations we support - ```SUM```, ```COUNT```, ```MIN```, ```MAX```, ```AVG```, ```COUNT DISTINCT```, ```DISTINCT``` etc - are monoidal. (```AVG``` is monoidal if you store a ```SUM``` and a ```COUNT``` instead).
+    In order to be able to combine intermediate results and process data in any order, all aggregations that Bullet does need to be associative and have an identity. In other words, they need to be [Monoids](https://en.wikipedia.org/wiki/Monoid). Luckily for us, the [DataSketches](http://datasketches.github.io) that we use are monoids when exact (```COUNT DISTINCT``` and ```GROUP BY``` actually are commutative monoids). Sketches can be unioned and thus all the aggregations we support - ```SUM```, ```COUNT```, ```MIN```, ```MAX```, ```AVG```, ```COUNT DISTINCT```, ```DISTINCT``` etc - are monoidal. (```AVG``` is monoidal if you store a ```SUM``` and a ```COUNT``` instead). When ```DISTRIBUTION``` and ```TOP K``` Sketches are approximating, they may end up not being associative since they depend on the distribution of the data but you can think of them this way if you include their defined error functions bounding the result of the operation.
 
 
 ## Scalability
@@ -65,7 +65,9 @@ Since the data from the Prepare Request bolt (a query and a piece of return info
 The topology set up this way scales horizontally and has some nice properties:
 
   * If you want to scale for processing more data but the same amount of queries, you only need to scale the components that read your data (the spout reading the data or your custom topology) and the Filter bolts.
-  * If you want to scale for more queries but the same amount of data, you need to scale up the DRPC spouts, Prepare Request bolts, Join bolts and Return Results bolts. These components generally have low parallelism compared to your data since the data is generally much higher.
+  * If you want to scale for more queries but the same amount of data, you generally need to scale up the Filter Bolts. If you only have a few DRPC servers in your Storm cluster, you may also need to add more to support more simultaneous DRPC requests. We have [found that](performance.md#conclusion_3) each server gives us about ~250 simultaneous queries. Finally, if you need it, you should scale the DRPC spouts, Prepare Request bolts, Join bolts and Return Results bolts. These components generally have low parallelisms compared to your data processing components since the data volume is generally much higher than your query volume.
+
+See [Scaling for more Queries](performance.md#test-7-scaling-for-more-queries) and [Scaling for more Data](performance.md#test-6-scaling-for-more-data) for more details.
 
 !!! note "More queries and Filter bolts"
 
