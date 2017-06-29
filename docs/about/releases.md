@@ -4,11 +4,47 @@ This sections gathers all the relevant releases of the three components of Bulle
 
 Bullet is still in active development. We welcome all contributions. Feel free to raise any issues/questions/bugs and whatever else on the relevant issues section for each component. Please include as many details as you can.
 
+## Bullet Core
+
+The core Bullet logic (a library) that can be used to implement Bullet on different Stream Processors (like Flink, Storm, Kafka Streaming etc.). This core library can also be reused in other Bullet components that wish to depend on core Bullet concepts. This actually lived inside the [Bullet Storm](#bullet-storm) package prior to version [0.5.0](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.5.0). Starting with 0.5.0, Bullet Storm only includes the logic to implement Bullet on Storm.
+
+|                           |                 |
+| ------------------------- | --------------- |
+| **Repository**            | [https://github.com/yahoo/bullet-core](https://github.com/yahoo/bullet-core) |
+| **Issues**                | [https://github.com/yahoo/bullet-core/issues](https://github.com/yahoo/bullet-core/issues) |
+| **Last Tag**              | [![Latest tag](https://img.shields.io/github/release/yahoo/bullet-core/all.svg)](https://github.com/yahoo/bullet-core/tags) |
+| **Latest Artifact**       | [![Download](https://api.bintray.com/packages/yahoo/maven/bullet-core/images/download.svg)](https://bintray.com/yahoo/maven/bullet-core/_latestVersion) |
+| **Package Manager Setup** | [Setup for Maven, Gradle etc](https://bintray.com/bintray/jcenter?filterByPkgName=bullet-core) |
+
+### Releases
+
+|    Date      |                                      Release                                      | Highlights |
+| ------------ | --------------------------------------------------------------------------------- | ---------- |
+| 2016-06-27   | [**0.1.2**](https://github.com/yahoo/bullet-core/releases/tag/bullet-core-0.1.2)  | Changes to the BulletConfig interface previously used in Bullet Storm. Users now use BulletStormConfig instead but YAML config is the same |
+| 2016-06-27   | [**0.1.1**](https://github.com/yahoo/bullet-core/releases/tag/bullet-core-0.1.1)  | First stable release containing the core of Bullet as a library including parsing, implementing queries, creating results, DataSketches etc |
+
+## Bullet Record
+
+The AVRO container that you need to convert your data into to be consumed by Bullet.
+
+|                            |                 |
+| -------------------------- | --------------- |
+| **Repository**             | [https://github.com/yahoo/bullet-record](https://github.com/yahoo/bullet-record) |
+| **Issues**                 | [https://github.com/yahoo/bullet-record/issues](https://github.com/yahoo/bullet-record/issues) |
+| **Last Tag**               | [![Latest tag](https://img.shields.io/github/release/yahoo/bullet-record/all.svg)](https://github.com/yahoo/bullet-record/tags) |
+| **Latest Artifact**        | [![Download](https://api.bintray.com/packages/yahoo/maven/bullet-record/images/download.svg)](https://bintray.com/yahoo/maven/bullet-record/_latestVersion) |
+| **Package Manager Setup**  | [Setup for Maven, Gradle etc](https://bintray.com/bintray/jcenter?filterByPkgName=bullet-record) |
+
+### Releases
+
+|    Date      |                                  Release                                             | Highlights |
+| ------------ | ------------------------------------------------------------------------------------ | ---------- |
+| 2017-04-17   | [**0.1.1**](https://github.com/yahoo/bullet-record/releases/tag/bullet-record-0.1.0) | Helper methods to remove, rename, check presence and count fields in the Record |
+| 2017-02-09   | [**0.1.0**](https://github.com/yahoo/bullet-record/releases/tag/bullet-record-0.1.0) | Map constructor |
+
 ## Bullet Storm
 
-The implementation of Bullet on Storm. Due to major API changes between Storm <= 0.10 and Storm 1.0, Bullet Storm [builds two artifacts](../backend/setup-storm.md#older-storm-versions). The ```artifactId``` changes from ```bullet-storm``` (for 1.0+) to ```bullet-storm-0.10```.
-All releases include migration and testing of the code on *both* versions. Both versions are built simultaneously. Feature parity depends on what was new in Storm 1.0. For example, the Resource Aware Scheduler or RAS, is only present in Storm 1.0+. So, bullet-storm-0.10 removes
-certain CPU and memory related settings specific to RAS in its configuration. There are also minor changes to the Metrics API in Storm. In terms of Bullet itself, there should be no differences.
+The implementation of Bullet on Storm. Due to major API changes between Storm <= 0.10 and Storm 1.0, Bullet Storm [builds two artifacts](../backend/setup-storm.md#older-storm-versions). The ```artifactId``` changes from ```bullet-storm``` (for 1.0+) to ```bullet-storm-0.10```. All releases include migration and testing of the code on *both* versions. Both versions are built simultaneously. Feature parity depends on what was new in Storm 1.0. For example, the Resource Aware Scheduler or RAS, is only present in Storm 1.0+. So, bullet-storm-0.10 removes certain CPU and memory related settings specific to RAS in its configuration. There are also minor changes to the Metrics API in Storm. In terms of Bullet itself, there should be no differences.
 
 !!! note "Future support"
 
@@ -21,11 +57,13 @@ certain CPU and memory related settings specific to RAS in its configuration. Th
 | **Issues**                    | [https://github.com/yahoo/bullet-storm/issues](https://github.com/yahoo/bullet-storm/issues) |
 | **Last Tag**                  | [![Latest tag](https://img.shields.io/github/release/yahoo/bullet-storm/all.svg)](https://github.com/yahoo/bullet-storm/tags) |
 | **Latest Artifact**           | [![Download](https://api.bintray.com/packages/yahoo/maven/bullet-storm/images/download.svg)](https://bintray.com/yahoo/maven/bullet-storm/_latestVersion) |
+| **Package Manager Setup**     | [Setup for Maven, Gradle etc](https://bintray.com/bintray/jcenter?filterByPkgName=bullet-storm) |
 
 ### Releases
 
 |    Date      |                               Storm 1.0                                            |                                      Storm 0.10                                         | Highlights |
 | ------------ | ---------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ---------- |
+| 2017-06-27   | [**0.5.0**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.5.0) | [**0.5.0**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.5.0) | Pulled out Bullet Core. BulletConfig to BulletStormConfig |
 | 2017-06-09   | [**0.4.3**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.4.3) | [**0.4.3**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.4.3) | Adding rounding for DISTRIBUTION. Latency metric |
 | 2017-04-28   | [**0.4.2**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.4.2) | [**0.4.2**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.4.2) | Strict JSON output and fix for no data distributions |
 | 2017-04-26   | [**0.4.1**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.4.1) | [**0.4.1**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.4.1) | Result Metadata Concept name mismatch fix |
@@ -40,18 +78,23 @@ certain CPU and memory related settings specific to RAS in its configuration. Th
 
 The Web Service implementation that can serve a static schema from a file and talk to the Storm backend.
 
-|                     |                 |
-| ------------------- | --------------- |
-| **Repository**      | [https://github.com/yahoo/bullet-service](https://github.com/yahoo/bullet-service) |
-| **Issues**          | [https://github.com/yahoo/bullet-service/issues](https://github.com/yahoo/bullet-service/issues) |
-| **Last Tag**        | [![Latest tag](https://img.shields.io/github/release/yahoo/bullet-service/all.svg)](https://github.com/yahoo/bullet-service/tags) |
-| **Latest Artifact** | [![Download](https://api.bintray.com/packages/yahoo/maven/bullet-service/images/download.svg)](https://bintray.com/yahoo/maven/bullet-service/_latestVersion) |
+|                            |                 |
+| -------------------------- | --------------- |
+| **Repository**             | [https://github.com/yahoo/bullet-service](https://github.com/yahoo/bullet-service) |
+| **Issues**                 | [https://github.com/yahoo/bullet-service/issues](https://github.com/yahoo/bullet-service/issues) |
+| **Last Tag**               | [![Latest tag](https://img.shields.io/github/release/yahoo/bullet-service/all.svg)](https://github.com/yahoo/bullet-service/tags) |
+| **Latest Artifact**        | [![Download](https://api.bintray.com/packages/yahoo/maven/bullet-service/images/download.svg)](https://bintray.com/yahoo/maven/bullet-service/_latestVersion) |
+| **Package Manager Setup**  | [Setup for Maven, Gradle etc](https://bintray.com/bintray/jcenter?filterByPkgName=bullet-service) |
 
 ### Releases
 
 |    Date      |                                      Release                                           | Highlights |
 | ------------ | -------------------------------------------------------------------------------------- | ---------- |
 | 2016-12-16   | [**0.0.1**](https://github.com/yahoo/bullet-service/releases/tag/bullet-service-0.0.1) | The first release with support for DRPC and the file-based schema |
+
+!!! note "Want to directly download jars?"
+
+    Head over to the JCenter download page to [directly download all Bullet Storm, Core, Service, Record artifacts](http://jcenter.bintray.com/com/yahoo/bullet/).
 
 ## Bullet UI
 
@@ -74,21 +117,3 @@ The Bullet UI that lets you build, run, save and visualize results from Bullet.
 | 2016-05-02   | [**0.2.1**](https://github.com/yahoo/bullet-ui/releases/tag/v0.2.1) | Fixes a bug with a dependency that broke sorting the Filters |
 | 2016-05-01   | [**0.2.0**](https://github.com/yahoo/bullet-ui/releases/tag/v0.2.0) | Release for Top K and Distribution. Supports Bullet Storm 0.4.2+ |
 | 2016-02-21   | [**0.1.0**](https://github.com/yahoo/bullet-ui/releases/tag/v0.1.0) | The first release with support for all features included in Bullet Storm 0.2.1+ |
-
-## Bullet Record
-
-The AVRO container that you need to convert your data into to be consumed by Bullet.
-
-|                     |                 |
-| ------------------- | --------------- |
-| **Repository**      | [https://github.com/yahoo/bullet-record](https://github.com/yahoo/bullet-record) |
-| **Issues**          | [https://github.com/yahoo/bullet-record/issues](https://github.com/yahoo/bullet-record/issues) |
-| **Last Tag**        | [![Latest tag](https://img.shields.io/github/release/yahoo/bullet-record/all.svg)](https://github.com/yahoo/bullet-record/tags) |
-| **Latest Artifact** | [![Download](https://api.bintray.com/packages/yahoo/maven/bullet-record/images/download.svg)](https://bintray.com/yahoo/maven/bullet-record/_latestVersion) |
-
-### Releases
-
-|    Date      |                                  Release                                             | Highlights |
-| ------------ | ------------------------------------------------------------------------------------ | ---------- |
-| 2017-04-17   | [**0.1.1**](https://github.com/yahoo/bullet-record/releases/tag/bullet-record-0.1.0) | Helper methods to remove, rename, check presence and count fields in the Record |
-| 2017-02-09   | [**0.1.0**](https://github.com/yahoo/bullet-record/releases/tag/bullet-record-0.1.0) | Map constructor |

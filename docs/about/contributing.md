@@ -8,14 +8,16 @@ Bullet is hosted under the [Yahoo Github Organization](https://github.com/yahoo)
 
 ## Future plans
 
-Here is a list of features we are currently considering/working on. If the Status column is empty, we are still discussing how to prioritize/approach/break them down. They will be updated as they are solidified. Feel free to [contact us](contact.md) with any ideas/suggestions/PRs!
+Here is a list of features we are currently considering/working on. Feel free to [contact us](contact.md) with any ideas/suggestions/PRs for features mentioned here or anything else you think about!
 
-This list is neither comprehensive nor in any particular order.
+This list is neither comprehensive nor in any particular order and lists some high level directions.
 
-| Feature            | Components  | Description               | Status        |
-|------------------- | ----------- | ------------------------- | ------------- |
-| Pub-Sub Queue      | BE, WS, UI  | WS and BE talk through the pub/sub. Bullet Storm uses Storm DRPC for this, which is strictly request-response. This will let us work on other Stream Processors and support incremental updates through WebSockets or SSEs | |
-| Incremental updates| BE, WS, UI  | Push results back to users as soon as they arrive. Monoidal operations implies additive, so progressive results can be streamed back. Micro-batching and other features come into play | |
-| SQL API            | BE, WS      | WS supports an endpoint that converts a SQL-like query into Bullet queries | |
-| LocalForage        | UI          | Migration to LocalForage to distance ourselves from the relatively small LocalStorage space | [#9](https://github.com/yahoo/bullet-ui/issues/9) |
-| UI Packaging       | UI          | Github releases and building from source are the only two options. Docker or something similar may be more apt | |
+| Feature             | Components  | Description               | Status        |
+|-------------------- | ----------- | ------------------------- | ------------- |
+| Pub-Sub Queue       | BE, WS, UI  | WS and BE talk through the pub/sub. Bullet Storm uses Storm DRPC for this, which is request-response. Using a pub/sub queue will let us implement Bullet on other Stream Processors, support incremental updates through WebSockets and more! | In Progress |
+| Incremental updates | BE, WS, UI  | Push results back to users as soon as they arrive. Monoidal operations implies additive, so progressive results can be streamed back. Micro-batching and other features come into play | In Progress |
+| Security            | WS, UI      | The obvious enterprise security for locking down access to the data and the instance of Bullet. Considering SSL, Kerberos, LDAP etc. | Planning |
+| Bullet on X         | BE          | With the pub/sub feature, Bullet can be implemented on other Stream Processors like Spark Streaming, Flink, Kafka Streaming, Samza etc | Open |
+| SQL API             | BE, WS      | WS supports an endpoint that converts a SQL-like query into Bullet queries | Open |
+| LocalForage         | UI          | Migration to LocalForage to distance ourselves from the relatively small LocalStorage space | [#9](https://github.com/yahoo/bullet-ui/issues/9) |
+| UI Packaging        | UI          | Github releases and building from source are the only two options. Docker or something similar may be more apt | Open |

@@ -26,7 +26,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <bullet.version>0.4.3</bullet.version>
+        <bullet.storm.version>0.5.0</bullet.storm.version>
+        <bullet.core.version>0.1.2</bullet.core.version>
         <storm.version>1.0.3</storm.version>
     </properties>
 
@@ -42,7 +43,14 @@
         <dependency>
             <groupId>com.yahoo.bullet</groupId>
             <artifactId>bullet-storm</artifactId>
-            <version>${bullet.version}</version>
+            <version>${bullet.storm.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.yahoo.bullet</groupId>
+            <artifactId>bullet-core</artifactId>
+            <version>${bullet.core.version}</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
@@ -85,7 +93,7 @@
         <dependency>
             <groupId>com.yahoo.bullet</groupId>
             <artifactId>bullet-storm</artifactId>
-            <version>${bullet.version}</version>
+            <version>${bullet.storm.version}</version>
         </dependency>
     </dependencies>
     <build>

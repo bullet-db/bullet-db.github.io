@@ -4,9 +4,9 @@ This section gets you running a mock instance of Bullet to play around with. The
 
 At the end of this section, you will have:
 
-  * Setup the Bullet topology using a custom spout on [bullet-storm-0.4.3](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.4.3)
+  * Setup the Bullet topology using a custom spout on [bullet-storm-0.5.0](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.5.0)
   * Setup the [Web Service](ws/setup.md) talking to the topology and serving a schema for your UI using [bullet-service-0.0.1](https://github.com/yahoo/bullet-service/releases/tag/bullet-service-0.0.1)
-  * Setup the [UI](ui/setup.md) talking to the Web Service using [bullet-ui-0.3.1](https://github.com/yahoo/bullet-ui/releases/tag/v0.3.1)
+  * Setup the [UI](ui/setup.md) talking to the Web Service using [bullet-ui-0.3.2](https://github.com/yahoo/bullet-ui/releases/tag/v0.3.2)
 
 **Prerequisites**
 
@@ -19,7 +19,7 @@ At the end of this section, you will have:
 Simply run:
 
 ```bash
-curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.3.2/examples/install-all.sh | bash
+curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.3.3/examples/install-all.sh | bash
 ```
 
 This will setup a local Storm cluster, a Bullet running on it, the Bullet Web Service and a Bullet UI for you. Once everything has launched, you should be able to go to the Bullet UI running locally at [http://localhost:8800](http://localhost:8800). You can then [**continue this guide from here**](#what-did-we-do).
@@ -114,7 +114,7 @@ cp $BULLET_EXAMPLES/storm/* $BULLET_HOME/backend/storm
 
 !!! note "Settings"
 
-    Take a look at bullet_settings.yaml for the settings that are being overridden for this example. You can add or change settings as you like by referring to [bullet_defaults.yaml](https://github.com/yahoo/bullet-storm/blob/master/src/main/resources/bullet_defaults.yaml). In particular, we have [customized these settings](https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/resources/bullet_settings.yaml) that affect the Bullet queries you can run:
+    Take a look at bullet_settings.yaml for the settings that are being overridden for this example. You can add or change settings as you like by referring to [core Bullet settings in bullet_defaults.yaml](https://github.com/yahoo/bullet-core/blob/master/src/main/resources/bullet_defaults.yaml) and [Storm settings in bullet_storm_defaults.yaml](https://github.com/yahoo/bullet-storm/blob/master/src/main/resources/bullet_storm_defaults.yaml). In particular, we have [customized these settings](https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/resources/bullet_settings.yaml) that affect the Bullet queries you can run:
 
     ```bullet.query.max.duration: 570000``` Longest query time can be 570s. The Storm cluster default DRPC timeout is 600s.
 

@@ -1,5 +1,7 @@
 # Custom settings for the example
-# Settings not overridden will default to the defaults in bullet_defaults.yaml in the bullet-storm artifact
+# Settings not overridden will default to the defaults in bullet_storm_defaults.yaml in the bullet-storm artifact
+# and to the defaults in bullet_defaults.yaml in the bullet-core artifact.
+# Settings that start with bullet.topology are Storm settings and everything else are Bullet Core settings.
 bullet.topology.function: "bullet"
 bullet.topology.name: "bullet"
 bullet.topology.metrics.enable: false

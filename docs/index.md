@@ -30,6 +30,10 @@ Bullet is used in production internally at Yahoo by having it sit on a subset of
 
 This instance of Bullet also powers other use-cases such as letting analysts validate assumptions about data, product managers verify launches instantly, debug issues and outages, or simply explore and play around with the data.
 
+!!! note "Blog post"
+
+    Here is a [link to our blog post](https://yahooeng.tumblr.com/post/161855616651/open-sourcing-bullet-yahoos-forward-looking) condensing most of this information if you want to take a look.
+
 ---
 
 # Quick Start
@@ -145,7 +149,7 @@ The Web Service can be deployed with your favorite servlet container like [Jetty
 
 In the case of Bullet on Storm, the Web Service and UI talk to the backend using [Storm DRPC](http://storm.apache.org/releases/1.0.0/Distributed-RPC.html).
 
-## End-to-End Architecture
+## End-to-End Architecture on Storm
 
 ![Overall Storm Architecture](img/overallarch.png)
 
