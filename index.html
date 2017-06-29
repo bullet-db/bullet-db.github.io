@@ -330,7 +330,7 @@
                     </li>
             
                     <li class="second-level">
-                        <a href="#end-to-end-architecture">End-to-End Architecture</a>
+                        <a href="#end-to-end-architecture-on-storm">End-to-End Architecture on Storm</a>
                         
                     </li>
             
@@ -382,6 +382,10 @@
 <h3 id="example-how-bullet-is-used-at-yahoo">Example: How Bullet is used at Yahoo</h3>
 <p>Bullet is used in production internally at Yahoo by having it sit on a subset of raw user engagement events from Yahoo sites and apps. This lets Yahoo developers automatically validate their instrumentation code <em>end-to-end</em> in their Continuous Delivery pipelines. Validating instrumentation is critical since it powers pretty much all decisions and products including machine learning, corporate KPIs, analytics, personalization, targeting.</p>
 <p>This instance of Bullet also powers other use-cases such as letting analysts validate assumptions about data, product managers verify launches instantly, debug issues and outages, or simply explore and play around with the data.</p>
+<div class="admonition note">
+<p class="admonition-title">Blog post</p>
+<p>Here is a <a href="https://yahooeng.tumblr.com/post/161855616651/open-sourcing-bullet-yahoos-forward-looking">link to our blog post</a> condensing most of this information if you want to take a look.</p>
+</div>
 <hr />
 <h1 id="quick-start">Quick Start</h1>
 <p>See <a href="quick-start/">Quick Start</a> to set up Bullet on a local Storm topology. We will generate some synthetic streaming data that you can then query with Bullet.</p>
@@ -531,7 +535,7 @@
 <p>The <a href="ws/api/">Bullet Web Service</a> is built using <a href="https://jersey.java.net/">Jersey</a> and the <a href="ui/usage/">UI</a> is built in <a href="./emberjs.com">Ember</a>.</p>
 <p>The Web Service can be deployed with your favorite servlet container like <a href="http://www.eclipse.org/jetty/">Jetty</a>. The UI is a client-side application that can be served using <a href="http://nodejs.org/">Node.js</a></p>
 <p>In the case of Bullet on Storm, the Web Service and UI talk to the backend using <a href="http://storm.apache.org/releases/1.0.0/Distributed-RPC.html">Storm DRPC</a>.</p>
-<h2 id="end-to-end-architecture">End-to-End Architecture</h2>
+<h2 id="end-to-end-architecture-on-storm">End-to-End Architecture on Storm</h2>
 <p><img alt="Overall Storm Architecture" src="./img/overallarch.png" /></p>
 <div class="admonition note">
 <p class="admonition-title">Want to know more?</p>
@@ -599,5 +603,5 @@
 
 <!--
 MkDocs version : 0.16.1
-Build Date UTC : 2017-06-21 18:47:52
+Build Date UTC : 2017-06-29 03:35:16
 -->

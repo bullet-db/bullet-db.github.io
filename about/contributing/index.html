@@ -270,8 +270,8 @@
 <h2 id="contributor-license-agreement-cla">Contributor License Agreement (CLA)</h2>
 <p>Bullet is hosted under the <a href="https://github.com/yahoo">Yahoo Github Organization</a>. In order to contribute to any Yahoo project, you will need to submit a CLA. When you submit a Pull Request to any Bullet repository, a CLABot will ask  you to sign the CLA if you haven't signed one already.</p>
 <h2 id="future-plans">Future plans</h2>
-<p>Here is a list of features we are currently considering/working on. If the Status column is empty, we are still discussing how to prioritize/approach/break them down. They will be updated as they are solidified. Feel free to <a href="../contact/">contact us</a> with any ideas/suggestions/PRs!</p>
-<p>This list is neither comprehensive nor in any particular order.</p>
+<p>Here is a list of features we are currently considering/working on. Feel free to <a href="../contact/">contact us</a> with any ideas/suggestions/PRs for features mentioned here or anything else you think about!</p>
+<p>This list is neither comprehensive nor in any particular order and lists some high level directions.</p>
 <table>
 <thead>
 <tr>
@@ -285,20 +285,32 @@
 <tr>
 <td>Pub-Sub Queue</td>
 <td>BE, WS, UI</td>
-<td>WS and BE talk through the pub/sub. Bullet Storm uses Storm DRPC for this, which is strictly request-response. This will let us work on other Stream Processors and support incremental updates through WebSockets or SSEs</td>
-<td></td>
+<td>WS and BE talk through the pub/sub. Bullet Storm uses Storm DRPC for this, which is request-response. Using a pub/sub queue will let us implement Bullet on other Stream Processors, support incremental updates through WebSockets and more!</td>
+<td>In Progress</td>
 </tr>
 <tr>
 <td>Incremental updates</td>
 <td>BE, WS, UI</td>
 <td>Push results back to users as soon as they arrive. Monoidal operations implies additive, so progressive results can be streamed back. Micro-batching and other features come into play</td>
-<td></td>
+<td>In Progress</td>
+</tr>
+<tr>
+<td>Security</td>
+<td>WS, UI</td>
+<td>The obvious enterprise security for locking down access to the data and the instance of Bullet. Considering SSL, Kerberos, LDAP etc.</td>
+<td>Planning</td>
+</tr>
+<tr>
+<td>Bullet on X</td>
+<td>BE</td>
+<td>With the pub/sub feature, Bullet can be implemented on other Stream Processors like Spark Streaming, Flink, Kafka Streaming, Samza etc</td>
+<td>Open</td>
 </tr>
 <tr>
 <td>SQL API</td>
 <td>BE, WS</td>
 <td>WS supports an endpoint that converts a SQL-like query into Bullet queries</td>
-<td></td>
+<td>Open</td>
 </tr>
 <tr>
 <td>LocalForage</td>
@@ -310,7 +322,7 @@
 <td>UI Packaging</td>
 <td>UI</td>
 <td>Github releases and building from source are the only two options. Docker or something similar may be more apt</td>
-<td></td>
+<td>Open</td>
 </tr>
 </tbody>
 </table></div>

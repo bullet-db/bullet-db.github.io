@@ -391,9 +391,9 @@
 <p>This section gets you running a mock instance of Bullet to play around with. The instance will run using <a href="../backend/setup-storm/">Bullet on Storm</a>. Since we do not have an actual data source, we will produce some fake data and convert it into <a href="../backend/ingestion/">Bullet Records</a> in a <a href="https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/java/com/yahoo/bullet/storm/examples/RandomSpout.java">custom Storm spout</a>. If you want to use Bullet for your data, you will need to do read and convert your data to Bullet Records in a similar manner.</p>
 <p>At the end of this section, you will have:</p>
 <ul>
-<li>Setup the Bullet topology using a custom spout on <a href="https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.4.3">bullet-storm-0.4.3</a></li>
+<li>Setup the Bullet topology using a custom spout on <a href="https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.5.0">bullet-storm-0.5.0</a></li>
 <li>Setup the <a href="../ws/setup/">Web Service</a> talking to the topology and serving a schema for your UI using <a href="https://github.com/yahoo/bullet-service/releases/tag/bullet-service-0.0.1">bullet-service-0.0.1</a></li>
-<li>Setup the <a href="../ui/setup/">UI</a> talking to the Web Service using <a href="https://github.com/yahoo/bullet-ui/releases/tag/v0.3.1">bullet-ui-0.3.1</a></li>
+<li>Setup the <a href="../ui/setup/">UI</a> talking to the Web Service using <a href="https://github.com/yahoo/bullet-ui/releases/tag/v0.3.2">bullet-ui-0.3.2</a></li>
 </ul>
 <p><strong>Prerequisites</strong></p>
 <ul>
@@ -403,7 +403,7 @@
 </ul>
 <h2 id="install-script">Install Script</h2>
 <p>Simply run:</p>
-<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.3.2/examples/install-all.sh | bash
+<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.3.3/examples/install-all.sh | bash
 </code></pre>
 
 <p>This will setup a local Storm cluster, a Bullet running on it, the Bullet Web Service and a Bullet UI for you. Once everything has launched, you should be able to go to the Bullet UI running locally at <a href="http://localhost:8800">http://localhost:8800</a>. You can then <a href="#what-did-we-do"><strong>continue this guide from here</strong></a>.</p>
@@ -473,7 +473,7 @@ storm supervisor &amp;
 
 <div class="admonition note">
 <p class="admonition-title">Settings</p>
-<p>Take a look at bullet_settings.yaml for the settings that are being overridden for this example. You can add or change settings as you like by referring to <a href="https://github.com/yahoo/bullet-storm/blob/master/src/main/resources/bullet_defaults.yaml">bullet_defaults.yaml</a>. In particular, we have <a href="https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/resources/bullet_settings.yaml">customized these settings</a> that affect the Bullet queries you can run:</p>
+<p>Take a look at bullet_settings.yaml for the settings that are being overridden for this example. You can add or change settings as you like by referring to <a href="https://github.com/yahoo/bullet-core/blob/master/src/main/resources/bullet_defaults.yaml">core Bullet settings in bullet_defaults.yaml</a> and <a href="https://github.com/yahoo/bullet-storm/blob/master/src/main/resources/bullet_storm_defaults.yaml">Storm settings in bullet_storm_defaults.yaml</a>. In particular, we have <a href="https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/resources/bullet_settings.yaml">customized these settings</a> that affect the Bullet queries you can run:</p>
 <p><code>bullet.query.max.duration: 570000</code> Longest query time can be 570s. The Storm cluster default DRPC timeout is 600s.</p>
 <p><code>bullet.query.aggregation.raw.max.size: 500</code> The max <code>RAW</code> records you can fetch is 500.</p>
 <p><code>bullet.query.aggregation.max.size: 1024</code> The max records you can fetch for any query is 1024.</p>

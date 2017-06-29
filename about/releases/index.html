@@ -249,7 +249,7 @@
             <ul class="nav">
                 
                     <li class="second-level">
-                        <a href="#bullet-storm">Bullet Storm</a>
+                        <a href="#bullet-core">Bullet Core</a>
                         <ul class="nav">
                         
                             <li class="third-level">
@@ -261,7 +261,7 @@
                     </li>
             
                     <li class="second-level">
-                        <a href="#bullet-web-service">Bullet Web Service</a>
+                        <a href="#bullet-record">Bullet Record</a>
                         <ul class="nav">
                         
                             <li class="third-level">
@@ -273,7 +273,7 @@
                     </li>
             
                     <li class="second-level">
-                        <a href="#bullet-ui">Bullet UI</a>
+                        <a href="#bullet-storm">Bullet Storm</a>
                         <ul class="nav">
                         
                             <li class="third-level">
@@ -285,11 +285,23 @@
                     </li>
             
                     <li class="second-level">
-                        <a href="#bullet-record">Bullet Record</a>
+                        <a href="#bullet-web-service">Bullet Web Service</a>
                         <ul class="nav">
                         
                             <li class="third-level">
                                 <a href="#releases_4">Releases</a>
+                                
+                            </li>
+                        
+                        </ul>
+                    </li>
+            
+                    <li class="second-level">
+                        <a href="#bullet-ui">Bullet UI</a>
+                        <ul class="nav">
+                        
+                            <li class="third-level">
+                                <a href="#releases_5">Releases</a>
                                 
                             </li>
                         
@@ -306,10 +318,116 @@
 <h1 id="releases">Releases</h1>
 <p>This sections gathers all the relevant releases of the three components of Bullet in one place. It may not include the very few initial releases of these components if they were largely irrelevant. Full release notes can be found by clicking on the actual releases.</p>
 <p>Bullet is still in active development. We welcome all contributions. Feel free to raise any issues/questions/bugs and whatever else on the relevant issues section for each component. Please include as many details as you can.</p>
+<h2 id="bullet-core">Bullet Core</h2>
+<p>The core Bullet logic (a library) that can be used to implement Bullet on different Stream Processors (like Flink, Storm, Kafka Streaming etc.). This core library can also be reused in other Bullet components that wish to depend on core Bullet concepts. This actually lived inside the <a href="#bullet-storm">Bullet Storm</a> package prior to version <a href="https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.5.0">0.5.0</a>. Starting with 0.5.0, Bullet Storm only includes the logic to implement Bullet on Storm.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Repository</strong></td>
+<td><a href="https://github.com/yahoo/bullet-core">https://github.com/yahoo/bullet-core</a></td>
+</tr>
+<tr>
+<td><strong>Issues</strong></td>
+<td><a href="https://github.com/yahoo/bullet-core/issues">https://github.com/yahoo/bullet-core/issues</a></td>
+</tr>
+<tr>
+<td><strong>Last Tag</strong></td>
+<td><a href="https://github.com/yahoo/bullet-core/tags"><img alt="Latest tag" src="https://img.shields.io/github/release/yahoo/bullet-core/all.svg" /></a></td>
+</tr>
+<tr>
+<td><strong>Latest Artifact</strong></td>
+<td><a href="https://bintray.com/yahoo/maven/bullet-core/_latestVersion"><img alt="Download" src="https://api.bintray.com/packages/yahoo/maven/bullet-core/images/download.svg" /></a></td>
+</tr>
+<tr>
+<td><strong>Package Manager Setup</strong></td>
+<td><a href="https://bintray.com/bintray/jcenter?filterByPkgName=bullet-core">Setup for Maven, Gradle etc</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="releases_1">Releases</h3>
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Release</th>
+<th>Highlights</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2016-06-27</td>
+<td><a href="https://github.com/yahoo/bullet-core/releases/tag/bullet-core-0.1.2"><strong>0.1.2</strong></a></td>
+<td>Changes to the BulletConfig interface previously used in Bullet Storm. Users now use BulletStormConfig instead but YAML config is the same</td>
+</tr>
+<tr>
+<td>2016-06-27</td>
+<td><a href="https://github.com/yahoo/bullet-core/releases/tag/bullet-core-0.1.1"><strong>0.1.1</strong></a></td>
+<td>First stable release containing the core of Bullet as a library including parsing, implementing queries, creating results, DataSketches etc</td>
+</tr>
+</tbody>
+</table>
+<h2 id="bullet-record">Bullet Record</h2>
+<p>The AVRO container that you need to convert your data into to be consumed by Bullet.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Repository</strong></td>
+<td><a href="https://github.com/yahoo/bullet-record">https://github.com/yahoo/bullet-record</a></td>
+</tr>
+<tr>
+<td><strong>Issues</strong></td>
+<td><a href="https://github.com/yahoo/bullet-record/issues">https://github.com/yahoo/bullet-record/issues</a></td>
+</tr>
+<tr>
+<td><strong>Last Tag</strong></td>
+<td><a href="https://github.com/yahoo/bullet-record/tags"><img alt="Latest tag" src="https://img.shields.io/github/release/yahoo/bullet-record/all.svg" /></a></td>
+</tr>
+<tr>
+<td><strong>Latest Artifact</strong></td>
+<td><a href="https://bintray.com/yahoo/maven/bullet-record/_latestVersion"><img alt="Download" src="https://api.bintray.com/packages/yahoo/maven/bullet-record/images/download.svg" /></a></td>
+</tr>
+<tr>
+<td><strong>Package Manager Setup</strong></td>
+<td><a href="https://bintray.com/bintray/jcenter?filterByPkgName=bullet-record">Setup for Maven, Gradle etc</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="releases_2">Releases</h3>
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Release</th>
+<th>Highlights</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2017-04-17</td>
+<td><a href="https://github.com/yahoo/bullet-record/releases/tag/bullet-record-0.1.0"><strong>0.1.1</strong></a></td>
+<td>Helper methods to remove, rename, check presence and count fields in the Record</td>
+</tr>
+<tr>
+<td>2017-02-09</td>
+<td><a href="https://github.com/yahoo/bullet-record/releases/tag/bullet-record-0.1.0"><strong>0.1.0</strong></a></td>
+<td>Map constructor</td>
+</tr>
+</tbody>
+</table>
 <h2 id="bullet-storm">Bullet Storm</h2>
-<p>The implementation of Bullet on Storm. Due to major API changes between Storm &lt;= 0.10 and Storm 1.0, Bullet Storm <a href="../../backend/setup-storm/#older-storm-versions">builds two artifacts</a>. The <code>artifactId</code> changes from <code>bullet-storm</code> (for 1.0+) to <code>bullet-storm-0.10</code>.
-All releases include migration and testing of the code on <em>both</em> versions. Both versions are built simultaneously. Feature parity depends on what was new in Storm 1.0. For example, the Resource Aware Scheduler or RAS, is only present in Storm 1.0+. So, bullet-storm-0.10 removes
-certain CPU and memory related settings specific to RAS in its configuration. There are also minor changes to the Metrics API in Storm. In terms of Bullet itself, there should be no differences.</p>
+<p>The implementation of Bullet on Storm. Due to major API changes between Storm &lt;= 0.10 and Storm 1.0, Bullet Storm <a href="../../backend/setup-storm/#older-storm-versions">builds two artifacts</a>. The <code>artifactId</code> changes from <code>bullet-storm</code> (for 1.0+) to <code>bullet-storm-0.10</code>. All releases include migration and testing of the code on <em>both</em> versions. Both versions are built simultaneously. Feature parity depends on what was new in Storm 1.0. For example, the Resource Aware Scheduler or RAS, is only present in Storm 1.0+. So, bullet-storm-0.10 removes certain CPU and memory related settings specific to RAS in its configuration. There are also minor changes to the Metrics API in Storm. In terms of Bullet itself, there should be no differences.</p>
 <div class="admonition note">
 <p class="admonition-title">Future support</p>
 <p>We will support Storm 0.10 for a bit longer till Storm 2.0 is up and stable. Storm versions 1.0+ have a lot of performance fixes and features that you should be running with.</p>
@@ -342,9 +460,13 @@ certain CPU and memory related settings specific to RAS in its configuration. Th
 <td><strong>Latest Artifact</strong></td>
 <td><a href="https://bintray.com/yahoo/maven/bullet-storm/_latestVersion"><img alt="Download" src="https://api.bintray.com/packages/yahoo/maven/bullet-storm/images/download.svg" /></a></td>
 </tr>
+<tr>
+<td><strong>Package Manager Setup</strong></td>
+<td><a href="https://bintray.com/bintray/jcenter?filterByPkgName=bullet-storm">Setup for Maven, Gradle etc</a></td>
+</tr>
 </tbody>
 </table>
-<h3 id="releases_1">Releases</h3>
+<h3 id="releases_3">Releases</h3>
 <table>
 <thead>
 <tr>
@@ -355,6 +477,12 @@ certain CPU and memory related settings specific to RAS in its configuration. Th
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>2017-06-27</td>
+<td><a href="https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.5.0"><strong>0.5.0</strong></a></td>
+<td><a href="https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.5.0"><strong>0.5.0</strong></a></td>
+<td>Pulled out Bullet Core. BulletConfig to BulletStormConfig</td>
+</tr>
 <tr>
 <td>2017-06-09</td>
 <td><a href="https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.4.3"><strong>0.4.3</strong></a></td>
@@ -437,9 +565,13 @@ certain CPU and memory related settings specific to RAS in its configuration. Th
 <td><strong>Latest Artifact</strong></td>
 <td><a href="https://bintray.com/yahoo/maven/bullet-service/_latestVersion"><img alt="Download" src="https://api.bintray.com/packages/yahoo/maven/bullet-service/images/download.svg" /></a></td>
 </tr>
+<tr>
+<td><strong>Package Manager Setup</strong></td>
+<td><a href="https://bintray.com/bintray/jcenter?filterByPkgName=bullet-service">Setup for Maven, Gradle etc</a></td>
+</tr>
 </tbody>
 </table>
-<h3 id="releases_2">Releases</h3>
+<h3 id="releases_4">Releases</h3>
 <table>
 <thead>
 <tr>
@@ -456,6 +588,10 @@ certain CPU and memory related settings specific to RAS in its configuration. Th
 </tr>
 </tbody>
 </table>
+<div class="admonition note">
+<p class="admonition-title">Want to directly download jars?</p>
+<p>Head over to the JCenter download page to <a href="http://jcenter.bintray.com/com/yahoo/bullet/">directly download all Bullet Storm, Core, Service, Record artifacts</a>.</p>
+</div>
 <h2 id="bullet-ui">Bullet UI</h2>
 <p>The Bullet UI that lets you build, run, save and visualize results from Bullet.</p>
 <table>
@@ -484,7 +620,7 @@ certain CPU and memory related settings specific to RAS in its configuration. Th
 </tr>
 </tbody>
 </table>
-<h3 id="releases_3">Releases</h3>
+<h3 id="releases_5">Releases</h3>
 <table>
 <thead>
 <tr>
@@ -523,56 +659,6 @@ certain CPU and memory related settings specific to RAS in its configuration. Th
 <td>2016-02-21</td>
 <td><a href="https://github.com/yahoo/bullet-ui/releases/tag/v0.1.0"><strong>0.1.0</strong></a></td>
 <td>The first release with support for all features included in Bullet Storm 0.2.1+</td>
-</tr>
-</tbody>
-</table>
-<h2 id="bullet-record">Bullet Record</h2>
-<p>The AVRO container that you need to convert your data into to be consumed by Bullet.</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Repository</strong></td>
-<td><a href="https://github.com/yahoo/bullet-record">https://github.com/yahoo/bullet-record</a></td>
-</tr>
-<tr>
-<td><strong>Issues</strong></td>
-<td><a href="https://github.com/yahoo/bullet-record/issues">https://github.com/yahoo/bullet-record/issues</a></td>
-</tr>
-<tr>
-<td><strong>Last Tag</strong></td>
-<td><a href="https://github.com/yahoo/bullet-record/tags"><img alt="Latest tag" src="https://img.shields.io/github/release/yahoo/bullet-record/all.svg" /></a></td>
-</tr>
-<tr>
-<td><strong>Latest Artifact</strong></td>
-<td><a href="https://bintray.com/yahoo/maven/bullet-record/_latestVersion"><img alt="Download" src="https://api.bintray.com/packages/yahoo/maven/bullet-record/images/download.svg" /></a></td>
-</tr>
-</tbody>
-</table>
-<h3 id="releases_4">Releases</h3>
-<table>
-<thead>
-<tr>
-<th>Date</th>
-<th>Release</th>
-<th>Highlights</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>2017-04-17</td>
-<td><a href="https://github.com/yahoo/bullet-record/releases/tag/bullet-record-0.1.0"><strong>0.1.1</strong></a></td>
-<td>Helper methods to remove, rename, check presence and count fields in the Record</td>
-</tr>
-<tr>
-<td>2017-02-09</td>
-<td><a href="https://github.com/yahoo/bullet-record/releases/tag/bullet-record-0.1.0"><strong>0.1.0</strong></a></td>
-<td>Map constructor</td>
 </tr>
 </tbody>
 </table></div>
