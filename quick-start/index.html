@@ -420,7 +420,7 @@ mkdir -p $BULLET_HOME/backend/storm
 mkdir -p $BULLET_HOME/service
 mkdir -p $BULLET_HOME/ui
 cd $BULLET_HOME
-curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.3.2/examples_artifacts.tar.gz
+curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.3.3/examples_artifacts.tar.gz
 tar -xzf examples_artifacts.tar.gz
 export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 </code></pre>
@@ -555,7 +555,7 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
 </div>
 <h2 id="teardown">Teardown</h2>
 <p>If you were using the <a href="#install-script">Install Script</a> or if you don't want to manually bring down everything, you can run:</p>
-<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.3.2/examples/install-all.sh | bash -s cleanup
+<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.3.3/examples/install-all.sh | bash -s cleanup
 </code></pre>
 
 <p>If you were performing the steps yourself, you can also manually cleanup <strong>all the components and all the downloads</strong> using:</p>
