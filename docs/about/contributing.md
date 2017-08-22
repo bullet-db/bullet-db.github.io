@@ -14,8 +14,8 @@ This list is neither comprehensive nor in any particular order and lists some hi
 
 | Feature             | Components  | Description               | Status        |
 |-------------------- | ----------- | ------------------------- | ------------- |
-| Pub-Sub Queue       | BE, WS, UI  | WS and BE talk through the pub/sub. Bullet Storm uses Storm DRPC for this, which is request-response. Using a pub/sub queue will let us implement Bullet on other Stream Processors, support incremental updates through WebSockets and more! | In Progress |
-| Incremental updates | BE, WS, UI  | Push results back to users as soon as they arrive. Monoidal operations implies additive, so progressive results can be streamed back. Micro-batching and other features come into play | In Progress |
+| PubSub              | BE, WS, UI  | WS and BE talk through the PubSub. Bullet Storm uses Storm DRPC for this (strictly request-response) Using a pub/sub queue will let us implement Bullet on other Stream Processors, support incremental updates through WebSockets and more! | In Progress [#1](https://github.com/yahoo/bullet-core/pull/1) |
+| Incremental updates | BE, WS, UI  | Push results back to users as soon as they arrive. Our aggregations are additive, so progressive results can be streamed back. Micro-batching and other features come into play | In Progress |
 | Security            | WS, UI      | The obvious enterprise security for locking down access to the data and the instance of Bullet. Considering SSL, Kerberos, LDAP etc. | Planning |
 | Bullet on X         | BE          | With the pub/sub feature, Bullet can be implemented on other Stream Processors like Spark Streaming, Flink, Kafka Streaming, Samza etc | Open |
 | SQL API             | BE, WS      | WS supports an endpoint that converts a SQL-like query into Bullet queries | Open |

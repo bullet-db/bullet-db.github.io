@@ -20,6 +20,7 @@ The core Bullet logic (a library) that can be used to implement Bullet on differ
 
 |    Date      |                                      Release                                      | Highlights |
 | ------------ | --------------------------------------------------------------------------------- | ---------- |
+| 2016-08-16   | [**0.2.0**](https://github.com/yahoo/bullet-core/releases/tag/bullet-core-0.2.0)  | PubSub interfaces and classes to implement custom communication between API and backend |
 | 2016-06-27   | [**0.1.2**](https://github.com/yahoo/bullet-core/releases/tag/bullet-core-0.1.2)  | Changes to the BulletConfig interface previously used in Bullet Storm. Users now use BulletStormConfig instead but YAML config is the same |
 | 2016-06-27   | [**0.1.1**](https://github.com/yahoo/bullet-core/releases/tag/bullet-core-0.1.1)  | First stable release containing the core of Bullet as a library including parsing, implementing queries, creating results, DataSketches etc |
 
@@ -111,6 +112,8 @@ The Bullet UI that lets you build, run, save and visualize results from Bullet.
 
 |    Date      |                                      Release                                           | Highlights |
 | ------------ | -------------------------------------------------------------------------------------- | ---------- |
+| 2016-08-22   | [**0.4.0**](https://github.com/yahoo/bullet-ui/releases/tag/v0.4.0) | Query sharing, collapsible Raw view, and unsaved/error indicators. Settings rename and other bug fixes|
+| 2016-05-22   | [**0.3.2**](https://github.com/yahoo/bullet-ui/releases/tag/v0.3.2) | Exporting to TSV in Pivot table. Fixes unselectability bug in Raw view |
 | 2016-05-15   | [**0.3.1**](https://github.com/yahoo/bullet-ui/releases/tag/v0.3.1) | Adds styles to the Pivot table. Fixes some minor UI interactions |
 | 2016-05-10   | [**0.3.0**](https://github.com/yahoo/bullet-ui/releases/tag/v0.3.0) | Adds Charting and Pivoting support. Migrations enhanced. Support for overriding nested default settings |
 | 2016-05-03   | [**0.2.2**](https://github.com/yahoo/bullet-ui/releases/tag/v0.2.2) | Fixes maxlength of the input for points |
