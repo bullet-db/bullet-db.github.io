@@ -360,12 +360,16 @@ express-server.js
 </thead>
 <tbody>
 <tr>
-<td>drpcHost</td>
+<td>queryHost</td>
 <td>The end point (port included) of your Web Service machine that is talking to the Bullet backend</td>
 </tr>
 <tr>
-<td>drpcNamespace</td>
-<td>The path fragment on your Web Service running on your <code>drpcHost</code></td>
+<td>queryNamespace</td>
+<td>Any qualifiers you have after your host and port on your Web Service running on your <code>queryHost</code></td>
+</tr>
+<tr>
+<td>queryPath</td>
+<td>The path fragment after the <code>queryNamespace</code> on your Web Service running on your <code>queryHost</code></td>
 </tr>
 <tr>
 <td>schemaHost</td>
@@ -575,9 +579,9 @@ express-server.js
 that are the same as the <a href="https://github.com/yahoo/bullet-storm/blob/master/src/main/resources/bullet_defaults.yaml">default backend settings</a>. However, the defaults do not add the <code>defaultFilter</code> setting explained above.</p>
 <pre><code class="json">{
   &quot;default&quot;: {
-    &quot;drpcHost&quot;: &quot;https://foo.bar.com:4443&quot;,
-    &quot;drpcNamespace&quot;: &quot;bullet/api&quot;,
-    &quot;drpcPath&quot;: &quot;drpc&quot;,
+    &quot;queryHost&quot;: &quot;https://foo.bar.com:4443&quot;,
+    &quot;queryNamespace&quot;: &quot;bullet/api&quot;,
+    &quot;queryPath&quot;: &quot;drpc&quot;,
     &quot;schemaHost&quot;: &quot;https://foo.bar.com:4443&quot;,
     &quot;schemaNamespace&quot;: &quot;bullet/api&quot;,
     &quot;helpLinks&quot;: [
@@ -627,13 +631,13 @@ that are the same as the <a href="https://github.com/yahoo/bullet-storm/blob/mas
 <p>You can add more properties for each environment you have the UI running on and <em>override</em> the properties in the <code>default</code> object. See <a href="#example">below</a> for an example.</p>
 <div class="admonition note">
 <p class="admonition-title">CORS</p>
-<p>All your Web Service endpoints must support CORS (return the right headers) in order for the UI to be able to communicate with it. The Bullet Web Service already does this for the DRPC and columns endpoints.</p>
+<p>All your Web Service endpoints must support CORS (return the right headers) in order for the UI to be able to communicate with it. The Bullet Web Service already does this for the Query and Schema endpoints.</p>
 </div>
 <h3 id="example">Example</h3>
 <p>To cement all this, if you wanted an instance of the UI in your CI environment, you could add another property to the <code>env-settings.json</code> file.</p>
 <pre><code class="json">{
     &quot;ci&quot;: {
-        &quot;drpcHost&quot;: &quot;http://bullet-ws.dev.domain.com:4080&quot;,
+        &quot;queryHost&quot;: &quot;http://bullet-ws.dev.domain.com:4080&quot;,
         &quot;schemaHost&quot;: &quot;http://bullet-ws.dev.domain.com:4080&quot;,
         &quot;helpLinks&quot;: [
           {

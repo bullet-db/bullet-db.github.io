@@ -393,7 +393,7 @@
 <ul>
 <li>Setup the Bullet topology using a custom spout on <a href="https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.5.0">bullet-storm-0.5.0</a></li>
 <li>Setup the <a href="../ws/setup/">Web Service</a> talking to the topology and serving a schema for your UI using <a href="https://github.com/yahoo/bullet-service/releases/tag/bullet-service-0.0.1">bullet-service-0.0.1</a></li>
-<li>Setup the <a href="../ui/setup/">UI</a> talking to the Web Service using <a href="https://github.com/yahoo/bullet-ui/releases/tag/v0.3.2">bullet-ui-0.3.2</a></li>
+<li>Setup the <a href="../ui/setup/">UI</a> talking to the Web Service using <a href="https://github.com/yahoo/bullet-ui/releases/tag/v0.4.0">bullet-ui-0.4.0</a></li>
 </ul>
 <p><strong>Prerequisites</strong></p>
 <ul>
@@ -403,7 +403,7 @@
 </ul>
 <h2 id="install-script">Install Script</h2>
 <p>Simply run:</p>
-<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.3.3/examples/install-all.sh | bash
+<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.3.4/examples/install-all.sh | bash
 </code></pre>
 
 <p>This will setup a local Storm cluster, a Bullet running on it, the Bullet Web Service and a Bullet UI for you. Once everything has launched, you should be able to go to the Bullet UI running locally at <a href="http://localhost:8800">http://localhost:8800</a>. You can then <a href="#what-did-we-do"><strong>continue this guide from here</strong></a>.</p>
@@ -420,7 +420,7 @@ mkdir -p $BULLET_HOME/backend/storm
 mkdir -p $BULLET_HOME/service
 mkdir -p $BULLET_HOME/ui
 cd $BULLET_HOME
-curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.3.3/examples_artifacts.tar.gz
+curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.3.4/examples_artifacts.tar.gz
 tar -xzf examples_artifacts.tar.gz
 export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 </code></pre>
@@ -555,7 +555,7 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
 </div>
 <h2 id="teardown">Teardown</h2>
 <p>If you were using the <a href="#install-script">Install Script</a> or if you don't want to manually bring down everything, you can run:</p>
-<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.3.3/examples/install-all.sh | bash -s cleanup
+<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.3.4/examples/install-all.sh | bash -s cleanup
 </code></pre>
 
 <p>If you were performing the steps yourself, you can also manually cleanup <strong>all the components and all the downloads</strong> using:</p>
@@ -719,9 +719,9 @@ columns.schema.version=1.0
 <p>Finally, we configured the UI with the custom environment specific settings file. We did not add any environments since we only had the one.</p>
 <pre><code class="javascript">{
   &quot;default&quot;: {
-    &quot;drpcHost&quot;: &quot;http://localhost:9999&quot;,
-    &quot;drpcNamespace&quot;: &quot;bullet-service/api&quot;,
-    &quot;drpcPath&quot;: &quot;drpc&quot;,
+    &quot;queryHost&quot;: &quot;http://localhost:9999&quot;,
+    &quot;queryNamespace&quot;: &quot;bullet-service/api&quot;,
+    &quot;queryPath&quot;: &quot;drpc&quot;,
     &quot;schemaHost&quot;: &quot;http://localhost:9999&quot;,
     &quot;schemaNamespace&quot;: &quot;bullet-service/api&quot;,
     &quot;helpLinks&quot;: [

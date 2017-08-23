@@ -283,15 +283,15 @@
 </thead>
 <tbody>
 <tr>
-<td>Pub-Sub Queue</td>
+<td>PubSub</td>
 <td>BE, WS, UI</td>
-<td>WS and BE talk through the pub/sub. Bullet Storm uses Storm DRPC for this, which is request-response. Using a pub/sub queue will let us implement Bullet on other Stream Processors, support incremental updates through WebSockets and more!</td>
-<td>In Progress</td>
+<td>WS and BE talk through the PubSub. Bullet Storm uses Storm DRPC for this (strictly request-response) Using a pub/sub queue will let us implement Bullet on other Stream Processors, support incremental updates through WebSockets and more!</td>
+<td>In Progress <a href="https://github.com/yahoo/bullet-core/pull/1">#1</a></td>
 </tr>
 <tr>
 <td>Incremental updates</td>
 <td>BE, WS, UI</td>
-<td>Push results back to users as soon as they arrive. Monoidal operations implies additive, so progressive results can be streamed back. Micro-batching and other features come into play</td>
+<td>Push results back to users as soon as they arrive. Our aggregations are additive, so progressive results can be streamed back. Micro-batching and other features come into play</td>
 <td>In Progress</td>
 </tr>
 <tr>
