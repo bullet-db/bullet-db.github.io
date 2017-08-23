@@ -405,9 +405,9 @@ Finally, we configured the UI with the custom environment specific settings file
 ```javascript
 {
   "default": {
-    "drpcHost": "http://localhost:9999",
-    "drpcNamespace": "bullet-service/api",
-    "drpcPath": "drpc",
+    "queryHost": "http://localhost:9999",
+    "queryNamespace": "bullet-service/api",
+    "queryPath": "drpc",
     "schemaHost": "http://localhost:9999",
     "schemaNamespace": "bullet-service/api",
     "helpLinks": [

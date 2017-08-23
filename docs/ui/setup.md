@@ -77,8 +77,9 @@ All of the configuration for the UI is **environment-specific**. This lets you h
 
 |    Setting      |     Meaning      |
 | --------------- | ---------------- |
-| drpcHost        | The end point (port included) of your Web Service machine that is talking to the Bullet backend |
-| drpcNamespace   | The path fragment on your Web Service running on your ```drpcHost``` |
+| queryHost       | The end point (port included) of your Web Service machine that is talking to the Bullet backend |
+| queryNamespace  | Any qualifiers you have after your host and port on your Web Service running on your ```queryHost``` |
+| queryPath       | The path fragment after the ```queryNamespace``` on your Web Service running on your ```queryHost``` |
 | schemaHost      | The end point (port included) of your Web Service machine that is serving your schema in the JSON API format (see [Web Service setup](../ws/setup.md) for details.)|
 | schemaNamespace | The path fragment on your schema Web Service running on the ```schemaHost```. There is no ```schemaPath``` because it **must** be ```columns``` in order for the UI to be able fetch the column resource (the fields in your schema).|
 | modelVersion    | This is used an indicator to apply changes to the stored queries, results etc. It is monotonically increasing. On startup, changes specified in ```migrations``` will be applied if the old modelVersion is not present or is < than this number |
@@ -127,9 +128,9 @@ that are the same as the [default backend settings](https://github.com/yahoo/bul
 ```json
 {
   "default": {
-    "drpcHost": "https://foo.bar.com:4443",
-    "drpcNamespace": "bullet/api",
-    "drpcPath": "drpc",
+    "queryHost": "https://foo.bar.com:4443",
+    "queryNamespace": "bullet/api",
+    "queryPath": "drpc",
     "schemaHost": "https://foo.bar.com:4443",
     "schemaNamespace": "bullet/api",
     "helpLinks": [
@@ -180,7 +181,7 @@ You can add more properties for each environment you have the UI running on and 
 
 !!! note "CORS"
 
-    All your Web Service endpoints must support CORS (return the right headers) in order for the UI to be able to communicate with it. The Bullet Web Service already does this for the DRPC and columns endpoints.
+    All your Web Service endpoints must support CORS (return the right headers) in order for the UI to be able to communicate with it. The Bullet Web Service already does this for the Query and Schema endpoints.
 
 ### Example
 
@@ -189,7 +190,7 @@ To cement all this, if you wanted an instance of the UI in your CI environment, 
 ```json
 {
     "ci": {
-        "drpcHost": "http://bullet-ws.dev.domain.com:4080",
+        "queryHost": "http://bullet-ws.dev.domain.com:4080",
         "schemaHost": "http://bullet-ws.dev.domain.com:4080",
         "helpLinks": [
           {
