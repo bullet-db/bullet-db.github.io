@@ -1,25 +1,34 @@
 theme: cinder
 
-site_name: Bullet
-repo_url: https://github.com/yahoo/bullet-docs
+site_name: Bullet Docs
+site_description: The full documentation for Bullet - A Real Time Data Query Engine
+site_author: Akshai Sarma
+site_url: https://yahoo.github.io/bullet-docs
+site_favicon: img/favicon.ico
+repo_name: yahoo/bullet-core
 
 pages:
 - Home: index.md
 - Quick Start: quick-start.md
 - Backend:
-  - Storm Architecture: backend/storm-architecture.md
   - Getting your data into Bullet: backend/ingestion.md
-  - Setup on Storm: backend/setup-storm.md
-  - Performance: backend/performance.md
-- REST API:
+  - Storm:
+    - Architecture: backend/storm-architecture.md
+    - Setup: backend/storm-setup.md
+    - Performance: backend/storm-performance.md
+- PubSub:
+  - Architecture: pubsub/architecture.md
+  - Kafka: pubsub/kafka-setup.md
+  - Storm DRPC: pubsub/storm-drpc-setup.md
+- Web Service:
   - Setup: ws/setup.md
   - API: ws/api.md
   - Examples: ws/examples.md
 - UI:
   - Setup: ui/setup.md
   - Usage: ui/usage.md
+- Releases: releases.md
 - About:
-  - Past Releases: about/releases.md
   - Contributing: about/contributing.md
   - Contact Us: about/contact.md
 
@@ -28,8 +37,8 @@ markdown_extensions:
 
 extra:
   collapse_toc: true
-  toc_depth: 5
   include_search: true
+  service_version: v0.4.0
 
 extra_css:
   - css/extra.css

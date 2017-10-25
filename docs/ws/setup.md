@@ -1,26 +1,27 @@
 # The Web Service
 
-The Web Service is a Java WAR file that you can deploy on a machine to communicate with the Bullet Backend. For Storm, it talks to the Storm DRPC servers. To set up the Bullet backend topology, see [Storm setup](../backend/setup-storm.md).
+The Web Service is a Java JAR file that you can deploy on a machine to communicate with the Bullet Backend. You then plug in a particular Bullet PubSub implementation such as [Kafka PubSub](../pubsub/kafka-setup.md) or [Storm DRPC PubSub](../pubsub/storm-drpc-setup.md). For an example on how to set up a Bullet backend, see the [Storm example setup](../backend/storm-setup.md).
 
 There are two main purposes for this layer at this time:
 
 1) It provides an endpoint that can serve a [JSON API schema](http://jsonapi.org/format/) for the Bullet UI. Currently, static schemas from a file are supported.
 
-2) It proxies a JSON Bullet query to Bullet and wraps errors if the backend is unreachable.
+2) It generates unique identifiers and other metadata for a JSON Bullet query before sending the query to the Bullet backend. It wraps errors if the backend is unreachable.
+
 
 !!! note "That's it?"
 
-    The Web Service essentially just wraps Storm DRPC and provides some helpful endpoints. But the Web Service is there to be a point of abstraction for implementing things like security, monitoring, access-control, rate-limiting, different query formats (e.g. SQL Bullet queries) etc, which are planned in the near future.
+    The Web Service essentially just wraps the PubSub layer and provides some helpful endpoints. When incremental updates drop, it will translate a PubSub's streaming responses back into incremental results for the user. It is also there to be a point of abstraction for implementing things like security, monitoring, access-control, rate-limiting, sharding, different query formats (e.g. SQL Bullet queries) etc, which are planned in the near future.
 
 ## Prerequisites
 
-In order for your Web Service to work with Bullet, you should have an instance of the [backend](../backend/setup-storm.md) already set up.
+In order for your Web Service to work with Bullet, you should have an instance of the Backend such as [Storm](../backend/storm-setup.md) and a PubSub instance such as [Storm DRPC](../pubsub/storm-drpc-setup.md) or [Kafka](../pubsub/kafka-setup.md) already set up.
 
 ## Installation
 
-You can download the WAR file directly from [JCenter](http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/).
+You can download the JAR file directly from [JCenter](http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/). The Web Service is a [Spring Boot](https://projects.spring.io/spring-boot/) application. It executes as a standalone application. Note that prior to version 0.1.1, bullet-service was a WAR file that you deployed onto a servlet container like Jetty. It now embeds a [Apache Tomcat](http://tomcat.apache.org/) servlet container.
 
-If you need to depend on the source code directly for any reason, you need to add the JCenter repository and get the artifact through your dependency management system. Maven is shown below.
+If you need to depend on the source code directly (to add new endpoints for your own purposes or to build a WAR file out of the JAR), you need to add the JCenter repository and get the artifact through your dependency management system. Maven is shown below.
 
 ```xml
 <repositories>
@@ -43,66 +44,74 @@ If you need to depend on the source code directly for any reason, you need to ad
 </dependency>
 ```
 
-You can also add ```<classifier>sources</classifier>```  or ```<classifier>javadoc</classifier>``` if you want the source or javadoc.
+You can also add ```<classifier>sources</classifier>```  or ```<classifier>javadoc</classifier>``` if you want the source or javadoc or ```<classifier>embedded</classifier>``` if you want the full JAR with the embedded web server.
 
 ## Configuration
 
-You specify how to talk to your Bullet instance and where to find your schema file (optional for if you want to power the [UI](../ui/usage.md) schema with a static file) through a configuration file. See sample at [bullet_defaults.yaml](src/main/resources/bullet_defaults.yaml).
+There are two levels of configuration:
 
-The values in the defaults file are used for any missing properties. You can specify a path to your custom configuration using the property:
+1. You can configure the Web Service, the web server and other Spring Boot settings through a configuration file (or through the command line when launching). By default, this file is called ```application.yaml```. This is where settings like where to find your schema file (optional for if you want to power the [UI](../ui/usage.md) schema with a static file) or how many publishers and subscribers to use for your PubSub etc.
+2. You can configure what PubSub to use, the various settings for it through another configuration file. The location for this file is provided in the Web Service configuration step above.
 
-```bash
-bullet.service.configuration.file=<path to your configuration file>
-```
+### Web Service Configuration
 
-For example, if you are using Jetty as your servlet container,
+Take a look at the [settings](https://github.com/yahoo/bullet-service/blob/master/src/main/resources/application.yaml) for a list of the settings that are configured. The Web Service settings start with ```bullet.```.
 
-```bash
-java -jar -Dbullet.service.configuration.file=/var/bullet-service/context.properties start.jar
-```
+If you provide a custom settings ```application.yaml```, you will **need** to specify the default values in this file since the framework uses your file instead of these defaults.
 
-!!! note "Spring and context"
-
-    The Web Service uses your passed in configuration properties file to configure its dependency injections using [Spring](http://spring.io/). See [ApplicationContext.xml](https://github.com/yahoo/bullet-service/blob/master/src/main/resources/ApplicationContext.xml) for how this is loaded.
-
-### File based schema
+#### File based schema
 
 The Web Service can also provide a endpoint that serves your data schema to your UI. You do not necessarily have to use this to serve your schema. The UI can use any JSON API schema specification. But if your schema is fixed or does not change often, it might be simpler for you to use this endpoint to provide the schema for the UI, instead of creating a new one. The Web Service also takes care to provide the right [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS) headers so that your UI can communicate with it.
 
 You can use [sample_columns.json](https://github.com/yahoo/bullet-service/blob/master/src/main/resources/sample_columns.json) as a guideline for what your actual schema file should look like or if you want to create your own Web Service that dynamically serves your schema to the UI if it changes frequently.
 
+Once you have your schema file, you can provide it to the Web Service by setting the ```bullet.schema.file``` to the path to your file.
+
+#### Spring Boot Configuration
+
+You can also configure various Spring and web server here. Take a look at [this page](https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html) page for the various values you can supply.
+
+### PubSub Configuration
+
+You configure the PubSub by providing a configuration YAML file and setting the ```bullet.pubsub.config``` to its path. In *that* file, you will set these two settings at a minimum:
+
+1. ```bullet.pubsub.class.name``` should be set to the fully qualified package to your PubSub implementation. Example: ```com.yahoo.bullet.kafka.KafkaPubSub``` for the [Kafka PubSub](../pubsub/kafka-setup.md).
+2. ```bullet.pubsub.context.name: QUERY_SUBMISSION```. The Web Service requires the PubSub to be in the ```QUERY_SUBMISSION``` context.
+
+You will also specify other parameters that your chosen PubSub requires or can use.
+
 ## Launch
 
-You need to deploy the WAR file to a servlet container. We recommend [Jetty](http://www.eclipse.org/jetty/).
+To launch, you will need your PubSub implementation JAR file and launch the application by providing the path to it. For example, if you only wished to provide the PubSub configuration and you had the Web Service jar and your chosen PubSub (say Kafka) in your current directory, you would run:
 
-### Quick start with Jetty
+```bash
+java -Dloader.path=bullet-kafka.jar -jar bullet-service.jar --bullet.pubsub.config=pubsub_settings.yaml  --logging.level.root=INFO
+```
 
-1. Download a [Jetty installation](http://www.eclipse.org/jetty/download.html)
-2. Unarchive the installation into a folder
-3. Download the Bullet Service WAR from [JCenter](http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/).
-4. Place the WAR into your Jetty installation folder's ```webapps``` directory.
-5. Create a properties file containing actual values for the settings in the [defaults](https://github.com/yahoo/bullet-service/blob/master/src/main/resources/default.properties). For example, for Bullet on Storm, you will point to your DRPC servers in the properties. If you want to use the file based schema endpoint, you would point to your schema file.
-6. Launch Jetty using ```java -jar -Dbullet.service.configuration.file=/path/to/your/properties/file start.jar```, where start.jar is in your Jetty installation folder.
+This launches the Web Service using Kafka as the PubSub, no custom schema (the default sample columns) and the default values in [settings](https://github.com/yahoo/bullet-service/blob/master/src/main/resources/application.yaml). It also uses a root logging level of ```INFO```.
 
-You should tweak and properly install Jetty into a global location with proper logging when you productionize your Web Service.
+You could also tweak the various Bullet Web Service settings by passing them in to the command above. You could also have a custom ```application.yaml``` file (you can change the name using ```spring.config.name```) and pass it to the Web Service instead by running:
+
+```bash
+java -Dloader.path=bullet-kafka.jar -jar bullet-service.jar --spring.config.location=application.yaml
+```
 
 ## Usage
 
-Once the Web Service is up (defaults to port 8080, you can change it with a ```-Djetty.http.port=<PORT>``` setting), you should be able to test to see if it's able to talk to the Bullet backend:
+Once the Web Service is up, you should be able to test to see if it's able to talk to the Bullet Backend:
 
 You can HTTP POST a Bullet query to the API with:
 
 ```bash
-curl -s -H "Content-Type: application/json" -X POST -d '{}' http://localhost:8080/bullet-service/api/drpc
+curl -s -H "Content-Type: text/plain" -X POST -d '{}' http://localhost:5555/api/bullet/query
 ```
 
-You should receive a random record flowing through Bullet instantly (if you left the Raw aggregation micro-batch size at the default of 1 when launching the Bullet backend).
+You should receive a random record flowing through Bullet instantly (if you left the Raw aggregation micro-batch size at the default of 1 when launching the Bullet Backend).
 
 !!! note "Context Path"
 
-    The context path, or "bullet-service" in the URL above is the name of the WAR file in Jetty. If you rename it, you will need to change this.
+    The context path, or "/api/bullet" in the URL above can be changed using the Spring Boot setting ```server.context-path```. You can also change the port (defaults to port 5555) using ```server.port```.
 
-
-If you provided a path to a schema file in your configuration file when you [launch](#launch) the Web Service, you can also HTTP GET your schema at ```http://localhost:8080/bullet-service/api/columns```
+If you provided a path to a schema file in your configuration file when you [launch](#launch) the Web Service, you can also HTTP GET your schema at ```http://localhost:5555/api/bullet/columns```
 
 If you did not, the schema in [sample_columns.json](https://github.com/yahoo/bullet-service/blob/master/src/main/resources/sample_columns.json) is the response. The Web Service converts it to a JSON API response and provides the right headers for CORS.

@@ -4,7 +4,7 @@ Bullet operates on a generic data container that it understands. In order to get
 
 !!!note "If you are trying to set up Bullet..."
 
-    The rest of this page gives more information about the Record container and how to depend on it in code directly. If you are setting up Bullet, the Record is already included by default with the Bullet artifact. You can head on over to [setting up the Storm topology](setup-storm.md#installation) to build the piece that gets your data into the Record container.
+    The rest of this page gives more information about the Record container and how to depend on it in code directly. If you are setting up Bullet, the Record is already included by default with the Bullet artifact. You can head on over to [setting up the Storm topology](storm-setup.md#installation) to build the piece that gets your data into the Record container.
 
 ## Bullet Record
 
@@ -31,7 +31,7 @@ With these types, it is unlikely you would have data that cannot be represented 
 
 ## Installing the Record directly
 
-Generally, you depend on the Bullet artifact for your Stream Processor when you plug in the piece that gets your data into the Stream processor. The Bullet artifact already brings in the Bullet Record container as well. See the usage for the [Storm](setup-storm.md#installation).
+Generally, you depend on the Bullet Core artifact for your Stream Processor when you plug in the piece that gets your data into the Stream processor. The Bullet Core artifact already brings in the Bullet Record container as well. See the usage for the [Storm](storm-setup.md#installation) for an example.
 
 However, if you need it, the artifacts are available through JCenter to depend on them in code directly. You will need to add the repository. Below is a Maven example:
 

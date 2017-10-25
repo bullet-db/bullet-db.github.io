@@ -13,7 +13,7 @@ While LocalStorage is sufficient for simple usage, UI users can run out of space
 
 In order for your UI to work with Bullet, you should have:
 
-  * An instance of the [backend](../backend/setup-storm.md) set up
+  * An instance of the [backend](../backend/storm-setup.md) set up
   * An instance of the [Web Service](../ws/setup.md) set up
   * You should also have a Web Service serving your schema (either by using the [file based serving](../ws/setup.md#file-based-schema) from the Web Service or your own somewhere else)
 
@@ -23,7 +23,7 @@ We are considering various packaging options at the moment like Docker etc. In t
 
 ### GitHub Releases
 
-* Head to the [Releases page](../about/releases.md#bullet-ui) and grab the latest release
+* Head to the [Releases page](../releases.md#bullet-ui) and grab the latest release
 * Download the bullet-ui-vX.X.X.tar.gz archive
 * Unarchive it into your web server where you wish to run the UI.
 * Install [Node](https://nodejs.org/) (recommend using [nvm](https://github.com/creationix/nvm) to manage Node versions) on the web server
@@ -85,7 +85,7 @@ All of the configuration for the UI is **environment-specific**. This lets you h
 | modelVersion    | This is used an indicator to apply changes to the stored queries, results etc. It is monotonically increasing. On startup, changes specified in ```migrations``` will be applied if the old modelVersion is not present or is < than this number |
 | migrations      | is an object that currently supports one key: ```deletions``` of type string. The value can be set to either ```result``` or ```query```. The former wipes all existing results. The latter wipes everything. See ```modelVersion``` above. |
 | helpLinks       | Is a list of objects, where each object is a help link. These links populate the "Help" drop-down on the UI's top navbar. You can add links to explain your data for example |
-| defaultFilter   | Can either be a [API Filter](../ws/api.md#filters) or a URL from which one could be fetched dynamically. The UI adds this to every newly created Query. You could use this as a way to have user specific (for example, cookie based) filters created for your users when they create a new query in the UI |
+| defaultFilter   | Can either be a [API Filter](../ws/api.md#filters) or a URL from which one could be fetched dynamically. The UI adds this to every newly created Query. You could use this as a way to have user specific (for example, cookie based) filters created for your users when they create a new query in the UI. Note that if you have are accessing a map subfield and your field value in the filter is set as ```foo.bar``` and you want ```bar``` to be the subfield in the UI query builder, you will need to add a key called ```subfield``` in the filter (not supported by the API) and set its value to ```true``` |
 | bugLink         | Is a URL that by default points to the issues page for the UI GitHub repository. You can change it to point to your own custom JIRA queue or something else |
 | defaultValues   | Is an object that lets you configures defaults for various query parameters and lets you tie your custom backend settings to the UI. |
 

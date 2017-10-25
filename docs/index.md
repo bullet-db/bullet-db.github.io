@@ -38,17 +38,18 @@ This instance of Bullet also powers other use-cases such as letting analysts val
 
 # Quick Start
 
-See [Quick Start](quick-start.md) to set up Bullet on a local Storm topology. We will generate some synthetic streaming data that you can then query with Bullet.
+See [Quick Start](quick-start.md) to set up Bullet using a local Storm topology. You will generate some synthetic streaming data that you can then query with Bullet.
 
 # Setting up Bullet on your streaming data
 
 To set up Bullet on a real data stream, you need:
 
-1. To setup the Bullet backend on a stream processing framework. Currently, we support [Bullet on Storm](backend/setup-storm.md):
+1. To setup the Bullet Backend on a stream processing framework. Currently, we support [Bullet on Storm](backend/storm-setup.md):
     1. Plug in your source of data. See [Getting your data into Bullet](backend/ingestion.md) for details
     2. Consume your data stream
 2. The [Web Service](ws/setup.md) set up to convey queries and return results back from the backend
-3. The optional [UI](ui/setup.md) set up to talk to your Web Service. You can skip the UI if all your access is programmatic
+3. To choose a [PubSub implementation](pubsub/architecture.md) that connects the Web Service and the Backend. We currently support [Kafka](pubsub/kafka-setup.md) on any Backend and [Storm DRPC](pubsub/storm-drpc-setup.md) for the Storm Backend.
+4. The optional [UI](ui/setup.md) set up to talk to your Web Service. You can skip the UI if all your access is programmatic
 
 !!! note "Schema in the UI"
 
@@ -70,7 +71,7 @@ Bullet queries allow you to filter, project and aggregate data. It lets you fetc
 
 A Bullet query terminates and returns whatever has been collected so far when:
 
-1. A maximum duration is reached. In other words, a query runs for a defined time window
+1. A maximum duration is reached. In other words, a query runs for a defined time window.
 2. A maximum number of records is reached (only applicable for queries that are fetching raw data records and not aggregating).
 
 ## Filters
@@ -126,36 +127,47 @@ We also use Sketches as a way to control high cardinality grouping (group by a n
 
 # Architecture
 
+## End-to-End Architecture
+
+![Overall Architecture](img/overallarch-2.png)
+
+The image above shows how the various pieces of the Bullet interact at a high-level. All these layers are modular and pluggable. You can choose an implementation for the Backend and the PubSub (or create your own). The core of Bullet is abstracted into a [library](https://github.com/yahoo/bullet-core) that can be reused to implement the Backend, Web Service and PubSub layers in a platform agnostic manner.
+
+---
+
 ## Backend
 
 ![High Level Architecture](img/higharch.png)
 
-The Bullet backend can be split into three main sub-systems:
+The Bullet Backend can be split into three main conceptual sub-systems:
 
 1. Request Processor - receives queries, adds metadata and sends it to the rest of the system
 2. Data Processor - reads data from a input stream, converts it to an unified data format and matches it against queries
 3. Combiner - combines results for different queries, performs final aggregations and returns results
 
+The core of Bullet querying is not tied to the Backend and lives in a core library. This allows you implement the flow shown above in any stream processor you like. We are currently working on Bullet on [Spark Streaming](https://spark.apache.org/streaming).
+
+## PubSub
+
+The PubSub is responsible for transmitting queries from the API to the Backend and returning results back from the Backend to the clients. It decouples whatever particular Backend you are using with the API. We currently provide a PubSub implementation using Kafka as the transport layer. You can very easily [implement your own](pubsub/architecture.md#implementing-your-own-pubsub) by defining a few interfaces that we provide.
+
+In the case of Bullet on Storm, there is an [additional simplified option](pubsub/storm-drpc-setup.md) using [Storm DRPC](http://storm.apache.org/releases/1.0.0/Distributed-RPC.html) as the PubSub. This layer is planned to only support a request-response model for querying in the future.
+
+!!! note "DRPC PubSub"
+
+    This was how Bullet was first implemented in Storm. Storm DRPC provided a really simple way to communicate with Storm that we took advantage of. We provide this as a legacy adapter or for users who use Storm but don't want a PubSub layer.
+
 ## Web Service and UI
 
 The rest of the pieces are just the standard other two pieces in a full-stack application:
 
-  * A Web Service that talks to this backend
+  * A Web Service that talks to the backend using the PubSub layer
   * A UI that talks to this Web Service
 
-The [Bullet Web Service](ws/api.md) is built using [Jersey](https://jersey.java.net/) and the [UI](ui/usage.md) is built in [Ember](emberjs.com).
+The [Bullet Web Service](ws/api.md) is built using [Spring Boot](https://projects.spring.io/spring-boot/) in Java and the [UI](ui/usage.md) is built in [Ember](emberjs.com).
 
-The Web Service can be deployed with your favorite servlet container like [Jetty](http://www.eclipse.org/jetty/). The UI is a client-side application that can be served using [Node.js](http://nodejs.org/)
-
-In the case of Bullet on Storm, the Web Service and UI talk to the backend using [Storm DRPC](http://storm.apache.org/releases/1.0.0/Distributed-RPC.html).
-
-## End-to-End Architecture on Storm
-
-![Overall Storm Architecture](img/overallarch.png)
+The Web Service can be deployed as a standalone Java application (a JAR file) or easily rebuilt as a WAR to deploy your favorite servlet container like [Jetty](http://www.eclipse.org/jetty/). The UI is a client-side application that can be served using [Node.js](http://nodejs.org/)
 
 !!! note "Want to know more?"
+
     In practice, the backend is implemented using the basic components that the Stream processing framework provides. See [Storm Architecture](backend/storm-architecture.md) for details.
-
-# Past Releases and Source
-
-See the [Releases](about/releases.md) section where the various Bullet releases and repository links are collected in one place.

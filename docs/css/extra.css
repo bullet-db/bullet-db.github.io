@@ -1,4 +1,9 @@
-.admonition {
+.navbar-brand > .small-brand-text {
+  margin-left: 5px;
+  font-size: 50%;
+}
+
+.admonition.note {
   background-color: #d9edf7;
   color: #008cba;
   padding: 15px;

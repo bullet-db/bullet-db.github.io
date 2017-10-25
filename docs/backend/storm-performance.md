@@ -23,6 +23,8 @@ You should be familiar with [Storm](http://storm.apache.org), [Kafka](http://kaf
 
 All tests run here were using [Bullet-Storm 0.4.2](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.4.2) and [Bullet-Storm 0.4.3](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.4.3). We are working with just the Storm piece without going through the Web Service or the UI. The DRPC REST endpoint provided by Storm lets us do just that.
 
+This particular version of Bullet on Storm was **prior to the architecture shift** to a PubSub layer but this would be the equivalent to using the Storm DRPC PubSub layer on a newer version of Bullet on Storm. You can replace DRPC spout and PrepareRequest bolt with Query spout and ReturnResults bolt with Result bolt conceptually. The actual implementation of the DRPC based PubSub layer just uses these spout and bolt implementations underneath anyway for the Publishers and Subscribers so the parallelisms and CPU utilizations should map 1-1.
+
 Using the pluggable metrics interface in Bullet on Storm, we captured worker level metrics such as CPU time, Heap usage, GC times and types, sent them to a in-house monitoring service for time-slicing and graphing. The figures shown below use this service.
 
 See [0.3.0](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.3.0) for how to plug in your own metrics collection.
@@ -319,7 +321,7 @@ We notice that the GC times have improved a lot (down to ~12K ms from ~35K ms in
 
 ![GC Time](../img/raw-perf-2-gc.png)
 
-<div class="one-text-numeri-table"></div>
+<div class="one-text-numeric-table"></div>
 
 |  Simultaneous Queries  | Average CPU (ms)| Average Result size |
 | :--------------------- | --------------: | ------------------: |
@@ -339,7 +341,7 @@ With this change in heap usage, we could get to **```735```** of these queries s
 
 !!! note "735 is a hard limit then?"
 
-    This is what our Storm cluster's configuration limits us to. There is an async implementation for DRPC that we could eventually switch to. Also, an alternative to DRPC - such as using a Pub/Sub queue like Kafka to deliver queries and retrieve results from Bullet - may be required anyway to implement Bullet on other Stream Processors.
+    This is what our Storm cluster's configuration and our usage of the Storm DRPC limits us to. There is an async implementation for DRPC that we could eventually switch to. If we used another PubSub implementation like Kafka, we would be able to bypass this limit.
 
 ## Testing on Kafka 0.10.0.1
 

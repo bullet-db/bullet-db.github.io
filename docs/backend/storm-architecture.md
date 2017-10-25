@@ -2,23 +2,15 @@
 
 This section describes how the [Backend architecture](../index.md#backend) is implemented in Storm.
 
-## Storm DRPC
-
-Bullet on [Storm](https://storm.apache.org/) is built using [Storm DRPC](http://storm.apache.org/releases/1.0.0/Distributed-RPC.html). DRPC or Distributed Remote Procedure Call, is built into Storm and consists of a set of servers that are part of the Storm cluster. When a Storm topology that uses DRPC is launched, it registers a spout with a unique name (the procedure in the Distributed Remote Procedure Call) with the DRPC infrastructure. The DRPC Servers expose a REST endpoint where data can be POSTed to or a GET request can be made with this unique name. The DRPC infrastructure then sends the request (a query in Bullet) through the spout(s) to the topology that registered that name (Bullet). The result from topology is sent back to the client. We picked Storm to implement Bullet on first not only because it was the most popular Streaming framework at Yahoo but also since DRPC provides us a nice and simple way to handle getting queries into Bullet and sending responses back.
-
-!!! note "Thrift and DRPC servers"
-
-    DRPC also exposes a [Thrift](http://thrift.apache.org) endpoint but the Bullet Web Service uses REST for simplicity. When you launch your Bullet Storm topology, you can POST Bullet queries to a DRPC server directly with the function name that you specified in the Bullet configuration. This is a quick way to check if your topology is up and running!
-
 ## Topology
 
 For Bullet on Storm, the Storm topology implements the backend piece from the full [Architecture](../index.md#architecture). The topology is implemented with the standard Storm spout and bolt components:
 
-![Bullet Storm Topology](../img/topology.png)
+![Bullet Storm Topology](../img/topology-2.png)
 
-The components in [Architecture](../index.md#architecture) have direct counterparts here. The DRPC servers, the DRPC spouts, the Prepare Request bolts comprise the Request Processor. The Filter bolts and your plugin for your source of Data make up the Data Processor. The Join bolt and the Return Results bolt make up the Combiner.
+The components in [Architecture](../index.md#architecture) have direct counterparts here. The Query spouts reading from the PubSub layer using plugged-in PubSub consumers make up the Request Processor. The Filter bolts and your plugin for your source of data (generally a spout but could be a topology) make up the Data Processor. The Join bolt and the Result bolt make up the Combiner.
 
-The red colored lines are the path for the queries that come in through Storm DRPC and the blue is for the data from your data source. The pattern on the lines denote how the data (Storm tuples) is moved to the next component. Dashed indicates a broadcast (sent to all instances of the component), dotted indicates a key grouping (sent to a particular instance based on hashing on a particular field), and solid indicates a shuffle (randomly sent to an instance).
+The red colored lines are the path for the queries that come in through the PubSub and the blue is for the data from your data source. The pattern on the lines denote how the data (Storm tuples) is moved to the next component. Dashed indicates a broadcast (sent to all instances of the component), dotted indicates a key grouping (sent to a particular instance based on hashing on a particular field), and solid indicates a shuffle (randomly sent to an instance).
 
 !!! note "What's a Ticker?"
 
@@ -39,21 +31,21 @@ Bullet can accept arbitrary sources of data as long as they can be read from Sto
 | Option 2 | Saves a persistence layer                                                        | Ties your topology to Bullet directly, making it affected by Storm Backpressure etc  |
 | Option 2 | You can add bolts to do more processing on your data before sending it to Bullet | Increases the complexity of the topology                                             |
 
-Your data is then emitted to the Filter bolt.  If you have no queries in your system, the Filter Bolt will promptly drop all Bullet Records and do absolutely nothing. If there are queries in the Filter bolt, the record is checked against the [filters](../index.md#filters) in each query and if it matches, it is processed by the query. Each query type can choose to emit matched records in micro-batches. By default, ```RAW``` or ```LIMIT``` queries do not micro-batch. Each matched record up to the maximum for the query is emitted at once at the Filter bolt. Queries that aggregate, on the other hand, keep the query around till its duration is up and emit the local result. This is because these queries *cannot* return till they see all the data in your time window anyway because some late arriving data may update an existing aggregate.
+Your data is then emitted to the Filter bolt.  If you have no queries in your system, the Filter bolt will promptly drop all Bullet Records and do absolutely nothing. If there are queries in the Filter bolt, the record is checked against the [filters](../index.md#filters) in each query and if it matches, it is processed by the query. Each query type can choose to emit matched records in micro-batches. By default, ```RAW``` or ```LIMIT``` queries do not micro-batch. Each matched record up to the maximum for the query is emitted at once at the Filter bolt. Queries that aggregate, on the other hand, keep the query around till its duration is up and emit the local result. This is because these queries *cannot* return till they see all the data in your time window anyway because some late arriving data may update an existing aggregate. When the upcoming incremental results lands, queries will periodically (configurable) emit their intermediate results for combining in the Join bolt.
 
 !!! note "Why support micro-batching?"
 
-    ```RAW``` queries do not micro-batch by default, which makes Bullet really snappy when running those queries. As soon as your maximum record limit is reached, the query immediately returns. You can use a setting in [bullet_defaults.yaml](https://github.com/yahoo/bullet-storm/blob/master/src/main/resources/bullet_defaults.yaml) to turn on batching if you like. At some point in the future, micro-batching will let Bullet provide incremental results - partial results arrive over the duration of the query. Bullet can emit intermediate aggregations as they are all [additive](#combining).
+    ```RAW``` queries do not micro-batch by default, which makes Bullet really snappy when running those queries. As soon as your maximum record limit is reached, the query immediately returns. You can use a setting in [bullet_defaults.yaml](https://github.com/yahoo/bullet-storm/blob/master/src/main/resources/bullet_defaults.yaml) to turn on batching if you like. In the near future, micro-batching will let Bullet provide incremental results - partial results arrive over the duration of the query. Bullet can emit intermediate aggregations as they are all [additive](#combining).
 
 ### Request processing
 
-Storm DRPC handles receiving REST requests for the whole topology. The DRPC spouts fetch these requests (DRPC knows the request is for the Bullet topology using the unique function name set when launching the topology) and shuffle them to the Prepare Request bolts. The request also contains information about how to return the response back to the DRPC servers. The Prepare Request bolts generate unique identifiers for each request (a Bullet query) and broadcasts them to every Filter bolt. Since every Filter bolt has a copy of every query, the shuffled data from the source of data can be compared against the query no matter which particular Filter bolt it ends up at. Each Filter bolt has access to the unique query id and is able to key group by the id to the Join bolt with the intermediate results for the query.
+The Query spouts fetch Bullet queries through the PubSub layer using the Subscribers provided by the plugged in PubSub layer. The queries received through the PubSub also contain information about the query such as its unique identifier and potentially other metadata. The Query spouts broadcasts the query body to every Filter bolt. Since every Filter bolt has a copy of every query, the shuffled data from the source of data can be compared against the query no matter which particular Filter bolt it ends up at. Each Filter bolt has access to the unique query id and is able to key group by the id to the Join bolt with the intermediate results for the query.
 
-The Prepare Request bolt also key groups the query and the return information to the Join bolts. This means that the query will be assigned to one and only one Join bolt.
+The Query spout also key groups the query and additional query metadata to the Join bolts. This means that the query and the metadata will be end up at exactly one Join bolt.
 
 ### Combining
 
-Since the data from the Prepare Request bolt (a query and a piece of return information for the query) and the data from all Filter bolts (intermediate results) is key grouped by the unique query id, only one particular Join bolt receives both the query and all the intermediate results for a particular query. The Join bolt can then combine all the intermediate results and produce a final result. This final result is joined (hence the name) with the return information for the query and is shuffled to the Return Results bolt. This bolt then uses the return information to send the results back to a DRPC server, which then returns it back to the requester.
+Since the data from the Query spout (query and metadata) and the data from all Filter bolts (intermediate results) is key grouped by the unique query id, only one particular Join bolt receives both the query and the intermediate results for a particular query. The Join bolt can then combine the intermediate results and produce a final result. This result is joined (hence the name) along with the metadata for the query and is shuffled to the Result bolts. This bolt then uses the particular Publisher from the plugged in PubSub layer and uses the metadata if it needs to and sends the results back through the PubSub layer to the requestor.
 
 !!! note "Combining and operations"
 
@@ -65,9 +57,9 @@ Since the data from the Prepare Request bolt (a query and a piece of return info
 The topology set up this way scales horizontally and has some nice properties:
 
   * If you want to scale for processing more data but the same amount of queries, you only need to scale the components that read your data (the spout reading the data or your custom topology) and the Filter bolts.
-  * If you want to scale for more queries but the same amount of data, you generally need to scale up the Filter Bolts. If you only have a few DRPC servers in your Storm cluster, you may also need to add more to support more simultaneous DRPC requests. We have [found that](performance.md#conclusion_3) each server gives us about ~250 simultaneous queries. Finally, if you need it, you should scale the DRPC spouts, Prepare Request bolts, Join bolts and Return Results bolts. These components generally have low parallelisms compared to your data processing components since the data volume is generally much higher than your query volume.
+  * If you want to scale for more queries but the same amount of data, you generally need to scale up the Filter Bolts. If you need it, you can scale the Query spouts, Join bolts and Result bolts. You should ensure that your PubSub layer (if you're using the Storm DRPC PubSub layer, then this is the number of DRPC servers in your Storm cluster) can handle the volume of queries and results being sent through it. These components generally have low parallelisms compared to your data processing components since the data volume is generally much higher than your query volume, so this is generally not needed.
 
-See [Scaling for more Queries](performance.md#test-7-scaling-for-more-queries) and [Scaling for more Data](performance.md#test-6-scaling-for-more-data) for more details.
+See [Scaling for more Queries](storm-performance.md#test-7-scaling-for-more-queries) and [Scaling for more Data](storm-performance.md#test-6-scaling-for-more-data) for more details.
 
 !!! note "More queries and Filter bolts"
 

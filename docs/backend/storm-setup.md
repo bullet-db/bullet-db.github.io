@@ -1,12 +1,6 @@
 # Bullet on Storm
 
-## Storm DRPC
-
-Bullet on [Storm](https://storm.apache.org/) is built using [Storm DRPC](http://storm.apache.org/releases/1.0.0/Distributed-RPC.html). DRPC comes with Storm installations and generally consist of a set of DRPC servers. When a Storm topology is launched and it uses DRPC, it registers a spout with a unique name with the DRPC infrastructure. The DRPC Servers expose a REST endpoint where data can be POSTed to or a GET request can be made with this unique name. The DRPC infrastructure then sends the request (a query in Bullet) through the spout(s) to the topology (Bullet). Bullet uses the query to filter and joins all records emitted from your (configurable) data source - either a Spout or a topology component according to the query specification. The resulting matched records are aggregated and sent back to the client. We chose to implement Bullet on Storm first since DRPC provides us a nice and simple way to handle getting queries into Bullet and sending responses back.
-
-### Query duration in Storm DRPC
-
-The maximum time a query can run for depends on the maximum time Storm DRPC request can last in your Storm topology. Generally the default is set to 10 minutes. This means that the **longest query duration possible will be 10 minutes**. This is up to your cluster maintainers.
+This section explains how to set up and run Bullet on Storm. If you're using the Storm DRPC PubSub, refer to [this section](../pubsub/storm-drpc-setup.md) for further details.
 
 ## Configuration
 
@@ -123,18 +117,8 @@ storm jar your-fat-jar-with-dependencies.jar \
           -c topology.max.spout.pending=10000
 ```
 
-You can pass other arguments to Storm using the -c argument. The example above uses 64 ackers, which is the parallelism of the Filter Bolt. Storm DRPC follows the principle of leaving retries to the DRPC user (in our case, the Bullet web service). As a result, most of the DRPC components do not follow any at least once guarantees. However, you can enable at least once for the hop from your topology (or spout) to the Filter Bolt. This is why this example uses the parallelism of the Filter Bolt as the number of ackers since that is exactly the number of acker tasks we would need (not accounting for the DRPCSpout to the PrepareRequest Bolt acking). Ackers are lightweight so you need not have the same number of tasks as Filter Bolts but you can tweak it accordingly. The example above also sets max spout pending to control how fast the spout emits. You could use the back-pressure mechanisms in Storm in addition or in lieu of as you choose. We have found that max spout pending gives a much more predictable way of throttling our spouts during catch up or data spikes.
+You can pass other arguments to Storm using the -c argument. The example above uses 64 ackers, for example and uses Storm's [reliable message processing mechanisms](http://storm.apache.org/releases/1.1.0/Guaranteeing-message-processing.html). Certain components in the Bullet Storm topology cannot be reliable due to how Bullet operates currently. Hundreds of millions of Storm tuples could go into any query running in Bullet and it is intractable to *anchor* a single Bullet aggregation to those tuples, particularly when the results are approximate. However, you should enable acking to ensure at least once message deliveries for the hop from your topology (or spout) to the Filter bolts and for the Query spouts to the Filter and Join bolts. Ackers are lightweight so you need not have the same number of tasks as components that ack in your topology so you can tweak it accordingly. The example above also sets max spout pending to control how fast the spout emits. You could use the back-pressure mechanisms in Storm in addition or in lieu of as you choose. We have found that max spout pending gives a much more predictable way of throttling our spouts during catch up or data spikes.
 
 !!! note "Main Class Arguments"
 
     If you run the main class without arguments or pass in the ```--help``` argument, you can see what these arguments mean and what others are supported.
-
-## Test
-
-Once the topology is up and your data consumption has stabilized, you could post a query to a DRPC server in your cluster. Try a simple query from the [examples](../ws/examples.md#simplest-query) by running a curl from a command line:
-
-```bash
-curl -s -X POST -d '{}' http://<DRPC_HOST>:<DRPC_PORT>/drpc/<YOUR_TOPOLOGY_FUNCTION_FROM_YOUR_BULLET_CONF>
-```
-
-You should receive a random record flowing through Bullet instantly (if you left the Raw aggregation micro-batch size at the default of 1).
