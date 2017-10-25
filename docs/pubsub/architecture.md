@@ -27,8 +27,8 @@ The PubSub layer does not deal with queries and results and just works on instan
 
 If you want to use an implementation already built, we currently support:
 
-1. [Kafka](kafka-setup.md#setup) for any Backend
-2. [Storm DRPC](storm-drpc-setup.md#setup) if you're using Bullet on Storm as your Backend
+1. [Kafka](kafka.md#setup) for any Backend
+2. [Storm DRPC](storm-drpc.md#setup) if you're using Bullet on Storm as your Backend
 
 ## Implementing your own PubSub
 

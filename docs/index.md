@@ -48,7 +48,7 @@ To set up Bullet on a real data stream, you need:
     1. Plug in your source of data. See [Getting your data into Bullet](backend/ingestion.md) for details
     2. Consume your data stream
 2. The [Web Service](ws/setup.md) set up to convey queries and return results back from the backend
-3. To choose a [PubSub implementation](pubsub/architecture.md) that connects the Web Service and the Backend. We currently support [Kafka](pubsub/kafka-setup.md) on any Backend and [Storm DRPC](pubsub/storm-drpc-setup.md) for the Storm Backend.
+3. To choose a [PubSub implementation](pubsub/architecture.md) that connects the Web Service and the Backend. We currently support [Kafka](pubsub/kafka.md) on any Backend and [Storm DRPC](pubsub/storm-drpc.md) for the Storm Backend.
 4. The optional [UI](ui/setup.md) set up to talk to your Web Service. You can skip the UI if all your access is programmatic
 
 !!! note "Schema in the UI"
@@ -151,7 +151,7 @@ The core of Bullet querying is not tied to the Backend and lives in a core libra
 
 The PubSub is responsible for transmitting queries from the API to the Backend and returning results back from the Backend to the clients. It decouples whatever particular Backend you are using with the API. We currently provide a PubSub implementation using Kafka as the transport layer. You can very easily [implement your own](pubsub/architecture.md#implementing-your-own-pubsub) by defining a few interfaces that we provide.
 
-In the case of Bullet on Storm, there is an [additional simplified option](pubsub/storm-drpc-setup.md) using [Storm DRPC](http://storm.apache.org/releases/1.0.0/Distributed-RPC.html) as the PubSub. This layer is planned to only support a request-response model for querying in the future.
+In the case of Bullet on Storm, there is an [additional simplified option](pubsub/storm-drpc.md) using [Storm DRPC](http://storm.apache.org/releases/1.0.0/Distributed-RPC.html) as the PubSub. This layer is planned to only support a request-response model for querying in the future.
 
 !!! note "DRPC PubSub"
 

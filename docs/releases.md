@@ -1,12 +1,18 @@
 # Releases
 
-This sections gathers all the relevant releases of the three components of Bullet in one place. It may not include the very few initial releases of these components if they were largely irrelevant. Full release notes can be found by clicking on the actual releases.
+This sections gathers all the relevant releases of the components of Bullet that we maintain in one place. It may not include the very few initial releases of these components if they were largely irrelevant. Full release notes can be found by clicking on the actual releases.
 
 Bullet is still in active development. We welcome all contributions. Feel free to raise any issues/questions/bugs and whatever else on the relevant issues section for each component. Please include as many details as you can.
 
+## Download
+
+For downloading any artifact listed below manually, you should preferably use the [**JCenter mirror here**](https://jcenter.bintray.com/com/yahoo/bullet/). For resolving artifacts in your build tool, follow the directions in each of the components' Package Manager Setup sections.
+
+-----
+
 ## Bullet Core
 
-The core Bullet logic (a library) that can be used to implement Bullet on different Stream Processors (like Flink, Storm, Kafka Streaming etc.). This core library can also be reused in other Bullet components that wish to depend on core Bullet concepts. This actually lived inside the [Bullet Storm](#bullet-storm) package prior to version [0.5.0](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.5.0). Starting with 0.5.0, Bullet Storm only includes the logic to implement Bullet on Storm.
+The core Bullet logic (a library) that can be used to implement Bullet on different Stream Processors (like Flink, Storm, Kafka Streams etc.). This core library can also be reused in other Bullet components that wish to depend on core Bullet concepts. This actually lived inside the [Bullet Storm](#bullet-storm) package prior to version [0.5.0](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.5.0). Starting with 0.5.0, Bullet Storm only includes the logic to implement Bullet on Storm.
 
 |                           |                 |
 | ------------------------- | --------------- |
@@ -20,32 +26,22 @@ The core Bullet logic (a library) that can be used to implement Bullet on differ
 
 |    Date      |                                      Release                                      | Highlights |
 | ------------ | --------------------------------------------------------------------------------- | ---------- |
-| 2016-08-16   | [**0.2.0**](https://github.com/yahoo/bullet-core/releases/tag/bullet-core-0.2.0)  | PubSub interfaces and classes to implement custom communication between API and backend |
-| 2016-06-27   | [**0.1.2**](https://github.com/yahoo/bullet-core/releases/tag/bullet-core-0.1.2)  | Changes to the BulletConfig interface previously used in Bullet Storm. Users now use BulletStormConfig instead but YAML config is the same |
-| 2016-06-27   | [**0.1.1**](https://github.com/yahoo/bullet-core/releases/tag/bullet-core-0.1.1)  | First stable release containing the core of Bullet as a library including parsing, implementing queries, creating results, DataSketches etc |
-
-## Bullet Record
-
-The AVRO container that you need to convert your data into to be consumed by Bullet.
-
-|                            |                 |
-| -------------------------- | --------------- |
-| **Repository**             | [https://github.com/yahoo/bullet-record](https://github.com/yahoo/bullet-record) |
-| **Issues**                 | [https://github.com/yahoo/bullet-record/issues](https://github.com/yahoo/bullet-record/issues) |
-| **Last Tag**               | [![Latest tag](https://img.shields.io/github/release/yahoo/bullet-record/all.svg)](https://github.com/yahoo/bullet-record/tags) |
-| **Latest Artifact**        | [![Download](https://api.bintray.com/packages/yahoo/maven/bullet-record/images/download.svg)](https://bintray.com/yahoo/maven/bullet-record/_latestVersion) |
-| **Package Manager Setup**  | [Setup for Maven, Gradle etc](https://bintray.com/bintray/jcenter?filterByPkgName=bullet-record) |
-
-### Releases
-
-|    Date      |                                  Release                                             | Highlights |
-| ------------ | ------------------------------------------------------------------------------------ | ---------- |
-| 2017-04-17   | [**0.1.1**](https://github.com/yahoo/bullet-record/releases/tag/bullet-record-0.1.0) | Helper methods to remove, rename, check presence and count fields in the Record |
-| 2017-02-09   | [**0.1.0**](https://github.com/yahoo/bullet-record/releases/tag/bullet-record-0.1.0) | Map constructor |
+| 2017-10-04   | [**0.2.5**](https://github.com/yahoo/bullet-core/releases/tag/bullet-core-0.2.5)  | Supports an in-memory BufferingSubscriber implementation for reliable subscribing |
+| 2017-10-03   | [**0.2.4**](https://github.com/yahoo/bullet-core/releases/tag/bullet-core-0.2.4)  | Helpers added to Config, PubSubMessage, Metadata and JSONFormatter. FAIL signal in Metadata. PubSubMessage is JSON serializable |
+| 2017-09-20   | [**0.2.3**](https://github.com/yahoo/bullet-core/releases/tag/bullet-core-0.2.3)  | PubSub is no longer required to be Serializable. Makes PubSubMessage fully serializable. Utility classes and checked exceptions for PubSub |
+| 2017-08-30   | [**0.2.2**](https://github.com/yahoo/bullet-core/releases/tag/bullet-core-0.2.2)  | Helper methods to PubSubMessage and Config |
+| 2017-08-23   | [**0.2.1**](https://github.com/yahoo/bullet-core/releases/tag/bullet-core-0.2.1)  | Removes PubSubConfig, adds defaults methods to Publisher/Subscriber interfaces and improves PubSubException |
+| 2017-08-16   | [**0.2.0**](https://github.com/yahoo/bullet-core/releases/tag/bullet-core-0.2.0)  | PubSub interfaces and classes to implement custom communication between API and backend |
+| 2017-06-27   | [**0.1.2**](https://github.com/yahoo/bullet-core/releases/tag/bullet-core-0.1.2)  | Changes to the BulletConfig interface previously used in Bullet Storm. Users now use BulletStormConfig instead but YAML config is the same |
+| 2017-06-27   | [**0.1.1**](https://github.com/yahoo/bullet-core/releases/tag/bullet-core-0.1.1)  | First stable release containing the core of Bullet as a library including parsing, implementing queries, creating results, DataSketches etc |
 
 ## Bullet Storm
 
 The implementation of Bullet on Storm. Due to major API changes between Storm <= 0.10 and Storm 1.0, Bullet Storm [builds two artifacts](backend/storm-setup.md#older-storm-versions). The ```artifactId``` changes from ```bullet-storm``` (for 1.0+) to ```bullet-storm-0.10```. All releases include migration and testing of the code on *both* versions. Both versions are built simultaneously. Feature parity depends on what was new in Storm 1.0. For example, the Resource Aware Scheduler or RAS, is only present in Storm 1.0+. So, bullet-storm-0.10 removes certain CPU and memory related settings specific to RAS in its configuration. There are also minor changes to the Metrics API in Storm. In terms of Bullet itself, there should be no differences.
+
+!!! note "Storm DRPC PubSub "
+
+    The DRPC PubSub is part of this artifact and is fully released and available for use starting with versions 0.6.2 and above. It is only meant to be used if you're using Storm as your Backend.
 
 !!! note "Future support"
 
@@ -64,6 +60,9 @@ The implementation of Bullet on Storm. Due to major API changes between Storm <=
 
 |    Date      |                               Storm 1.0                                            |                                      Storm 0.10                                         | Highlights |
 | ------------ | ---------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ---------- |
+| 2017-10-24   | [**0.6.2**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.6.2) | [**0.6.2**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.6.2) | Adds a fat jar for using the DRPC PubSub in the Web Service |
+| 2017-10-18   | [**0.6.1**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.6.1) | [**0.6.1**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.6.1) | DRPC PubSub |
+| 2017-08-30   | [**0.6.0**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.6.0) | [**0.6.0**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.6.0) | New PubSub architecture, removes DRPC components and settings |
 | 2017-06-27   | [**0.5.0**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.5.0) | [**0.5.0**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.5.0) | Pulled out Bullet Core. BulletConfig to BulletStormConfig |
 | 2017-06-09   | [**0.4.3**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.4.3) | [**0.4.3**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.4.3) | Adding rounding for DISTRIBUTION. Latency metric |
 | 2017-04-28   | [**0.4.2**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.4.2) | [**0.4.2**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.4.2) | Strict JSON output and fix for no data distributions |
@@ -77,7 +76,11 @@ The implementation of Bullet on Storm. Due to major API changes between Storm <=
 
 ## Bullet Web Service
 
-The Web Service implementation that can serve a static schema from a file and talk to the Storm backend.
+The Web Service implementation that can serve a static schema from a file and talk to the backend using the PubSub.
+
+!!! note "WAR to JAR"
+
+    Starting with 0.1.1 and above, this artifact no longer produces a WAR file that is meant to be run in a servlet container and instead switches to an executable Java application using Spring Boot.
 
 |                            |                 |
 | -------------------------- | --------------- |
@@ -91,6 +94,7 @@ The Web Service implementation that can serve a static schema from a file and ta
 
 |    Date      |                                      Release                                           | Highlights |
 | ------------ | -------------------------------------------------------------------------------------- | ---------- |
+| 2017-10-19   | [**0.1.1**](https://github.com/yahoo/bullet-service/releases/tag/bullet-service-0.1.1) | New PubSub architecture. Switching to Spring Boot and executable JAR instead of WAR |
 | 2016-12-16   | [**0.0.1**](https://github.com/yahoo/bullet-service/releases/tag/bullet-service-0.0.1) | The first release with support for DRPC and the file-based schema |
 
 !!! note "Want to directly download jars?"
@@ -112,11 +116,51 @@ The Bullet UI that lets you build, run, save and visualize results from Bullet.
 
 |    Date      |                                      Release                                           | Highlights |
 | ------------ | -------------------------------------------------------------------------------------- | ---------- |
-| 2016-08-22   | [**0.4.0**](https://github.com/yahoo/bullet-ui/releases/tag/v0.4.0) | Query sharing, collapsible Raw view, and unsaved/error indicators. Settings rename and other bug fixes|
-| 2016-05-22   | [**0.3.2**](https://github.com/yahoo/bullet-ui/releases/tag/v0.3.2) | Exporting to TSV in Pivot table. Fixes unselectability bug in Raw view |
-| 2016-05-15   | [**0.3.1**](https://github.com/yahoo/bullet-ui/releases/tag/v0.3.1) | Adds styles to the Pivot table. Fixes some minor UI interactions |
-| 2016-05-10   | [**0.3.0**](https://github.com/yahoo/bullet-ui/releases/tag/v0.3.0) | Adds Charting and Pivoting support. Migrations enhanced. Support for overriding nested default settings |
-| 2016-05-03   | [**0.2.2**](https://github.com/yahoo/bullet-ui/releases/tag/v0.2.2) | Fixes maxlength of the input for points |
-| 2016-05-02   | [**0.2.1**](https://github.com/yahoo/bullet-ui/releases/tag/v0.2.1) | Fixes a bug with a dependency that broke sorting the Filters |
-| 2016-05-01   | [**0.2.0**](https://github.com/yahoo/bullet-ui/releases/tag/v0.2.0) | Release for Top K and Distribution. Supports Bullet Storm 0.4.2+ |
-| 2016-02-21   | [**0.1.0**](https://github.com/yahoo/bullet-ui/releases/tag/v0.1.0) | The first release with support for all features included in Bullet Storm 0.2.1+ |
+| 2017-08-22   | [**0.4.0**](https://github.com/yahoo/bullet-ui/releases/tag/v0.4.0) | Query sharing, collapsible Raw view, and unsaved/error indicators. Settings rename and other bug fixes|
+| 2017-05-22   | [**0.3.2**](https://github.com/yahoo/bullet-ui/releases/tag/v0.3.2) | Exporting to TSV in Pivot table. Fixes unselectability bug in Raw view |
+| 2017-05-15   | [**0.3.1**](https://github.com/yahoo/bullet-ui/releases/tag/v0.3.1) | Adds styles to the Pivot table. Fixes some minor UI interactions |
+| 2017-05-10   | [**0.3.0**](https://github.com/yahoo/bullet-ui/releases/tag/v0.3.0) | Adds Charting and Pivoting support. Migrations enhanced. Support for overriding nested default settings |
+| 2017-05-03   | [**0.2.2**](https://github.com/yahoo/bullet-ui/releases/tag/v0.2.2) | Fixes maxlength of the input for points |
+| 2017-05-02   | [**0.2.1**](https://github.com/yahoo/bullet-ui/releases/tag/v0.2.1) | Fixes a bug with a dependency that broke sorting the Filters |
+| 2017-05-01   | [**0.2.0**](https://github.com/yahoo/bullet-ui/releases/tag/v0.2.0) | Release for Top K and Distribution. Supports Bullet Storm 0.4.2+ |
+| 2017-02-21   | [**0.1.0**](https://github.com/yahoo/bullet-ui/releases/tag/v0.1.0) | The first release with support for all features included in Bullet Storm 0.2.1+ |
+
+## Bullet Record
+
+The AVRO container that you need to convert your data into to be consumed by Bullet.
+
+|                            |                 |
+| -------------------------- | --------------- |
+| **Repository**             | [https://github.com/yahoo/bullet-record](https://github.com/yahoo/bullet-record) |
+| **Issues**                 | [https://github.com/yahoo/bullet-record/issues](https://github.com/yahoo/bullet-record/issues) |
+| **Last Tag**               | [![Latest tag](https://img.shields.io/github/release/yahoo/bullet-record/all.svg)](https://github.com/yahoo/bullet-record/tags) |
+| **Latest Artifact**        | [![Download](https://api.bintray.com/packages/yahoo/maven/bullet-record/images/download.svg)](https://bintray.com/yahoo/maven/bullet-record/_latestVersion) |
+| **Package Manager Setup**  | [Setup for Maven, Gradle etc](https://bintray.com/bintray/jcenter?filterByPkgName=bullet-record) |
+
+### Releases
+
+|    Date      |                                  Release                                             | Highlights |
+| ------------ | ------------------------------------------------------------------------------------ | ---------- |
+| 2017-05-19   | [**0.1.2**](https://github.com/yahoo/bullet-record/releases/tag/bullet-record-0.1.2) | Reduces the memory footprint needed to serialize itself by a factor of 128 for small records |
+| 2017-04-17   | [**0.1.1**](https://github.com/yahoo/bullet-record/releases/tag/bullet-record-0.1.1) | Helper methods to remove, rename, check presence and count fields in the Record |
+| 2017-02-09   | [**0.1.0**](https://github.com/yahoo/bullet-record/releases/tag/bullet-record-0.1.0) | Map constructor |
+
+## Bullet Kafka
+
+A PubSub implementation using Kafka as the backing PubSub. Can be used with any Bullet Backend.
+
+|                            |                 |
+| -------------------------- | --------------- |
+| **Repository**             | [https://github.com/yahoo/bullet-record](https://github.com/yahoo/bullet-kafka) |
+| **Issues**                 | [https://github.com/yahoo/bullet-record/issues](https://github.com/yahoo/bullet-kafka/issues) |
+| **Last Tag**               | [![Latest tag](https://img.shields.io/github/release/yahoo/bullet-kafka/all.svg)](https://github.com/yahoo/bullet-kafka/tags) |
+| **Latest Artifact**        | [![Download](https://api.bintray.com/packages/yahoo/maven/bullet-kafka/images/download.svg)](https://bintray.com/yahoo/maven/bullet-kafka/_latestVersion) |
+| **Package Manager Setup**  | [Setup for Maven, Gradle etc](https://bintray.com/bintray/jcenter?filterByPkgName=bullet-kafka) |
+
+### Releases
+
+|    Date      |                                  Release                                             | Highlights |
+| ------------ | ------------------------------------------------------------------------------------ | ---------- |
+| 2017-10-19   | [**0.2.0**](https://github.com/yahoo/bullet-kafka/releases/tag/bullet-kafka-0.2.0) | Refactors and re-releases. Pass-through settings to Kafka. Manual offset committing bug fix |
+| 2017-09-27   | [**0.1.2**](https://github.com/yahoo/bullet-kafka/releases/tag/bullet-kafka-0.1.2) | Fixes a bug with config loading |
+| 2017-09-22   | [**0.1.1**](https://github.com/yahoo/bullet-kafka/releases/tag/bullet-kafka-0.1.1) | First release using the PubSub interfaces |

@@ -18,8 +18,8 @@ pages:
     - Performance: backend/storm-performance.md
 - PubSub:
   - Architecture: pubsub/architecture.md
-  - Kafka: pubsub/kafka-setup.md
-  - Storm DRPC: pubsub/storm-drpc-setup.md
+  - Kafka: pubsub/kafka.md
+  - Storm DRPC: pubsub/storm-drpc.md
 - Web Service:
   - Setup: ws/setup.md
   - API: ws/api.md

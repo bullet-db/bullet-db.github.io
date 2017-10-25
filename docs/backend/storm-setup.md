@@ -1,6 +1,6 @@
 # Bullet on Storm
 
-This section explains how to set up and run Bullet on Storm. If you're using the Storm DRPC PubSub, refer to [this section](../pubsub/storm-drpc-setup.md) for further details.
+This section explains how to set up and run Bullet on Storm. If you're using the Storm DRPC PubSub, refer to [this section](../pubsub/storm-drpc.md) for further details.
 
 ## Configuration
 

@@ -1,4 +1,4 @@
-# Storm DRPC PubSub Setup
+# Storm DRPC PubSub 
 
 Bullet on [Storm](https://storm.apache.org/) can use [Storm DRPC](http://storm.apache.org/releases/1.0.0/Distributed-RPC.html) as a PubSub layer. DRPC or Distributed Remote Procedure Call, is built into Storm and consists of a set of servers that are part of the Storm cluster.
 
@@ -22,7 +22,7 @@ The DRPC PubSub is part of the [Bullet Storm](../releases.md#bullet-storm) start
 
 ### Plug into the Storm Backend
 
-When you are setting up your Bullet topology with your plug-in data source (a Spout or a topology), you will naturally build a JAR with all the dependencies or a *fat* JAR. This will include all the DRPC PubSub code and dependencies. You do not need anything else. For configuration, the YAML file that you probably already provide to your topology needs to have the additional settings listed below (the function name is optional but it should be unique per Storm cluster).
+When you are setting up your Bullet topology with your plug-in data source (a Spout or a topology), you will naturally build a JAR with all the dependencies or a *fat* JAR. This will include all the DRPC PubSub code and dependencies. You do not need anything else. For configuration, the YAML file that you probably already provide to your topology needs to have the additional settings listed below (the function name is optional but you should change the default since the DRPC function needs to be unique per Storm cluster). Now if you launch your topology, it should be wired up to use Storm DRPC.
 
 ```yaml
 bullet.pubsub.context.name: "QUERY_PROCESSING"
@@ -36,12 +36,15 @@ When you're plugging in the DRPC PubSub layer into your Web Service, you will ne
 
 You should then plug in this JAR to your Web Service following the instructions [here](../ws/setup.md#launch).
 
-For configuration, you should [follow the steps here](..ws/setup.md#pubsub-configuration) and add the context and class name listed above. You can also configure other settings that are listed in the [PubSub and PubSub Storm DRPC defaults section](https://github.com/yahoo/bullet-storm/blob/master/src/main/resources/bullet_storm_defaults.yaml) in the Bullet Storm defaults file. You will need to point to your DRPC servers using and set the function to the same value you chose [above](#storm-backend).
+For configuration, you should [follow the steps here](../ws/setup.md#pubsub-configuration) and add the context and class name listed above. You will need to point to your DRPC servers and set the function to the same value you chose [above](#storm-backend). You can configure this and other settings that are explained further in the [PubSub and PubSub Storm DRPC defaults section](https://github.com/yahoo/bullet-storm/blob/master/src/main/resources/bullet_storm_defaults.yaml) in the Bullet Storm defaults file.
 
 ```yaml
 bullet.pubsub.context.name: "QUERY_SUBMISSION"
 bullet.pubsub.class.name: "com.yahoo.bullet.storm.drpc.DRPCPubSub"
-bullet.pubsub.storm.drpc.servers: [server1, server2, server3]
+bullet.pubsub.storm.drpc.servers:
+  - server1
+  - server2
+  - server3
 bullet.pubsub.storm.drpc.function: "custom-name"
 bullet.pubsub.storm.drpc.http.protocol: "http"
 bullet.pubsub.storm.drpc.http.port: "4080"
@@ -54,16 +57,16 @@ bullet.pubsub.storm.drpc.http.connect.timeout.ms: 1000
 
 #### Scalability
 
-DRPC servers are a shared resource per Storm cluster and while it is horizontally scalable, the scalability of the Bullet backend is tied to it. If you only have a few DRPC servers in your Storm cluster, you may also need to add more to support more simultaneous DRPC requests. We have [found that](../backend/storm-performance.md#conclusion_3) each server gives us about ~250 simultaneous queries.
+DRPC servers are a shared resource per Storm cluster and it may be possible that you have to contend with other topologies in your multi-tenant cluster. While it is horizontally scalable, it does tie the scalability of the Bullet backend to it. If you only have a few DRPC servers in your Storm cluster, you may need to add more to support more simultaneous DRPC requests. We have [found that](../backend/storm-performance.md#conclusion_3) each server gives us about ~250 simultaneous queries. There is an Async implementation coming in Storm 2.0 that should increase the throughput.
 
 #### Query Duration
 
-The maximum time a query can run for depends on the maximum time Storm DRPC request can last in your Storm topology. Generally the default is set to 10 minutes. This means that the **longest query duration possible will be 10 minutes**. This is up to your cluster maintainers.
+The maximum time a query can run for depends on the maximum time Storm DRPC request can last in your Storm topology. Generally the default is set to 10 minutes. This means that the **longest query duration possible will be 10 minutes**. The value of this is up to your cluster maintainers.
+
+#### Request-Response
+
+Our PubSub uses DRPC using HTTP REST in a request-response model. This means that it will not support incremental results as it is! We could switch our usage of DRPC to send signals to the topology to fetch results and start queries. Depending on if there is demand, we may support this in our implementation in the future.
 
 #### Reliability
 
 Storm DRPC follows the principle of leaving retries to the DRPC user (in our case, the Bullet web service). At this moment, we have not chosen to add reliability mechanisms to the query publishing, result publishing or result subscribing sides of our DRPC PubSub implementations but the query subscribers do use the ```BufferingSubscriber``` mentioned [here](architecture.md#reliability).
-
-#### Request-Response
-
-Our PubSub uses DRPC using HTTP REST in a request-response model. This means that it will not support incremental results as it is! We could switch our usage of DRPC to send signals to the topology in addition to queries. Depending on if there is demand, we may support this in our implementation in the future.

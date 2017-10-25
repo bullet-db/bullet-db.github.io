@@ -10,6 +10,8 @@ If you have any issues with any of the particular Bullet sub-components, feel fr
 | Web Service   | [https://github.com/yahoo/bullet-service/issues](https://github.com/yahoo/bullet-service/issues) |
 | UI            | [https://github.com/yahoo/bullet-ui/issues](https://github.com/yahoo/bullet-ui/issues)           |
 | Record        | [https://github.com/yahoo/bullet-record/issues](https://github.com/yahoo/bullet-record/issues)   |
+| Core          | [https://github.com/yahoo/bullet-core/issues](https://github.com/yahoo/bullet-core/issues)     |
+| Kafka PubSub  | [https://github.com/yahoo/bullet-kafka/issues](https://github.com/yahoo/bullet-kafka/issues)     |
 | Documentation | [https://github.com/yahoo/bullet-docs/issues](https://github.com/yahoo/bullet-docs/issues)       |
 
 ## Mailing Lists

@@ -128,11 +128,11 @@ that are the same as the [default backend settings](https://github.com/yahoo/bul
 ```json
 {
   "default": {
-    "queryHost": "https://foo.bar.com:4443",
-    "queryNamespace": "bullet/api",
-    "queryPath": "drpc",
-    "schemaHost": "https://foo.bar.com:4443",
-    "schemaNamespace": "bullet/api",
+    "queryHost": "http://localhost:5555",
+    "queryNamespace": "api/bullet",
+    "queryPath": "query",
+    "schemaHost": "http://localhost:5555",
+    "schemaNamespace": "api/bullet",
     "helpLinks": [
       {
         "name": "Tutorials",

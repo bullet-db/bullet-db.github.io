@@ -1,6 +1,6 @@
 # The Web Service
 
-The Web Service is a Java JAR file that you can deploy on a machine to communicate with the Bullet Backend. You then plug in a particular Bullet PubSub implementation such as [Kafka PubSub](../pubsub/kafka-setup.md) or [Storm DRPC PubSub](../pubsub/storm-drpc-setup.md). For an example on how to set up a Bullet backend, see the [Storm example setup](../backend/storm-setup.md).
+The Web Service is a Java JAR file that you can deploy on a machine to communicate with the Bullet Backend. You then plug in a particular Bullet PubSub implementation such as [Kafka PubSub](../pubsub/kafka.md) or [Storm DRPC PubSub](../pubsub/storm-drpc.md). For an example on how to set up a Bullet backend, see the [Storm example setup](../backend/storm-setup.md).
 
 There are two main purposes for this layer at this time:
 
@@ -15,7 +15,7 @@ There are two main purposes for this layer at this time:
 
 ## Prerequisites
 
-In order for your Web Service to work with Bullet, you should have an instance of the Backend such as [Storm](../backend/storm-setup.md) and a PubSub instance such as [Storm DRPC](../pubsub/storm-drpc-setup.md) or [Kafka](../pubsub/kafka-setup.md) already set up.
+In order for your Web Service to work with Bullet, you should have an instance of the Backend such as [Storm](../backend/storm-setup.md) and a PubSub instance such as [Storm DRPC](../pubsub/storm-drpc.md#setup) or [Kafka](../pubsub/kafka.md#setup) already set up.
 
 ## Installation
 
@@ -75,7 +75,7 @@ You can also configure various Spring and web server here. Take a look at [this 
 
 You configure the PubSub by providing a configuration YAML file and setting the ```bullet.pubsub.config``` to its path. In *that* file, you will set these two settings at a minimum:
 
-1. ```bullet.pubsub.class.name``` should be set to the fully qualified package to your PubSub implementation. Example: ```com.yahoo.bullet.kafka.KafkaPubSub``` for the [Kafka PubSub](../pubsub/kafka-setup.md).
+1. ```bullet.pubsub.class.name``` should be set to the fully qualified package to your PubSub implementation. Example: ```com.yahoo.bullet.kafka.KafkaPubSub``` for the [Kafka PubSub](../pubsub/kafka.md).
 2. ```bullet.pubsub.context.name: QUERY_SUBMISSION```. The Web Service requires the PubSub to be in the ```QUERY_SUBMISSION``` context.
 
 You will also specify other parameters that your chosen PubSub requires or can use.
