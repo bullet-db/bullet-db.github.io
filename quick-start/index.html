@@ -4,10 +4,13 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">   
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The full documentation for Bullet - A Real Time Data Query Engine"> 
+    <meta name="author" content="Akshai Sarma"> 
+    <link rel="canonical" href="https://yahoo.github.io/bullet-docs/quick-start/"> 
     <link rel="shortcut icon" href="../img/favicon.ico">
 
-    <title>Quick Start - Bullet</title>
+    <title>Quick Start - Bullet Docs</title>
 
     <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
@@ -68,7 +71,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="..">Bullet<small class="small small-brand-text"></small></a>
+            <a class="navbar-brand" href="..">Bullet Docs<small class="small small-brand-text">v0.4.0</small></a>
         </div>
 
         <!-- Expanded navigation -->
@@ -96,25 +99,61 @@
                         
                             
 <li >
-    <a href="../backend/storm-architecture/">Storm Architecture</a>
-</li>
-
-                        
-                            
-<li >
     <a href="../backend/ingestion/">Getting your data into Bullet</a>
 </li>
 
                         
                             
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">Storm</a>
+    <ul class="dropdown-menu">
+        
+            
 <li >
-    <a href="../backend/setup-storm/">Setup on Storm</a>
+    <a href="../backend/storm-architecture/">Architecture</a>
+</li>
+
+        
+            
+<li >
+    <a href="../backend/storm-setup/">Setup</a>
+</li>
+
+        
+            
+<li >
+    <a href="../backend/storm-performance/">Performance</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">PubSub <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../pubsub/architecture/">Architecture</a>
 </li>
 
                         
                             
 <li >
-    <a href="../backend/performance/">Performance</a>
+    <a href="../pubsub/kafka/">Kafka</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../pubsub/storm-drpc/">Storm DRPC</a>
 </li>
 
                         
@@ -124,7 +163,7 @@
                 
                 
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">REST API <b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Web Service <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                         
                             
@@ -171,15 +210,15 @@
                 
                 
                 
+                    <li >
+                        <a href="../releases/">Releases</a>
+                    </li>
+                
+                
+                
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">About <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                        
-                            
-<li >
-    <a href="../about/releases/">Past Releases</a>
-</li>
-
                         
                             
 <li >
@@ -215,20 +254,11 @@
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="../backend/storm-architecture/">
+                        <a rel="prev" href="../backend/ingestion/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
                 
-                
-                    <li>
-                        <a href="https://github.com/yahoo/bullet-docs">
-                            
-                                <i class="fa fa-github"></i>
-                            
-                            GitHub
-                        </a>
-                    </li>
                 
             </ul>
         </div>
@@ -259,90 +289,22 @@
                         
                             <li class="third-level">
                                 <a href="#setting-up-storm">Setting up Storm</a>
-                                <ul class="nav">
                                 
-                                    <li class="fourth-level">
-                                        <a href="#step-1-setup-directories-and-examples">Step 1: Setup directories and examples</a>
-                                        
-                                    </li>
-                                
-                                    <li class="fourth-level">
-                                        <a href="#step-2-install-storm-10">Step 2: Install Storm 1.0</a>
-                                        
-                                    </li>
-                                
-                                    <li class="fourth-level">
-                                        <a href="#step-3-launch-storm-components">Step 3: Launch Storm components</a>
-                                        
-                                    </li>
-                                
-                                    <li class="fourth-level">
-                                        <a href="#step-4-test-storm-optional">Step 4: Test Storm (Optional)</a>
-                                        
-                                    </li>
-                                
-                                </ul>
                             </li>
                         
                             <li class="third-level">
                                 <a href="#setting-up-the-example-bullet-topology">Setting up the example Bullet topology</a>
-                                <ul class="nav">
                                 
-                                    <li class="fourth-level">
-                                        <a href="#step-5-setup-the-storm-example">Step 5: Setup the Storm example</a>
-                                        
-                                    </li>
-                                
-                                    <li class="fourth-level">
-                                        <a href="#step-6-launch-the-topology">Step 6: Launch the topology</a>
-                                        
-                                    </li>
-                                
-                                </ul>
                             </li>
                         
                             <li class="third-level">
                                 <a href="#setting-up-the-bullet-web-service">Setting up the Bullet Web Service</a>
-                                <ul class="nav">
                                 
-                                    <li class="fourth-level">
-                                        <a href="#step-7-install-jetty">Step 7: Install Jetty</a>
-                                        
-                                    </li>
-                                
-                                    <li class="fourth-level">
-                                        <a href="#step-8-install-the-bullet-web-service">Step 8: Install the Bullet Web Service</a>
-                                        
-                                    </li>
-                                
-                                    <li class="fourth-level">
-                                        <a href="#step-9-launch-the-web-service">Step 9: Launch the Web Service</a>
-                                        
-                                    </li>
-                                
-                                </ul>
                             </li>
                         
                             <li class="third-level">
                                 <a href="#setting-up-the-bullet-ui">Setting up the Bullet UI</a>
-                                <ul class="nav">
                                 
-                                    <li class="fourth-level">
-                                        <a href="#step-10-install-node">Step 10: Install Node</a>
-                                        
-                                    </li>
-                                
-                                    <li class="fourth-level">
-                                        <a href="#step-11-install-the-bullet-ui">Step 11: Install the Bullet UI</a>
-                                        
-                                    </li>
-                                
-                                    <li class="fourth-level">
-                                        <a href="#step-12-launch-the-ui">Step 12: Launch the UI</a>
-                                        
-                                    </li>
-                                
-                                </ul>
                             </li>
                         
                         </ul>
@@ -359,6 +321,11 @@
                         
                             <li class="third-level">
                                 <a href="#storm-topology">Storm topology</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#pubsub">PubSub</a>
                                 
                             </li>
                         
@@ -388,11 +355,12 @@
         <div class="col-md-9" role="main">
 
 <h1 id="quick-start">Quick Start</h1>
-<p>This section gets you running a mock instance of Bullet to play around with. The instance will run using <a href="../backend/setup-storm/">Bullet on Storm</a>. Since we do not have an actual data source, we will produce some fake data and convert it into <a href="../backend/ingestion/">Bullet Records</a> in a <a href="https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/java/com/yahoo/bullet/storm/examples/RandomSpout.java">custom Storm spout</a>. If you want to use Bullet for your data, you will need to do read and convert your data to Bullet Records in a similar manner.</p>
+<p>This section gets you running a mock instance of Bullet to play around with. The instance will run using <a href="../backend/storm-setup/">Bullet on Storm</a> and use the <a href="../pubsub/storm-drpc/">DRPC Pubsub</a>. Since we do not have an actual data source, we will produce some fake data and convert it into <a href="../backend/ingestion/">Bullet Records</a> in a <a href="https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/java/com/yahoo/bullet/storm/examples/RandomSpout.java">custom Storm spout</a>. If you want to use Bullet for your data, you will need to do read and convert your data to Bullet Records in a similar manner.</p>
 <p>At the end of this section, you will have:</p>
 <ul>
-<li>Setup the Bullet topology using a custom spout on <a href="https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.5.0">bullet-storm-0.5.0</a></li>
-<li>Setup the <a href="../ws/setup/">Web Service</a> talking to the topology and serving a schema for your UI using <a href="https://github.com/yahoo/bullet-service/releases/tag/bullet-service-0.0.1">bullet-service-0.0.1</a></li>
+<li>Setup the Bullet topology using a custom spout on <a href="https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.6.2">bullet-storm-0.6.2</a></li>
+<li>Setup the <a href="../ws/setup/">Web Service</a> talking to the topology and serving a schema for your UI using <a href="https://github.com/yahoo/bullet-service/releases/tag/bullet-service-0.1.1">bullet-service-0.1.1</a></li>
+<li>Setup the <a href="../pubsub/storm-drpc/">DRPC PubSub</a> talking to the topology and Web Service.</li>
 <li>Setup the <a href="../ui/setup/">UI</a> talking to the Web Service using <a href="https://github.com/yahoo/bullet-ui/releases/tag/v0.4.0">bullet-ui-0.4.0</a></li>
 </ul>
 <p><strong>Prerequisites</strong></p>
@@ -403,7 +371,7 @@
 </ul>
 <h2 id="install-script">Install Script</h2>
 <p>Simply run:</p>
-<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.3.4/examples/install-all.sh | bash
+<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.4.0/examples/install-all.sh | bash
 </code></pre>
 
 <p>This will setup a local Storm cluster, a Bullet running on it, the Bullet Web Service and a Bullet UI for you. Once everything has launched, you should be able to go to the Bullet UI running locally at <a href="http://localhost:8800">http://localhost:8800</a>. You can then <a href="#what-did-we-do"><strong>continue this guide from here</strong></a>.</p>
@@ -420,7 +388,7 @@ mkdir -p $BULLET_HOME/backend/storm
 mkdir -p $BULLET_HOME/service
 mkdir -p $BULLET_HOME/ui
 cd $BULLET_HOME
-curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.3.4/examples_artifacts.tar.gz
+curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.4.0/examples_artifacts.tar.gz
 tar -xzf examples_artifacts.tar.gz
 export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 </code></pre>
@@ -497,7 +465,7 @@ storm supervisor &amp;
 
 <p>Visit the UI and see if the topology is up. You should see the <code>DataSource</code> spout begin emitting records.</p>
 <p>Test the Bullet topology by:</p>
-<pre><code class="bash">curl -s -X POST -d '{}' http://localhost:3774/drpc/bullet
+<pre><code class="bash">curl -s -X POST -d '{&quot;id&quot;:&quot;&quot;, &quot;content&quot;:&quot;{}&quot;}' http://localhost:3774/drpc/bullet-query
 </code></pre>
 
 <p>You should get a random record from Bullet.</p>
@@ -506,44 +474,39 @@ storm supervisor &amp;
 <p>This data is randomly generated by the <a href="https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/java/com/yahoo/bullet/storm/examples/RandomSpout.java">custom Storm spout</a> that is in the example topology you just launched. In practice, your spout would read from an actual data source such as Kafka instead. See <a href="#storm-topology">below</a> for more details about this random data spout.</p>
 </div>
 <h3 id="setting-up-the-bullet-web-service">Setting up the Bullet Web Service</h3>
-<h4 id="step-7-install-jetty">Step 7: Install Jetty</h4>
+<h4 id="step-7-install-the-bullet-web-service">Step 7: Install the Bullet Web Service</h4>
 <pre><code class="bash">cd $BULLET_HOME/service
-curl -O http://central.maven.org/maven2/org/eclipse/jetty/jetty-distribution/9.3.16.v20170120/jetty-distribution-9.3.16.v20170120.zip
-unzip jetty-distribution-9.3.16.v20170120.zip
+curl -Lo bullet-service.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/0.1.1/bullet-service-0.1.1-embedded.jar
+cp $BULLET_EXAMPLES/web-service/example* $BULLET_HOME/service/
+cp $BULLET_EXAMPLES/storm/*jar-with-dependencies.jar $BULLET_HOME/service/bullet-storm-jar-with-dependencies.jar
 </code></pre>
 
-<h4 id="step-8-install-the-bullet-web-service">Step 8: Install the Bullet Web Service</h4>
-<pre><code class="bash">cd jetty-distribution-9.3.16.v20170120
-curl -Lo webapps/bullet-service.war http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/0.0.1/bullet-service-0.0.1.war
-cp $BULLET_EXAMPLES/web-service/example_* $BULLET_HOME/service/jetty-distribution-9.3.16.v20170120
-</code></pre>
-
-<h4 id="step-9-launch-the-web-service">Step 9: Launch the Web Service</h4>
-<pre><code class="bash">cd $BULLET_HOME/service/jetty-distribution-9.3.16.v20170120
-java -jar -Dbullet.service.configuration.file=&quot;example_context.properties&quot; -Djetty.http.port=9999 start.jar &gt; logs/out 2&gt;&amp;1 &amp;
+<h4 id="step-8-launch-the-web-service">Step 8: Launch the Web Service</h4>
+<pre><code class="bash">cd $BULLET_HOME/service
+java -Dloader.path=bullet-storm-jar-with-dependencies.jar -jar bullet-service.jar --bullet.pubsub.config=example_drpc_pubsub_config.yaml --bullet.schema.file=example_columns.json --server.port=9999  --logging.path=. --logging.file=log.txt &gt; log.txt 2&gt;&amp;1 &amp;
 </code></pre>
 
 <p>You can verify that it is up by running the Bullet query and getting the example columns through the API:</p>
-<pre><code class="bash">curl -s -X POST -d '{}' http://localhost:9999/bullet-service/api/drpc
-curl -s http://localhost:9999/bullet-service/api/columns
+<pre><code class="bash">curl -s -H 'Content-Type: text/plain' -X POST -d '{}' http://localhost:9999/api/bullet/query
+curl -s http://localhost:9999/api/bullet/columns
 </code></pre>
 
 <h3 id="setting-up-the-bullet-ui">Setting up the Bullet UI</h3>
-<h4 id="step-10-install-node">Step 10: Install Node</h4>
+<h4 id="step-9-install-node">Step 9: Install Node</h4>
 <pre><code class="bash">curl -s https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
 source ~/.bashrc
 nvm install v6.9.4
 nvm use v6.9.4
 </code></pre>
 
-<h4 id="step-11-install-the-bullet-ui">Step 11: Install the Bullet UI</h4>
+<h4 id="step-10-install-the-bullet-ui">Step 10: Install the Bullet UI</h4>
 <pre><code class="bash">cd $BULLET_HOME/ui
 curl -LO https://github.com/yahoo/bullet-ui/releases/download/v0.4.0/bullet-ui-v0.4.0.tar.gz
 tar -xzf bullet-ui-v0.4.0.tar.gz
 cp $BULLET_EXAMPLES/ui/env-settings.json config/
 </code></pre>
 
-<h4 id="step-12-launch-the-ui">Step 12: Launch the UI</h4>
+<h4 id="step-11-launch-the-ui">Step 11: Launch the UI</h4>
 <pre><code class="bash">PORT=8800 node express-server.js &amp;
 </code></pre>
 
@@ -555,7 +518,7 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
 </div>
 <h2 id="teardown">Teardown</h2>
 <p>If you were using the <a href="#install-script">Install Script</a> or if you don't want to manually bring down everything, you can run:</p>
-<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.3.4/examples/install-all.sh | bash -s cleanup
+<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.4.0/examples/install-all.sh | bash -s cleanup
 </code></pre>
 
 <p>If you were performing the steps yourself, you can also manually cleanup <strong>all the components and all the downloads</strong> using:</p>
@@ -573,7 +536,7 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
 </tr>
 <tr>
 <td>Web Service</td>
-<td><code>pkill -f [e]xample_context.properties</code></td>
+<td><code>pkill -f [e]xample_drpc_pubsub_config.yaml</code></td>
 </tr>
 <tr>
 <td>Storm</td>
@@ -674,8 +637,28 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
 
 <p>This method generates some fields randomly and inserts them into a BulletRecord. Note that the BulletRecord is typed and all data must be inserted with the proper types.</p>
 <p>If you put Bullet on your data, you will need to write a Spout (or a topology if your reading is complex), that reads from your data source and emits BulletRecords with the fields you wish to be query-able placed into a BulletRecord similar to this example.</p>
+<h3 id="pubsub">PubSub</h3>
+<p>We used the <a href="../pubsub/storm-drpc/">DRPC PubSub</a> since we were using the Storm Backend. This code was included in the Bullet Storm artifact that we downloaded (the JAR with dependencies). We configured the Backend to use this PubSub by adding these settings to the YAML file that we passed to our Storm topology. Notice that we set the context to <code>QUERY_PROCESSING</code> since this is the Backend.</p>
+<pre><code class="yaml">bullet.pubsub.context.name: &quot;QUERY_PROCESSING&quot;
+bullet.pubsub.class.name: &quot;com.yahoo.bullet.storm.drpc.DRPCPubSub&quot;
+bullet.pubsub.storm.drpc.function: &quot;bullet-query&quot;
+</code></pre>
+
+<p>For the Web Service, we passed in a YAML file that pointed to our DRPC server that was part of the Storm cluster we launched. Notice that we set the context to <code>QUERY_SUBMISSION</code> since this is the Web Service.</p>
+<pre><code class="yaml">bullet.pubsub.context.name: &quot;QUERY_SUBMISSION&quot;
+bullet.pubsub.class.name: &quot;com.yahoo.bullet.storm.drpc.DRPCPubSub&quot;
+bullet.pubsub.storm.drpc.servers:
+  - 127.0.0.1
+bullet.pubsub.storm.drpc.function: &quot;bullet-query&quot;
+bullet.pubsub.storm.drpc.http.protocol: &quot;http&quot;
+bullet.pubsub.storm.drpc.http.port: &quot;3774&quot;
+bullet.pubsub.storm.drpc.http.path: &quot;drpc&quot;
+bullet.pubsub.storm.drpc.http.connect.retry.limit: 3
+bullet.pubsub.storm.drpc.http.connect.timeout.ms: 1000
+</code></pre>
+
 <h3 id="web-service">Web Service</h3>
-<p>We launched the Web Service using two custom files - a properties file and JSON schema file.</p>
+<p>We launched the Web Service using two custom files - a PubSub configuration YAML file and JSON schema file.</p>
 <p>The JSON columns file contains the schema for our data specified in JSON. Since our schema is not going to change, we use the Web Service to serve it from a file. If your schema changes dynamically, you will need to provide your own endpoint to the UI.</p>
 <p>The following is a snippet from the <a href="https://github.com/yahoo/bullet-docs/blob/master/examples/web-service/example_columns.json">JSON file</a>. Notice how the types of the fields are specified. Also, if you have generated BulletRecord with Map fields whose keys are known, you can specify them here using <code>enumerations</code>.</p>
 <pre><code class="javascript">[
@@ -704,26 +687,16 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
 ]
 </code></pre>
 
-<p>The <a href="https://github.com/yahoo/bullet-docs/blob/master/examples/web-service/example_context.properties">example properties file</a> points to the DRPC host, port, and path as well points to the custom columns file.</p>
-<pre><code>drpc.servers=localhost
-drpc.port=3774
-drpc.path=drpc/bullet
-drpc.retry.limit=3
-drpc.connect.timeout=1000
-columns.file=example_columns.json
-columns.schema.version=1.0
-</code></pre>
-
-<p><code>drpc.servers</code> is a CSV entry that contains the various DRPC servers in your Storm cluster. If you <a href="http://localhost:8080">visit the Storm UI</a> and search in the <code>Nimbus Configuration</code> section, you can find the list of DRPC servers for your cluster. Similarly, <code>drpc.port</code> in the properties file is <code>drpc.http.port</code> in <code>Nimbus Configuration</code>. The <code>drpc.path</code> is the constant string <code>drpc/</code> followed by the value of the <code>topology.function</code> setting in bullet_settings.yaml.</p>
+<p>The contents of the <a href="https://github.com/yahoo/bullet-docs/blob/master/examples/web-service/example_drpc_pubsub_config.yaml">PubSub configuration file</a> was discussed in the <a href="#pubsub">PubSub section above</a>.</p>
 <h3 id="ui">UI</h3>
 <p>Finally, we configured the UI with the custom environment specific settings file. We did not add any environments since we only had the one.</p>
 <pre><code class="javascript">{
   &quot;default&quot;: {
     &quot;queryHost&quot;: &quot;http://localhost:9999&quot;,
-    &quot;queryNamespace&quot;: &quot;bullet-service/api&quot;,
-    &quot;queryPath&quot;: &quot;drpc&quot;,
+    &quot;queryNamespace&quot;: &quot;api/bullet&quot;,
+    &quot;queryPath&quot;: &quot;query&quot;,
     &quot;schemaHost&quot;: &quot;http://localhost:9999&quot;,
-    &quot;schemaNamespace&quot;: &quot;bullet-service/api&quot;,
+    &quot;schemaNamespace&quot;: &quot;api/bullet&quot;,
     &quot;helpLinks&quot;: [
       {
         &quot;name&quot;: &quot;Examples&quot;,

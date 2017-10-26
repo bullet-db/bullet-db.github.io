@@ -4,10 +4,13 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">   
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The full documentation for Bullet - A Real Time Data Query Engine"> 
+    <meta name="author" content="Akshai Sarma"> 
+    <link rel="canonical" href="https://yahoo.github.io/bullet-docs/backend/storm-performance/"> 
     <link rel="shortcut icon" href="../../img/favicon.ico">
 
-    <title>Performance - Bullet</title>
+    <title>Performance - Bullet Docs</title>
 
     <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
@@ -68,7 +71,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="../..">Bullet<small class="small small-brand-text"></small></a>
+            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v0.4.0</small></a>
         </div>
 
         <!-- Expanded navigation -->
@@ -96,25 +99,61 @@
                         
                             
 <li >
-    <a href="../storm-architecture/">Storm Architecture</a>
-</li>
-
-                        
-                            
-<li >
     <a href="../ingestion/">Getting your data into Bullet</a>
 </li>
 
                         
                             
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">Storm</a>
+    <ul class="dropdown-menu">
+        
+            
 <li >
-    <a href="../setup-storm/">Setup on Storm</a>
+    <a href="../storm-architecture/">Architecture</a>
+</li>
+
+        
+            
+<li >
+    <a href="../storm-setup/">Setup</a>
+</li>
+
+        
+            
+<li class="active">
+    <a href="./">Performance</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">PubSub <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../pubsub/architecture/">Architecture</a>
 </li>
 
                         
                             
-<li class="active">
-    <a href="./">Performance</a>
+<li >
+    <a href="../../pubsub/kafka/">Kafka</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../pubsub/storm-drpc/">Storm DRPC</a>
 </li>
 
                         
@@ -124,7 +163,7 @@
                 
                 
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">REST API <b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Web Service <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                         
                             
@@ -171,15 +210,15 @@
                 
                 
                 
+                    <li >
+                        <a href="../../releases/">Releases</a>
+                    </li>
+                
+                
+                
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">About <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                        
-                            
-<li >
-    <a href="../../about/releases/">Past Releases</a>
-</li>
-
                         
                             
 <li >
@@ -210,25 +249,16 @@
                 
                 
                     <li >
-                        <a rel="next" href="../setup-storm/">
+                        <a rel="next" href="../storm-setup/">
                             <i class="fa fa-arrow-left"></i> Previous
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="../../ws/setup/">
+                        <a rel="prev" href="../../pubsub/architecture/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
                 
-                
-                    <li>
-                        <a href="https://github.com/yahoo/bullet-docs">
-                            
-                                <i class="fa fa-github"></i>
-                            
-                            GitHub
-                        </a>
-                    </li>
                 
             </ul>
         </div>
@@ -342,29 +372,7 @@
                         
                             <li class="third-level">
                                 <a href="#result_2">Result</a>
-                                <ul class="nav">
                                 
-                                    <li class="fourth-level">
-                                        <a href="#figure-1-queries-running">Figure 1. Queries running</a>
-                                        
-                                    </li>
-                                
-                                    <li class="fourth-level">
-                                        <a href="#figure-2-cpu-user-time-usage">Figure 2. CPU user-time usage</a>
-                                        
-                                    </li>
-                                
-                                    <li class="fourth-level">
-                                        <a href="#figure-3-on-heap-usage">Figure 3. On Heap usage</a>
-                                        
-                                    </li>
-                                
-                                    <li class="fourth-level">
-                                        <a href="#figure-4-garbage-collection-times">Figure 4. Garbage Collection times</a>
-                                        
-                                    </li>
-                                
-                                </ul>
                             </li>
                         
                             <li class="third-level">
@@ -381,29 +389,7 @@
                         
                             <li class="third-level">
                                 <a href="#result_3">Result</a>
-                                <ul class="nav">
                                 
-                                    <li class="fourth-level">
-                                        <a href="#figure-5-queries-running">Figure 5. Queries running</a>
-                                        
-                                    </li>
-                                
-                                    <li class="fourth-level">
-                                        <a href="#figure-6-cpu-user-time-usage">Figure 6. CPU user-time usage</a>
-                                        
-                                    </li>
-                                
-                                    <li class="fourth-level">
-                                        <a href="#figure-7-on-heap-usage">Figure 7. On Heap usage</a>
-                                        
-                                    </li>
-                                
-                                    <li class="fourth-level">
-                                        <a href="#figure-8-garbage-collection-times">Figure 8. Garbage Collection times</a>
-                                        
-                                    </li>
-                                
-                                </ul>
                             </li>
                         
                             <li class="third-level">
@@ -425,29 +411,7 @@
                         
                             <li class="third-level">
                                 <a href="#result_4">Result</a>
-                                <ul class="nav">
                                 
-                                    <li class="fourth-level">
-                                        <a href="#figure-9-queries-running">Figure 9. Queries running</a>
-                                        
-                                    </li>
-                                
-                                    <li class="fourth-level">
-                                        <a href="#figure-10-cpu-user-time-usage">Figure 10. CPU user-time usage</a>
-                                        
-                                    </li>
-                                
-                                    <li class="fourth-level">
-                                        <a href="#figure-11-on-heap-usage">Figure 11. On Heap usage</a>
-                                        
-                                    </li>
-                                
-                                    <li class="fourth-level">
-                                        <a href="#figure-12-garbage-collection-times">Figure 12. Garbage Collection times</a>
-                                        
-                                    </li>
-                                
-                                </ul>
                             </li>
                         
                             <li class="third-level">
@@ -464,19 +428,7 @@
                         
                             <li class="third-level">
                                 <a href="#result_5">Result</a>
-                                <ul class="nav">
                                 
-                                    <li class="fourth-level">
-                                        <a href="#figure-13-data-volume-vs-cpu">Figure 13. Data Volume vs CPU</a>
-                                        
-                                    </li>
-                                
-                                    <li class="fourth-level">
-                                        <a href="#figure-14-data-volume-vs-memory">Figure 14. Data Volume vs Memory</a>
-                                        
-                                    </li>
-                                
-                                </ul>
                             </li>
                         
                             <li class="third-level">
@@ -493,19 +445,7 @@
                         
                             <li class="third-level">
                                 <a href="#results">Results</a>
-                                <ul class="nav">
                                 
-                                    <li class="fourth-level">
-                                        <a href="#figure-15-data-volume-vs-memory">Figure 15. Data Volume vs Memory</a>
-                                        
-                                    </li>
-                                
-                                    <li class="fourth-level">
-                                        <a href="#figure-16-data-volume-vs-memory">Figure 16. Data Volume vs Memory</a>
-                                        
-                                    </li>
-                                
-                                </ul>
                             </li>
                         
                             <li class="third-level">
@@ -541,6 +481,7 @@
 <p>You should be familiar with <a href="http://storm.apache.org">Storm</a>, <a href="http://kafka.apache.org">Kafka</a> and the <a href="../storm-architecture/">Bullet on Storm architecture</a>.</p>
 <h2 id="how-was-this-tested">How was this tested?</h2>
 <p>All tests run here were using <a href="https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.4.2">Bullet-Storm 0.4.2</a> and <a href="https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.4.3">Bullet-Storm 0.4.3</a>. We are working with just the Storm piece without going through the Web Service or the UI. The DRPC REST endpoint provided by Storm lets us do just that.</p>
+<p>This particular version of Bullet on Storm was <strong>prior to the architecture shift</strong> to a PubSub layer but this would be the equivalent to using the Storm DRPC PubSub layer on a newer version of Bullet on Storm. You can replace DRPC spout and PrepareRequest bolt with Query spout and ReturnResults bolt with Result bolt conceptually. The actual implementation of the DRPC based PubSub layer just uses these spout and bolt implementations underneath anyway for the Publishers and Subscribers so the parallelisms and CPU utilizations should map 1-1.</p>
 <p>Using the pluggable metrics interface in Bullet on Storm, we captured worker level metrics such as CPU time, Heap usage, GC times and types, sent them to a in-house monitoring service for time-slicing and graphing. The figures shown below use this service.</p>
 <p>See <a href="https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.3.0">0.3.0</a> for how to plug in your own metrics collection.</p>
 <h3 id="tools-used">Tools used</h3>
@@ -988,7 +929,7 @@ bullet.query.aggregation.distribution.max.points: 200
 <p><img alt="Heap Utilization" src="../../img/raw-perf-2-heap.png" /></p>
 <h4 id="figure-8-garbage-collection-times">Figure 8. Garbage Collection times</h4>
 <p><img alt="GC Time" src="../../img/raw-perf-2-gc.png" /></p>
-<div class="one-text-numeri-table"></div>
+<div class="one-text-numeric-table"></div>
 
 <table>
 <thead>
@@ -1041,7 +982,7 @@ bullet.query.aggregation.distribution.max.points: 200
 <p>With this change in heap usage, we could get to <strong><code>735</code></strong> of these queries simultaneously without any issues. We could do more but were limited by the number of DRPC servers in our cluster.</p>
 <div class="admonition note">
 <p class="admonition-title">735 is a hard limit then?</p>
-<p>This is what our Storm cluster's configuration limits us to. There is an async implementation for DRPC that we could eventually switch to. Also, an alternative to DRPC - such as using a Pub/Sub queue like Kafka to deliver queries and retrieve results from Bullet - may be required anyway to implement Bullet on other Stream Processors.</p>
+<p>This is what our Storm cluster's configuration and our usage of the Storm DRPC limits us to. There is an async implementation for DRPC that we could eventually switch to. If we used another PubSub implementation like Kafka, we would be able to bypass this limit.</p>
 </div>
 <h2 id="testing-on-kafka-01001">Testing on Kafka 0.10.0.1</h2>
 <p>For this and subsequent tests, we upgraded our Kafka cluster to 0.10. We used the new Kafka consumer APIs to read <em>batches</em> of messages instead of a message at a time. We changed our DataSource Spout to read batches of messages (raw bytes) instead and added a DataSource Bolt that converts each batch message into Bullet records. Switching to this model let us be a lot more efficient in our data reading.</p>

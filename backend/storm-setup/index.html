@@ -4,10 +4,13 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">   
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The full documentation for Bullet - A Real Time Data Query Engine"> 
+    <meta name="author" content="Akshai Sarma"> 
+    <link rel="canonical" href="https://yahoo.github.io/bullet-docs/backend/storm-setup/"> 
     <link rel="shortcut icon" href="../../img/favicon.ico">
 
-    <title>Setup on Storm - Bullet</title>
+    <title>Setup - Bullet Docs</title>
 
     <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
@@ -68,7 +71,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="../..">Bullet<small class="small small-brand-text"></small></a>
+            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v0.4.0</small></a>
         </div>
 
         <!-- Expanded navigation -->
@@ -96,25 +99,61 @@
                         
                             
 <li >
-    <a href="../storm-architecture/">Storm Architecture</a>
-</li>
-
-                        
-                            
-<li >
     <a href="../ingestion/">Getting your data into Bullet</a>
 </li>
 
                         
                             
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">Storm</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../storm-architecture/">Architecture</a>
+</li>
+
+        
+            
 <li class="active">
-    <a href="./">Setup on Storm</a>
+    <a href="./">Setup</a>
+</li>
+
+        
+            
+<li >
+    <a href="../storm-performance/">Performance</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">PubSub <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../pubsub/architecture/">Architecture</a>
 </li>
 
                         
                             
 <li >
-    <a href="../performance/">Performance</a>
+    <a href="../../pubsub/kafka/">Kafka</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../pubsub/storm-drpc/">Storm DRPC</a>
 </li>
 
                         
@@ -124,7 +163,7 @@
                 
                 
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">REST API <b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Web Service <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                         
                             
@@ -171,15 +210,15 @@
                 
                 
                 
+                    <li >
+                        <a href="../../releases/">Releases</a>
+                    </li>
+                
+                
+                
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">About <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                        
-                            
-<li >
-    <a href="../../about/releases/">Past Releases</a>
-</li>
-
                         
                             
 <li >
@@ -210,25 +249,16 @@
                 
                 
                     <li >
-                        <a rel="next" href="../ingestion/">
+                        <a rel="next" href="../storm-architecture/">
                             <i class="fa fa-arrow-left"></i> Previous
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="../performance/">
+                        <a rel="prev" href="../storm-performance/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
                 
-                
-                    <li>
-                        <a href="https://github.com/yahoo/bullet-docs">
-                            
-                                <i class="fa fa-github"></i>
-                            
-                            GitHub
-                        </a>
-                    </li>
                 
             </ul>
         </div>
@@ -248,18 +278,6 @@
             <a href="#bullet-on-storm">Bullet on Storm</a>
             <ul class="nav">
                 
-                    <li class="second-level">
-                        <a href="#storm-drpc">Storm DRPC</a>
-                        <ul class="nav">
-                        
-                            <li class="third-level">
-                                <a href="#query-duration-in-storm-drpc">Query duration in Storm DRPC</a>
-                                
-                            </li>
-                        
-                        </ul>
-                    </li>
-            
                     <li class="second-level">
                         <a href="#configuration">Configuration</a>
                         
@@ -282,11 +300,6 @@
                         
                     </li>
             
-                    <li class="second-level">
-                        <a href="#test">Test</a>
-                        
-                    </li>
-            
             </ul>
         </li>
     
@@ -295,10 +308,7 @@
         <div class="col-md-9" role="main">
 
 <h1 id="bullet-on-storm">Bullet on Storm</h1>
-<h2 id="storm-drpc">Storm DRPC</h2>
-<p>Bullet on <a href="https://storm.apache.org/">Storm</a> is built using <a href="http://storm.apache.org/releases/1.0.0/Distributed-RPC.html">Storm DRPC</a>. DRPC comes with Storm installations and generally consist of a set of DRPC servers. When a Storm topology is launched and it uses DRPC, it registers a spout with a unique name with the DRPC infrastructure. The DRPC Servers expose a REST endpoint where data can be POSTed to or a GET request can be made with this unique name. The DRPC infrastructure then sends the request (a query in Bullet) through the spout(s) to the topology (Bullet). Bullet uses the query to filter and joins all records emitted from your (configurable) data source - either a Spout or a topology component according to the query specification. The resulting matched records are aggregated and sent back to the client. We chose to implement Bullet on Storm first since DRPC provides us a nice and simple way to handle getting queries into Bullet and sending responses back.</p>
-<h3 id="query-duration-in-storm-drpc">Query duration in Storm DRPC</h3>
-<p>The maximum time a query can run for depends on the maximum time Storm DRPC request can last in your Storm topology. Generally the default is set to 10 minutes. This means that the <strong>longest query duration possible will be 10 minutes</strong>. This is up to your cluster maintainers.</p>
+<p>This section explains how to set up and run Bullet on Storm. If you're using the Storm DRPC PubSub, refer to <a href="../../pubsub/storm-drpc/">this section</a> for further details.</p>
 <h2 id="configuration">Configuration</h2>
 <p>Bullet is configured at run-time using settings defined in a file. Settings not overridden will default to the values in <a href="https://github.com/yahoo/bullet-storm/blob/master/src/main/resources/bullet_defaults.yaml">bullet_defaults.yaml</a>. There are too many to list here. You can find out what these settings do in the comments listed in the defaults.</p>
 <h2 id="installation">Installation</h2>
@@ -391,17 +401,11 @@ your Storm cluster is still not at 1.0 or higher. You change your dependency to:
           -c topology.max.spout.pending=10000
 </code></pre>
 
-<p>You can pass other arguments to Storm using the -c argument. The example above uses 64 ackers, which is the parallelism of the Filter Bolt. Storm DRPC follows the principle of leaving retries to the DRPC user (in our case, the Bullet web service). As a result, most of the DRPC components do not follow any at least once guarantees. However, you can enable at least once for the hop from your topology (or spout) to the Filter Bolt. This is why this example uses the parallelism of the Filter Bolt as the number of ackers since that is exactly the number of acker tasks we would need (not accounting for the DRPCSpout to the PrepareRequest Bolt acking). Ackers are lightweight so you need not have the same number of tasks as Filter Bolts but you can tweak it accordingly. The example above also sets max spout pending to control how fast the spout emits. You could use the back-pressure mechanisms in Storm in addition or in lieu of as you choose. We have found that max spout pending gives a much more predictable way of throttling our spouts during catch up or data spikes.</p>
+<p>You can pass other arguments to Storm using the -c argument. The example above uses 64 ackers, for example and uses Storm's <a href="http://storm.apache.org/releases/1.1.0/Guaranteeing-message-processing.html">reliable message processing mechanisms</a>. Certain components in the Bullet Storm topology cannot be reliable due to how Bullet operates currently. Hundreds of millions of Storm tuples could go into any query running in Bullet and it is intractable to <em>anchor</em> a single Bullet aggregation to those tuples, particularly when the results are approximate. However, you should enable acking to ensure at least once message deliveries for the hop from your topology (or spout) to the Filter bolts and for the Query spouts to the Filter and Join bolts. Ackers are lightweight so you need not have the same number of tasks as components that ack in your topology so you can tweak it accordingly. The example above also sets max spout pending to control how fast the spout emits. You could use the back-pressure mechanisms in Storm in addition or in lieu of as you choose. We have found that max spout pending gives a much more predictable way of throttling our spouts during catch up or data spikes.</p>
 <div class="admonition note">
 <p class="admonition-title">Main Class Arguments</p>
 <p>If you run the main class without arguments or pass in the <code>--help</code> argument, you can see what these arguments mean and what others are supported.</p>
-</div>
-<h2 id="test">Test</h2>
-<p>Once the topology is up and your data consumption has stabilized, you could post a query to a DRPC server in your cluster. Try a simple query from the <a href="../../ws/examples/#simplest-query">examples</a> by running a curl from a command line:</p>
-<pre><code class="bash">curl -s -X POST -d '{}' http://&lt;DRPC_HOST&gt;:&lt;DRPC_PORT&gt;/drpc/&lt;YOUR_TOPOLOGY_FUNCTION_FROM_YOUR_BULLET_CONF&gt;
-</code></pre>
-
-<p>You should receive a random record flowing through Bullet instantly (if you left the Raw aggregation micro-batch size at the default of 1).</p></div>
+</div></div>
         
     </div>
 

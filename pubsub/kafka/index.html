@@ -7,10 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="The full documentation for Bullet - A Real Time Data Query Engine"> 
     <meta name="author" content="Akshai Sarma"> 
-    <link rel="canonical" href="https://yahoo.github.io/bullet-docs/backend/ingestion/"> 
+    <link rel="canonical" href="https://yahoo.github.io/bullet-docs/pubsub/kafka/"> 
     <link rel="shortcut icon" href="../../img/favicon.ico">
 
-    <title>Getting your data into Bullet - Bullet Docs</title>
+    <title>Kafka - Bullet Docs</title>
 
     <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
@@ -93,13 +93,13 @@
                 
                 
                 
-                    <li class="dropdown active">
+                    <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Backend <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                         
                             
-<li class="active">
-    <a href="./">Getting your data into Bullet</a>
+<li >
+    <a href="../../backend/ingestion/">Getting your data into Bullet</a>
 </li>
 
                         
@@ -110,19 +110,19 @@
         
             
 <li >
-    <a href="../storm-architecture/">Architecture</a>
+    <a href="../../backend/storm-architecture/">Architecture</a>
 </li>
 
         
             
 <li >
-    <a href="../storm-setup/">Setup</a>
+    <a href="../../backend/storm-setup/">Setup</a>
 </li>
 
         
             
 <li >
-    <a href="../storm-performance/">Performance</a>
+    <a href="../../backend/storm-performance/">Performance</a>
 </li>
 
         
@@ -135,25 +135,25 @@
                 
                 
                 
-                    <li class="dropdown">
+                    <li class="dropdown active">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">PubSub <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                         
                             
 <li >
-    <a href="../../pubsub/architecture/">Architecture</a>
+    <a href="../architecture/">Architecture</a>
+</li>
+
+                        
+                            
+<li class="active">
+    <a href="./">Kafka</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../pubsub/kafka/">Kafka</a>
-</li>
-
-                        
-                            
-<li >
-    <a href="../../pubsub/storm-drpc/">Storm DRPC</a>
+    <a href="../storm-drpc/">Storm DRPC</a>
 </li>
 
                         
@@ -249,12 +249,12 @@
                 
                 
                     <li >
-                        <a rel="next" href="../../quick-start/">
+                        <a rel="next" href="../architecture/">
                             <i class="fa fa-arrow-left"></i> Previous
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="../storm-architecture/">
+                        <a rel="prev" href="../storm-drpc/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
@@ -275,25 +275,25 @@
     <ul class="nav bs-sidenav">
     
         <li class="active">
-            <a href="#data-ingestion">Data Ingestion</a>
+            <a href="#kafka-pubsub">Kafka PubSub</a>
             <ul class="nav">
                 
                     <li class="second-level">
-                        <a href="#bullet-record">Bullet Record</a>
+                        <a href="#how-does-it-work">How does it work?</a>
                         
                     </li>
             
                     <li class="second-level">
-                        <a href="#types">Types</a>
+                        <a href="#setup">Setup</a>
                         <ul class="nav">
                         
                             <li class="third-level">
-                                <a href="#primitives">Primitives</a>
+                                <a href="#plug-into-the-backend">Plug into the Backend</a>
                                 
                             </li>
                         
                             <li class="third-level">
-                                <a href="#complex">Complex</a>
+                                <a href="#plug-into-the-web-service">Plug into the Web Service</a>
                                 
                             </li>
                         
@@ -301,7 +301,12 @@
                     </li>
             
                     <li class="second-level">
-                        <a href="#installing-the-record-directly">Installing the Record directly</a>
+                        <a href="#passthrough-configuration">Passthrough Configuration</a>
+                        
+                    </li>
+            
+                    <li class="second-level">
+                        <a href="#partitions">Partitions</a>
                         
                     </li>
             
@@ -312,54 +317,54 @@
 </div></div>
         <div class="col-md-9" role="main">
 
-<h1 id="data-ingestion">Data Ingestion</h1>
-<p>Bullet operates on a generic data container that it understands. In order to get Bullet to operate on your data, you need to convert your data records into this format. This conversion is usually done when you plug in your data source into Bullet. Bullet does not make any assumptions on where you get this data from. It could be <a href="http://kafka.apache.org">Kafka</a>, <a href="https://www.rabbitmq.com/">RabbitMQ</a>, or something else.</p>
+<h1 id="kafka-pubsub">Kafka PubSub</h1>
+<p>The Kafka implemented of the Bullet PubSub can be used on any Backend and Web Service. It uses <a href="https://kafka.apache.org">Apache Kafka</a> as the backing PubSub queue and works on all Backends.</p>
+<h2 id="how-does-it-work">How does it work?</h2>
+<p>The implementation by default asks you to create two topics in a Kafka cluster - one for queries and another for results. The Web Service publishes queries to the queries topic and reads results from the results topic. Similarly, the Backend reads queries from the queries topic and writes results to the results topic. All messages are sent as <a href="../architecture/#messages">PubSubMessages</a>.</p>
+<p>You do not need to have two topics. You can have one but you should use multiple partitions and configure your Web Service and Backend to produce to and consume from the right partitions. See the <a href="#configuration">setup</a> section for more details.</p>
 <div class="admonition note">
-<p class="admonition-title">If you are trying to set up Bullet...</p>
-<p>The rest of this page gives more information about the Record container and how to depend on it in code directly. If you are setting up Bullet, the Record is already included by default with the Bullet artifact. You can head on over to <a href="../storm-setup/#installation">setting up the Storm topology</a> to build the piece that gets your data into the Record container.</p>
+<p class="admonition-title">Kafka Client API</p>
+<p>The Bullet Kafka implementation uses the Kafka 0.10.2 client APIs. Generally, your forward or backward compatibilities should work as expected.</p>
 </div>
-<h2 id="bullet-record">Bullet Record</h2>
-<p>The Bullet Record is a serializable data container based on <a href="http://avro.apache.org">Avro</a>. It is typed and has a generic schema. You can refer to the <a href="https://github.com/yahoo/bullet-record/blob/master/src/main/avro/BulletAvro.avsc">Avro Schema</a> file for details if you wish to see the internals of the data model. The Bullet Record is also lazy and only deserializes itself when you try to read something from it. So, you can pass it around before sending to Bullet with minimal cost. Partial deserialization is being considered if performance is key. This will let you deserialize a much narrower chunk of the Record if you are just looking for a couple of fields.</p>
-<h2 id="types">Types</h2>
-<p>Data placed into a Bullet Record is strongly typed. We support these types currently:</p>
-<h3 id="primitives">Primitives</h3>
-<ol>
-<li>Boolean</li>
-<li>Long</li>
-<li>Double</li>
-<li>String</li>
-</ol>
-<h3 id="complex">Complex</h3>
-<ol>
-<li>Map of Strings to any of the <a href="#primitives">Primitives</a></li>
-<li>Map of Strings to any Map in 1</li>
-<li>List of any Map in 1</li>
-</ol>
-<p>With these types, it is unlikely you would have data that cannot be represented as Bullet Record but if you do, please let us know and we are more than willing to accommodate.</p>
-<h2 id="installing-the-record-directly">Installing the Record directly</h2>
-<p>Generally, you depend on the Bullet Core artifact for your Stream Processor when you plug in the piece that gets your data into the Stream processor. The Bullet Core artifact already brings in the Bullet Record container as well. See the usage for the <a href="../storm-setup/#installation">Storm</a> for an example.</p>
-<p>However, if you need it, the artifacts are available through JCenter to depend on them in code directly. You will need to add the repository. Below is a Maven example:</p>
-<pre><code class="xml">&lt;repositories&gt;
-    &lt;repository&gt;
-        &lt;snapshots&gt;
-            &lt;enabled&gt;false&lt;/enabled&gt;
-        &lt;/snapshots&gt;
-        &lt;id&gt;central&lt;/id&gt;
-        &lt;name&gt;bintray&lt;/name&gt;
-        &lt;url&gt;http://jcenter.bintray.com&lt;/url&gt;
-    &lt;/repository&gt;
-&lt;/repositories&gt;
+<h2 id="setup">Setup</h2>
+<p>Before setting up, you will obviously need a Kafka cluster setup with your topic(s) created. This cluster need only be a couple of machines. However, this depends on your query and result volumes. Generally, these are at most a few hundred or thousands of messages per second and a small Kafka cluster will suffice.</p>
+<h3 id="plug-into-the-backend">Plug into the Backend</h3>
+<p>Depending on how your Backend is built, either add Bullet Kafka to your classpath or include it in your build tool. Head over to our <a href="../../releases/#bullet-kafka">releases page</a> for getting the artifacts. If you're adding Bullet Kafka to the classpath instead of building a fat jar, you will need to get the jar with the classifier: <code>fat</code> since you will need Bullet Kafka and all its dependencies.</p>
+<p>Configure the backend to use the Kafka PubSub:</p>
+<pre><code class="yaml">bullet.pubsub.context.name: &quot;QUERY_PROCESSING&quot;
+bullet.pubsub.class.name: &quot;com.yahoo.bullet.kafka.KafkaPubSub&quot;
+bullet.pubsub.kafka.bootstrap.servers: &quot;server1:port1,server2:port2,...&quot;
+bullet.pubsub.kafka.request.topic.name: &quot;your-query-topic&quot;
+bullet.pubsub.kafka.response.topic.name: &quot;your-result-topic&quot;
 </code></pre>
 
-<pre><code class="xml">&lt;dependency&gt;
-  &lt;groupId&gt;com.yahoo.bullet&lt;/groupId&gt;
-  &lt;artifactId&gt;bullet-record&lt;/artifactId&gt;
-  &lt;version&gt;${bullet.version}&lt;/version&gt;
-&lt;/dependency&gt;
+<p>You will then need to configure the Publishers and Subscribers. For details on what to configure and what the defaults are, see the <a href="https://github.com/yahoo/bullet-kafka/blob/master/src/main/resources/bullet_kafka_defaults.yaml">configuration file</a>.</p>
+<h3 id="plug-into-the-web-service">Plug into the Web Service</h3>
+<p>You will need the Head over to our <a href="../../releases/#bullet-kafka">releases page</a> and get the JAR artifact with the <code>fat</code> classifier. For example, you can download the artifact for the 0.2.0 release <a href="http://jcenter.bintray.com/com/yahoo/bullet/bullet-kafka/0.2.0/">directly from JCenter</a>).</p>
+<p>You should then plug in this JAR to your Web Service following the instructions <a href="../../ws/setup/#launch">here</a>.</p>
+<p>For configuration, you should <a href="../../ws/setup/#pubsub-configuration">follow the steps here</a> to create and provide a YAML file to the Web Service. Remember to change the context to <code>QUERY_SUBMISSION</code>.</p>
+<pre><code class="yaml">bullet.pubsub.context.name: &quot;QUERY_SUBMISSION&quot;
+bullet.pubsub.class.name: &quot;com.yahoo.bullet.kafka.KafkaPubSub&quot;
+bullet.pubsub.kafka.bootstrap.servers: &quot;server1:port1,server2:port2,...&quot;
+bullet.pubsub.kafka.request.topic.name: &quot;your-query-topic&quot;
+bullet.pubsub.kafka.response.topic.name: &quot;your-result-topic&quot;
 </code></pre>
 
-<p>If you just need the jar artifact, you can download it directly from <a href="http://jcenter.bintray.com/com/yahoo/bullet/bullet-record/">JCenter</a>.</p>
-<p>You can also add <code>&lt;classifier&gt;sources&lt;/classifier&gt;</code>  or <code>&lt;classifier&gt;javadoc&lt;/classifier&gt;</code> if you want the sources or the javadoc.</p></div>
+<p>As with the Backend, you will then need to configure the Publishers and Subscribers. See the <a href="https://github.com/yahoo/bullet-kafka/blob/master/src/main/resources/bullet_kafka_defaults.yaml">configuration file</a>. Remember that your Subscribers in the Backend are reading what the Producers in your Web Service are producing and vice-versa, so make sure to match up the topics and settings accordingly if you have any custom changes.</p>
+<h2 id="passthrough-configuration">Passthrough Configuration</h2>
+<p>You can pass additional Kafka Producer or Consumer properties to the PubSub Publishers and Subscribers by prefixing them with either <code>bullet.pubsub.kafka.producer.</code> for Producers or <code>bullet.pubsub.kafka.consumer.</code> for Consumers. The PubSub configuration uses and provides a few defaults for settings it thinks is important to manage. You can tweak them and add others. For a list of properties that you can configure, see the <a href="https://kafka.apache.org/0102/documentation.html#producerconfigs">Producer</a> or <a href="https://kafka.apache.org/0102/documentation.html#newconsumerconfigs">Consumer</a> configs in Kafka.</p>
+<div class="admonition note">
+<p class="admonition-title">Types for the properties</p>
+<p>All Kafka properties are better off specified as Strings since Kafka type casts them accordingly. If you provide types, you might run into issues where YAML types do not match what the Kafka client is expecting.</p>
+</div>
+<h2 id="partitions">Partitions</h2>
+<p>You may choose to partition your topics for a couple of reasons:</p>
+<ol>
+<li>You may have one topic for both queries and responses and use partitions as a way to separate them.</li>
+<li>You may use two topics and partition one or both for scalability when reading and writing</li>
+<li>You may use two topics and partition one or both for sharding across multiple Web Service instances (and multiple instances in your Backend)</li>
+</ol>
+<p>You can accomplish all this with partition maps. You can configure what partitions your Publishers (Web Service or Backend) will write to using <code>bullet.pubsub.kafka.request.partitions</code> and what partitions your Subscribers will read from using <code>bullet.pubsub.kafka.response.partitions</code>. Providing these to an instance of the Web Service or the Backend in the YAML file ensures that the Publishers in that instance only write to these request partitions and Subscribers only read from the response partitions. The Publishers will randomly adds one of the response partitions in the messages sent to ensure that the responses only arrive to one of those partitions this instance's Subscribers are waiting on. For more details, see the <a href="https://github.com/yahoo/bullet-kafka/blob/master/src/main/resources/bullet_kafka_defaults.yaml">configuration file</a>.</p></div>
         
     </div>
 

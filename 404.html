@@ -4,20 +4,22 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">   
-    <link rel="shortcut icon" href="/img/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The full documentation for Bullet - A Real Time Data Query Engine"> 
+    <meta name="author" content="Akshai Sarma">  
+    <link rel="shortcut icon" href="/bullet-docs/img/favicon.ico">
 
-    <title>Bullet</title>
+    <title>Bullet Docs</title>
 
-    <link href="/css/bootstrap-custom.min.css" rel="stylesheet">
+    <link href="/bullet-docs/css/bootstrap-custom.min.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/font-hack/2.018/css/hack.min.css">
     <link href='//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700,700italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
     <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
-    <link href="/css/base.css" rel="stylesheet">
-    <link href="/css/cinder.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/highlight.css">
-        <link href="/css/extra.css" rel="stylesheet">
+    <link href="/bullet-docs/css/base.css" rel="stylesheet">
+    <link href="/bullet-docs/css/cinder.css" rel="stylesheet">
+    <link rel="stylesheet" href="/bullet-docs/css/highlight.css">
+        <link href="/bullet-docs/css/extra.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -68,7 +70,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="">Bullet<small class="small small-brand-text"></small></a>
+            <a class="navbar-brand" href="/bullet-docs/">Bullet Docs<small class="small small-brand-text">v0.4.0</small></a>
         </div>
 
         <!-- Expanded navigation -->
@@ -79,13 +81,13 @@
                 
                 
                     <li >
-                        <a href="">Home</a>
+                        <a href="/bullet-docs/">Home</a>
                     </li>
                 
                 
                 
                     <li >
-                        <a href="/quick-start">Quick Start</a>
+                        <a href="/bullet-docs/quick-start/">Quick Start</a>
                     </li>
                 
                 
@@ -96,25 +98,61 @@
                         
                             
 <li >
-    <a href="/backend/storm-architecture">Storm Architecture</a>
+    <a href="/bullet-docs/backend/ingestion/">Getting your data into Bullet</a>
+</li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">Storm</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="/bullet-docs/backend/storm-architecture/">Architecture</a>
+</li>
+
+        
+            
+<li >
+    <a href="/bullet-docs/backend/storm-setup/">Setup</a>
+</li>
+
+        
+            
+<li >
+    <a href="/bullet-docs/backend/storm-performance/">Performance</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">PubSub <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="/bullet-docs/pubsub/architecture/">Architecture</a>
 </li>
 
                         
                             
 <li >
-    <a href="/backend/ingestion">Getting your data into Bullet</a>
+    <a href="/bullet-docs/pubsub/kafka/">Kafka</a>
 </li>
 
                         
                             
 <li >
-    <a href="/backend/setup-storm">Setup on Storm</a>
-</li>
-
-                        
-                            
-<li >
-    <a href="/backend/performance">Performance</a>
+    <a href="/bullet-docs/pubsub/storm-drpc/">Storm DRPC</a>
 </li>
 
                         
@@ -124,24 +162,24 @@
                 
                 
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">REST API <b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Web Service <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                         
                             
 <li >
-    <a href="/ws/setup">Setup</a>
+    <a href="/bullet-docs/ws/setup/">Setup</a>
 </li>
 
                         
                             
 <li >
-    <a href="/ws/api">API</a>
+    <a href="/bullet-docs/ws/api/">API</a>
 </li>
 
                         
                             
 <li >
-    <a href="/ws/examples">Examples</a>
+    <a href="/bullet-docs/ws/examples/">Examples</a>
 </li>
 
                         
@@ -156,17 +194,23 @@
                         
                             
 <li >
-    <a href="/ui/setup">Setup</a>
+    <a href="/bullet-docs/ui/setup/">Setup</a>
 </li>
 
                         
                             
 <li >
-    <a href="/ui/usage">Usage</a>
+    <a href="/bullet-docs/ui/usage/">Usage</a>
 </li>
 
                         
                         </ul>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="/bullet-docs/releases/">Releases</a>
                     </li>
                 
                 
@@ -177,19 +221,13 @@
                         
                             
 <li >
-    <a href="/about/releases">Past Releases</a>
+    <a href="/bullet-docs/about/contributing/">Contributing</a>
 </li>
 
                         
                             
 <li >
-    <a href="/about/contributing">Contributing</a>
-</li>
-
-                        
-                            
-<li >
-    <a href="/about/contact">Contact Us</a>
+    <a href="/bullet-docs/about/contact/">Contact Us</a>
 </li>
 
                         
@@ -210,15 +248,6 @@
                 
                 
                 
-                    <li>
-                        <a href="https://github.com/yahoo/bullet-docs">
-                            
-                                <i class="fa fa-github"></i>
-                            
-                            GitHub
-                        </a>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -231,7 +260,7 @@
       <div id="main-content" class="span12">
         <h1 id="404-page-not-found" style="text-align: center">404</h1>
         <p style="text-align: center"><strong>Page not found</strong></p>
-        <p style="text-align: center"><a href="">Home</a></p>
+        <p style="text-align: center"><a href="/bullet-docs">Home</a></p>
       </div>
     </div>
 
@@ -252,15 +281,15 @@
         </div>
     </footer>
 
-    <script src="/js/jquery-1.10.2.min.js"></script>
-    <script src="/js/bootstrap-3.0.3.min.js"></script>
-    <script src="/js/highlight.pack.js"></script>
+    <script src="/bullet-docs/js/jquery-1.10.2.min.js"></script>
+    <script src="/bullet-docs/js/bootstrap-3.0.3.min.js"></script>
+    <script src="/bullet-docs/js/highlight.pack.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
     <script>
-    var base_url = '';
+    var base_url = '/bullet-docs';
     </script>
-    <script data-main="/mkdocs/js/search.js" src="/mkdocs/js/require.js"></script>
-    <script src="/js/base.js"></script>
+    <script data-main="/bullet-docs/mkdocs/js/search.js" src="/bullet-docs/mkdocs/js/require.js"></script>
+    <script src="/bullet-docs/js/base.js"></script>
 
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
         <div class="modal-dialog">

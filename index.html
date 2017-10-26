@@ -4,10 +4,13 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">   
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The full documentation for Bullet - A Real Time Data Query Engine"> 
+    <meta name="author" content="Akshai Sarma"> 
+    <link rel="canonical" href="https://yahoo.github.io/bullet-docs/"> 
     <link rel="shortcut icon" href="./img/favicon.ico">
 
-    <title>Home - Bullet</title>
+    <title>Home - Bullet Docs</title>
 
     <link href="./css/bootstrap-custom.min.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
@@ -68,7 +71,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href=".">Bullet<small class="small small-brand-text"></small></a>
+            <a class="navbar-brand" href=".">Bullet Docs<small class="small small-brand-text">v0.4.0</small></a>
         </div>
 
         <!-- Expanded navigation -->
@@ -96,25 +99,61 @@
                         
                             
 <li >
-    <a href="backend/storm-architecture/">Storm Architecture</a>
-</li>
-
-                        
-                            
-<li >
     <a href="backend/ingestion/">Getting your data into Bullet</a>
 </li>
 
                         
                             
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">Storm</a>
+    <ul class="dropdown-menu">
+        
+            
 <li >
-    <a href="backend/setup-storm/">Setup on Storm</a>
+    <a href="backend/storm-architecture/">Architecture</a>
+</li>
+
+        
+            
+<li >
+    <a href="backend/storm-setup/">Setup</a>
+</li>
+
+        
+            
+<li >
+    <a href="backend/storm-performance/">Performance</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">PubSub <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="pubsub/architecture/">Architecture</a>
 </li>
 
                         
                             
 <li >
-    <a href="backend/performance/">Performance</a>
+    <a href="pubsub/kafka/">Kafka</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="pubsub/storm-drpc/">Storm DRPC</a>
 </li>
 
                         
@@ -124,7 +163,7 @@
                 
                 
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">REST API <b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Web Service <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                         
                             
@@ -171,15 +210,15 @@
                 
                 
                 
+                    <li >
+                        <a href="releases/">Releases</a>
+                    </li>
+                
+                
+                
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">About <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                        
-                            
-<li >
-    <a href="about/releases/">Past Releases</a>
-</li>
-
                         
                             
 <li >
@@ -220,15 +259,6 @@
                         </a>
                     </li>
                 
-                
-                    <li>
-                        <a href="https://github.com/yahoo/bullet-docs">
-                            
-                                <i class="fa fa-github"></i>
-                            
-                            GitHub
-                        </a>
-                    </li>
                 
             </ul>
         </div>
@@ -320,7 +350,17 @@
             <ul class="nav">
                 
                     <li class="second-level">
+                        <a href="#end-to-end-architecture">End-to-End Architecture</a>
+                        
+                    </li>
+            
+                    <li class="second-level">
                         <a href="#backend">Backend</a>
+                        
+                    </li>
+            
+                    <li class="second-level">
+                        <a href="#pubsub">PubSub</a>
                         
                     </li>
             
@@ -329,17 +369,7 @@
                         
                     </li>
             
-                    <li class="second-level">
-                        <a href="#end-to-end-architecture-on-storm">End-to-End Architecture on Storm</a>
-                        
-                    </li>
-            
             </ul>
-        </li>
-    
-        <li class="">
-            <a href="#past-releases-and-source">Past Releases and Source</a>
-            
         </li>
     
     </ul>
@@ -388,16 +418,17 @@
 </div>
 <hr />
 <h1 id="quick-start">Quick Start</h1>
-<p>See <a href="quick-start/">Quick Start</a> to set up Bullet on a local Storm topology. We will generate some synthetic streaming data that you can then query with Bullet.</p>
+<p>See <a href="quick-start/">Quick Start</a> to set up Bullet using a local Storm topology. You will generate some synthetic streaming data that you can then query with Bullet.</p>
 <h1 id="setting-up-bullet-on-your-streaming-data">Setting up Bullet on your streaming data</h1>
 <p>To set up Bullet on a real data stream, you need:</p>
 <ol>
-<li>To setup the Bullet backend on a stream processing framework. Currently, we support <a href="backend/setup-storm/">Bullet on Storm</a>:<ol>
+<li>To setup the Bullet Backend on a stream processing framework. Currently, we support <a href="backend/storm-setup/">Bullet on Storm</a>:<ol>
 <li>Plug in your source of data. See <a href="backend/ingestion/">Getting your data into Bullet</a> for details</li>
 <li>Consume your data stream</li>
 </ol>
 </li>
 <li>The <a href="ws/setup/">Web Service</a> set up to convey queries and return results back from the backend</li>
+<li>To choose a <a href="pubsub/architecture/">PubSub implementation</a> that connects the Web Service and the Backend. We currently support <a href="pubsub/kafka/">Kafka</a> on any Backend and <a href="pubsub/storm-drpc/">Storm DRPC</a> for the Storm Backend.</li>
 <li>The optional <a href="ui/setup/">UI</a> set up to talk to your Web Service. You can skip the UI if all your access is programmatic</li>
 </ol>
 <div class="admonition note">
@@ -421,7 +452,7 @@
 <h2 id="termination-conditions">Termination conditions</h2>
 <p>A Bullet query terminates and returns whatever has been collected so far when:</p>
 <ol>
-<li>A maximum duration is reached. In other words, a query runs for a defined time window</li>
+<li>A maximum duration is reached. In other words, a query runs for a defined time window.</li>
 <li>A maximum number of records is reached (only applicable for queries that are fetching raw data records and not aggregating).</li>
 </ol>
 <h2 id="filters">Filters</h2>
@@ -518,31 +549,38 @@
 <p>Sketches let us be exact in our computation up to configured thresholds and approximate after. The error is very controllable and quantifiable. All Bullet queries that use Sketches return the error bounds with Standard Deviations as part of the results so you can quantify the error exactly. Using Sketches lets us address otherwise hard to solve problems in sub-linear space. We uses Sketches to compute <code>COUNT DISTINCT</code>, <code>GROUP</code>, <code>DISTRIBUTION</code> and <code>TOP K</code> queries.</p>
 <p>We also use Sketches as a way to control high cardinality grouping (group by a natural key column or related) and rely on the Sketching data structure to drop excess groups. It is up to you setting up Bullet to determine to set Sketch sizes large or small enough for to satisfy the queries that will be performed on that instance of Bullet.</p>
 <h1 id="architecture">Architecture</h1>
+<h2 id="end-to-end-architecture">End-to-End Architecture</h2>
+<p><img alt="Overall Architecture" src="./img/overallarch-2.png" /></p>
+<p>The image above shows how the various pieces of the Bullet interact at a high-level. All these layers are modular and pluggable. You can choose an implementation for the Backend and the PubSub (or create your own). The core of Bullet is abstracted into a <a href="https://github.com/yahoo/bullet-core">library</a> that can be reused to implement the Backend, Web Service and PubSub layers in a platform agnostic manner.</p>
+<hr />
 <h2 id="backend">Backend</h2>
 <p><img alt="High Level Architecture" src="./img/higharch.png" /></p>
-<p>The Bullet backend can be split into three main sub-systems:</p>
+<p>The Bullet Backend can be split into three main conceptual sub-systems:</p>
 <ol>
 <li>Request Processor - receives queries, adds metadata and sends it to the rest of the system</li>
 <li>Data Processor - reads data from a input stream, converts it to an unified data format and matches it against queries</li>
 <li>Combiner - combines results for different queries, performs final aggregations and returns results</li>
 </ol>
+<p>The core of Bullet querying is not tied to the Backend and lives in a core library. This allows you implement the flow shown above in any stream processor you like. We are currently working on Bullet on <a href="https://spark.apache.org/streaming">Spark Streaming</a>.</p>
+<h2 id="pubsub">PubSub</h2>
+<p>The PubSub is responsible for transmitting queries from the API to the Backend and returning results back from the Backend to the clients. It decouples whatever particular Backend you are using with the API. We currently provide a PubSub implementation using Kafka as the transport layer. You can very easily <a href="pubsub/architecture/#implementing-your-own-pubsub">implement your own</a> by defining a few interfaces that we provide.</p>
+<p>In the case of Bullet on Storm, there is an <a href="pubsub/storm-drpc/">additional simplified option</a> using <a href="http://storm.apache.org/releases/1.0.0/Distributed-RPC.html">Storm DRPC</a> as the PubSub. This layer is planned to only support a request-response model for querying in the future.</p>
+<div class="admonition note">
+<p class="admonition-title">DRPC PubSub</p>
+<p>This was how Bullet was first implemented in Storm. Storm DRPC provided a really simple way to communicate with Storm that we took advantage of. We provide this as a legacy adapter or for users who use Storm but don't want a PubSub layer.</p>
+</div>
 <h2 id="web-service-and-ui">Web Service and UI</h2>
 <p>The rest of the pieces are just the standard other two pieces in a full-stack application:</p>
 <ul>
-<li>A Web Service that talks to this backend</li>
+<li>A Web Service that talks to the backend using the PubSub layer</li>
 <li>A UI that talks to this Web Service</li>
 </ul>
-<p>The <a href="ws/api/">Bullet Web Service</a> is built using <a href="https://jersey.java.net/">Jersey</a> and the <a href="ui/usage/">UI</a> is built in <a href="./emberjs.com">Ember</a>.</p>
-<p>The Web Service can be deployed with your favorite servlet container like <a href="http://www.eclipse.org/jetty/">Jetty</a>. The UI is a client-side application that can be served using <a href="http://nodejs.org/">Node.js</a></p>
-<p>In the case of Bullet on Storm, the Web Service and UI talk to the backend using <a href="http://storm.apache.org/releases/1.0.0/Distributed-RPC.html">Storm DRPC</a>.</p>
-<h2 id="end-to-end-architecture-on-storm">End-to-End Architecture on Storm</h2>
-<p><img alt="Overall Storm Architecture" src="./img/overallarch.png" /></p>
+<p>The <a href="ws/api/">Bullet Web Service</a> is built using <a href="https://projects.spring.io/spring-boot/">Spring Boot</a> in Java and the <a href="ui/usage/">UI</a> is built in <a href="./emberjs.com">Ember</a>.</p>
+<p>The Web Service can be deployed as a standalone Java application (a JAR file) or easily rebuilt as a WAR to deploy your favorite servlet container like <a href="http://www.eclipse.org/jetty/">Jetty</a>. The UI is a client-side application that can be served using <a href="http://nodejs.org/">Node.js</a></p>
 <div class="admonition note">
 <p class="admonition-title">Want to know more?</p>
 <p>In practice, the backend is implemented using the basic components that the Stream processing framework provides. See <a href="backend/storm-architecture/">Storm Architecture</a> for details.</p>
-</div>
-<h1 id="past-releases-and-source">Past Releases and Source</h1>
-<p>See the <a href="about/releases/">Releases</a> section where the various Bullet releases and repository links are collected in one place.</p></div>
+</div></div>
         
     </div>
 
@@ -602,6 +640,6 @@
 </html>
 
 <!--
-MkDocs version : 0.16.1
-Build Date UTC : 2017-09-29 01:37:26
+MkDocs version : 0.16.3
+Build Date UTC : 2017-10-26 02:20:40
 -->

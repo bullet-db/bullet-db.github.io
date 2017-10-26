@@ -4,10 +4,13 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">   
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The full documentation for Bullet - A Real Time Data Query Engine"> 
+    <meta name="author" content="Akshai Sarma"> 
+    <link rel="canonical" href="https://yahoo.github.io/bullet-docs/ui/setup/"> 
     <link rel="shortcut icon" href="../../img/favicon.ico">
 
-    <title>Setup - Bullet</title>
+    <title>Setup - Bullet Docs</title>
 
     <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
@@ -68,7 +71,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="../..">Bullet<small class="small small-brand-text"></small></a>
+            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v0.4.0</small></a>
         </div>
 
         <!-- Expanded navigation -->
@@ -96,25 +99,61 @@
                         
                             
 <li >
-    <a href="../../backend/storm-architecture/">Storm Architecture</a>
-</li>
-
-                        
-                            
-<li >
     <a href="../../backend/ingestion/">Getting your data into Bullet</a>
 </li>
 
                         
                             
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">Storm</a>
+    <ul class="dropdown-menu">
+        
+            
 <li >
-    <a href="../../backend/setup-storm/">Setup on Storm</a>
+    <a href="../../backend/storm-architecture/">Architecture</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../backend/storm-setup/">Setup</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../backend/storm-performance/">Performance</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">PubSub <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../pubsub/architecture/">Architecture</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../backend/performance/">Performance</a>
+    <a href="../../pubsub/kafka/">Kafka</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../pubsub/storm-drpc/">Storm DRPC</a>
 </li>
 
                         
@@ -124,7 +163,7 @@
                 
                 
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">REST API <b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Web Service <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                         
                             
@@ -171,15 +210,15 @@
                 
                 
                 
+                    <li >
+                        <a href="../../releases/">Releases</a>
+                    </li>
+                
+                
+                
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">About <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                        
-                            
-<li >
-    <a href="../../about/releases/">Past Releases</a>
-</li>
-
                         
                             
 <li >
@@ -220,15 +259,6 @@
                         </a>
                     </li>
                 
-                
-                    <li>
-                        <a href="https://github.com/yahoo/bullet-docs">
-                            
-                                <i class="fa fa-github"></i>
-                            
-                            GitHub
-                        </a>
-                    </li>
                 
             </ul>
         </div>
@@ -304,7 +334,7 @@
 <h2 id="prerequisites">Prerequisites</h2>
 <p>In order for your UI to work with Bullet, you should have:</p>
 <ul>
-<li>An instance of the <a href="../../backend/setup-storm/">backend</a> set up</li>
+<li>An instance of the <a href="../../backend/storm-setup/">backend</a> set up</li>
 <li>An instance of the <a href="../../ws/setup/">Web Service</a> set up</li>
 <li>You should also have a Web Service serving your schema (either by using the <a href="../../ws/setup/#file-based-schema">file based serving</a> from the Web Service or your own somewhere else)</li>
 </ul>
@@ -312,7 +342,7 @@
 <p>We are considering various packaging options at the moment like Docker etc. In the meantime, the following two options are available:</p>
 <h3 id="github-releases">GitHub Releases</h3>
 <ul>
-<li>Head to the <a href="../../about/releases/#bullet-ui">Releases page</a> and grab the latest release</li>
+<li>Head to the <a href="../../releases/#bullet-ui">Releases page</a> and grab the latest release</li>
 <li>Download the bullet-ui-vX.X.X.tar.gz archive</li>
 <li>Unarchive it into your web server where you wish to run the UI.</li>
 <li>Install <a href="https://nodejs.org/">Node</a> (recommend using <a href="https://github.com/creationix/nvm">nvm</a> to manage Node versions) on the web server</li>
@@ -393,7 +423,7 @@ express-server.js
 </tr>
 <tr>
 <td>defaultFilter</td>
-<td>Can either be a <a href="../../ws/api/#filters">API Filter</a> or a URL from which one could be fetched dynamically. The UI adds this to every newly created Query. You could use this as a way to have user specific (for example, cookie based) filters created for your users when they create a new query in the UI</td>
+<td>Can either be a <a href="../../ws/api/#filters">API Filter</a> or a URL from which one could be fetched dynamically. The UI adds this to every newly created Query. You could use this as a way to have user specific (for example, cookie based) filters created for your users when they create a new query in the UI. Note that if you have are accessing a map subfield and your field value in the filter is set as <code>foo.bar</code> and you want <code>bar</code> to be the subfield in the UI query builder, you will need to add a key called <code>subfield</code> in the filter (not supported by the API) and set its value to <code>true</code></td>
 </tr>
 <tr>
 <td>bugLink</td>
@@ -579,11 +609,11 @@ express-server.js
 that are the same as the <a href="https://github.com/yahoo/bullet-storm/blob/master/src/main/resources/bullet_defaults.yaml">default backend settings</a>. However, the defaults do not add the <code>defaultFilter</code> setting explained above.</p>
 <pre><code class="json">{
   &quot;default&quot;: {
-    &quot;queryHost&quot;: &quot;https://foo.bar.com:4443&quot;,
-    &quot;queryNamespace&quot;: &quot;bullet/api&quot;,
-    &quot;queryPath&quot;: &quot;drpc&quot;,
-    &quot;schemaHost&quot;: &quot;https://foo.bar.com:4443&quot;,
-    &quot;schemaNamespace&quot;: &quot;bullet/api&quot;,
+    &quot;queryHost&quot;: &quot;http://localhost:5555&quot;,
+    &quot;queryNamespace&quot;: &quot;api/bullet&quot;,
+    &quot;queryPath&quot;: &quot;query&quot;,
+    &quot;schemaHost&quot;: &quot;http://localhost:5555&quot;,
+    &quot;schemaNamespace&quot;: &quot;api/bullet&quot;,
     &quot;helpLinks&quot;: [
       {
         &quot;name&quot;: &quot;Tutorials&quot;,

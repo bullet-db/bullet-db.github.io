@@ -4,20 +4,23 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">   
-    <link rel="shortcut icon" href="../../img/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The full documentation for Bullet - A Real Time Data Query Engine"> 
+    <meta name="author" content="Akshai Sarma"> 
+    <link rel="canonical" href="https://yahoo.github.io/bullet-docs/releases/"> 
+    <link rel="shortcut icon" href="../img/favicon.ico">
 
-    <title>Past Releases - Bullet</title>
+    <title>Releases - Bullet Docs</title>
 
-    <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+    <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/font-hack/2.018/css/hack.min.css">
     <link href='//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700,700italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
     <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
-    <link href="../../css/base.css" rel="stylesheet">
-    <link href="../../css/cinder.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../css/highlight.css">
-        <link href="../../css/extra.css" rel="stylesheet">
+    <link href="../css/base.css" rel="stylesheet">
+    <link href="../css/cinder.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/highlight.css">
+        <link href="../css/extra.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -68,7 +71,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="../..">Bullet<small class="small small-brand-text"></small></a>
+            <a class="navbar-brand" href="..">Bullet Docs<small class="small small-brand-text">v0.4.0</small></a>
         </div>
 
         <!-- Expanded navigation -->
@@ -79,13 +82,13 @@
                 
                 
                     <li >
-                        <a href="../..">Home</a>
+                        <a href="..">Home</a>
                     </li>
                 
                 
                 
                     <li >
-                        <a href="../../quick-start/">Quick Start</a>
+                        <a href="../quick-start/">Quick Start</a>
                     </li>
                 
                 
@@ -96,25 +99,61 @@
                         
                             
 <li >
-    <a href="../../backend/storm-architecture/">Storm Architecture</a>
+    <a href="../backend/ingestion/">Getting your data into Bullet</a>
+</li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">Storm</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../backend/storm-architecture/">Architecture</a>
+</li>
+
+        
+            
+<li >
+    <a href="../backend/storm-setup/">Setup</a>
+</li>
+
+        
+            
+<li >
+    <a href="../backend/storm-performance/">Performance</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">PubSub <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../pubsub/architecture/">Architecture</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../backend/ingestion/">Getting your data into Bullet</a>
+    <a href="../pubsub/kafka/">Kafka</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../backend/setup-storm/">Setup on Storm</a>
-</li>
-
-                        
-                            
-<li >
-    <a href="../../backend/performance/">Performance</a>
+    <a href="../pubsub/storm-drpc/">Storm DRPC</a>
 </li>
 
                         
@@ -124,24 +163,24 @@
                 
                 
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">REST API <b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Web Service <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                         
                             
 <li >
-    <a href="../../ws/setup/">Setup</a>
+    <a href="../ws/setup/">Setup</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../ws/api/">API</a>
+    <a href="../ws/api/">API</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../ws/examples/">Examples</a>
+    <a href="../ws/examples/">Examples</a>
 </li>
 
                         
@@ -156,13 +195,13 @@
                         
                             
 <li >
-    <a href="../../ui/setup/">Setup</a>
+    <a href="../ui/setup/">Setup</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../ui/usage/">Usage</a>
+    <a href="../ui/usage/">Usage</a>
 </li>
 
                         
@@ -171,25 +210,25 @@
                 
                 
                 
-                    <li class="dropdown active">
+                    <li class="active">
+                        <a href="./">Releases</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">About <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                         
                             
-<li class="active">
-    <a href="./">Past Releases</a>
+<li >
+    <a href="../about/contributing/">Contributing</a>
 </li>
 
                         
                             
 <li >
-    <a href="../contributing/">Contributing</a>
-</li>
-
-                        
-                            
-<li >
-    <a href="../contact/">Contact Us</a>
+    <a href="../about/contact/">Contact Us</a>
 </li>
 
                         
@@ -210,25 +249,16 @@
                 
                 
                     <li >
-                        <a rel="next" href="../../ui/usage/">
+                        <a rel="next" href="../ui/usage/">
                             <i class="fa fa-arrow-left"></i> Previous
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="../contributing/">
+                        <a rel="prev" href="../about/contributing/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
                 
-                
-                    <li>
-                        <a href="https://github.com/yahoo/bullet-docs">
-                            
-                                <i class="fa fa-github"></i>
-                            
-                            GitHub
-                        </a>
-                    </li>
                 
             </ul>
         </div>
@@ -249,6 +279,11 @@
             <ul class="nav">
                 
                     <li class="second-level">
+                        <a href="#download">Download</a>
+                        
+                    </li>
+            
+                    <li class="second-level">
                         <a href="#bullet-core">Bullet Core</a>
                         <ul class="nav">
                         
@@ -261,7 +296,7 @@
                     </li>
             
                     <li class="second-level">
-                        <a href="#bullet-record">Bullet Record</a>
+                        <a href="#bullet-storm">Bullet Storm</a>
                         <ul class="nav">
                         
                             <li class="third-level">
@@ -273,7 +308,7 @@
                     </li>
             
                     <li class="second-level">
-                        <a href="#bullet-storm">Bullet Storm</a>
+                        <a href="#bullet-web-service">Bullet Web Service</a>
                         <ul class="nav">
                         
                             <li class="third-level">
@@ -285,7 +320,7 @@
                     </li>
             
                     <li class="second-level">
-                        <a href="#bullet-web-service">Bullet Web Service</a>
+                        <a href="#bullet-ui">Bullet UI</a>
                         <ul class="nav">
                         
                             <li class="third-level">
@@ -297,11 +332,23 @@
                     </li>
             
                     <li class="second-level">
-                        <a href="#bullet-ui">Bullet UI</a>
+                        <a href="#bullet-record">Bullet Record</a>
                         <ul class="nav">
                         
                             <li class="third-level">
                                 <a href="#releases_5">Releases</a>
+                                
+                            </li>
+                        
+                        </ul>
+                    </li>
+            
+                    <li class="second-level">
+                        <a href="#bullet-kafka">Bullet Kafka</a>
+                        <ul class="nav">
+                        
+                            <li class="third-level">
+                                <a href="#releases_6">Releases</a>
                                 
                             </li>
                         
@@ -316,10 +363,13 @@
         <div class="col-md-9" role="main">
 
 <h1 id="releases">Releases</h1>
-<p>This sections gathers all the relevant releases of the three components of Bullet in one place. It may not include the very few initial releases of these components if they were largely irrelevant. Full release notes can be found by clicking on the actual releases.</p>
+<p>This sections gathers all the relevant releases of the components of Bullet that we maintain in one place. It may not include the very few initial releases of these components if they were largely irrelevant. Full release notes can be found by clicking on the actual releases.</p>
 <p>Bullet is still in active development. We welcome all contributions. Feel free to raise any issues/questions/bugs and whatever else on the relevant issues section for each component. Please include as many details as you can.</p>
+<h2 id="download">Download</h2>
+<p>For downloading any artifact listed below manually, you should preferably use the <a href="https://jcenter.bintray.com/com/yahoo/bullet/"><strong>JCenter mirror here</strong></a>. For resolving artifacts in your build tool, follow the directions in each of the components' Package Manager Setup sections.</p>
+<hr />
 <h2 id="bullet-core">Bullet Core</h2>
-<p>The core Bullet logic (a library) that can be used to implement Bullet on different Stream Processors (like Flink, Storm, Kafka Streaming etc.). This core library can also be reused in other Bullet components that wish to depend on core Bullet concepts. This actually lived inside the <a href="#bullet-storm">Bullet Storm</a> package prior to version <a href="https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.5.0">0.5.0</a>. Starting with 0.5.0, Bullet Storm only includes the logic to implement Bullet on Storm.</p>
+<p>The core Bullet logic (a library) that can be used to implement Bullet on different Stream Processors (like Flink, Storm, Kafka Streams etc.). This core library can also be reused in other Bullet components that wish to depend on core Bullet concepts. This actually lived inside the <a href="#bullet-storm">Bullet Storm</a> package prior to version <a href="https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.5.0">0.5.0</a>. Starting with 0.5.0, Bullet Storm only includes the logic to implement Bullet on Storm.</p>
 <table>
 <thead>
 <tr>
@@ -361,78 +411,53 @@
 </thead>
 <tbody>
 <tr>
-<td>2016-08-16</td>
+<td>2017-10-04</td>
+<td><a href="https://github.com/yahoo/bullet-core/releases/tag/bullet-core-0.2.5"><strong>0.2.5</strong></a></td>
+<td>Supports an in-memory BufferingSubscriber implementation for reliable subscribing</td>
+</tr>
+<tr>
+<td>2017-10-03</td>
+<td><a href="https://github.com/yahoo/bullet-core/releases/tag/bullet-core-0.2.4"><strong>0.2.4</strong></a></td>
+<td>Helpers added to Config, PubSubMessage, Metadata and JSONFormatter. FAIL signal in Metadata. PubSubMessage is JSON serializable</td>
+</tr>
+<tr>
+<td>2017-09-20</td>
+<td><a href="https://github.com/yahoo/bullet-core/releases/tag/bullet-core-0.2.3"><strong>0.2.3</strong></a></td>
+<td>PubSub is no longer required to be Serializable. Makes PubSubMessage fully serializable. Utility classes and checked exceptions for PubSub</td>
+</tr>
+<tr>
+<td>2017-08-30</td>
+<td><a href="https://github.com/yahoo/bullet-core/releases/tag/bullet-core-0.2.2"><strong>0.2.2</strong></a></td>
+<td>Helper methods to PubSubMessage and Config</td>
+</tr>
+<tr>
+<td>2017-08-23</td>
+<td><a href="https://github.com/yahoo/bullet-core/releases/tag/bullet-core-0.2.1"><strong>0.2.1</strong></a></td>
+<td>Removes PubSubConfig, adds defaults methods to Publisher/Subscriber interfaces and improves PubSubException</td>
+</tr>
+<tr>
+<td>2017-08-16</td>
 <td><a href="https://github.com/yahoo/bullet-core/releases/tag/bullet-core-0.2.0"><strong>0.2.0</strong></a></td>
 <td>PubSub interfaces and classes to implement custom communication between API and backend</td>
 </tr>
 <tr>
-<td>2016-06-27</td>
+<td>2017-06-27</td>
 <td><a href="https://github.com/yahoo/bullet-core/releases/tag/bullet-core-0.1.2"><strong>0.1.2</strong></a></td>
 <td>Changes to the BulletConfig interface previously used in Bullet Storm. Users now use BulletStormConfig instead but YAML config is the same</td>
 </tr>
 <tr>
-<td>2016-06-27</td>
+<td>2017-06-27</td>
 <td><a href="https://github.com/yahoo/bullet-core/releases/tag/bullet-core-0.1.1"><strong>0.1.1</strong></a></td>
 <td>First stable release containing the core of Bullet as a library including parsing, implementing queries, creating results, DataSketches etc</td>
 </tr>
 </tbody>
 </table>
-<h2 id="bullet-record">Bullet Record</h2>
-<p>The AVRO container that you need to convert your data into to be consumed by Bullet.</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Repository</strong></td>
-<td><a href="https://github.com/yahoo/bullet-record">https://github.com/yahoo/bullet-record</a></td>
-</tr>
-<tr>
-<td><strong>Issues</strong></td>
-<td><a href="https://github.com/yahoo/bullet-record/issues">https://github.com/yahoo/bullet-record/issues</a></td>
-</tr>
-<tr>
-<td><strong>Last Tag</strong></td>
-<td><a href="https://github.com/yahoo/bullet-record/tags"><img alt="Latest tag" src="https://img.shields.io/github/release/yahoo/bullet-record/all.svg" /></a></td>
-</tr>
-<tr>
-<td><strong>Latest Artifact</strong></td>
-<td><a href="https://bintray.com/yahoo/maven/bullet-record/_latestVersion"><img alt="Download" src="https://api.bintray.com/packages/yahoo/maven/bullet-record/images/download.svg" /></a></td>
-</tr>
-<tr>
-<td><strong>Package Manager Setup</strong></td>
-<td><a href="https://bintray.com/bintray/jcenter?filterByPkgName=bullet-record">Setup for Maven, Gradle etc</a></td>
-</tr>
-</tbody>
-</table>
-<h3 id="releases_2">Releases</h3>
-<table>
-<thead>
-<tr>
-<th>Date</th>
-<th>Release</th>
-<th>Highlights</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>2017-04-17</td>
-<td><a href="https://github.com/yahoo/bullet-record/releases/tag/bullet-record-0.1.0"><strong>0.1.1</strong></a></td>
-<td>Helper methods to remove, rename, check presence and count fields in the Record</td>
-</tr>
-<tr>
-<td>2017-02-09</td>
-<td><a href="https://github.com/yahoo/bullet-record/releases/tag/bullet-record-0.1.0"><strong>0.1.0</strong></a></td>
-<td>Map constructor</td>
-</tr>
-</tbody>
-</table>
 <h2 id="bullet-storm">Bullet Storm</h2>
-<p>The implementation of Bullet on Storm. Due to major API changes between Storm &lt;= 0.10 and Storm 1.0, Bullet Storm <a href="../../backend/setup-storm/#older-storm-versions">builds two artifacts</a>. The <code>artifactId</code> changes from <code>bullet-storm</code> (for 1.0+) to <code>bullet-storm-0.10</code>. All releases include migration and testing of the code on <em>both</em> versions. Both versions are built simultaneously. Feature parity depends on what was new in Storm 1.0. For example, the Resource Aware Scheduler or RAS, is only present in Storm 1.0+. So, bullet-storm-0.10 removes certain CPU and memory related settings specific to RAS in its configuration. There are also minor changes to the Metrics API in Storm. In terms of Bullet itself, there should be no differences.</p>
+<p>The implementation of Bullet on Storm. Due to major API changes between Storm &lt;= 0.10 and Storm 1.0, Bullet Storm <a href="../backend/storm-setup/#older-storm-versions">builds two artifacts</a>. The <code>artifactId</code> changes from <code>bullet-storm</code> (for 1.0+) to <code>bullet-storm-0.10</code>. All releases include migration and testing of the code on <em>both</em> versions. Both versions are built simultaneously. Feature parity depends on what was new in Storm 1.0. For example, the Resource Aware Scheduler or RAS, is only present in Storm 1.0+. So, bullet-storm-0.10 removes certain CPU and memory related settings specific to RAS in its configuration. There are also minor changes to the Metrics API in Storm. In terms of Bullet itself, there should be no differences.</p>
+<div class="admonition note">
+<p class="admonition-title">Storm DRPC PubSub </p>
+<p>The DRPC PubSub is part of this artifact and is fully released and available for use starting with versions 0.6.2 and above. It is only meant to be used if you're using Storm as your Backend.</p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Future support</p>
 <p>We will support Storm 0.10 for a bit longer till Storm 2.0 is up and stable. Storm versions 1.0+ have a lot of performance fixes and features that you should be running with.</p>
@@ -471,7 +496,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="releases_3">Releases</h3>
+<h3 id="releases_2">Releases</h3>
 <table>
 <thead>
 <tr>
@@ -482,6 +507,24 @@
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>2017-10-24</td>
+<td><a href="https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.6.2"><strong>0.6.2</strong></a></td>
+<td><a href="https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.6.2"><strong>0.6.2</strong></a></td>
+<td>Adds a fat jar for using the DRPC PubSub in the Web Service</td>
+</tr>
+<tr>
+<td>2017-10-18</td>
+<td><a href="https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.6.1"><strong>0.6.1</strong></a></td>
+<td><a href="https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.6.1"><strong>0.6.1</strong></a></td>
+<td>DRPC PubSub</td>
+</tr>
+<tr>
+<td>2017-08-30</td>
+<td><a href="https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.6.0"><strong>0.6.0</strong></a></td>
+<td><a href="https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.6.0"><strong>0.6.0</strong></a></td>
+<td>New PubSub architecture, removes DRPC components and settings</td>
+</tr>
 <tr>
 <td>2017-06-27</td>
 <td><a href="https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.5.0"><strong>0.5.0</strong></a></td>
@@ -545,7 +588,11 @@
 </tbody>
 </table>
 <h2 id="bullet-web-service">Bullet Web Service</h2>
-<p>The Web Service implementation that can serve a static schema from a file and talk to the Storm backend.</p>
+<p>The Web Service implementation that can serve a static schema from a file and talk to the backend using the PubSub.</p>
+<div class="admonition note">
+<p class="admonition-title">WAR to JAR</p>
+<p>Starting with 0.1.1 and above, this artifact no longer produces a WAR file that is meant to be run in a servlet container and instead switches to an executable Java application using Spring Boot.</p>
+</div>
 <table>
 <thead>
 <tr>
@@ -576,7 +623,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="releases_4">Releases</h3>
+<h3 id="releases_3">Releases</h3>
 <table>
 <thead>
 <tr>
@@ -586,6 +633,11 @@
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>2017-10-19</td>
+<td><a href="https://github.com/yahoo/bullet-service/releases/tag/bullet-service-0.1.1"><strong>0.1.1</strong></a></td>
+<td>New PubSub architecture. Switching to Spring Boot and executable JAR instead of WAR</td>
+</tr>
 <tr>
 <td>2016-12-16</td>
 <td><a href="https://github.com/yahoo/bullet-service/releases/tag/bullet-service-0.0.1"><strong>0.0.1</strong></a></td>
@@ -625,6 +677,90 @@
 </tr>
 </tbody>
 </table>
+<h3 id="releases_4">Releases</h3>
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Release</th>
+<th>Highlights</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2017-08-22</td>
+<td><a href="https://github.com/yahoo/bullet-ui/releases/tag/v0.4.0"><strong>0.4.0</strong></a></td>
+<td>Query sharing, collapsible Raw view, and unsaved/error indicators. Settings rename and other bug fixes</td>
+</tr>
+<tr>
+<td>2017-05-22</td>
+<td><a href="https://github.com/yahoo/bullet-ui/releases/tag/v0.3.2"><strong>0.3.2</strong></a></td>
+<td>Exporting to TSV in Pivot table. Fixes unselectability bug in Raw view</td>
+</tr>
+<tr>
+<td>2017-05-15</td>
+<td><a href="https://github.com/yahoo/bullet-ui/releases/tag/v0.3.1"><strong>0.3.1</strong></a></td>
+<td>Adds styles to the Pivot table. Fixes some minor UI interactions</td>
+</tr>
+<tr>
+<td>2017-05-10</td>
+<td><a href="https://github.com/yahoo/bullet-ui/releases/tag/v0.3.0"><strong>0.3.0</strong></a></td>
+<td>Adds Charting and Pivoting support. Migrations enhanced. Support for overriding nested default settings</td>
+</tr>
+<tr>
+<td>2017-05-03</td>
+<td><a href="https://github.com/yahoo/bullet-ui/releases/tag/v0.2.2"><strong>0.2.2</strong></a></td>
+<td>Fixes maxlength of the input for points</td>
+</tr>
+<tr>
+<td>2017-05-02</td>
+<td><a href="https://github.com/yahoo/bullet-ui/releases/tag/v0.2.1"><strong>0.2.1</strong></a></td>
+<td>Fixes a bug with a dependency that broke sorting the Filters</td>
+</tr>
+<tr>
+<td>2017-05-01</td>
+<td><a href="https://github.com/yahoo/bullet-ui/releases/tag/v0.2.0"><strong>0.2.0</strong></a></td>
+<td>Release for Top K and Distribution. Supports Bullet Storm 0.4.2+</td>
+</tr>
+<tr>
+<td>2017-02-21</td>
+<td><a href="https://github.com/yahoo/bullet-ui/releases/tag/v0.1.0"><strong>0.1.0</strong></a></td>
+<td>The first release with support for all features included in Bullet Storm 0.2.1+</td>
+</tr>
+</tbody>
+</table>
+<h2 id="bullet-record">Bullet Record</h2>
+<p>The AVRO container that you need to convert your data into to be consumed by Bullet.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Repository</strong></td>
+<td><a href="https://github.com/yahoo/bullet-record">https://github.com/yahoo/bullet-record</a></td>
+</tr>
+<tr>
+<td><strong>Issues</strong></td>
+<td><a href="https://github.com/yahoo/bullet-record/issues">https://github.com/yahoo/bullet-record/issues</a></td>
+</tr>
+<tr>
+<td><strong>Last Tag</strong></td>
+<td><a href="https://github.com/yahoo/bullet-record/tags"><img alt="Latest tag" src="https://img.shields.io/github/release/yahoo/bullet-record/all.svg" /></a></td>
+</tr>
+<tr>
+<td><strong>Latest Artifact</strong></td>
+<td><a href="https://bintray.com/yahoo/maven/bullet-record/_latestVersion"><img alt="Download" src="https://api.bintray.com/packages/yahoo/maven/bullet-record/images/download.svg" /></a></td>
+</tr>
+<tr>
+<td><strong>Package Manager Setup</strong></td>
+<td><a href="https://bintray.com/bintray/jcenter?filterByPkgName=bullet-record">Setup for Maven, Gradle etc</a></td>
+</tr>
+</tbody>
+</table>
 <h3 id="releases_5">Releases</h3>
 <table>
 <thead>
@@ -636,44 +772,78 @@
 </thead>
 <tbody>
 <tr>
-<td>2016-08-22</td>
-<td><a href="https://github.com/yahoo/bullet-ui/releases/tag/v0.4.0"><strong>0.4.0</strong></a></td>
-<td>Query sharing, collapsible Raw view, and unsaved/error indicators. Settings rename and other bug fixes</td>
+<td>2017-05-19</td>
+<td><a href="https://github.com/yahoo/bullet-record/releases/tag/bullet-record-0.1.2"><strong>0.1.2</strong></a></td>
+<td>Reduces the memory footprint needed to serialize itself by a factor of 128 for small records</td>
 </tr>
 <tr>
-<td>2016-05-22</td>
-<td><a href="https://github.com/yahoo/bullet-ui/releases/tag/v0.3.2"><strong>0.3.2</strong></a></td>
-<td>Exporting to TSV in Pivot table. Fixes unselectability bug in Raw view</td>
+<td>2017-04-17</td>
+<td><a href="https://github.com/yahoo/bullet-record/releases/tag/bullet-record-0.1.1"><strong>0.1.1</strong></a></td>
+<td>Helper methods to remove, rename, check presence and count fields in the Record</td>
 </tr>
 <tr>
-<td>2016-05-15</td>
-<td><a href="https://github.com/yahoo/bullet-ui/releases/tag/v0.3.1"><strong>0.3.1</strong></a></td>
-<td>Adds styles to the Pivot table. Fixes some minor UI interactions</td>
+<td>2017-02-09</td>
+<td><a href="https://github.com/yahoo/bullet-record/releases/tag/bullet-record-0.1.0"><strong>0.1.0</strong></a></td>
+<td>Map constructor</td>
+</tr>
+</tbody>
+</table>
+<h2 id="bullet-kafka">Bullet Kafka</h2>
+<p>A PubSub implementation using Kafka as the backing PubSub. Can be used with any Bullet Backend.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Repository</strong></td>
+<td><a href="https://github.com/yahoo/bullet-kafka">https://github.com/yahoo/bullet-record</a></td>
 </tr>
 <tr>
-<td>2016-05-10</td>
-<td><a href="https://github.com/yahoo/bullet-ui/releases/tag/v0.3.0"><strong>0.3.0</strong></a></td>
-<td>Adds Charting and Pivoting support. Migrations enhanced. Support for overriding nested default settings</td>
+<td><strong>Issues</strong></td>
+<td><a href="https://github.com/yahoo/bullet-kafka/issues">https://github.com/yahoo/bullet-record/issues</a></td>
 </tr>
 <tr>
-<td>2016-05-03</td>
-<td><a href="https://github.com/yahoo/bullet-ui/releases/tag/v0.2.2"><strong>0.2.2</strong></a></td>
-<td>Fixes maxlength of the input for points</td>
+<td><strong>Last Tag</strong></td>
+<td><a href="https://github.com/yahoo/bullet-kafka/tags"><img alt="Latest tag" src="https://img.shields.io/github/release/yahoo/bullet-kafka/all.svg" /></a></td>
 </tr>
 <tr>
-<td>2016-05-02</td>
-<td><a href="https://github.com/yahoo/bullet-ui/releases/tag/v0.2.1"><strong>0.2.1</strong></a></td>
-<td>Fixes a bug with a dependency that broke sorting the Filters</td>
+<td><strong>Latest Artifact</strong></td>
+<td><a href="https://bintray.com/yahoo/maven/bullet-kafka/_latestVersion"><img alt="Download" src="https://api.bintray.com/packages/yahoo/maven/bullet-kafka/images/download.svg" /></a></td>
 </tr>
 <tr>
-<td>2016-05-01</td>
-<td><a href="https://github.com/yahoo/bullet-ui/releases/tag/v0.2.0"><strong>0.2.0</strong></a></td>
-<td>Release for Top K and Distribution. Supports Bullet Storm 0.4.2+</td>
+<td><strong>Package Manager Setup</strong></td>
+<td><a href="https://bintray.com/bintray/jcenter?filterByPkgName=bullet-kafka">Setup for Maven, Gradle etc</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="releases_6">Releases</h3>
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Release</th>
+<th>Highlights</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2017-10-19</td>
+<td><a href="https://github.com/yahoo/bullet-kafka/releases/tag/bullet-kafka-0.2.0"><strong>0.2.0</strong></a></td>
+<td>Refactors and re-releases. Pass-through settings to Kafka. Manual offset committing bug fix</td>
 </tr>
 <tr>
-<td>2016-02-21</td>
-<td><a href="https://github.com/yahoo/bullet-ui/releases/tag/v0.1.0"><strong>0.1.0</strong></a></td>
-<td>The first release with support for all features included in Bullet Storm 0.2.1+</td>
+<td>2017-09-27</td>
+<td><a href="https://github.com/yahoo/bullet-kafka/releases/tag/bullet-kafka-0.1.2"><strong>0.1.2</strong></a></td>
+<td>Fixes a bug with config loading</td>
+</tr>
+<tr>
+<td>2017-09-22</td>
+<td><a href="https://github.com/yahoo/bullet-kafka/releases/tag/bullet-kafka-0.1.1"><strong>0.1.1</strong></a></td>
+<td>First release using the PubSub interfaces</td>
 </tr>
 </tbody>
 </table></div>
@@ -694,15 +864,15 @@
         </div>
     </footer>
 
-    <script src="../../js/jquery-1.10.2.min.js"></script>
-    <script src="../../js/bootstrap-3.0.3.min.js"></script>
-    <script src="../../js/highlight.pack.js"></script>
+    <script src="../js/jquery-1.10.2.min.js"></script>
+    <script src="../js/bootstrap-3.0.3.min.js"></script>
+    <script src="../js/highlight.pack.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
     <script>
-    var base_url = '../..';
+    var base_url = '..';
     </script>
-    <script data-main="../../mkdocs/js/search.js" src="../../mkdocs/js/require.js"></script>
-    <script src="../../js/base.js"></script>
+    <script data-main="../mkdocs/js/search.js" src="../mkdocs/js/require.js"></script>
+    <script src="../js/base.js"></script>
 
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
         <div class="modal-dialog">

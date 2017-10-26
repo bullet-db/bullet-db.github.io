@@ -7,10 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="The full documentation for Bullet - A Real Time Data Query Engine"> 
     <meta name="author" content="Akshai Sarma"> 
-    <link rel="canonical" href="https://yahoo.github.io/bullet-docs/backend/ingestion/"> 
+    <link rel="canonical" href="https://yahoo.github.io/bullet-docs/pubsub/storm-drpc/"> 
     <link rel="shortcut icon" href="../../img/favicon.ico">
 
-    <title>Getting your data into Bullet - Bullet Docs</title>
+    <title>Storm DRPC - Bullet Docs</title>
 
     <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
@@ -93,13 +93,13 @@
                 
                 
                 
-                    <li class="dropdown active">
+                    <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Backend <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                         
                             
-<li class="active">
-    <a href="./">Getting your data into Bullet</a>
+<li >
+    <a href="../../backend/ingestion/">Getting your data into Bullet</a>
 </li>
 
                         
@@ -110,19 +110,19 @@
         
             
 <li >
-    <a href="../storm-architecture/">Architecture</a>
+    <a href="../../backend/storm-architecture/">Architecture</a>
 </li>
 
         
             
 <li >
-    <a href="../storm-setup/">Setup</a>
+    <a href="../../backend/storm-setup/">Setup</a>
 </li>
 
         
             
 <li >
-    <a href="../storm-performance/">Performance</a>
+    <a href="../../backend/storm-performance/">Performance</a>
 </li>
 
         
@@ -135,25 +135,25 @@
                 
                 
                 
-                    <li class="dropdown">
+                    <li class="dropdown active">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">PubSub <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                         
                             
 <li >
-    <a href="../../pubsub/architecture/">Architecture</a>
+    <a href="../architecture/">Architecture</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../pubsub/kafka/">Kafka</a>
+    <a href="../kafka/">Kafka</a>
 </li>
 
                         
                             
-<li >
-    <a href="../../pubsub/storm-drpc/">Storm DRPC</a>
+<li class="active">
+    <a href="./">Storm DRPC</a>
 </li>
 
                         
@@ -249,12 +249,12 @@
                 
                 
                     <li >
-                        <a rel="next" href="../../quick-start/">
+                        <a rel="next" href="../kafka/">
                             <i class="fa fa-arrow-left"></i> Previous
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="../storm-architecture/">
+                        <a rel="prev" href="../../ws/setup/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
@@ -275,25 +275,25 @@
     <ul class="nav bs-sidenav">
     
         <li class="active">
-            <a href="#data-ingestion">Data Ingestion</a>
+            <a href="#storm-drpc-pubsub">Storm DRPC PubSub</a>
             <ul class="nav">
                 
                     <li class="second-level">
-                        <a href="#bullet-record">Bullet Record</a>
+                        <a href="#how-does-it-work">How does it work?</a>
                         
                     </li>
             
                     <li class="second-level">
-                        <a href="#types">Types</a>
+                        <a href="#setup">Setup</a>
                         <ul class="nav">
                         
                             <li class="third-level">
-                                <a href="#primitives">Primitives</a>
+                                <a href="#plug-into-the-storm-backend">Plug into the Storm Backend</a>
                                 
                             </li>
                         
                             <li class="third-level">
-                                <a href="#complex">Complex</a>
+                                <a href="#plug-into-the-web-service">Plug into the Web Service</a>
                                 
                             </li>
                         
@@ -301,8 +301,30 @@
                     </li>
             
                     <li class="second-level">
-                        <a href="#installing-the-record-directly">Installing the Record directly</a>
+                        <a href="#caveats-with-storm-drpc">Caveats with Storm DRPC</a>
+                        <ul class="nav">
                         
+                            <li class="third-level">
+                                <a href="#scalability">Scalability</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#query-duration">Query Duration</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#request-response">Request-Response</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#reliability">Reliability</a>
+                                
+                            </li>
+                        
+                        </ul>
                     </li>
             
             </ul>
@@ -312,54 +334,54 @@
 </div></div>
         <div class="col-md-9" role="main">
 
-<h1 id="data-ingestion">Data Ingestion</h1>
-<p>Bullet operates on a generic data container that it understands. In order to get Bullet to operate on your data, you need to convert your data records into this format. This conversion is usually done when you plug in your data source into Bullet. Bullet does not make any assumptions on where you get this data from. It could be <a href="http://kafka.apache.org">Kafka</a>, <a href="https://www.rabbitmq.com/">RabbitMQ</a>, or something else.</p>
+<h1 id="storm-drpc-pubsub">Storm DRPC PubSub</h1>
+<p>Bullet on <a href="https://storm.apache.org/">Storm</a> can use <a href="http://storm.apache.org/releases/1.0.0/Distributed-RPC.html">Storm DRPC</a> as a PubSub layer. DRPC or Distributed Remote Procedure Call, is built into Storm and consists of a set of servers that are part of the Storm cluster.</p>
+<h2 id="how-does-it-work">How does it work?</h2>
+<p>When a Storm topology that uses DRPC is launched, it registers a spout with a unique name (the procedure in the Distributed Remote Procedure Call) with the DRPC infrastructure. The DRPC Servers expose a REST endpoint where data can be POSTed to or a GET request can be made with this unique name. The DRPC infrastructure then sends the request (a query in Bullet) through the spout(s) to the topology that registered that name (Bullet). The result from topology is sent back to the client. We picked Storm to implement Bullet on first not only because it was the most popular Streaming framework at Yahoo but also since DRPC provides us a nice and simple way to handle getting queries into Bullet and sending responses back.</p>
+<p>You can communicate with DRPC using <a href="https://thrift.apache.org">Apache Thrift</a> or REST. Our implementation uses REST. The Web Service sends a JSON serialized PubSubMessage with the query in it through HTTP and asynchronously waits for the results back through DRPC.</p>
 <div class="admonition note">
-<p class="admonition-title">If you are trying to set up Bullet...</p>
-<p>The rest of this page gives more information about the Record container and how to depend on it in code directly. If you are setting up Bullet, the Record is already included by default with the Bullet artifact. You can head on over to <a href="../storm-setup/#installation">setting up the Storm topology</a> to build the piece that gets your data into the Record container.</p>
+<p class="admonition-title">REST and DRPC</p>
+<p>While DRPC exposes a <a href="http://thrift.apache.org">Thrift</a> endpoint, the PubSub implementation uses REST. When you launch your topology with the DRPC PubSub, you can POST a JSON Bullet PubSubMessage containing a String JSON query to a DRPC server directly with the function name that you specify in the <a href="#storm-backend">Bullet configuration</a>. For example,
+<code>bash
+  curl -s -X POST -d '{"id":"", "content":"{}"}' http://&lt;DRPC_SERVER&gt;:&lt;DRPC_PORT&gt;/drpc/&lt;DRPC_FUNCTION_FROM_YOUR_BULLET_CONF&gt;</code>
+ to get a random record from your data instantly (if you left the Raw aggregation micro-batch size at the default of 1). The <code>content</code> above in the JSON is the actual (empty) Bullet query. This is a quick way to check if your topology is up and running!</p>
 </div>
-<h2 id="bullet-record">Bullet Record</h2>
-<p>The Bullet Record is a serializable data container based on <a href="http://avro.apache.org">Avro</a>. It is typed and has a generic schema. You can refer to the <a href="https://github.com/yahoo/bullet-record/blob/master/src/main/avro/BulletAvro.avsc">Avro Schema</a> file for details if you wish to see the internals of the data model. The Bullet Record is also lazy and only deserializes itself when you try to read something from it. So, you can pass it around before sending to Bullet with minimal cost. Partial deserialization is being considered if performance is key. This will let you deserialize a much narrower chunk of the Record if you are just looking for a couple of fields.</p>
-<h2 id="types">Types</h2>
-<p>Data placed into a Bullet Record is strongly typed. We support these types currently:</p>
-<h3 id="primitives">Primitives</h3>
-<ol>
-<li>Boolean</li>
-<li>Long</li>
-<li>Double</li>
-<li>String</li>
-</ol>
-<h3 id="complex">Complex</h3>
-<ol>
-<li>Map of Strings to any of the <a href="#primitives">Primitives</a></li>
-<li>Map of Strings to any Map in 1</li>
-<li>List of any Map in 1</li>
-</ol>
-<p>With these types, it is unlikely you would have data that cannot be represented as Bullet Record but if you do, please let us know and we are more than willing to accommodate.</p>
-<h2 id="installing-the-record-directly">Installing the Record directly</h2>
-<p>Generally, you depend on the Bullet Core artifact for your Stream Processor when you plug in the piece that gets your data into the Stream processor. The Bullet Core artifact already brings in the Bullet Record container as well. See the usage for the <a href="../storm-setup/#installation">Storm</a> for an example.</p>
-<p>However, if you need it, the artifacts are available through JCenter to depend on them in code directly. You will need to add the repository. Below is a Maven example:</p>
-<pre><code class="xml">&lt;repositories&gt;
-    &lt;repository&gt;
-        &lt;snapshots&gt;
-            &lt;enabled&gt;false&lt;/enabled&gt;
-        &lt;/snapshots&gt;
-        &lt;id&gt;central&lt;/id&gt;
-        &lt;name&gt;bintray&lt;/name&gt;
-        &lt;url&gt;http://jcenter.bintray.com&lt;/url&gt;
-    &lt;/repository&gt;
-&lt;/repositories&gt;
+<h2 id="setup">Setup</h2>
+<p>The DRPC PubSub is part of the <a href="../../releases/#bullet-storm">Bullet Storm</a> starting with versions 0.6.2 and above.</p>
+<h3 id="plug-into-the-storm-backend">Plug into the Storm Backend</h3>
+<p>When you are setting up your Bullet topology with your plug-in data source (a Spout or a topology), you will naturally build a JAR with all the dependencies or a <em>fat</em> JAR. This will include all the DRPC PubSub code and dependencies. You do not need anything else. For configuration, the YAML file that you probably already provide to your topology needs to have the additional settings listed below (the function name is optional but you should change the default since the DRPC function needs to be unique per Storm cluster). Now if you launch your topology, it should be wired up to use Storm DRPC.</p>
+<pre><code class="yaml">bullet.pubsub.context.name: &quot;QUERY_PROCESSING&quot;
+bullet.pubsub.class.name: &quot;com.yahoo.bullet.storm.drpc.DRPCPubSub&quot;
+bullet.pubsub.storm.drpc.function: &quot;custom-name&quot;
 </code></pre>
 
-<pre><code class="xml">&lt;dependency&gt;
-  &lt;groupId&gt;com.yahoo.bullet&lt;/groupId&gt;
-  &lt;artifactId&gt;bullet-record&lt;/artifactId&gt;
-  &lt;version&gt;${bullet.version}&lt;/version&gt;
-&lt;/dependency&gt;
+<h3 id="plug-into-the-web-service">Plug into the Web Service</h3>
+<p>When you're plugging in the DRPC PubSub layer into your Web Service, you will need the Bullet Storm JAR with dependencies that you can download from <a href="../../releases/#bullet-storm">JCenter</a>. The classifier for this JAR is <code>fat</code> if you are depending on it through Maven. You can also download the JAR for the 0.6.2 version directly through <a href="http://jcenter.bintray.com/com/yahoo/bullet/bullet-storm/0.6.2/">JCenter here</a>.</p>
+<p>You should then plug in this JAR to your Web Service following the instructions <a href="../../ws/setup/#launch">here</a>.</p>
+<p>For configuration, you should <a href="../../ws/setup/#pubsub-configuration">follow the steps here</a> and add the context and class name listed above. You will need to point to your DRPC servers and set the function to the same value you chose <a href="#storm-backend">above</a>. You can configure this and other settings that are explained further in the <a href="https://github.com/yahoo/bullet-storm/blob/master/src/main/resources/bullet_storm_defaults.yaml">PubSub and PubSub Storm DRPC defaults section</a> in the Bullet Storm defaults file.</p>
+<pre><code class="yaml">bullet.pubsub.context.name: &quot;QUERY_SUBMISSION&quot;
+bullet.pubsub.class.name: &quot;com.yahoo.bullet.storm.drpc.DRPCPubSub&quot;
+bullet.pubsub.storm.drpc.servers:
+  - server1
+  - server2
+  - server3
+bullet.pubsub.storm.drpc.function: &quot;custom-name&quot;
+bullet.pubsub.storm.drpc.http.protocol: &quot;http&quot;
+bullet.pubsub.storm.drpc.http.port: &quot;4080&quot;
+bullet.pubsub.storm.drpc.http.path: &quot;drpc&quot;
+bullet.pubsub.storm.drpc.http.connect.retry.limit: 3
+bullet.pubsub.storm.drpc.http.connect.timeout.ms: 1000
 </code></pre>
 
-<p>If you just need the jar artifact, you can download it directly from <a href="http://jcenter.bintray.com/com/yahoo/bullet/bullet-record/">JCenter</a>.</p>
-<p>You can also add <code>&lt;classifier&gt;sources&lt;/classifier&gt;</code>  or <code>&lt;classifier&gt;javadoc&lt;/classifier&gt;</code> if you want the sources or the javadoc.</p></div>
+<h2 id="caveats-with-storm-drpc">Caveats with Storm DRPC</h2>
+<h4 id="scalability">Scalability</h4>
+<p>DRPC servers are a shared resource per Storm cluster and it may be possible that you have to contend with other topologies in your multi-tenant cluster. While it is horizontally scalable, it does tie the scalability of the Bullet backend to it. If you only have a few DRPC servers in your Storm cluster, you may need to add more to support more simultaneous DRPC requests. We have <a href="../../backend/storm-performance/#conclusion_3">found that</a> each server gives us about ~250 simultaneous queries. There is an Async implementation coming in Storm 2.0 that should increase the throughput.</p>
+<h4 id="query-duration">Query Duration</h4>
+<p>The maximum time a query can run for depends on the maximum time Storm DRPC request can last in your Storm topology. Generally the default is set to 10 minutes. This means that the <strong>longest query duration possible will be 10 minutes</strong>. The value of this is up to your cluster maintainers.</p>
+<h4 id="request-response">Request-Response</h4>
+<p>Our PubSub uses DRPC using HTTP REST in a request-response model. This means that it will not support incremental results as it is! We could switch our usage of DRPC to send signals to the topology to fetch results and start queries. Depending on if there is demand, we may support this in our implementation in the future.</p>
+<h4 id="reliability">Reliability</h4>
+<p>Storm DRPC follows the principle of leaving retries to the DRPC user (in our case, the Bullet web service). At this moment, we have not chosen to add reliability mechanisms to the query publishing, result publishing or result subscribing sides of our DRPC PubSub implementations but the query subscribers do use the <code>BufferingSubscriber</code> mentioned <a href="../architecture/#reliability">here</a>.</p></div>
         
     </div>
 

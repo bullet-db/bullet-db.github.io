@@ -4,10 +4,13 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">   
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The full documentation for Bullet - A Real Time Data Query Engine"> 
+    <meta name="author" content="Akshai Sarma"> 
+    <link rel="canonical" href="https://yahoo.github.io/bullet-docs/about/contributing/"> 
     <link rel="shortcut icon" href="../../img/favicon.ico">
 
-    <title>Contributing - Bullet</title>
+    <title>Contributing - Bullet Docs</title>
 
     <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
@@ -68,7 +71,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="../..">Bullet<small class="small small-brand-text"></small></a>
+            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v0.4.0</small></a>
         </div>
 
         <!-- Expanded navigation -->
@@ -96,25 +99,61 @@
                         
                             
 <li >
-    <a href="../../backend/storm-architecture/">Storm Architecture</a>
-</li>
-
-                        
-                            
-<li >
     <a href="../../backend/ingestion/">Getting your data into Bullet</a>
 </li>
 
                         
                             
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">Storm</a>
+    <ul class="dropdown-menu">
+        
+            
 <li >
-    <a href="../../backend/setup-storm/">Setup on Storm</a>
+    <a href="../../backend/storm-architecture/">Architecture</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../backend/storm-setup/">Setup</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../backend/storm-performance/">Performance</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">PubSub <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../pubsub/architecture/">Architecture</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../backend/performance/">Performance</a>
+    <a href="../../pubsub/kafka/">Kafka</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../pubsub/storm-drpc/">Storm DRPC</a>
 </li>
 
                         
@@ -124,7 +163,7 @@
                 
                 
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">REST API <b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Web Service <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                         
                             
@@ -171,15 +210,15 @@
                 
                 
                 
+                    <li >
+                        <a href="../../releases/">Releases</a>
+                    </li>
+                
+                
+                
                     <li class="dropdown active">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">About <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                        
-                            
-<li >
-    <a href="../releases/">Past Releases</a>
-</li>
-
                         
                             
 <li class="active">
@@ -210,7 +249,7 @@
                 
                 
                     <li >
-                        <a rel="next" href="../releases/">
+                        <a rel="next" href="../../releases/">
                             <i class="fa fa-arrow-left"></i> Previous
                         </a>
                     </li>
@@ -220,15 +259,6 @@
                         </a>
                     </li>
                 
-                
-                    <li>
-                        <a href="https://github.com/yahoo/bullet-docs">
-                            
-                                <i class="fa fa-github"></i>
-                            
-                            GitHub
-                        </a>
-                    </li>
                 
             </ul>
         </div>
@@ -269,9 +299,10 @@
 <p>We welcome all contributions! We also welcome all usage experiences, stories, annoyances and whatever else you want to say. Head on over to our <a href="../contact/">Contact Us page</a> and let us know!</p>
 <h2 id="contributor-license-agreement-cla">Contributor License Agreement (CLA)</h2>
 <p>Bullet is hosted under the <a href="https://github.com/yahoo">Yahoo Github Organization</a>. In order to contribute to any Yahoo project, you will need to submit a CLA. When you submit a Pull Request to any Bullet repository, a CLABot will ask  you to sign the CLA if you haven't signed one already.</p>
+<p>Read the <a href="https://yahoocla.herokuapp.com/">human-readable summary</a> of the CLA.</p>
 <h2 id="future-plans">Future plans</h2>
-<p>Here is a list of features we are currently considering/working on. Feel free to <a href="../contact/">contact us</a> with any ideas/suggestions/PRs for features mentioned here or anything else you think about!</p>
-<p>This list is neither comprehensive nor in any particular order and lists some high level directions.</p>
+<p>Here is some selected list of features we are currently considering/working on. Feel free to <a href="../contact/">contact us</a> with any ideas/suggestions/PRs for features mentioned here or anything else you think about!</p>
+<p>This list is neither comprehensive nor in any particular order.</p>
 <table>
 <thead>
 <tr>
@@ -283,15 +314,15 @@
 </thead>
 <tbody>
 <tr>
-<td>PubSub</td>
-<td>BE, WS, UI</td>
-<td>WS and BE talk through the PubSub. Bullet Storm uses Storm DRPC for this (strictly request-response) Using a pub/sub queue will let us implement Bullet on other Stream Processors, support incremental updates through WebSockets and more!</td>
-<td>In Progress <a href="https://github.com/yahoo/bullet-core/pull/1">#1</a></td>
-</tr>
-<tr>
 <td>Incremental updates</td>
 <td>BE, WS, UI</td>
-<td>Push results back to users as soon as they arrive. Our aggregations are additive, so progressive results can be streamed back. Micro-batching and other features come into play</td>
+<td>Push results back to users during the query lifetime. Micro-batching, windowing and other features come into play</td>
+<td>In Progress</td>
+</tr>
+<tr>
+<td>Bullet on Spark</td>
+<td>BE</td>
+<td>Implement Bullet on Spark Streaming. Compared with SQL on Spark Streaming which stores data in memory, Bullet will be light-weight</td>
 <td>In Progress</td>
 </tr>
 <tr>
@@ -303,7 +334,7 @@
 <tr>
 <td>Bullet on X</td>
 <td>BE</td>
-<td>With the pub/sub feature, Bullet can be implemented on other Stream Processors like Spark Streaming, Flink, Kafka Streaming, Samza etc</td>
+<td>With the pub/sub feature, Bullet can be implemented on other Stream Processors like Flink, Kafka Streaming, Samza etc</td>
 <td>Open</td>
 </tr>
 <tr>
@@ -317,6 +348,12 @@
 <td>UI</td>
 <td>Migration to LocalForage to distance ourselves from the relatively small LocalStorage space</td>
 <td><a href="https://github.com/yahoo/bullet-ui/issues/9">#9</a></td>
+</tr>
+<tr>
+<td>Spring Boot Reactor</td>
+<td>WS</td>
+<td>Migrate the Web Service to use Spring Boot reactor instead of servlet containers</td>
+<td>Open</td>
 </tr>
 <tr>
 <td>UI Packaging</td>
