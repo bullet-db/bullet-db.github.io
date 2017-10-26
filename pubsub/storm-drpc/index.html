@@ -344,7 +344,7 @@
 <p>While DRPC exposes a <a href="http://thrift.apache.org">Thrift</a> endpoint, the PubSub implementation uses REST. When you launch your topology with the DRPC PubSub, you can POST a JSON Bullet PubSubMessage containing a String JSON query to a DRPC server directly with the function name that you specify in the <a href="#storm-backend">Bullet configuration</a>. For example,
 <code>bash
   curl -s -X POST -d '{"id":"", "content":"{}"}' http://&lt;DRPC_SERVER&gt;:&lt;DRPC_PORT&gt;/drpc/&lt;DRPC_FUNCTION_FROM_YOUR_BULLET_CONF&gt;</code>
- to get a random record from your data instantly (if you left the Raw aggregation micro-batch size at the default of 1). The <code>content</code> above in the JSON is the actual (empty) Bullet query. This is a quick way to check if your topology is up and running!</p>
+ to get a random record (inside a JSON representation of a PubSubMessage) from your data instantly if you left the Raw aggregation micro-batch size at the default of 1. The <code>content</code> above in the JSON is the actual (empty) Bullet query. This is a quick way to check if your topology is up and running!</p>
 </div>
 <h2 id="setup">Setup</h2>
 <p>The DRPC PubSub is part of the <a href="../../releases/#bullet-storm">Bullet Storm</a> starting with versions 0.6.2 and above.</p>
