@@ -301,7 +301,7 @@
 <p>Bullet is hosted under the <a href="https://github.com/yahoo">Yahoo Github Organization</a>. In order to contribute to any Yahoo project, you will need to submit a CLA. When you submit a Pull Request to any Bullet repository, a CLABot will ask  you to sign the CLA if you haven't signed one already.</p>
 <p>Read the <a href="https://yahoocla.herokuapp.com/">human-readable summary</a> of the CLA.</p>
 <h2 id="future-plans">Future plans</h2>
-<p>Here is some selected list of features we are currently considering/working on. Feel free to <a href="../contact/">contact us</a> with any ideas/suggestions/PRs for features mentioned here or anything else you think about!</p>
+<p>Here is a selected list of features we are currently considering/working on. Feel free to <a href="../contact/">contact us</a> with any ideas/suggestions/PRs for features mentioned here or anything else you think about!</p>
 <p>This list is neither comprehensive nor in any particular order.</p>
 <table>
 <thead>
@@ -316,7 +316,7 @@
 <tr>
 <td>Incremental updates</td>
 <td>BE, WS, UI</td>
-<td>Push results back to users during the query lifetime. Micro-batching, windowing and other features come into play</td>
+<td>Push results back to users during the query lifetime. Micro-batching, windowing and other features need to be implemented</td>
 <td>In Progress</td>
 </tr>
 <tr>
@@ -328,13 +328,31 @@
 <tr>
 <td>Security</td>
 <td>WS, UI</td>
-<td>The obvious enterprise security for locking down access to the data and the instance of Bullet. Considering SSL, Kerberos, LDAP etc.</td>
+<td>The obvious enterprise security for locking down access to the data and the instance of Bullet. Considering SSL, Kerberos, LDAP etc. Ideally, without a database</td>
 <td>Planning</td>
+</tr>
+<tr>
+<td>In-Memory PubSub</td>
+<td>PubSub</td>
+<td>For users who don't want a PubSub like Kafka, we could add REST based in-memory PubSub layer that runs in the WS. The backend will then communicate directly with the WS</td>
+<td>Planning</td>
+</tr>
+<tr>
+<td>LocalForage</td>
+<td>UI</td>
+<td>Migration the UI to LocalForage to distance ourselves from the relatively small LocalStorage space</td>
+<td><a href="https://github.com/yahoo/bullet-ui/issues/9">#9</a></td>
 </tr>
 <tr>
 <td>Bullet on X</td>
 <td>BE</td>
 <td>With the pub/sub feature, Bullet can be implemented on other Stream Processors like Flink, Kafka Streaming, Samza etc</td>
+<td>Open</td>
+</tr>
+<tr>
+<td>Bullet on Beam</td>
+<td>BE</td>
+<td>Bullet can be implemented on <a href="https://beam.apache.org">Apache Beam</a> as an alternative to implementing it on various Stream Processors</td>
 <td>Open</td>
 </tr>
 <tr>
@@ -344,21 +362,15 @@
 <td>Open</td>
 </tr>
 <tr>
-<td>LocalForage</td>
-<td>UI</td>
-<td>Migration to LocalForage to distance ourselves from the relatively small LocalStorage space</td>
-<td><a href="https://github.com/yahoo/bullet-ui/issues/9">#9</a></td>
+<td>Packaging</td>
+<td>UI, BE, WS</td>
+<td>Github releases and building from source are the only two options for the UI. Docker images or the like for quick setup and to mix and match various pluggable components would be really useful</td>
+<td>Open</td>
 </tr>
 <tr>
 <td>Spring Boot Reactor</td>
 <td>WS</td>
 <td>Migrate the Web Service to use Spring Boot reactor instead of servlet containers</td>
-<td>Open</td>
-</tr>
-<tr>
-<td>UI Packaging</td>
-<td>UI</td>
-<td>Github releases and building from source are the only two options. Docker or something similar may be more apt</td>
 <td>Open</td>
 </tr>
 </tbody>

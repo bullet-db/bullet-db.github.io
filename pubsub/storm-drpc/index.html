@@ -355,6 +355,8 @@ bullet.pubsub.class.name: &quot;com.yahoo.bullet.storm.drpc.DRPCPubSub&quot;
 bullet.pubsub.storm.drpc.function: &quot;custom-name&quot;
 </code></pre>
 
+<h4 id="security">Security</h4>
+<p>If your Storm  cluster is secured with <code>Kerberos</code> (a standard for Big Data platforms), you will need to periodically refresh your Kerberos TGT and push the credentials to your Storm topology. This is generally done with <code>kinit</code> for your topology user, followed by a <code>storm upload-credentials &lt;TOPOLOGY_NAME&gt;</code>. You would probably run this as a <code>cron</code> task.</p>
 <h3 id="plug-into-the-web-service">Plug into the Web Service</h3>
 <p>When you're plugging in the DRPC PubSub layer into your Web Service, you will need the Bullet Storm JAR with dependencies that you can download from <a href="../../releases/#bullet-storm">JCenter</a>. The classifier for this JAR is <code>fat</code> if you are depending on it through Maven. You can also download the JAR for the 0.6.2 version directly through <a href="http://jcenter.bintray.com/com/yahoo/bullet/bullet-storm/0.6.2/">JCenter here</a>.</p>
 <p>You should then plug in this JAR to your Web Service following the instructions <a href="../../ws/setup/#launch">here</a>.</p>

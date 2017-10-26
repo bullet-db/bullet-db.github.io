@@ -310,6 +310,18 @@
                         
                     </li>
             
+                    <li class="second-level">
+                        <a href="#security">Security</a>
+                        <ul class="nav">
+                        
+                            <li class="third-level">
+                                <a href="#storm">Storm</a>
+                                
+                            </li>
+                        
+                        </ul>
+                    </li>
+            
             </ul>
         </li>
     
@@ -327,7 +339,8 @@
 <p>The Bullet Kafka implementation uses the Kafka 0.10.2 client APIs. Generally, your forward or backward compatibilities should work as expected.</p>
 </div>
 <h2 id="setup">Setup</h2>
-<p>Before setting up, you will obviously need a Kafka cluster setup with your topic(s) created. This cluster need only be a couple of machines. However, this depends on your query and result volumes. Generally, these are at most a few hundred or thousands of messages per second and a small Kafka cluster will suffice.</p>
+<p>Before setting up, you will need a Kafka cluster setup with your topic(s) created. This cluster need only be a couple of machines if it's devoted for Bullet. However, this depends on your query and result volumes. Generally, these are at most a few hundred or thousands of messages per second and a small Kafka cluster will suffice.</p>
+<p>To setup Kafka, follow the <a href="https://kafka.apache.org/quickstart">instructions here</a>.</p>
 <h3 id="plug-into-the-backend">Plug into the Backend</h3>
 <p>Depending on how your Backend is built, either add Bullet Kafka to your classpath or include it in your build tool. Head over to our <a href="../../releases/#bullet-kafka">releases page</a> for getting the artifacts. If you're adding Bullet Kafka to the classpath instead of building a fat jar, you will need to get the jar with the classifier: <code>fat</code> since you will need Bullet Kafka and all its dependencies.</p>
 <p>Configure the backend to use the Kafka PubSub:</p>
@@ -364,7 +377,27 @@ bullet.pubsub.kafka.response.topic.name: &quot;your-result-topic&quot;
 <li>You may use two topics and partition one or both for scalability when reading and writing</li>
 <li>You may use two topics and partition one or both for sharding across multiple Web Service instances (and multiple instances in your Backend)</li>
 </ol>
-<p>You can accomplish all this with partition maps. You can configure what partitions your Publishers (Web Service or Backend) will write to using <code>bullet.pubsub.kafka.request.partitions</code> and what partitions your Subscribers will read from using <code>bullet.pubsub.kafka.response.partitions</code>. Providing these to an instance of the Web Service or the Backend in the YAML file ensures that the Publishers in that instance only write to these request partitions and Subscribers only read from the response partitions. The Publishers will randomly adds one of the response partitions in the messages sent to ensure that the responses only arrive to one of those partitions this instance's Subscribers are waiting on. For more details, see the <a href="https://github.com/yahoo/bullet-kafka/blob/master/src/main/resources/bullet_kafka_defaults.yaml">configuration file</a>.</p></div>
+<p>You can accomplish all this with partition maps. You can configure what partitions your Publishers (Web Service or Backend) will write to using <code>bullet.pubsub.kafka.request.partitions</code> and what partitions your Subscribers will read from using <code>bullet.pubsub.kafka.response.partitions</code>. Providing these to an instance of the Web Service or the Backend in the YAML file ensures that the Publishers in that instance only write to these request partitions and Subscribers only read from the response partitions. The Publishers will randomly adds one of the response partitions in the messages sent to ensure that the responses only arrive to one of those partitions this instance's Subscribers are waiting on. For more details, see the <a href="https://github.com/yahoo/bullet-kafka/blob/master/src/main/resources/bullet_kafka_defaults.yaml">configuration file</a>.</p>
+<h2 id="security">Security</h2>
+<p>If you're using secure Kafka, you will need to do the necessary metadata setup to make sure your principals have access to your topic(s) for reading and writing. If you're using SSL for securing your Kafka cluster, you will need to add the necessary SSL certificates to the keystore for your JVM before launching the Web Service or the Backend.</p>
+<h3 id="storm">Storm</h3>
+<p>We have tested Kafka with <a href="../../releases/#bullet-storm">Bullet Storm</a> using <code>Kerberos</code> from the Storm cluster and SSL from the Web Service. For Kerberos, you may need to add a <code>JAAS</code> <a href="https://docs.oracle.com/javase/7/docs/technotes/guides/security/jgss/tutorials/LoginConfigFile.html">config file</a> to the <a href="http://storm.apache.org/releases/1.1.0/distcache-blobstore.html">Storm BlobStore</a> and add it to your worker JVMs. To do this, you will need a JAAS configuration entry. For example, if your Kerberos KDC is shared with your Storm cluster's KDC, you may be adding a jaas_file.conf with</p>
+<pre><code>KafkaClient {
+   org.apache.storm.security.auth.kerberos.AutoTGTKrb5LoginModule required
+   serviceName=&quot;kafka&quot;;
+};
+</code></pre>
+
+<p>Put this file into Storm's BlobStore using:</p>
+<pre><code>storm blobstore create --file jaas_file.conf --acl o::rwa,u:$USER:rwa --repl-fctr 3 jaas_file.conf
+</code></pre>
+
+<p>Then while launching your topology, you should provide as arguments to the <code>storm jar</code> command, the following arguments:</p>
+<pre><code>-c topology.blobstore.map='{&quot;jaas_file.conf&quot;: {} }' \
+-c topology.worker.childopts=&quot;-Djava.security.auth.login.config=./jaas_file.conf&quot; \
+</code></pre>
+
+<p>This will add this to all your worker JVMs. You can refresh Kerberos credentials periodically and push credentials to Storm as <a href="../storm-drpc/#security">mentioned here</a>.</p></div>
         
     </div>
 
