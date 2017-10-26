@@ -14,7 +14,9 @@ You do not need to have two topics. You can have one but you should use multiple
 
 ## Setup
 
-Before setting up, you will obviously need a Kafka cluster setup with your topic(s) created. This cluster need only be a couple of machines. However, this depends on your query and result volumes. Generally, these are at most a few hundred or thousands of messages per second and a small Kafka cluster will suffice.
+Before setting up, you will need a Kafka cluster setup with your topic(s) created. This cluster need only be a couple of machines if it's devoted for Bullet. However, this depends on your query and result volumes. Generally, these are at most a few hundred or thousands of messages per second and a small Kafka cluster will suffice.
+
+To setup Kafka, follow the [instructions here](https://kafka.apache.org/quickstart).
 
 ### Plug into the Backend
 
@@ -67,3 +69,32 @@ You may choose to partition your topics for a couple of reasons:
 3. You may use two topics and partition one or both for sharding across multiple Web Service instances (and multiple instances in your Backend)
 
 You can accomplish all this with partition maps. You can configure what partitions your Publishers (Web Service or Backend) will write to using ```bullet.pubsub.kafka.request.partitions``` and what partitions your Subscribers will read from using ```bullet.pubsub.kafka.response.partitions```. Providing these to an instance of the Web Service or the Backend in the YAML file ensures that the Publishers in that instance only write to these request partitions and Subscribers only read from the response partitions. The Publishers will randomly adds one of the response partitions in the messages sent to ensure that the responses only arrive to one of those partitions this instance's Subscribers are waiting on. For more details, see the [configuration file](https://github.com/yahoo/bullet-kafka/blob/master/src/main/resources/bullet_kafka_defaults.yaml).
+
+## Security
+
+If you're using secure Kafka, you will need to do the necessary metadata setup to make sure your principals have access to your topic(s) for reading and writing. If you're using SSL for securing your Kafka cluster, you will need to add the necessary SSL certificates to the keystore for your JVM before launching the Web Service or the Backend.
+
+### Storm
+
+We have tested Kafka with [Bullet Storm](../releases.md#bullet-storm) using ```Kerberos``` from the Storm cluster and SSL from the Web Service. For Kerberos, you may need to add a ```JAAS``` [config file](https://docs.oracle.com/javase/7/docs/technotes/guides/security/jgss/tutorials/LoginConfigFile.html) to the [Storm BlobStore](http://storm.apache.org/releases/1.1.0/distcache-blobstore.html) and add it to your worker JVMs. To do this, you will need a JAAS configuration entry. For example, if your Kerberos KDC is shared with your Storm cluster's KDC, you may be adding a jaas_file.conf with
+
+```
+KafkaClient {
+   org.apache.storm.security.auth.kerberos.AutoTGTKrb5LoginModule required
+   serviceName="kafka";
+};
+```
+
+Put this file into Storm's BlobStore using:
+
+```
+storm blobstore create --file jaas_file.conf --acl o::rwa,u:$USER:rwa --repl-fctr 3 jaas_file.conf
+```
+
+Then while launching your topology, you should provide as arguments to the ```storm jar``` command, the following arguments:
+```
+-c topology.blobstore.map='{"jaas_file.conf": {} }' \
+-c topology.worker.childopts="-Djava.security.auth.login.config=./jaas_file.conf" \
+```
+
+This will add this to all your worker JVMs. You can refresh Kerberos credentials periodically and push credentials to Storm as [mentioned here](storm-drpc.md#security).
