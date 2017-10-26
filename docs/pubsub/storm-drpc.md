@@ -14,7 +14,7 @@ You can communicate with DRPC using [Apache Thrift](https://thrift.apache.org) o
     ```bash
       curl -s -X POST -d '{"id":"", "content":"{}"}' http://<DRPC_SERVER>:<DRPC_PORT>/drpc/<DRPC_FUNCTION_FROM_YOUR_BULLET_CONF>
     ```
-     to get a random record from your data instantly (if you left the Raw aggregation micro-batch size at the default of 1). The ```content``` above in the JSON is the actual (empty) Bullet query. This is a quick way to check if your topology is up and running!
+     to get a random record (inside a JSON representation of a PubSubMessage) from your data instantly if you left the Raw aggregation micro-batch size at the default of 1. The ```content``` above in the JSON is the actual (empty) Bullet query. This is a quick way to check if your topology is up and running!
 
 ## Setup
 

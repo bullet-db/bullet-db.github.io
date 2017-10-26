@@ -158,7 +158,7 @@ Test the Bullet topology by:
 curl -s -X POST -d '{"id":"", "content":"{}"}' http://localhost:3774/drpc/bullet-query
 ```
 
-You should get a random record from Bullet.
+You should get a random record (serialized as a String inside a JSON message sent back through the PubSub) from Bullet.
 
 !!! note "What is this data?"
 
@@ -179,9 +179,9 @@ cp $BULLET_EXAMPLES/storm/*jar-with-dependencies.jar $BULLET_HOME/service/bullet
 
 ```bash
 cd $BULLET_HOME/service
-java -Dloader.path=bullet-storm-jar-with-dependencies.jar -jar bullet-service.jar --bullet.pubsub.config=example_drpc_pubsub_config.yaml --bullet.schema.file=example_columns.json --server.port=9999  --logging.path=. --logging.file=log.txt > log.txt 2>&1 &
+java -Dloader.path=bullet-storm-jar-with-dependencies.jar -jar bullet-service.jar --bullet.pubsub.config=example_drpc_pubsub_config.yaml --bullet.schema.file=example_columns.json --server.port=9999  --logging.path=. --logging.file=log.txt &> log.txt &
 ```
-You can verify that it is up by running the Bullet query and getting the example columns through the API:
+You can verify that it is up by running a Bullet query or getting the example columns through the API:
 
 ```bash
 curl -s -H 'Content-Type: text/plain' -X POST -d '{}' http://localhost:9999/api/bullet/query

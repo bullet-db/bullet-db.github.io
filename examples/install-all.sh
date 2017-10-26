@@ -132,7 +132,7 @@ launch_bullet_storm() {
 }
 
 launch_bullet_web_service() {
-    local BULLET_WS_JAR="bullet-service-${BULLET_WS_VERSION}.jar"
+    local BULLET_WS_JAR="bullet-service-${BULLET_WS_VERSION}-embedded.jar"
     local BULLET_SERVICE_HOME="${BULLET_HOME}/service"
 
     println "Downloading Bullet Web Service ${BULLET_WS_VERSION}..."
@@ -147,7 +147,7 @@ launch_bullet_web_service() {
     cd "${BULLET_SERVICE_HOME}"
     java -Dloader.path=bullet-storm-jar-with-dependencies.jar -jar bullet-service.jar \
          --bullet.pubsub.config=example_drpc_pubsub_config.yaml --bullet.schema.file=example_columns.json \
-         --server.port=9999  --logging.path="${BULLET_SERVICE_HOME}" --logging.file=log.txt > log.txt 2>&1 &
+         --server.port=9999  --logging.path="${BULLET_SERVICE_HOME}" --logging.file=log.txt &> "${BULLET_SERVICE_HOME}/log.txt" &
 
     println "Sleeping for 15 s to ensure Bullet Web Service is up..."
     sleep 15
