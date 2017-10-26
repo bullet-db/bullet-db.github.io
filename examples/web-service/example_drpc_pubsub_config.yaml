@@ -1,0 +1,11 @@
+bullet.pubsub.context.name: "QUERY_SUBMISSION"
+bullet.pubsub.class.name: "com.yahoo.bullet.storm.drpc.DRPCPubSub"
+# The following are defaults but we are defining them here anyway
+bullet.pubsub.storm.drpc.servers:
+  - 127.0.0.1
+bullet.pubsub.storm.drpc.function: "bullet-query"
+bullet.pubsub.storm.drpc.http.protocol: "http"
+bullet.pubsub.storm.drpc.http.port: "3774"
+bullet.pubsub.storm.drpc.http.path: "drpc"
+bullet.pubsub.storm.drpc.http.connect.retry.limit: 3
+bullet.pubsub.storm.drpc.http.connect.timeout.ms: 1000

@@ -2,26 +2,21 @@
 # Settings not overridden will default to the defaults in bullet_storm_defaults.yaml in the bullet-storm artifact
 # and to the defaults in bullet_defaults.yaml in the bullet-core artifact.
 # Settings that start with bullet.topology are Storm settings and everything else are Bullet Core settings.
-bullet.topology.function: "bullet"
 bullet.topology.name: "bullet"
 bullet.topology.metrics.enable: false
 bullet.topology.metrics.built.in.enable: false
-bullet.topology.drpc.spout.parallelism: 1
-bullet.topology.drpc.spout.cpu.load: 20.0
-bullet.topology.drpc.spout.memory.on.heap.load: 256.0
-bullet.topology.drpc.spout.memory.off.heap.load: 192.0
-bullet.topology.prepare.bolt.parallelism: 1
-bullet.topology.prepare.bolt.cpu.load: 10.0
-bullet.topology.prepare.bolt.memory.on.heap.load: 128.0
-bullet.topology.prepare.bolt.memory.off.heap.load: 192.0
+bullet.topology.query.spout.parallelism: 1
+bullet.topology.query.spout.cpu.load: 30.0
+bullet.topology.query.spout.memory.on.heap.load: 256.0
+bullet.topology.query.spout.memory.off.heap.load: 192.0
 bullet.topology.filter.bolt.parallelism: 1
 bullet.topology.filter.bolt.cpu.load: 100.0
 bullet.topology.filter.bolt.memory.on.heap.load: 256.0
 bullet.topology.filter.bolt.memory.off.heap.load: 192.0
 bullet.topology.return.bolt.parallelism: 1
-bullet.topology.return.bolt.cpu.load: 10.0
-bullet.topology.return.bolt.memory.on.heap.load: 128.0
-bullet.topology.return.bolt.memory.off.heap.load: 192.0
+bullet.topology.result.bolt.cpu.load: 10.0
+bullet.topology.result.bolt.memory.on.heap.load: 128.0
+bullet.topology.result.bolt.memory.off.heap.load: 192.0
 bullet.topology.join.bolt.parallelism: 1
 bullet.topology.join.bolt.cpu.load: 20.0
 bullet.topology.join.bolt.memory.on.heap.load: 128.0
@@ -77,3 +72,8 @@ bullet.result.metadata.metrics:
       key: "active_items"
 bullet.record.inject.timestamp.enable: true
 bullet.record.inject.timestamp.key: "receive_timestamp"
+
+# Storm DRPC PubSub settings
+bullet.pubsub.context.name: "QUERY_PROCESSING"
+bullet.pubsub.class.name: "com.yahoo.bullet.storm.drpc.DRPCPubSub"
+bullet.pubsub.storm.drpc.function: "bullet-query"

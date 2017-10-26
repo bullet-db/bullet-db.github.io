@@ -1,4 +1,4 @@
-# Storm DRPC PubSub 
+# Storm DRPC PubSub
 
 Bullet on [Storm](https://storm.apache.org/) can use [Storm DRPC](http://storm.apache.org/releases/1.0.0/Distributed-RPC.html) as a PubSub layer. DRPC or Distributed Remote Procedure Call, is built into Storm and consists of a set of servers that are part of the Storm cluster.
 
@@ -12,7 +12,7 @@ You can communicate with DRPC using [Apache Thrift](https://thrift.apache.org) o
 
     While DRPC exposes a [Thrift](http://thrift.apache.org) endpoint, the PubSub implementation uses REST. When you launch your topology with the DRPC PubSub, you can POST a JSON Bullet PubSubMessage containing a String JSON query to a DRPC server directly with the function name that you specify in the [Bullet configuration](#storm-backend). For example,
     ```bash
-      curl -s -X POST -d '{"id":"", "content":{}}' http://<DRPC_SERVER>:<DRPC_PORT>/drpc/<DRPC_FUNCTION_FROM_YOUR_BULLET_CONF>
+      curl -s -X POST -d '{"id":"", "content":"{}"}' http://<DRPC_SERVER>:<DRPC_PORT>/drpc/<DRPC_FUNCTION_FROM_YOUR_BULLET_CONF>
     ```
      to get a random record from your data instantly (if you left the Raw aggregation micro-batch size at the default of 1). The ```content``` above in the JSON is the actual (empty) Bullet query. This is a quick way to check if your topology is up and running!
 

@@ -2,10 +2,9 @@
 
 set -euo pipefail
 
-BULLET_EXAMPLES_VERSION=0.3.4
+BULLET_EXAMPLES_VERSION=0.4.0
 BULLET_UI_VERSION=0.4.0
-BULLET_WS_VERSION=0.0.1
-JETTY_VERSION=9.3.16.v20170120
+BULLET_WS_VERSION=0.1.1
 STORM_VERSION=1.0.3
 NVM_VERSION=0.33.1
 NODE_VERSION=6.9.4
@@ -21,7 +20,6 @@ print_versions() {
     println "Bullet Examples:    ${BULLET_EXAMPLES_VERSION}"
     println "Bullet Web Service: ${BULLET_WS_VERSION}"
     println "Bullet UI:          ${BULLET_UI_VERSION}"
-    println "Jetty:              ${JETTY_VERSION}"
     println "Storm:              ${STORM_VERSION}"
     println "NVM:                ${NVM_VERSION}"
     println "Node.js:            ${NODE_VERSION}"
@@ -129,48 +127,39 @@ launch_bullet_storm() {
     println "Testing the Storm topology"
     println ""
     println "Getting one random record from the Bullet topology..."
-    curl -s -X POST -d '{}' http://localhost:3774/drpc/bullet
-    println "Done!"
-}
-
-install_jetty() {
-    local SERVICE="${BULLET_HOME}/service"
-    local JETTY_DISTRIBUTION="jetty-distribution-${JETTY_VERSION}.zip"
-
-    println "Downloading Jetty ${JETTY_VERSION}..."
-    download "http://central.maven.org/maven2/org/eclipse/jetty/jetty-distribution/${JETTY_VERSION}" "${JETTY_DISTRIBUTION}"
-
-    println "Installing Jetty..."
-    unzip -qq "${BULLET_DOWNLOADS}/${JETTY_DISTRIBUTION}" -d "${SERVICE}"
+    curl -s -X POST -d '{"id":"", "content":"{}"}' http://localhost:3774/drpc/bullet-query
     println "Done!"
 }
 
 launch_bullet_web_service() {
-    local BULLET_WS_WAR="bullet-service-${BULLET_WS_VERSION}.war"
-    local JETTY_INSTALLATION="${BULLET_HOME}/service/jetty-distribution-${JETTY_VERSION}"
+    local BULLET_WS_JAR="bullet-service-${BULLET_WS_VERSION}.jar"
+    local BULLET_SERVICE_HOME="${BULLET_HOME}/service"
 
     println "Downloading Bullet Web Service ${BULLET_WS_VERSION}..."
-    download "http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/${BULLET_WS_VERSION}" "${BULLET_WS_WAR}"
+    download "http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/${BULLET_WS_VERSION}" "${BULLET_WS_JAR}"
 
-    println "Configuring Bullet Web Service..."
-    cp "${BULLET_DOWNLOADS}/${BULLET_WS_WAR}" "${JETTY_INSTALLATION}/webapps/bullet-service.war"
-    cp "${BULLET_EXAMPLES}/web-service/"example_* "${JETTY_INSTALLATION}"
+    println "Configuring Bullet Web Service and plugging in Storm DRPC PubSub..."
+    cp "${BULLET_DOWNLOADS}/${BULLET_WS_JAR}" "${BULLET_SERVICE_HOME}/bullet-service.jar"
+    cp "${BULLET_EXAMPLES}/storm"/*jar-with-dependencies.jar "${BULLET_SERVICE_HOME}/bullet-storm-jar-with-dependencies.jar"
+    cp "${BULLET_EXAMPLES}/web-service/"example_* "${BULLET_SERVICE_HOME}/"
 
     println "Launching Bullet Web Service..."
-    cd "${JETTY_INSTALLATION}"
-    java -jar -Dbullet.service.configuration.file="example_context.properties" -Djetty.http.port=9999 start.jar > logs/out 2>&1 &
+    cd "${BULLET_SERVICE_HOME}"
+    java -Dloader.path=bullet-storm-jar-with-dependencies.jar -jar bullet-service.jar \
+         --bullet.pubsub.config=example_drpc_pubsub_config.yaml --bullet.schema.file=example_columns.json \
+         --server.port=9999  --logging.path="${BULLET_SERVICE_HOME}" --logging.file=log.txt > log.txt 2>&1 &
 
-    println "Sleeping for 30 s to ensure Bullet Web Service is up..."
-    sleep 30
+    println "Sleeping for 15 s to ensure Bullet Web Service is up..."
+    sleep 15
 
     println "Testing the Web Service"
     println ""
     println "Getting one random record from Bullet through the Web Service..."
-    curl -s -X POST -d '{}' http://localhost:9999/bullet-service/api/drpc
+    curl -s -H 'Content-Type: text/plain' -X POST -d '{}' http://localhost:9999/api/bullet/query
     println ""
     println "Getting column schema from the Web Service..."
     println ""
-    curl -s http://localhost:9999/bullet-service/api/columns
+    curl -s http://localhost:9999/api/bullet/columns
     println "Finished Bullet Web Service test"
 }
 
@@ -227,12 +216,12 @@ cleanup() {
 
     pkill -f "[a]pache-storm-${STORM_VERSION}"
     pkill -f "[e]xpress-server.js"
-    pkill -f "[e]xample_context.properties"
+    pkill -f "[e]xample_drpc_pubsub_config.yaml"
 
     sleep 3
 
     rm -rf "${BULLET_EXAMPLES}" "${BULLET_HOME}/backend" "${BULLET_HOME}/service" \
-           "${BULLET_HOME}/ui" /tmp/dev-storm-zookeeper /tmp/jetty-*
+           "${BULLET_HOME}/ui" /tmp/dev-storm-zookeeper
 
     set -e
 }
@@ -247,7 +236,7 @@ unset_all() {
     unset -f print_versions println download export_vars setup \
              install_bullet_examples \
              install_storm launch_storm launch_bullet_storm \
-             install_jetty launch_bullet_web_service \
+             launch_bullet_web_service \
              install_node launch_bullet_ui \
              cleanup teardown unset_all launch
 }
@@ -265,7 +254,6 @@ launch() {
     launch_storm
     launch_bullet_storm
 
-    install_jetty
     launch_bullet_web_service
 
     install_node

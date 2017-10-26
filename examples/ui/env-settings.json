@@ -1,10 +1,10 @@
 {
   "default": {
     "queryHost": "http://localhost:9999",
-    "queryNamespace": "bullet-service/api",
-    "queryPath": "drpc",
+    "queryNamespace": "api/bullet",
+    "queryPath": "query",
     "schemaHost": "http://localhost:9999",
-    "schemaNamespace": "bullet-service/api",
+    "schemaNamespace": "api/bullet",
     "helpLinks": [
       {
         "name": "Examples",

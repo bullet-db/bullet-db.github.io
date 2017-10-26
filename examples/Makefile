@@ -17,5 +17,3 @@ build:
 	cp ui/* bullet-examples/ui
 	tar -czf examples_artifacts.tar.gz bullet-examples/*
 	rm -rf bullet-examples
-
-

@@ -90,7 +90,7 @@ java -Dloader.path=bullet-kafka.jar -jar bullet-service.jar --bullet.pubsub.conf
 
 This launches the Web Service using Kafka as the PubSub, no custom schema (the default sample columns) and the default values in [settings](https://github.com/yahoo/bullet-service/blob/master/src/main/resources/application.yaml). It also uses a root logging level of ```INFO```.
 
-You could also tweak the various Bullet Web Service settings by passing them in to the command above. You could also have a custom ```application.yaml``` file (you can change the name using ```spring.config.name```) and pass it to the Web Service instead by running:
+You could also tweak the various Bullet Web Service or Spring Boot settings by passing them in to the command above. For instance, you could also provide a path to your schema file using ```--bullet.schema.file=/path/to/schema.json```. You could also have a custom ```application.yaml``` file (you can change the name using ```spring.config.name```) and pass it to the Web Service instead by running:
 
 ```bash
 java -Dloader.path=bullet-kafka.jar -jar bullet-service.jar --spring.config.location=application.yaml

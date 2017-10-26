@@ -1,11 +1,12 @@
 # Quick Start
 
-This section gets you running a mock instance of Bullet to play around with. The instance will run using [Bullet on Storm](backend/storm-setup.md). Since we do not have an actual data source, we will produce some fake data and convert it into [Bullet Records](backend/ingestion.md) in a [custom Storm spout](https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/java/com/yahoo/bullet/storm/examples/RandomSpout.java). If you want to use Bullet for your data, you will need to do read and convert your data to Bullet Records in a similar manner.
+This section gets you running a mock instance of Bullet to play around with. The instance will run using [Bullet on Storm](backend/storm-setup.md) and use the [DRPC Pubsub](pubsub/storm-drpc.md). Since we do not have an actual data source, we will produce some fake data and convert it into [Bullet Records](backend/ingestion.md) in a [custom Storm spout](https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/java/com/yahoo/bullet/storm/examples/RandomSpout.java). If you want to use Bullet for your data, you will need to do read and convert your data to Bullet Records in a similar manner.
 
 At the end of this section, you will have:
 
-  * Setup the Bullet topology using a custom spout on [bullet-storm-0.5.0](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.5.0)
-  * Setup the [Web Service](ws/setup.md) talking to the topology and serving a schema for your UI using [bullet-service-0.0.1](https://github.com/yahoo/bullet-service/releases/tag/bullet-service-0.0.1)
+  * Setup the Bullet topology using a custom spout on [bullet-storm-0.6.2](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.6.2)
+  * Setup the [Web Service](ws/setup.md) talking to the topology and serving a schema for your UI using [bullet-service-0.1.1](https://github.com/yahoo/bullet-service/releases/tag/bullet-service-0.1.1)
+  * Setup the [DRPC PubSub](pubsub/storm-drpc.md) talking to the topology and Web Service.
   * Setup the [UI](ui/setup.md) talking to the Web Service using [bullet-ui-0.4.0](https://github.com/yahoo/bullet-ui/releases/tag/v0.4.0)
 
 **Prerequisites**
@@ -19,7 +20,7 @@ At the end of this section, you will have:
 Simply run:
 
 ```bash
-curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.3.4/examples/install-all.sh | bash
+curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.4.0/examples/install-all.sh | bash
 ```
 
 This will setup a local Storm cluster, a Bullet running on it, the Bullet Web Service and a Bullet UI for you. Once everything has launched, you should be able to go to the Bullet UI running locally at [http://localhost:8800](http://localhost:8800). You can then [**continue this guide from here**](#what-did-we-do).
@@ -42,7 +43,7 @@ mkdir -p $BULLET_HOME/backend/storm
 mkdir -p $BULLET_HOME/service
 mkdir -p $BULLET_HOME/ui
 cd $BULLET_HOME
-curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.3.4/examples_artifacts.tar.gz
+curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.4.0/examples_artifacts.tar.gz
 tar -xzf examples_artifacts.tar.gz
 export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 ```
@@ -154,7 +155,7 @@ Visit the UI and see if the topology is up. You should see the ```DataSource``` 
 Test the Bullet topology by:
 
 ```bash
-curl -s -X POST -d '{}' http://localhost:3774/drpc/bullet
+curl -s -X POST -d '{"id":"", "content":"{}"}' http://localhost:3774/drpc/bullet-query
 ```
 
 You should get a random record from Bullet.
@@ -165,38 +166,31 @@ You should get a random record from Bullet.
 
 ### Setting up the Bullet Web Service
 
-#### Step 7: Install Jetty
+#### Step 7: Install the Bullet Web Service
 
 ```bash
 cd $BULLET_HOME/service
-curl -O http://central.maven.org/maven2/org/eclipse/jetty/jetty-distribution/9.3.16.v20170120/jetty-distribution-9.3.16.v20170120.zip
-unzip jetty-distribution-9.3.16.v20170120.zip
+curl -Lo bullet-service.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/0.1.1/bullet-service-0.1.1-embedded.jar
+cp $BULLET_EXAMPLES/web-service/example* $BULLET_HOME/service/
+cp $BULLET_EXAMPLES/storm/*jar-with-dependencies.jar $BULLET_HOME/service/bullet-storm-jar-with-dependencies.jar
 ```
 
-#### Step 8: Install the Bullet Web Service
+#### Step 8: Launch the Web Service
 
 ```bash
-cd jetty-distribution-9.3.16.v20170120
-curl -Lo webapps/bullet-service.war http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/0.0.1/bullet-service-0.0.1.war
-cp $BULLET_EXAMPLES/web-service/example_* $BULLET_HOME/service/jetty-distribution-9.3.16.v20170120
-```
-
-#### Step 9: Launch the Web Service
-
-```bash
-cd $BULLET_HOME/service/jetty-distribution-9.3.16.v20170120
-java -jar -Dbullet.service.configuration.file="example_context.properties" -Djetty.http.port=9999 start.jar > logs/out 2>&1 &
+cd $BULLET_HOME/service
+java -Dloader.path=bullet-storm-jar-with-dependencies.jar -jar bullet-service.jar --bullet.pubsub.config=example_drpc_pubsub_config.yaml --bullet.schema.file=example_columns.json --server.port=9999  --logging.path=. --logging.file=log.txt > log.txt 2>&1 &
 ```
 You can verify that it is up by running the Bullet query and getting the example columns through the API:
 
 ```bash
-curl -s -X POST -d '{}' http://localhost:9999/bullet-service/api/drpc
-curl -s http://localhost:9999/bullet-service/api/columns
+curl -s -H 'Content-Type: text/plain' -X POST -d '{}' http://localhost:9999/api/bullet/query
+curl -s http://localhost:9999/api/bullet/columns
 ```
 
 ### Setting up the Bullet UI
 
-#### Step 10: Install Node
+#### Step 9: Install Node
 
 ```bash
 curl -s https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
@@ -205,7 +199,7 @@ nvm install v6.9.4
 nvm use v6.9.4
 ```
 
-#### Step 11: Install the Bullet UI
+#### Step 10: Install the Bullet UI
 
 ```bash
 cd $BULLET_HOME/ui
@@ -214,7 +208,7 @@ tar -xzf bullet-ui-v0.4.0.tar.gz
 cp $BULLET_EXAMPLES/ui/env-settings.json config/
 ```
 
-#### Step 12: Launch the UI
+#### Step 11: Launch the UI
 
 ```bash
 PORT=8800 node express-server.js &
@@ -233,7 +227,7 @@ Visit [http://localhost:8800](http://localhost:8800) to query your topology with
 If you were using the [Install Script](#install-script) or if you don't want to manually bring down everything, you can run:
 
 ```bash
-curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.3.4/examples/install-all.sh | bash -s cleanup
+curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.4.0/examples/install-all.sh | bash -s cleanup
 ```
 
 If you were performing the steps yourself, you can also manually cleanup **all the components and all the downloads** using:
@@ -241,7 +235,7 @@ If you were performing the steps yourself, you can also manually cleanup **all t
 |                |                                                                  |
 | -------------- | ---------------------------------------------------------------- |
 | UI             | ```pkill -f [e]xpress-server.js```                               |
-| Web Service    | ```pkill -f [e]xample_context.properties```                      |
+| Web Service    | ```pkill -f [e]xample_drpc_pubsub_config.yaml```                      |
 | Storm          | ```pkill -f [a]pache-storm-1.0.3```                              |
 | File System    | ```rm -rf $BULLET_HOME /tmp/dev-storm-zookeeper /tmp/jetty-*```  |
 
@@ -349,9 +343,34 @@ This method generates some fields randomly and inserts them into a BulletRecord.
 
 If you put Bullet on your data, you will need to write a Spout (or a topology if your reading is complex), that reads from your data source and emits BulletRecords with the fields you wish to be query-able placed into a BulletRecord similar to this example.
 
+### PubSub
+
+We used the [DRPC PubSub](pubsub/storm-drpc.md) since we were using the Storm Backend. This code was included in the Bullet Storm artifact that we downloaded (the JAR with dependencies). We configured the Backend to use this PubSub by adding these settings to the YAML file that we passed to our Storm topology. Notice that we set the context to ```QUERY_PROCESSING``` since this is the Backend.
+
+```yaml
+bullet.pubsub.context.name: "QUERY_PROCESSING"
+bullet.pubsub.class.name: "com.yahoo.bullet.storm.drpc.DRPCPubSub"
+bullet.pubsub.storm.drpc.function: "bullet-query"
+```
+
+For the Web Service, we passed in a YAML file that pointed to our DRPC server that was part of the Storm cluster we launched. Notice that we set the context to ```QUERY_SUBMISSION``` since this is the Web Service.
+
+```yaml
+bullet.pubsub.context.name: "QUERY_SUBMISSION"
+bullet.pubsub.class.name: "com.yahoo.bullet.storm.drpc.DRPCPubSub"
+bullet.pubsub.storm.drpc.servers:
+  - 127.0.0.1
+bullet.pubsub.storm.drpc.function: "bullet-query"
+bullet.pubsub.storm.drpc.http.protocol: "http"
+bullet.pubsub.storm.drpc.http.port: "3774"
+bullet.pubsub.storm.drpc.http.path: "drpc"
+bullet.pubsub.storm.drpc.http.connect.retry.limit: 3
+bullet.pubsub.storm.drpc.http.connect.timeout.ms: 1000
+```
+
 ### Web Service
 
-We launched the Web Service using two custom files - a properties file and JSON schema file.
+We launched the Web Service using two custom files - a PubSub configuration YAML file and JSON schema file.
 
 The JSON columns file contains the schema for our data specified in JSON. Since our schema is not going to change, we use the Web Service to serve it from a file. If your schema changes dynamically, you will need to provide your own endpoint to the UI.
 
@@ -383,20 +402,7 @@ The following is a snippet from the [JSON file](https://github.com/yahoo/bullet-
     }
 ]
 ```
-The [example properties file](https://github.com/yahoo/bullet-docs/blob/master/examples/web-service/example_context.properties) points to the DRPC host, port, and path as well points to the custom columns file.
-
-```
-drpc.servers=localhost
-drpc.port=3774
-drpc.path=drpc/bullet
-drpc.retry.limit=3
-drpc.connect.timeout=1000
-columns.file=example_columns.json
-columns.schema.version=1.0
-```
-
-```drpc.servers``` is a CSV entry that contains the various DRPC servers in your Storm cluster. If you [visit the Storm UI](http://localhost:8080) and search in the ```Nimbus Configuration``` section, you can find the list of DRPC servers for your cluster. Similarly, ```drpc.port``` in the properties file is ```drpc.http.port``` in ```Nimbus Configuration```. The ```drpc.path``` is the constant string ```drpc/``` followed by the value of the ```topology.function``` setting in bullet_settings.yaml.
-
+The contents of the [PubSub configuration file](https://github.com/yahoo/bullet-docs/blob/master/examples/web-service/example_drpc_pubsub_config.yaml) was discussed in the [PubSub section above](#pubsub).
 
 ### UI
 
@@ -406,10 +412,10 @@ Finally, we configured the UI with the custom environment specific settings file
 {
   "default": {
     "queryHost": "http://localhost:9999",
-    "queryNamespace": "bullet-service/api",
-    "queryPath": "drpc",
+    "queryNamespace": "api/bullet",
+    "queryPath": "query",
     "schemaHost": "http://localhost:9999",
-    "schemaNamespace": "bullet-service/api",
+    "schemaNamespace": "api/bullet",
     "helpLinks": [
       {
         "name": "Examples",
