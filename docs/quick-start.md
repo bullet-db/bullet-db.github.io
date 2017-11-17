@@ -221,6 +221,9 @@ Visit [http://localhost:8800](http://localhost:8800) to query your topology with
     If you access the UI from another machine than where your UI is actually running, you will need to edit ```config/env-settings.json```. Since the UI is a client-side app, the machine that your browser is running on will fetch the UI and attempt to use these settings to talk to the Web Service. Since they point to localhost by default, your browser will attempt to connect there and fail. An easy fix is to change ```localhost``` in your env-settings.json to point to the host name where you will hosting the UI. This will be the same as the UI host you use in the browser. You can also do a local port forward on the machine accessing the UI by running:
     ```ssh -N -L 8800:localhost:8800 -L 9999:localhost:9999 hostname-of-the-quickstart-components 2>&1```
 
+##  Playing around with the instance
+
+Check out and follow along with the [UI Usage](ui/usage.md) page as it shows you some queries you can run using this UI.
 
 ## Teardown
 
@@ -465,7 +468,3 @@ Finally, we configured the UI with the custom environment specific settings file
 ```
 
 Since we served our schema through the same Web Service as our queries, both these point to our Web Service. Note that there is no ```schemaPath``` because it must be the constant string ```columns```. If you define a custom endpoint for your schema, you must ensure that it can be obtained by making a GET request to ```schemaHost/schemaNamespace/columns```.
-
-##  Playing around with the instance
-
-Check out and follow along with the [UI Usage](ui/usage.md) page as it shows you some queries you can run using this UI.
