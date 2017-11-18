@@ -6,25 +6,23 @@ The built documentation can be accessed [here](https://yahoo.github.io/bullet-do
 
 ## Building the documentation
 
-You need [mkdocs](http://www.mkdocs.org/#installation) installed to build the documentation.
-
-This also uses the mkdocs theme : [Cinder](http://sourcefoundry.org/cinder/).
-
-Since Cinder has not been upgraded in a while, you will need to bring in changes in this [PR](https://github.com/chrissimpkins/cinder/pull/26) of Cinder found here: [twardoch/clinker-mktheme](https://github.com/twardoch/clinker-mktheme/tree/2016-12-22)
-and add on this fix in this [PR](https://github.com/twardoch/clinker-mktheme/pull/10)
-
-You will also need Python installed.
+You will need Python installed.
 
 ```bash
 sudo pip install virtualenv
 virtualenv mkdocs
 source mkdocs/bin/activate
+pip install mkdocs==0.16.3 
 pip install mkdocs-cinder
-pip install git+git://github.com/twardoch/clinker-mktheme.git@2016-12-22 --upgrade
+pip install git+git://github.com/twardoch/clinker-mktheme.git@master --upgrade
 git clone git@github.com:yahoo/bullet-docs.git
 cd bullet-docs
-mkdocs build
+mkdocs serve
 ```
+
+The above commands will install [mkdocs](http://www.mkdocs.org/#installation) along with the mkdocs theme : [Cinder](http://sourcefoundry.org/cinder/).
+
+Since Cinder has not been upgraded in a while, it uses the changes in this [PR](https://github.com/chrissimpkins/cinder/pull/26) of Cinder found here: [twardoch/clinker-mktheme](https://github.com/twardoch/clinker-mktheme/tree/master).
 
 ## Building the examples
 

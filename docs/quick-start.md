@@ -75,6 +75,8 @@ storm logviewer &
 storm supervisor &
 ```
 
+It may take 30-60 seconds for all the components to launch.
+
 Once everything is up without errors, visit [http://localhost:8080](http://localhost:8080) and see if the Storm UI loads.
 
 #### Step 4: Test Storm (Optional)
