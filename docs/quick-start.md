@@ -52,14 +52,14 @@ export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 
 ```bash
 cd $BULLET_HOME/backend
-curl -O http://apache.org/dist/storm/apache-storm-1.0.3/apache-storm-1.0.3.zip
-unzip apache-storm-1.0.3.zip
-export PATH=$(pwd)/apache-storm-1.0.3/bin/:$PATH
+curl -O http://apache.org/dist/storm/apache-storm-1.1.2/apache-storm-1.1.2.zip
+unzip apache-storm-1.1.2.zip
+export PATH=$(pwd)/apache-storm-1.1.2/bin/:$PATH
 ```
 Add a DRPC server setting to the Storm config:
 
 ```bash
-echo 'drpc.servers: ["127.0.0.1"]' >> apache-storm-1.0.3/conf/storm.yaml
+echo 'drpc.servers: ["127.0.0.1"]' >> apache-storm-1.1.2/conf/storm.yaml
 ```
 
 #### Step 3: Launch Storm components
@@ -84,7 +84,7 @@ Once everything is up without errors, visit [http://localhost:8080](http://local
 Before Bullet, test to see if Storm and DRPC are up and running by launching a example topology that comes with your Storm installation:
 
 ```bash
-storm jar apache-storm-1.0.3/examples/storm-starter/storm-starter-topologies-1.0.3.jar org.apache.storm.starter.BasicDRPCTopology topology
+storm jar apache-storm-1.1.2/examples/storm-starter/storm-starter-topologies-1.1.2.jar org.apache.storm.starter.BasicDRPCTopology topology
 ```
 
 Visit your UI with a browser and see if a topology with name "topology" is running. If everything is good, you should be able to ping DRPC with:
@@ -241,7 +241,7 @@ If you were performing the steps yourself, you can also manually cleanup **all t
 | -------------- | ---------------------------------------------------------------- |
 | UI             | ```pkill -f [e]xpress-server.js```                               |
 | Web Service    | ```pkill -f [e]xample_drpc_pubsub_config.yaml```                      |
-| Storm          | ```pkill -f [a]pache-storm-1.0.3```                              |
+| Storm          | ```pkill -f [a]pache-storm-1.1.2```                              |
 | File System    | ```rm -rf $BULLET_HOME /tmp/dev-storm-zookeeper /tmp/jetty-*```  |
 
 This does *not* delete ```$HOME/.nvm``` and some extra lines nvm may have added to your ```$HOME/{.profile, .bash_profile, .zshrc, .bashrc}```.
