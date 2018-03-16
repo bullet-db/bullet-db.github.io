@@ -48,7 +48,7 @@ tar -xzf examples_artifacts.tar.gz
 export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 ```
 
-#### Step 2: Install Storm 1.0
+#### Step 2: Install Storm 1.1
 
 ```bash
 cd $BULLET_HOME/backend
