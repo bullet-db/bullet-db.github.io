@@ -120,6 +120,7 @@ public class RandomSpout extends BaseRichSpout {
         if (timeNow <= nextIntervalStart && generatedThisPeriod < maxPerPeriod) {
             outputCollector.emit(new Values(generateRecord()), DUMMY_ID);
             generatedThisPeriod++;
+            return;
         }
         if (timeNow > nextIntervalStart) {
             log.info("Generated {} tuples out of {}", generatedThisPeriod, maxPerPeriod);
