@@ -80,6 +80,12 @@ class RandomReceiver(val config: BulletSparkConfig)
         generatedThisPeriod = 0
         periodCount += 1
       }
+      // It is courteous to sleep for a short time.
+      try
+        Thread.sleep(1)
+      catch {
+        case e: InterruptedException => logger.error("Error: ", e)
+      }
     }
   }
 
