@@ -3,7 +3,7 @@
  *  Licensed under the terms of the Apache License, Version 2.0.
  *  See the LICENSE file associated with the project for terms.
  */
-package com.yahoo.bullet.spark.receiver
+package com.yahoo.bullet.spark.examples.receiver
 
 import java.util.UUID
 
@@ -79,12 +79,6 @@ class RandomReceiver(val config: BulletSparkConfig)
         nextIntervalStart = timeNow + period
         generatedThisPeriod = 0
         periodCount += 1
-      }
-      // It is courteous to sleep for a short time if you're not emitting anything...
-      try
-        Thread.sleep(1)
-      catch {
-        case e: InterruptedException => logger.error("Error: ", e)
       }
     }
   }
