@@ -1,0 +1,35 @@
+########################################################################################################################
+######################################### Bullet Spark Settings #####################################
+########################################################################################################################
+bullet.spark.data.producer.class.name: "com.yahoo.bullet.spark.receiver.RandomReceiver"
+bullet.spark.batch.duration.ms: 1000
+bullet.spark.receiver.query.block.size: 1
+bullet.spark.receiver.query.coalesce.partitions: 10
+bullet.spark.data.producer.parallelism: 1
+bullet.spark.checkpoint.dir: "/tmp/spark-checkpoint"
+bullet.spark.recover.from.checkpoint.enable: false
+bullet.spark.app.name: "BulletSparkStreamingJob"
+bullet.spark.metrics.enabled: false
+bullet.spark.filter.partition.parallel.mode.enabled: false
+bullet.spark.filter.partition.parallel.mode.parallelism: 4
+bullet.spark.filter.partition.parallel.mode.min.query.threshold: 10
+
+########################################################################################################################
+######################################### Spark Streaming Settings #####################################
+########################################################################################################################
+spark.serializer: "org.apache.spark.serializer.KryoSerializer"
+spark.closure.serializer: "org.apache.spark.serializer.KryoSerializer"
+spark.kryo.registrator: "com.yahoo.bullet.spark.utils.BulletKryoRegistrator"
+spark.streaming.stopGracefullyOnShutdown: "true"
+spark.streaming.receiver.writeAheadLog.enable: "false"
+spark.streaming.driver.writeAheadLog.allowBatching: "false"
+
+########################################################################################################################
+######################################### Query PubSub Settings ########################################
+########################################################################################################################
+# This is the type of PubSub context to use
+bullet.pubsub.context.name: "QUERY_PROCESSING"
+# This is the name of the concrete implementation of PubSub to use.
+bullet.pubsub.class.name: "com.yahoo.bullet.pubsub.rest.RESTPubSub"
+bullet.pubsub.rest.query.urls:
+    - "http://localhost:9999/api/bullet/pubsub/query"
