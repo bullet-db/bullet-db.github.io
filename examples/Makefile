@@ -13,7 +13,7 @@ build:
 	cp storm/src/main/resources/bullet_settings.yaml bullet-examples/backend/storm
 	mkdir -p bullet-examples/backend/spark
 	cd spark && mvn package
-	cp spark/target/*-SNAPSHOT.jar bullet-examples/backend/spark
+	cp spark/target/bullet-spark-example-0.0.1-SNAPSHOT.jar bullet-examples/backend/spark/bullet-spark-example.jar
 	cp spark/src/main/resources/bullet_spark_settings.yaml bullet-examples/backend/spark
 	mkdir -p bullet-examples/web-service
 	cp web-service/* bullet-examples/web-service
