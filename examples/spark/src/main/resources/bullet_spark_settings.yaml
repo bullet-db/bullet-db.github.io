@@ -1,7 +1,7 @@
 ########################################################################################################################
 ######################################### Bullet Spark Settings #####################################
 ########################################################################################################################
-bullet.spark.data.producer.class.name: "com.yahoo.bullet.spark.receiver.RandomReceiver"
+bullet.spark.data.producer.class.name: "com.yahoo.bullet.spark.examples.RandomProducer"
 bullet.spark.batch.duration.ms: 1000
 bullet.spark.receiver.query.block.size: 1
 bullet.spark.receiver.query.coalesce.partitions: 10
@@ -27,9 +27,9 @@ spark.streaming.driver.writeAheadLog.allowBatching: "false"
 ########################################################################################################################
 ######################################### Query PubSub Settings ########################################
 ########################################################################################################################
-# This is the type of PubSub context to use
 bullet.pubsub.context.name: "QUERY_PROCESSING"
-# This is the name of the concrete implementation of PubSub to use.
-bullet.pubsub.class.name: "com.yahoo.bullet.pubsub.rest.RESTPubSub"
-bullet.pubsub.rest.query.urls:
-    - "http://localhost:9999/api/bullet/pubsub/query"
+bullet.pubsub.class.name: "com.yahoo.bullet.kafka.KafkaPubSub"
+bullet.pubsub.kafka.bootstrap.servers: "localhost:9092"
+bullet.pubsub.kafka.request.topic.name: "bullet.requests"
+bullet.pubsub.kafka.response.topic.name: "bullet.responses"
+

@@ -2,7 +2,7 @@
   "default": {
     "queryHost": "http://localhost:9999",
     "queryNamespace": "api/bullet",
-    "queryPath": "query",
+    "queryPath": "sse-query",
     "schemaHost": "http://localhost:9999",
     "schemaNamespace": "api/bullet",
     "helpLinks": [

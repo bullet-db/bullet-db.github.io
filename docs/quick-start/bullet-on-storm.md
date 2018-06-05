@@ -19,7 +19,7 @@ DO THIS LATER (one-liner?)
 
 ## Manual Installation
 
-### Setting up the Bullet Web Service and Built-In REST Pub-Sub
+### Setup the Bullet Web Service and REST Pub-Sub
 
 Before we launch the Bullet Spark backend, we first need to setup the Bullet Web Service and PubSub layer. The bullet-core repo provides a [pubsub.rest](https://github.com/bullet-db/bullet-core/tree/master/src/main/java/com/yahoo/bullet/pubsub/rest) package which is a simple implementation of the PubSub layer using REST endpoints. The bullet web service can be configured to use this built-in REST PubSub to provide the additional REST endpoints needed to serve as a PubSub layer as well as the web service.
 
@@ -57,7 +57,7 @@ The Web Service usually takes ~10-15 seconds to start.
 You can check the status of the Web Service by looking at the Web Service log:
 
 ```bash
-vim $BULLET_HOME/service/log.txt
+cat $BULLET_HOME/service/log.txt
 ```
 
 The log should contain a message that reads something like `Started Application in X seconds` (usually the last line of the file if the web service has been run recently).
@@ -89,7 +89,7 @@ curl http://localhost:9999/api/bullet/pubsub/query
 This should print `'{}'` to the screen, indicating we have successfully written and then read a fake empty query from the PubSub layer. Subsequent reads from this endpoint will return nothing because no more queries have been written to the PubSub endpoint.
 
 
-### Install Spark 2.2.1
+### Setup Bullet Backend on Spark
 
 We will run the bullet-spark backend using [Spark 2.2.1](https://spark.apache.org/releases/spark-release-2-2-1.html).
 
@@ -109,105 +109,31 @@ cp $BULLET_HOME/bullet-examples/backend/spark/* $BULLET_SPARK
 curl -Lo bullet-spark.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-spark/0.1.1/bullet-spark-0.1.1-standalone.jar
 ```
 
-#### Step 8: Launch the Spark Backend
+#### Step 8: Launch the Bullet Spark Backend
 
 ```bash
 $BULLET_SPARK/spark-2.2.1-bin-hadoop2.7/bin/spark-submit --master local[10] --class com.yahoo.bullet.spark.BulletSparkStreamingMain --driver-class-path $BULLET_SPARK/bullet-spark-example.jar:$BULLET_SPARK/bullet-spark.jar $BULLET_SPARK/bullet-spark.jar &> log.txt &
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-#### Step 5: Setup the Storm example
+The backend will usually be up and running within 5-10 seconds. The Web Service will now be hooked up through the REST PubSub to the Spark backend. You can now run a Bullet query by hitting the web service directly:
 
 ```bash
-cp $BULLET_EXAMPLES/storm/* $BULLET_HOME/backend/storm
+curl -s -H 'Content-Type: text/plain' -X POST -d '{"aggregation": {"size": 1}}' http://localhost:9999/api/bullet/sse-query
 ```
 
-!!! note "Settings"
-
-    Take a look at bullet_settings.yaml for the settings that are being overridden for this example. You can add or change settings as you like by referring to [core Bullet settings in bullet_defaults.yaml](https://github.com/yahoo/bullet-core/blob/master/src/main/resources/bullet_defaults.yaml) and [Storm settings in bullet_storm_defaults.yaml](https://github.com/yahoo/bullet-storm/blob/master/src/main/resources/bullet_storm_defaults.yaml). In particular, we have [customized these settings](https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/resources/bullet_settings.yaml) that affect the Bullet queries you can run:
-
-    ```bullet.query.max.duration: 570000``` Longest query time can be 570s. The Storm cluster default DRPC timeout is 600s.
-
-    ```bullet.query.aggregation.raw.max.size: 500``` The max ```RAW``` records you can fetch is 500.
-
-    ```bullet.query.aggregation.max.size: 1024``` The max records you can fetch for any query is 1024.
-
-    ```bullet.query.aggregation.count.distinct.sketch.entries: 16384``` We can count 16384 unique values exactly. Approximates after.
-
-    ```bullet.query.aggregation.group.sketch.entries: 1024``` The max unique groups can be 1024. Uniform sample after.
-
-    ```bullet.query.aggregation.distribution.sketch.entries: 1024``` Determines the normalized rank error for distributions.
-
-    ```bullet.query.aggregation.top.k.sketch.entries: 1024``` 0.75 times this number is the number of unique items for which counts can be done exactly. Approximates after.
-
-    ```bullet.query.aggregation.distribution.max.points: 200``` The maximum number of points you can generate, use or provide for a Distribution aggregation.
-
-!!! note "Want to tweak the example topology code?"
-
-    You will need to clone the [examples repository](https://github.com/yahoo/bullet-docs/tree/master/examples/storm) and customize it. To build the examples, you'll need to install [Maven 3](https://maven.apache.org/install.html).
-
-    ```cd $BULLET_HOME && git clone git@github.com:yahoo/bullet-docs.git```
-
-    ```cd bullet-docs/examples/storm && mvn package```
-
-    You will find the ```bullet-storm-example-1.0-SNAPSHOT-jar-with-dependencies.jar``` in ```$BULLET_HOME/bullet-docs/examples/storm/target/```
-
-    You can also make the ```examples_artifacts.tar.gz``` file with all the settings that is placed in ```$BULLET_EXAMPLES``` by just running ```make``` in the ```bullet-docs/examples/``` folder.
-
-#### Step 6: Launch the topology
-
-```bash
-cd $BULLET_HOME/backend/storm && ./launch.sh
-```
-Visit the UI and see if the topology is up. You should see the ```DataSource``` spout begin emitting records.
-
-Test the Bullet topology by:
-
-```bash
-curl -s -X POST -d '{"id":"", "content":"{}"}' http://localhost:3774/drpc/bullet-query
-```
-
-You should get a random record (serialized as a String inside a JSON message sent back through the PubSub) from Bullet.
+This query will return a result JSON containing a "records" field containing a single record, and a "meta" field with some meta information. 
 
 !!! note "What is this data?"
 
-    This data is randomly generated by the [custom Storm spout](https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/java/com/yahoo/bullet/storm/examples/RandomSpout.java) that is in the example topology you just launched. In practice, your spout would read from an actual data source such as Kafka instead. See [below](#storm-topology) for more details about this random data spout.
+    This data is randomly generated by the [custom data producer](https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/spark/src/main/scala/com/yahoo/bullet/spark/examples/receiver/RandomReceiver.scala) that was created for the sole purpose of generating toy data to demo Bullet. In practice, your spout would read from an actual data source such as Kafka.
 
-### Setting up the Bullet Web Service
 
-#### Step 7: Install the Bullet Web Service
 
-```bash
-cd $BULLET_HOME/service
-curl -Lo bullet-service.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/0.1.1/bullet-service-0.1.1-embedded.jar
-cp $BULLET_EXAMPLES/web-service/example* $BULLET_HOME/service/
-cp $BULLET_EXAMPLES/storm/*jar-with-dependencies.jar $BULLET_HOME/service/bullet-storm-jar-with-dependencies.jar
-```
 
-#### Step 8: Launch the Web Service
 
-```bash
-cd $BULLET_HOME/service
-java -Dloader.path=bullet-storm-jar-with-dependencies.jar -jar bullet-service.jar --bullet.pubsub.config=example_drpc_pubsub_config.yaml --bullet.schema.file=example_columns.json --server.port=9999  --logging.path=. --logging.file=log.txt &> log.txt &
-```
-You can verify that it is up by running a Bullet query or getting the example columns through the API:
 
-```bash
-curl -s -H 'Content-Type: text/plain' -X POST -d '{}' http://localhost:9999/api/bullet/query
-curl -s http://localhost:9999/api/bullet/columns
-```
+
+
 
 ### Setting up the Bullet UI
 

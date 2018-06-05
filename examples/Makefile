@@ -6,12 +6,13 @@ clean:
 
 build:
 	mkdir -p bullet-examples/backend/storm
-	cp install-all.sh bullet-examples/
+	cp install-all-storm.sh bullet-examples/
 	cd storm && mvn package
 	cp storm/target/*jar-with-dependencies.jar bullet-examples/backend/storm
 	cp storm/bin/launch.sh bullet-examples/backend/storm
 	cp storm/src/main/resources/bullet_settings.yaml bullet-examples/backend/storm
 	mkdir -p bullet-examples/backend/spark
+	cp install-all-spark.sh bullet-examples/
 	cd spark && mvn package
 	cp spark/target/bullet-spark-example-0.0.1-SNAPSHOT.jar bullet-examples/backend/spark/bullet-spark-example.jar
 	cp spark/src/main/resources/bullet_spark_settings.yaml bullet-examples/backend/spark
