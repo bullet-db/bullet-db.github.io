@@ -16,9 +16,9 @@ The core Bullet logic (a library) that can be used to implement Bullet on differ
 
 |                           |                 |
 | ------------------------- | --------------- |
-| **Repository**            | [https://github.com/yahoo/bullet-core](https://github.com/yahoo/bullet-core) |
-| **Issues**                | [https://github.com/yahoo/bullet-core/issues](https://github.com/yahoo/bullet-core/issues) |
-| **Last Tag**              | [![Latest tag](https://img.shields.io/github/release/yahoo/bullet-core/all.svg)](https://github.com/yahoo/bullet-core/tags) |
+| **Repository**            | [https://github.com/bullet-db/bullet-core](https://github.com/bullet-db/bullet-core) |
+| **Issues**                | [https://github.com/bullet-db/bullet-core/issues](https://github.com/bullet-db/bullet-core/issues) |
+| **Last Tag**              | [![Latest tag](https://img.shields.io/github/release/bullet-db/bullet-core/all.svg)](https://github.com/bullet-db/bullet-core/tags) |
 | **Latest Artifact**       | [![Download](https://api.bintray.com/packages/yahoo/maven/bullet-core/images/download.svg)](https://bintray.com/yahoo/maven/bullet-core/_latestVersion) |
 | **Package Manager Setup** | [Setup for Maven, Gradle etc](https://bintray.com/bintray/jcenter?filterByPkgName=bullet-core) |
 
@@ -26,14 +26,14 @@ The core Bullet logic (a library) that can be used to implement Bullet on differ
 
 |    Date      |                                      Release                                      | Highlights |
 | ------------ | --------------------------------------------------------------------------------- | ---------- |
-| 2017-10-04   | [**0.2.5**](https://github.com/yahoo/bullet-core/releases/tag/bullet-core-0.2.5)  | Supports an in-memory BufferingSubscriber implementation for reliable subscribing |
-| 2017-10-03   | [**0.2.4**](https://github.com/yahoo/bullet-core/releases/tag/bullet-core-0.2.4)  | Helpers added to Config, PubSubMessage, Metadata and JSONFormatter. FAIL signal in Metadata. PubSubMessage is JSON serializable |
-| 2017-09-20   | [**0.2.3**](https://github.com/yahoo/bullet-core/releases/tag/bullet-core-0.2.3)  | PubSub is no longer required to be Serializable. Makes PubSubMessage fully serializable. Utility classes and checked exceptions for PubSub |
-| 2017-08-30   | [**0.2.2**](https://github.com/yahoo/bullet-core/releases/tag/bullet-core-0.2.2)  | Helper methods to PubSubMessage and Config |
-| 2017-08-23   | [**0.2.1**](https://github.com/yahoo/bullet-core/releases/tag/bullet-core-0.2.1)  | Removes PubSubConfig, adds defaults methods to Publisher/Subscriber interfaces and improves PubSubException |
-| 2017-08-16   | [**0.2.0**](https://github.com/yahoo/bullet-core/releases/tag/bullet-core-0.2.0)  | PubSub interfaces and classes to implement custom communication between API and backend |
-| 2017-06-27   | [**0.1.2**](https://github.com/yahoo/bullet-core/releases/tag/bullet-core-0.1.2)  | Changes to the BulletConfig interface previously used in Bullet Storm. Users now use BulletStormConfig instead but YAML config is the same |
-| 2017-06-27   | [**0.1.1**](https://github.com/yahoo/bullet-core/releases/tag/bullet-core-0.1.1)  | First stable release containing the core of Bullet as a library including parsing, implementing queries, creating results, DataSketches etc |
+| 2017-10-04   | [**0.2.5**](https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.2.5)  | Supports an in-memory BufferingSubscriber implementation for reliable subscribing |
+| 2017-10-03   | [**0.2.4**](https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.2.4)  | Helpers added to Config, PubSubMessage, Metadata and JSONFormatter. FAIL signal in Metadata. PubSubMessage is JSON serializable |
+| 2017-09-20   | [**0.2.3**](https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.2.3)  | PubSub is no longer required to be Serializable. Makes PubSubMessage fully serializable. Utility classes and checked exceptions for PubSub |
+| 2017-08-30   | [**0.2.2**](https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.2.2)  | Helper methods to PubSubMessage and Config |
+| 2017-08-23   | [**0.2.1**](https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.2.1)  | Removes PubSubConfig, adds defaults methods to Publisher/Subscriber interfaces and improves PubSubException |
+| 2017-08-16   | [**0.2.0**](https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.2.0)  | PubSub interfaces and classes to implement custom communication between API and backend |
+| 2017-06-27   | [**0.1.2**](https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.1.2)  | Changes to the BulletConfig interface previously used in Bullet Storm. Users now use BulletStormConfig instead but YAML config is the same |
+| 2017-06-27   | [**0.1.1**](https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.1.1)  | First stable release containing the core of Bullet as a library including parsing, implementing queries, creating results, DataSketches etc |
 
 ## Bullet Storm
 
@@ -49,10 +49,10 @@ The implementation of Bullet on Storm. Due to major API changes between Storm <=
 
 |                               |                 |
 | ----------------------------- | --------------- |
-| **Storm-1.0+ Repository**     | [https://github.com/yahoo/bullet-storm](https://github.com/yahoo/bullet-storm) |
-| **Storm-0.10- Repository**    | [https://github.com/yahoo/bullet-storm/tree/storm-0.10](https://github.com/yahoo/bullet-storm/tree/storm-0.10) |
-| **Issues**                    | [https://github.com/yahoo/bullet-storm/issues](https://github.com/yahoo/bullet-storm/issues) |
-| **Last Tag**                  | [![Latest tag](https://img.shields.io/github/release/yahoo/bullet-storm/all.svg)](https://github.com/yahoo/bullet-storm/tags) |
+| **Storm-1.0+ Repository**     | [https://github.com/bullet-db/bullet-storm](https://github.com/bullet-db/bullet-storm) |
+| **Storm-0.10- Repository**    | [https://github.com/bullet-db/bullet-storm/tree/storm-0.10](https://github.com/bullet-db/bullet-storm/tree/storm-0.10) |
+| **Issues**                    | [https://github.com/bullet-db/bullet-storm/issues](https://github.com/bullet-db/bullet-storm/issues) |
+| **Last Tag**                  | [![Latest tag](https://img.shields.io/github/release/bullet-db/bullet-storm/all.svg)](https://github.com/bullet-db/bullet-storm/tags) |
 | **Latest Artifact**           | [![Download](https://api.bintray.com/packages/yahoo/maven/bullet-storm/images/download.svg)](https://bintray.com/yahoo/maven/bullet-storm/_latestVersion) |
 | **Package Manager Setup**     | [Setup for Maven, Gradle etc](https://bintray.com/bintray/jcenter?filterByPkgName=bullet-storm) |
 
@@ -60,19 +60,19 @@ The implementation of Bullet on Storm. Due to major API changes between Storm <=
 
 |    Date      |                               Storm 1.0                                            |                                      Storm 0.10                                         | Highlights |
 | ------------ | ---------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ---------- |
-| 2017-10-24   | [**0.6.2**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.6.2) | [**0.6.2**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.6.2) | Adds a fat jar for using the DRPC PubSub in the Web Service |
-| 2017-10-18   | [**0.6.1**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.6.1) | [**0.6.1**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.6.1) | DRPC PubSub |
-| 2017-08-30   | [**0.6.0**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.6.0) | [**0.6.0**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.6.0) | New PubSub architecture, removes DRPC components and settings |
-| 2017-06-27   | [**0.5.0**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.5.0) | [**0.5.0**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.5.0) | Pulled out Bullet Core. BulletConfig to BulletStormConfig |
-| 2017-06-09   | [**0.4.3**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.4.3) | [**0.4.3**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.4.3) | Adding rounding for DISTRIBUTION. Latency metric |
-| 2017-04-28   | [**0.4.2**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.4.2) | [**0.4.2**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.4.2) | Strict JSON output and fix for no data distributions |
-| 2017-04-26   | [**0.4.1**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.4.1) | [**0.4.1**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.4.1) | Result Metadata Concept name mismatch fix |
-| 2017-04-21   | [**0.4.0**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.4.0) | [**0.4.0**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.4.0) | DISTRIBUTION and TOP K release. Configuration renames. |
-| 2017-03-13   | [**0.3.1**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.3.1) | [**0.3.1**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.3.1) | Extra records accepted after query expiry bug fix |
-| 2017-02-27   | [**0.3.0**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.3.0) | [**0.3.0**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.3.0) | Metrics interface, config namespace, NPE bug fix |
-| 2017-02-15   | [**0.2.1**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.2.1) | [**0.2.1**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.2.1) | Acking support, Max size and other bug fixes |
-| 2017-01-26   | [**0.2.0**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.2.0) | [**0.2.0**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.2.0) | GROUP (DISTINCT, SUM, COUNT, MIN, MAX, AVG) |
-| 2017-01-09   | [**0.1.0**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.1.0) | [**0.1.0**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.1.0) | COUNT DISTINCT and micro-batching |
+| 2017-10-24   | [**0.6.2**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.6.2) | [**0.6.2**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.6.2) | Adds a fat jar for using the DRPC PubSub in the Web Service |
+| 2017-10-18   | [**0.6.1**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.6.1) | [**0.6.1**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.6.1) | DRPC PubSub |
+| 2017-08-30   | [**0.6.0**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.6.0) | [**0.6.0**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.6.0) | New PubSub architecture, removes DRPC components and settings |
+| 2017-06-27   | [**0.5.0**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.5.0) | [**0.5.0**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.5.0) | Pulled out Bullet Core. BulletConfig to BulletStormConfig |
+| 2017-06-09   | [**0.4.3**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.4.3) | [**0.4.3**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.4.3) | Adding rounding for DISTRIBUTION. Latency metric |
+| 2017-04-28   | [**0.4.2**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.4.2) | [**0.4.2**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.4.2) | Strict JSON output and fix for no data distributions |
+| 2017-04-26   | [**0.4.1**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.4.1) | [**0.4.1**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.4.1) | Result Metadata Concept name mismatch fix |
+| 2017-04-21   | [**0.4.0**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.4.0) | [**0.4.0**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.4.0) | DISTRIBUTION and TOP K release. Configuration renames. |
+| 2017-03-13   | [**0.3.1**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.3.1) | [**0.3.1**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.3.1) | Extra records accepted after query expiry bug fix |
+| 2017-02-27   | [**0.3.0**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.3.0) | [**0.3.0**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.3.0) | Metrics interface, config namespace, NPE bug fix |
+| 2017-02-15   | [**0.2.1**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.2.1) | [**0.2.1**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.2.1) | Acking support, Max size and other bug fixes |
+| 2017-01-26   | [**0.2.0**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.2.0) | [**0.2.0**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.2.0) | GROUP (DISTINCT, SUM, COUNT, MIN, MAX, AVG) |
+| 2017-01-09   | [**0.1.0**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.1.0) | [**0.1.0**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.1.0) | COUNT DISTINCT and micro-batching |
 
 ## Bullet Spark
 
@@ -80,8 +80,8 @@ The implementation of Bullet on Spark Streaming.
 
 |                           |                 |
 | ------------------------- | --------------- |
-| **Repository**            | [https://github.com/yahoo/bullet-spark](https://github.com/bullet-db/bullet-spark) |
-| **Issues**                | [https://github.com/yahoo/bullet-spark/issues](https://github.com/bullet-db/bullet-spark/issues) |
+| **Repository**            | [https://github.com/bullet-db/bullet-spark](https://github.com/bullet-db/bullet-spark) |
+| **Issues**                | [https://github.com/bullet-db/bullet-spark/issues](https://github.com/bullet-db/bullet-spark/issues) |
 | **Last Tag**              | [![Latest tag](https://img.shields.io/github/release/bullet-db/bullet-spark/all.svg)](https://github.com/bullet-db/bullet-spark/tags) |
 | **Latest Artifact**       | [![Download](https://api.bintray.com/packages/yahoo/maven/bullet-spark/images/download.svg)](https://bintray.com/yahoo/maven/bullet-spark/_latestVersion) |
 | **Package Manager Setup** | [Setup for Maven, Gradle etc](https://bintray.com/bintray/jcenter?filterByPkgName=bullet-spark) |
@@ -102,9 +102,9 @@ The Web Service implementation that can serve a static schema from a file and ta
 
 |                            |                 |
 | -------------------------- | --------------- |
-| **Repository**             | [https://github.com/yahoo/bullet-service](https://github.com/yahoo/bullet-service) |
-| **Issues**                 | [https://github.com/yahoo/bullet-service/issues](https://github.com/yahoo/bullet-service/issues) |
-| **Last Tag**               | [![Latest tag](https://img.shields.io/github/release/yahoo/bullet-service/all.svg)](https://github.com/yahoo/bullet-service/tags) |
+| **Repository**             | [https://github.com/bullet-db/bullet-service](https://github.com/bullet-db/bullet-service) |
+| **Issues**                 | [https://github.com/bullet-db/bullet-service/issues](https://github.com/bullet-db/bullet-service/issues) |
+| **Last Tag**               | [![Latest tag](https://img.shields.io/github/release/bullet-db/bullet-service/all.svg)](https://github.com/bullet-db/bullet-service/tags) |
 | **Latest Artifact**        | [![Download](https://api.bintray.com/packages/yahoo/maven/bullet-service/images/download.svg)](https://bintray.com/yahoo/maven/bullet-service/_latestVersion) |
 | **Package Manager Setup**  | [Setup for Maven, Gradle etc](https://bintray.com/bintray/jcenter?filterByPkgName=bullet-service) |
 
@@ -112,8 +112,8 @@ The Web Service implementation that can serve a static schema from a file and ta
 
 |    Date      |                                      Release                                           | Highlights |
 | ------------ | -------------------------------------------------------------------------------------- | ---------- |
-| 2017-10-19   | [**0.1.1**](https://github.com/yahoo/bullet-service/releases/tag/bullet-service-0.1.1) | New PubSub architecture. Switching to Spring Boot and executable JAR instead of WAR |
-| 2016-12-16   | [**0.0.1**](https://github.com/yahoo/bullet-service/releases/tag/bullet-service-0.0.1) | The first release with support for DRPC and the file-based schema |
+| 2017-10-19   | [**0.1.1**](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.1.1) | New PubSub architecture. Switching to Spring Boot and executable JAR instead of WAR |
+| 2016-12-16   | [**0.0.1**](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.0.1) | The first release with support for DRPC and the file-based schema |
 
 !!! note "Want to directly download jars?"
 
@@ -125,23 +125,23 @@ The Bullet UI that lets you build, run, save and visualize results from Bullet.
 
 |                     |                 |
 | ------------------- | --------------- |
-| **Repository**      | [https://github.com/yahoo/bullet-ui](https://github.com/yahoo/bullet-ui) |
-| **Issues**          | [https://github.com/yahoo/bullet-ui/issues](https://github.com/yahoo/bullet-ui/issues) |
-| **Last Tag**        | [![GitHub release](https://img.shields.io/github/tag/yahoo/bullet-ui.svg)](https://github.com/yahoo/bullet-ui/tags) |
-| **Latest Artifact** | [![GitHub release](https://img.shields.io/github/release/yahoo/bullet-ui.svg)](https://github.com/yahoo/bullet-ui/releases/latest) |
+| **Repository**      | [https://github.com/bullet-db/bullet-ui](https://github.com/bullet-db/bullet-ui) |
+| **Issues**          | [https://github.com/bullet-db/bullet-ui/issues](https://github.com/bullet-db/bullet-ui/issues) |
+| **Last Tag**        | [![GitHub release](https://img.shields.io/github/tag/bullet-db/bullet-ui.svg)](https://github.com/bullet-db/bullet-ui/tags) |
+| **Latest Artifact** | [![GitHub release](https://img.shields.io/github/release/bullet-db/bullet-ui.svg)](https://github.com/bullet-db/bullet-ui/releases/latest) |
 
 ### Releases
 
 |    Date      |                                      Release                                           | Highlights |
 | ------------ | -------------------------------------------------------------------------------------- | ---------- |
-| 2017-08-22   | [**0.4.0**](https://github.com/yahoo/bullet-ui/releases/tag/v0.4.0) | Query sharing, collapsible Raw view, and unsaved/error indicators. Settings rename and other bug fixes|
-| 2017-05-22   | [**0.3.2**](https://github.com/yahoo/bullet-ui/releases/tag/v0.3.2) | Exporting to TSV in Pivot table. Fixes unselectability bug in Raw view |
-| 2017-05-15   | [**0.3.1**](https://github.com/yahoo/bullet-ui/releases/tag/v0.3.1) | Adds styles to the Pivot table. Fixes some minor UI interactions |
-| 2017-05-10   | [**0.3.0**](https://github.com/yahoo/bullet-ui/releases/tag/v0.3.0) | Adds Charting and Pivoting support. Migrations enhanced. Support for overriding nested default settings |
-| 2017-05-03   | [**0.2.2**](https://github.com/yahoo/bullet-ui/releases/tag/v0.2.2) | Fixes maxlength of the input for points |
-| 2017-05-02   | [**0.2.1**](https://github.com/yahoo/bullet-ui/releases/tag/v0.2.1) | Fixes a bug with a dependency that broke sorting the Filters |
-| 2017-05-01   | [**0.2.0**](https://github.com/yahoo/bullet-ui/releases/tag/v0.2.0) | Release for Top K and Distribution. Supports Bullet Storm 0.4.2+ |
-| 2017-02-21   | [**0.1.0**](https://github.com/yahoo/bullet-ui/releases/tag/v0.1.0) | The first release with support for all features included in Bullet Storm 0.2.1+ |
+| 2017-08-22   | [**0.4.0**](https://github.com/bullet-db/bullet-ui/releases/tag/v0.4.0) | Query sharing, collapsible Raw view, and unsaved/error indicators. Settings rename and other bug fixes|
+| 2017-05-22   | [**0.3.2**](https://github.com/bullet-db/bullet-ui/releases/tag/v0.3.2) | Exporting to TSV in Pivot table. Fixes unselectability bug in Raw view |
+| 2017-05-15   | [**0.3.1**](https://github.com/bullet-db/bullet-ui/releases/tag/v0.3.1) | Adds styles to the Pivot table. Fixes some minor UI interactions |
+| 2017-05-10   | [**0.3.0**](https://github.com/bullet-db/bullet-ui/releases/tag/v0.3.0) | Adds Charting and Pivoting support. Migrations enhanced. Support for overriding nested default settings |
+| 2017-05-03   | [**0.2.2**](https://github.com/bullet-db/bullet-ui/releases/tag/v0.2.2) | Fixes maxlength of the input for points |
+| 2017-05-02   | [**0.2.1**](https://github.com/bullet-db/bullet-ui/releases/tag/v0.2.1) | Fixes a bug with a dependency that broke sorting the Filters |
+| 2017-05-01   | [**0.2.0**](https://github.com/bullet-db/bullet-ui/releases/tag/v0.2.0) | Release for Top K and Distribution. Supports Bullet Storm 0.4.2+ |
+| 2017-02-21   | [**0.1.0**](https://github.com/bullet-db/bullet-ui/releases/tag/v0.1.0) | The first release with support for all features included in Bullet Storm 0.2.1+ |
 
 ## Bullet Record
 
@@ -149,9 +149,9 @@ The AVRO container that you need to convert your data into to be consumed by Bul
 
 |                            |                 |
 | -------------------------- | --------------- |
-| **Repository**             | [https://github.com/yahoo/bullet-record](https://github.com/yahoo/bullet-record) |
-| **Issues**                 | [https://github.com/yahoo/bullet-record/issues](https://github.com/yahoo/bullet-record/issues) |
-| **Last Tag**               | [![Latest tag](https://img.shields.io/github/release/yahoo/bullet-record/all.svg)](https://github.com/yahoo/bullet-record/tags) |
+| **Repository**             | [https://github.com/bullet-db/bullet-record](https://github.com/bullet-db/bullet-record) |
+| **Issues**                 | [https://github.com/bullet-db/bullet-record/issues](https://github.com/bullet-db/bullet-record/issues) |
+| **Last Tag**               | [![Latest tag](https://img.shields.io/github/release/bullet-db/bullet-record/all.svg)](https://github.com/bullet-db/bullet-record/tags) |
 | **Latest Artifact**        | [![Download](https://api.bintray.com/packages/yahoo/maven/bullet-record/images/download.svg)](https://bintray.com/yahoo/maven/bullet-record/_latestVersion) |
 | **Package Manager Setup**  | [Setup for Maven, Gradle etc](https://bintray.com/bintray/jcenter?filterByPkgName=bullet-record) |
 
@@ -159,9 +159,9 @@ The AVRO container that you need to convert your data into to be consumed by Bul
 
 |    Date      |                                  Release                                             | Highlights |
 | ------------ | ------------------------------------------------------------------------------------ | ---------- |
-| 2017-05-19   | [**0.1.2**](https://github.com/yahoo/bullet-record/releases/tag/bullet-record-0.1.2) | Reduces the memory footprint needed to serialize itself by a factor of 128 for small records |
-| 2017-04-17   | [**0.1.1**](https://github.com/yahoo/bullet-record/releases/tag/bullet-record-0.1.1) | Helper methods to remove, rename, check presence and count fields in the Record |
-| 2017-02-09   | [**0.1.0**](https://github.com/yahoo/bullet-record/releases/tag/bullet-record-0.1.0) | Map constructor |
+| 2017-05-19   | [**0.1.2**](https://github.com/bullet-db/bullet-record/releases/tag/bullet-record-0.1.2) | Reduces the memory footprint needed to serialize itself by a factor of 128 for small records |
+| 2017-04-17   | [**0.1.1**](https://github.com/bullet-db/bullet-record/releases/tag/bullet-record-0.1.1) | Helper methods to remove, rename, check presence and count fields in the Record |
+| 2017-02-09   | [**0.1.0**](https://github.com/bullet-db/bullet-record/releases/tag/bullet-record-0.1.0) | Map constructor |
 
 ## Bullet Kafka
 
@@ -169,9 +169,9 @@ A PubSub implementation using Kafka as the backing PubSub. Can be used with any 
 
 |                            |                 |
 | -------------------------- | --------------- |
-| **Repository**             | [https://github.com/yahoo/bullet-record](https://github.com/yahoo/bullet-kafka) |
-| **Issues**                 | [https://github.com/yahoo/bullet-record/issues](https://github.com/yahoo/bullet-kafka/issues) |
-| **Last Tag**               | [![Latest tag](https://img.shields.io/github/release/yahoo/bullet-kafka/all.svg)](https://github.com/yahoo/bullet-kafka/tags) |
+| **Repository**             | [https://github.com/bullet-db/bullet-record](https://github.com/bullet-db/bullet-kafka) |
+| **Issues**                 | [https://github.com/bullet-db/bullet-record/issues](https://github.com/bullet-db/bullet-kafka/issues) |
+| **Last Tag**               | [![Latest tag](https://img.shields.io/github/release/bullet-db/bullet-kafka/all.svg)](https://github.com/bullet-db/bullet-kafka/tags) |
 | **Latest Artifact**        | [![Download](https://api.bintray.com/packages/yahoo/maven/bullet-kafka/images/download.svg)](https://bintray.com/yahoo/maven/bullet-kafka/_latestVersion) |
 | **Package Manager Setup**  | [Setup for Maven, Gradle etc](https://bintray.com/bintray/jcenter?filterByPkgName=bullet-kafka) |
 
@@ -179,6 +179,6 @@ A PubSub implementation using Kafka as the backing PubSub. Can be used with any 
 
 |    Date      |                                  Release                                             | Highlights |
 | ------------ | ------------------------------------------------------------------------------------ | ---------- |
-| 2017-10-19   | [**0.2.0**](https://github.com/yahoo/bullet-kafka/releases/tag/bullet-kafka-0.2.0) | Refactors and re-releases. Pass-through settings to Kafka. Manual offset committing bug fix |
-| 2017-09-27   | [**0.1.2**](https://github.com/yahoo/bullet-kafka/releases/tag/bullet-kafka-0.1.2) | Fixes a bug with config loading |
-| 2017-09-22   | [**0.1.1**](https://github.com/yahoo/bullet-kafka/releases/tag/bullet-kafka-0.1.1) | First release using the PubSub interfaces |
+| 2017-10-19   | [**0.2.0**](https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-0.2.0) | Refactors and re-releases. Pass-through settings to Kafka. Manual offset committing bug fix |
+| 2017-09-27   | [**0.1.2**](https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-0.1.2) | Fixes a bug with config loading |
+| 2017-09-22   | [**0.1.1**](https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-0.1.1) | First release using the PubSub interfaces |
