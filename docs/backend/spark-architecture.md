@@ -22,7 +22,7 @@ import com.yahoo.bullet.spark.DataProducer
 import org.apache.spark.streaming.kafka010.{ConsumerStrategies, KafkaUtils, LocationStrategies}
 // import all other necessary packages
 
-class BulletPropaneDirectKafkaProducer extends DataProducer {
+class DirectKafkaProducer extends DataProducer {
   override def getBulletRecordStream(ssc: StreamingContext, config: BulletSparkConfig): DStream[BulletRecord] = {
     val topic = "test"
     val kafkaParams = Map[String, AnyRef](
