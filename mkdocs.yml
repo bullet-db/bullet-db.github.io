@@ -16,6 +16,9 @@ pages:
     - Architecture: backend/storm-architecture.md
     - Setup: backend/storm-setup.md
     - Performance: backend/storm-performance.md
+  - Spark:
+    - Architecture: backend/spark-architecture.md
+    - Setup: backend/spark-setup.md
 - PubSub:
   - Architecture: pubsub/architecture.md
   - Kafka: pubsub/kafka.md

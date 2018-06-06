@@ -74,6 +74,24 @@ The implementation of Bullet on Storm. Due to major API changes between Storm <=
 | 2017-01-26   | [**0.2.0**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.2.0) | [**0.2.0**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.2.0) | GROUP (DISTINCT, SUM, COUNT, MIN, MAX, AVG) |
 | 2017-01-09   | [**0.1.0**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.1.0) | [**0.1.0**](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.10-0.1.0) | COUNT DISTINCT and micro-batching |
 
+## Bullet Spark
+
+The implementation of Bullet on Spark Streaming.
+
+|                           |                 |
+| ------------------------- | --------------- |
+| **Repository**            | [https://github.com/yahoo/bullet-spark](https://github.com/bullet-db/bullet-spark) |
+| **Issues**                | [https://github.com/yahoo/bullet-spark/issues](https://github.com/bullet-db/bullet-spark/issues) |
+| **Last Tag**              | [![Latest tag](https://img.shields.io/github/release/bullet-db/bullet-spark/all.svg)](https://github.com/bullet-db/bullet-spark/tags) |
+| **Latest Artifact**       | [![Download](https://api.bintray.com/packages/yahoo/maven/bullet-spark/images/download.svg)](https://bintray.com/yahoo/maven/bullet-spark/_latestVersion) |
+| **Package Manager Setup** | [Setup for Maven, Gradle etc](https://bintray.com/bintray/jcenter?filterByPkgName=bullet-spark) |
+
+### Releases
+
+|    Date      |                                      Release                                      | Highlights |
+| ------------ | --------------------------------------------------------------------------------- | ---------- |
+| 2018-05-25   | [**0.1.0**](https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-0.1.0)  | The first release with spark implementation |
+
 ## Bullet Web Service
 
 The Web Service implementation that can serve a static schema from a file and talk to the backend using the PubSub.
