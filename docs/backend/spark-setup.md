@@ -8,11 +8,11 @@ Bullet is configured at run-time using settings defined in a file. Settings not 
 
 ## Installation
 
-Download Bullet Spark standalone jar from [JCenter](http://jcenter.bintray.com/com/yahoo/bullet/bullet-spark/).
+Download the Bullet Spark standalone jar from [JCenter](http://jcenter.bintray.com/com/yahoo/bullet/bullet-spark/).
 
-If you are using Bullet Kafka as pluggable PubSub, you could download the fat jar from [JCenter](http://jcenter.bintray.com/com/yahoo/bullet/bullet-kafka/). Otherwise, you need to prepare your own PubSub jar.
+If you are using Bullet Kafka as pluggable PubSub, you could download the fat jar from [JCenter](http://jcenter.bintray.com/com/yahoo/bullet/bullet-kafka/). Otherwise, you need to plug in your own PubSub jar or use the RESTPubSub built-into bullet-core and turned on in the API.
 
-To use Bullet Spark, you need to implement your own data producer with a JVM based project. You have two ways to implement it as described at [Spark Architecture](spark-architecture.md#data-processing). You include the Bullet artifact and Spark dependencies in your pom.xml or other equivalent config files. The artifacts are available through JCenter. Here is an example if you use Scala and Maven:
+To use Bullet Spark, you need to implement your own [Data Producer Trait](https://github.com/bullet-db/bullet-spark/blob/master/src/main/scala/com/yahoo/bullet/spark/DataProducer.scala) with a JVM based project. You have two ways to implement it as described in the [Spark Architecture](spark-architecture.md#data-processing) section. You include the Bullet artifact and Spark dependencies in your pom.xml or other equivalent build tools. The artifacts are available through JCenter. Here is an example if you use Scala and Maven:
 
 ```xml
 <repositories>
@@ -67,7 +67,7 @@ You can also add ```<classifier>sources</classifier>``` or ```<classifier>javado
 
 ## Launch
 
-After you have implemented your own data producer and built a jar, you could launch your Bullet Spark. Here is an example command for [YARN cluster](https://hadoop.apache.org/docs/current/hadoop-yarn/hadoop-yarn-site/YARN.html).
+After you have implemented your own data producer and built a jar, you could launch your Bullet Spark application. Here is an example command for a [YARN cluster](https://hadoop.apache.org/docs/current/hadoop-yarn/hadoop-yarn-site/YARN.html).
 
 ```bash
 ./bin/spark-submit \
@@ -82,12 +82,12 @@ After you have implemented your own data producer and built a jar, you could lau
     --driver-memory 12g \
     --conf spark.streaming.backpressure.enabled=true \
     --conf spark.default.parallelism=20 \
-    ... # other spark streaming configurations
+    ... # other Spark settings
     --jars /path/to/your-data-producer.jar,/path/to/your-pubsub.jar \
     /path/to/downloaded-bullet-spark-standalone.jar \
     --bullet-spark-conf /path/to/your-settings.yaml
 ```
 
-You can pass other spark streaming configurations by adding ```--conf key=value``` to the command. For more configurations, you can refer [Spark Configuration](https://spark.apache.org/docs/latest/configuration.html).
+You can pass other Spark Streaming configurations by adding ```--conf key=value``` to the command. For more settings, you can refer to the [Spark Configuration](https://spark.apache.org/docs/latest/configuration.html).
 
-For other platforms, you could find the commands from [Spark Docs](https://spark.apache.org/docs/latest/submitting-applications.html).
+For other platforms, you can find the commands from the [Spark Documentation](https://spark.apache.org/docs/latest/submitting-applications.html).

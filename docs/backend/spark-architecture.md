@@ -14,8 +14,8 @@ The red colored lines are the path for the queries that come in through the PubS
 
 ### Data processing
 
-Bullet can accept arbitrary sources of data as long as they can be ingested by Spark. They can be Kafka, Flume, Kinesis, and TCP sockets etc. In order to hook up your data to Bullet Spark, you just need to implement the [data producer](https://github.com/bullet-db/bullet-spark/blob/master/src/main/scala/com/yahoo/bullet/spark/DataProducer.scala). In your implementation, you can either:
-* Use [Spark Streaming built-in sources](https://spark.apache.org/docs/latest/streaming-programming-guide.html#input-dstreams-and-receivers) to receive data. Below is a quick example for Kafka source which is written in Scala:
+Bullet can accept arbitrary sources of data as long as they can be ingested by Spark. They can be Kafka, Flume, Kinesis, and TCP sockets etc. In order to hook up your data to Bullet Spark, you just need to implement the [Data Producer Trait](https://github.com/bullet-db/bullet-spark/blob/master/src/main/scala/com/yahoo/bullet/spark/DataProducer.scala). In your implementation, you can either:
+* Use [Spark Streaming built-in sources](https://spark.apache.org/docs/latest/streaming-programming-guide.html#input-dstreams-and-receivers) to receive data. Below is a quick example for a direct Kafka source in Scala. You can also write it in Java:
 
 ```scala
 import com.yahoo.bullet.spark.DataProducer
@@ -45,20 +45,20 @@ class DirectKafkaProducer extends DataProducer {
 }
 ```
 
-* Write a [custom receiver](https://spark.apache.org/docs/latest/streaming-custom-receivers.html) to receive data from any arbitrary data source beyond the ones for which it has built-in support (that is, beyond Flume, Kafka, Kinesis, files, sockets, etc.). See [example](https://github.com/bullet-db/bullet-db.github.io/tree/src/examples/spark).
+* Write a [custom receiver](https://spark.apache.org/docs/latest/streaming-custom-receivers.html) to receive data from any arbitrary data source beyond the ones for which it has built-in support (that is, beyond Flume, Kafka, Kinesis, files, sockets, etc.). See [example](https://github.com/bullet-db/bullet-db.github.io/tree/src/examples/spark/src/main/scala/com/yahoo/bullet/spark/examples).
 
-After receiving your data, you can do any transformation in your implementation before emitting to Filter Streaming.
+After receiving your data, you can do any transformations like joins or type conversions in your implementation before emitting to the Filter Streaming stage.
 
-The Filter Streaming checks every record from your data source against every query from Query Unioning to see if it matches and emits partial results to the Join Streaming.
+The Filter Streaming stage checks every record from your data source against every query from Query Unioning stage to see if it matches and emits partial results to the Join Streaming stage.
 
 ### Request processing
 
-The Query Receiver fetches Bullet queries and signals through the PubSub layer using the Subscribers provided by the plugged in PubSub layer. The queries received through the PubSub also contain information about the query such as its unique identifier, potentially other metadata and signals. The Query Unioning collects all active queries by a stateful transformation updateStateByKey and broadcasts all the collected queries to every executor for the Filter Streaming to use.
+The Query Receiver fetches Bullet queries and signals through the PubSub layer using the Subscribers provided by the plugged in PubSub layer. The queries received through the PubSub also contain information about the query such as its unique identifier, potentially other metadata and signals. The Query Unioning collects all active queries by the stateful transformation [updateStateByKey](https://spark.apache.org/docs/latest/streaming-programming-guide.html#updatestatebykey-operation) and broadcasts all the collected queries to every executor for the Filter Streaming stage.
 
-The Query Unioning also send all active queries and signals to the Join Streaming.
+The Query Unioning also sends all active queries and signals to the Join Streaming stage.
 
 ### Combining
 
-The Filter Streaming combines all the partial results from the Filter Streaming by a stateful transformation mapWithState and produces final results.
+The Filter Streaming combines all the partial results from the Filter Streaming by the stateful transformation [mapWithState](https://spark.apache.org/docs/2.3.0/api/scala/index.html#org.apache.spark.streaming.dstream.PairDStreamFunctions@mapWithState[StateType,MappedType](spec:org.apache.spark.streaming.StateSpec[K,V,StateType,MappedType])(implicitevidence$2:scala.reflect.ClassTag[StateType],implicitevidence$3:scala.reflect.ClassTag[MappedType]):org.apache.spark.streaming.dstream.MapWithStateDStream[K,V,StateType,MappedType]) and produces final results.
 
 The Result Emitter uses the particular publisher from the plugged in PubSub layer to send back results/loop signals.
