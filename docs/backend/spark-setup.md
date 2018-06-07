@@ -10,7 +10,7 @@ Bullet is configured at run-time using settings defined in a file. Settings not 
 
 Download Bullet Spark standalone jar from [JCenter](http://jcenter.bintray.com/com/yahoo/bullet/bullet-spark/).
 
-## Implementation
+If you are using Bullet Kafka as pluggable PubSub, you could download the fat jar from [JCenter](http://jcenter.bintray.com/com/yahoo/bullet/bullet-kafka/). Otherwise, you need to prepare your own PubSub jar.
 
 To use Bullet Spark, you need to implement your own data producer with a JVM based project. You have two ways to implement it as described at [Spark Architecture](spark-architecture.md#data-processing). You include the Bullet artifact and Spark dependencies in your pom.xml or other equivalent config files. The artifacts are available through JCenter. Here is an example if you use Scala and Maven:
 
@@ -83,8 +83,8 @@ After you have implemented your own data producer and built a jar, you could lau
     --conf spark.streaming.backpressure.enabled=true \
     --conf spark.default.parallelism=20 \
     ... # other spark streaming configurations
-    --jars path/to/your-data-producer.jar \
-    path/to/downloaded-bullet-spark-standalone.jar \
+    --jars /path/to/your-data-producer.jar,/path/to/your-pubsub.jar \
+    /path/to/downloaded-bullet-spark-standalone.jar \
     --bullet-spark-conf /path/to/your-settings.yaml
 ```
 
