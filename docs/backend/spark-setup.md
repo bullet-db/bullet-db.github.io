@@ -32,7 +32,7 @@ To use Bullet Spark, you need to implement your own [Data Producer Trait](https:
     <scala.version>2.11.7</scala.version>
     <scala.dep.version>2.11</scala.dep.version>
     <spark.version>2.3.0</spark.version>
-    <bullet.spark.version>0.1.0</bullet.spark.version>
+    <bullet.spark.version>0.1.1</bullet.spark.version>
 </properties>
 
 <dependency>
