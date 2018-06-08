@@ -8,9 +8,9 @@ Bullet Spark implements the backend piece from the full [Architecture](../index.
 
 ![Bullet Spark DAG](../img/spark-dag.png)
 
-The components in [Architecture](../index.md#architecture) have direct counterparts here. The Query Receiver reading from the PubSub layer using plugged-in PubSub consumers and the Query Unioning make up the Request Processor. The Filter Streaming and your plugin for your source of data make up the Data Processor. The Join Streaming and the Result Emitter make up the Combiner.
+The components in the [Architecture](../index.md#architecture) have direct counterparts here. The Query Receiver reading from the PubSub layer using plugged-in PubSub consumers and the Query Unioning make up the Request Processor. The Filter Streaming and your plugin for your source of data make up the Data Processor. The Join Streaming and the Result Emitter make up the Combiner.
 
-The red colored lines are the path for the queries that come in through the PubSub, the orange colored lines are the path for the signals and the blue is for the data from your data source. The shape of the boxes denotes the type of transformation/action being executed in the boxes.
+The red lines are the path for the queries that come in through the PubSub, the orange lines are the path for the signals and the blue lines are for the data from your data source. The shapes of the boxes denote the type of transformation/action being executed in the boxes.
 
 ### Data processing
 
@@ -24,7 +24,7 @@ import org.apache.spark.streaming.kafka010.{ConsumerStrategies, KafkaUtils, Loca
 
 class DirectKafkaProducer extends DataProducer {
   override def getBulletRecordStream(ssc: StreamingContext, config: BulletSparkConfig): DStream[BulletRecord] = {
-    val topic = "test"
+    val topics = Array("test")
     val kafkaParams = Map[String, AnyRef](
       "bootstrap.servers" -> "server1, server2",
       "group.id" -> "mygroup",
@@ -36,7 +36,7 @@ class DirectKafkaProducer extends DataProducer {
     val directKafkaStream = KafkaUtils.createDirectStream[String, Array[Byte]](
       ssc,
       LocationStrategies.PreferConsistent,
-      ConsumerStrategies.Subscribe[String, Array[Byte]](Set(topic), kafkaParams))
+      ConsumerStrategies.Subscribe[String, Array[Byte]](topics, kafkaParams))
 
     directKafkaStream.map(record => {
       // Convert your record to BulletRecord
