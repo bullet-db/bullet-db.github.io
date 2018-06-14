@@ -11,8 +11,7 @@ import java.util.Arrays.asList
 
 import scala.util.Random
 
-import com.yahoo.bullet.record.BulletRecord
-import com.yahoo.bullet.record.SimpleBulletRecord
+import com.yahoo.bullet.record.{BulletRecord, SimpleBulletRecord}
 import com.yahoo.bullet.spark.utils.{BulletSparkConfig, BulletSparkLogger}
 import org.apache.spark.storage.StorageLevel
 import org.apache.spark.streaming.receiver.Receiver
