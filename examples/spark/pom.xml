@@ -44,10 +44,16 @@
             <version>${spark.version}</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>com.yahoo.bullet</groupId>
             <artifactId>bullet-spark</artifactId>
             <version>${bullet.spark.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.yahoo.bullet</groupId>
+            <artifactId>bullet-record</artifactId>
+            <version>${bullet.record.version}</version>
         </dependency>
     </dependencies>
     <build>
