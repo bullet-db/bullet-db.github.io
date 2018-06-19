@@ -1,0 +1,18 @@
+bullet.pubsub.context.name: "QUERY_SUBMISSION"
+bullet.pubsub.class.name: "com.yahoo.bullet.pubsub.rest.RESTPubSub"
+# In-Memory pubsub settings that you may change for each instance (there may be multiple in-memory pubsub instances)
+# The paths (not including the context.path) of the endpoints for reading/writing queries/responses
+bullet.pubsub.rest.query.urls:
+    - "http://localhost:9999/api/bullet/pubsub/query"
+bullet.pubsub.rest.result.url: "http://localhost:9999/api/bullet/pubsub/result"
+# Http connection timout (used by both the web service and the backend)
+bullet.pubsub.rest.connect.timeout.ms: 30000
+# Http connection retry limit (used by both the web service and the backend)
+bullet.pubsub.rest.connect.retry.limit: 10
+# Maxiumum number of uncommitted messages allowed before read requests will wait for commits (used by both the web service and the backend)
+bullet.pubsub.rest.subscriber.max.uncommitted.messages: 100
+
+# Minimum time (ms) between http calls to the result subscriber REST endpoint
+bullet.pubsub.rest.result.subscriber.min.wait.ms: 10
+# Minimum time (ms) between http calls to the query subscriber REST endpoint
+bullet.pubsub.rest.query.subscriber.min.wait.ms: 10
