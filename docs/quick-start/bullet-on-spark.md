@@ -117,7 +117,7 @@ tar -xzf spark-2.2.1-bin-hadoop2.7.tgz
 
 ```bash
 cp $BULLET_HOME/bullet-examples/backend/spark/* $BULLET_SPARK
-curl -Lo bullet-spark.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-spark/0.1.1/bullet-spark-0.1.1-standalone.jar
+curl -Lo bullet-spark.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-spark/0.1.2/bullet-spark-0.1.2-standalone.jar
 ```
 
 #### Step 11: Launch the Bullet Spark Backend
