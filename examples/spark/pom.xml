@@ -10,7 +10,8 @@
         <scala.version>2.11.7</scala.version>
         <scala.dep.version>2.11</scala.dep.version>
         <spark.version>2.3.0</spark.version>
-        <bullet.spark.version>0.1.0</bullet.spark.version>
+        <bullet.spark.version>0.1.1</bullet.spark.version>
+        <bullet.record.version>0.2.0</bullet.record.version>
     </properties>
 
     <repositories>
@@ -44,10 +45,16 @@
             <version>${spark.version}</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>com.yahoo.bullet</groupId>
             <artifactId>bullet-spark</artifactId>
             <version>${bullet.spark.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.yahoo.bullet</groupId>
+            <artifactId>bullet-record</artifactId>
+            <version>${bullet.record.version}</version>
         </dependency>
     </dependencies>
     <build>
