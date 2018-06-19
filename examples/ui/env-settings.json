@@ -2,50 +2,62 @@
   "default": {
     "queryHost": "http://localhost:9999",
     "queryNamespace": "api/bullet",
-    "queryPath": "sse-query",
+    "queryPath": "ws-query",
+    "queryStompRequestChannel": "/server/request",
+    "queryStompResponseChannel": "/client/response",
     "schemaHost": "http://localhost:9999",
     "schemaNamespace": "api/bullet",
     "helpLinks": [
       {
-        "name": "Examples",
-        "link": "https://yahoo.github.io/bullet-docs/ui/usage"
+        "name": "Tutorials",
+        "link": "https://bullet-db.github.io/ui/usage"
       }
     ],
-    "bugLink": "https://github.com/yahoo/bullet-ui/issues",
-    "modelVersion": 2,
+    "bugLink": "https://github.com/bullet-db/bullet-ui/issues",
+    "modelVersion": 3,
     "migrations": {
-      "deletions": "result"
+      "deletions": "query"
     },
     "defaultValues": {
-      "aggregationMaxSize": 1024,
-      "rawMaxSize": 500,
-      "durationMaxSecs": 540,
+      "aggregationMaxSize": 512,
+      "rawMaxSize": 100,
+      "durationMaxSecs": 120,
       "distributionNumberOfPoints": 11,
       "distributionQuantilePoints": "0, 0.25, 0.5, 0.75, 0.9, 1",
       "distributionQuantileStart": 0,
       "distributionQuantileEnd": 1,
       "distributionQuantileIncrement": 0.1,
       "queryTimeoutSecs": 3,
+      "windowEmitFrequencyMinSecs": 1,
+      "everyForRecordBasedWindow": 1,
+      "everyForTimeBasedWindow": 2,
       "sketches": {
         "countDistinctMaxEntries": 16384,
         "groupByMaxEntries": 512,
         "distributionMaxEntries": 1024,
-        "distributionMaxNumberOfPoints": 200,
+        "distributionMaxNumberOfPoints": 100,
         "topKMaxEntries": 1024,
         "topKErrorType": "No False Negatives"
       },
       "metadataKeyMapping": {
-        "theta": "theta",
-        "uniquesEstimate": "uniques_estimate",
-        "queryCreationTime": "query_receive_time",
-        "queryTerminationTime": "query_finish_time",
-        "estimatedResult": "was_estimated",
-        "standardDeviations": "standard_deviations",
-        "normalizedRankError": "normalized_rank_error",
-        "maximumCountError": "maximum_count_error",
-        "itemsSeen": "items_seen",
-        "minimumValue": "minimum_value",
-        "maximumValue": "maximum_value"
+        "querySection": "Query",
+        "windowSection": "Window",
+        "sketchSection": "Sketch",
+        "theta": "Theta",
+        "uniquesEstimate": "Uniques Estimate",
+        "queryCreationTime": "Receive Time",
+        "queryTerminationTime": "Finish Time",
+        "estimatedResult": "Was Estimated",
+        "standardDeviations": "Standard Deviations",
+        "normalizedRankError": "Normalized Rank Error",
+        "maximumCountError": "Maximum Count Error",
+        "itemsSeen": "Items Seen",
+        "minimumValue": "Minimum Value",
+        "maximumValue": "Maximum Value",
+        "windowNumber": "Number",
+        "windowSize": "Size",
+        "windowEmitTime": "Emit Time",
+        "expectedEmitTime": "Expected Emit Time"
       }
     }
   }

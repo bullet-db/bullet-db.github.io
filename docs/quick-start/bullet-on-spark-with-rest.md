@@ -1,197 +1,147 @@
-# Quick Start - Bullet on Storm
+# Quick Start
 
-!!! note "NOTE: This is an old version of Bullet"
-    The version of Bullet this quickstart uses does not support the newest functionality such as Windowing. We are working hard to get new documentation up as soon as possible. Use [the Spark quickstart](bullet-on-spark.md) to see all the latest features. An updated quickstart for Storm is coming soon.
-
-This section gets you running a mock instance of Bullet to play around with. The instance will run using [Bullet on Storm](backend/storm-setup.md) and use the [DRPC Pubsub](pubsub/storm-drpc.md). Since we do not have an actual data source, we will produce some fake data and convert it into [Bullet Records](backend/ingestion.md) in a [custom Storm spout](https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/java/com/yahoo/bullet/storm/examples/RandomSpout.java). If you want to use Bullet for your data, you will need to do read and convert your data to Bullet Records in a similar manner.
+This section gets you running a mock instance of Bullet to play around with. The instance will run using Bullet on Spark and use the REST pubsub available as part of bullet-core. Since we do not have an actual data source, we will produce some fake data and convert it into [Bullet Records](backend/ingestion.md) using [some simple custom Spark code](https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/spark/src/main/scala/com/yahoo/bullet/spark/examples/receiver/RandomReceiver.scala). If you want to use Bullet for your data, you will need to do read and convert your data to Bullet Records in a similar manner.
 
 At the end of this section, you will have:
 
-  * Setup the Bullet topology using a custom spout on [bullet-storm-0.6.2](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.6.2)
-  * Setup the [Web Service](ws/setup.md) talking to the topology and serving a schema for your UI using [bullet-service-0.1.1](https://github.com/yahoo/bullet-service/releases/tag/bullet-service-0.1.1)
-  * Setup the [DRPC PubSub](pubsub/storm-drpc.md) talking to the topology and Web Service.
+  * Launched the Bullet backend on spark
+  * Setup the [Web Service](ws/setup.md) with it's built-in REST pubsub enabled
   * Setup the [UI](ui/setup.md) talking to the Web Service using [bullet-ui-0.4.0](https://github.com/yahoo/bullet-ui/releases/tag/v0.4.0)
 
 **Prerequisites**
 
   * You will need to be on an Unix-based system (Mac OS X, Ubuntu ...) with ```curl``` installed
   * You will need [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html) installed
-  * You will need enough CPU and RAM on your machine to run about 8-10 JVMs in ```server``` mode. You should have at least 2 GB free space on your disk. We will be setting up a Storm cluster with multiple components, a couple of Jetty instances and a Node server.
 
 ## Install Script
 
-Simply run:
-
-```bash
-curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.4.0/examples/install-all.sh | bash
-```
-
-This will setup a local Storm cluster, a Bullet running on it, the Bullet Web Service and a Bullet UI for you. Once everything has launched, you should be able to go to the Bullet UI running locally at [http://localhost:8800](http://localhost:8800). You can then [**continue this guide from here**](#what-did-we-do).
-
-!!! note "Want to DIY?"
-    If you want to manually run all the commands or if the script died while doing something above (might want to perform the [teardown](#teardown) first), you can continue below.
-
+Coming soon - a one-liner to start Bullet.
 
 ## Manual Installation
 
-### Setting up Storm
+### Setup the Bullet Web Service and REST Pub-Sub
 
-To set up a clean working environment, let's start with creating some directories.
+Before we launch the Bullet Spark backend, we first need to setup the Bullet Web Service and PubSub layer. The bullet-core repo provides a [pubsub.rest](https://github.com/bullet-db/bullet-core/tree/master/src/main/java/com/yahoo/bullet/pubsub/rest) package which is a simple implementation of the PubSub layer using REST endpoints. The bullet web service can be configured to use this built-in REST PubSub to provide the additional REST endpoints needed to serve as a PubSub layer as well as the web service.
 
 #### Step 1: Setup directories and examples
 
 ```bash
 export BULLET_HOME=$(pwd)/bullet-quickstart
-mkdir -p $BULLET_HOME/backend/storm
+mkdir -p $BULLET_HOME/backend/spark
 mkdir -p $BULLET_HOME/service
 mkdir -p $BULLET_HOME/ui
 cd $BULLET_HOME
-curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.4.0/examples_artifacts.tar.gz
+DO THE THING to download the compressed folder - used to be: curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.4.0/examples_artifacts.tar.gz - now:  cp ~/bullet/bullet-db.github.io/examples/examples_artifacts.tar.gz .
 tar -xzf examples_artifacts.tar.gz
 export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 ```
 
-#### Step 2: Install Storm 1.1
+#### Step 2: Install the Bullet Web Service
 
 ```bash
-cd $BULLET_HOME/backend
-curl -O http://apache.org/dist/storm/apache-storm-1.1.2/apache-storm-1.1.2.zip
-unzip apache-storm-1.1.2.zip
-export PATH=$(pwd)/apache-storm-1.1.2/bin/:$PATH
+cd $BULLET_HOME/service
+curl -Lo bullet-service.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/0.2.1/bullet-service-0.2.1-embedded.jar
+cp $BULLET_EXAMPLES/web-service/example_rest_pubsub_config.yaml $BULLET_HOME/service/
+cp $BULLET_EXAMPLES/web-service/example_columns.json $BULLET_HOME/service/
 ```
-Add a DRPC server setting to the Storm config:
+
+#### Step 3: Launch the Web Service
 
 ```bash
-echo 'drpc.servers: ["127.0.0.1"]' >> apache-storm-1.1.2/conf/storm.yaml
+cd $BULLET_HOME/service
+java -jar bullet-service.jar --bullet.pubsub.config=$BULLET_HOME/service/example_rest_pubsub_config.yaml --bullet.schema.file=$BULLET_HOME/service/example_columns.json --server.port=9999 --bullet.endpoint.http=/query --bullet.pubsub.builtin.rest.enabled=true  --logging.path=. --logging.file=log.txt &> log.txt &
 ```
 
-#### Step 3: Launch Storm components
+The Web Service usually takes ~10-15 seconds to start. 
 
-Launch each of the following components, in order and wait for the commands to go through. You may have to do these one at a time. You will see a JVM being launched for each one and connection messages as the components communicate through Zookeeper.
+You can check the status of the Web Service by looking at the Web Service log:
 
 ```bash
-storm dev-zookeeper &
-storm nimbus &
-storm drpc &
-storm ui &
-storm logviewer &
-storm supervisor &
+cat $BULLET_HOME/service/log.txt
 ```
 
-It may take 30-60 seconds for all the components to launch.
+The log should contain a message that reads something like `Started Application in X seconds` (usually the last line of the file if the web service has been run recently).
 
-Once everything is up without errors, visit [http://localhost:8080](http://localhost:8080) and see if the Storm UI loads.
+#### Step 4: Test the Web Service (optional)
 
-#### Step 4: Test Storm (Optional)
-
-Before Bullet, test to see if Storm and DRPC are up and running by launching a example topology that comes with your Storm installation:
+We can check that the Web Service is up and running by getting the example columns through the API:
 
 ```bash
-storm jar apache-storm-1.1.2/examples/storm-starter/storm-starter-topologies-1.1.2.jar org.apache.storm.starter.BasicDRPCTopology topology
+curl -s http://localhost:9999/api/bullet/columns
 ```
 
-Visit your UI with a browser and see if a topology with name "topology" is running. If everything is good, you should be able to ping DRPC with:
+#### Step 5: Test the PubSub Layer (optional)
+
+To ensure that the Web Service has been configured to expose the necessary PubSub REST endpoints, we can "write" a fake-query to the PubSub, and then read it back by hand. Since there is currently no backend running, any queries written to the PubSub will simply be stored there until we read it manually.
+
+Write a fake empty query to the query endpoint:
 
 ```bash
-curl localhost:3774/drpc/exclamation/foo
+curl -s -H 'Content-Type: application/json' -X POST -d '{}' http://localhost:9999/api/bullet/pubsub/query
 ```
 
-and get back a ```foo!```. Any string you pass as part of the URL is returned to you with a "!" at the end.
-
-Kill this topology after with:
+Receiving no error response should indicate that the fake query was written to the pubsub. Then read a query from this same endpoint:
 
 ```bash
-storm kill topology
+curl http://localhost:9999/api/bullet/pubsub/query
 ```
 
-!!! note "Local mode cleanup"
+This should print `'{}'` to the screen, indicating we have successfully written and then read a fake empty query from the PubSub layer. Subsequent reads from this endpoint will return nothing because no more queries have been written to the PubSub endpoint.
 
-    If you notice any problems while setting up storm or while relaunching a topology, it may be because some state is corrupted. When running Storm in this fashion, states and serializations are stored in ```storm-local``` and ```/tmp/```. You may want to ```rm -rf storm-local/* /tmp/dev-storm-zookeeper``` to clean up this state before relaunching Storm components. See the [tear down section](#teardown) on how to kill any running instances.
 
-### Setting up the example Bullet topology
+### Setup Bullet Backend on Spark
 
-Now that Storm is up and running, we can put Bullet on it. We will use an example Spout that runs on Bullet 0.4.3 on our Storm cluster. The source is available [here](https://github.com/yahoo/bullet-docs/blob/master/examples/storm). This was part of the artifact that you installed in Step 1.
+We will run the bullet-spark backend using [Spark 2.2.1](https://spark.apache.org/releases/spark-release-2-2-1.html).
 
-#### Step 5: Setup the Storm example
+#### Step 6: Install Spark 2.2.1
 
 ```bash
-cp $BULLET_EXAMPLES/storm/* $BULLET_HOME/backend/storm
+export BULLET_SPARK=$BULLET_HOME/backend/spark
+cd $BULLET_SPARK
+curl -O http://www-eu.apache.org/dist/spark/spark-2.2.1/spark-2.2.1-bin-hadoop2.7.tgz
+tar -xzf spark-2.2.1-bin-hadoop2.7.tgz 
 ```
 
-!!! note "Settings"
-
-    Take a look at bullet_settings.yaml for the settings that are being overridden for this example. You can add or change settings as you like by referring to [core Bullet settings in bullet_defaults.yaml](https://github.com/yahoo/bullet-core/blob/master/src/main/resources/bullet_defaults.yaml) and [Storm settings in bullet_storm_defaults.yaml](https://github.com/yahoo/bullet-storm/blob/master/src/main/resources/bullet_storm_defaults.yaml). In particular, we have [customized these settings](https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/resources/bullet_settings.yaml) that affect the Bullet queries you can run:
-
-    ```bullet.query.max.duration: 570000``` Longest query time can be 570s. The Storm cluster default DRPC timeout is 600s.
-
-    ```bullet.query.aggregation.raw.max.size: 500``` The max ```RAW``` records you can fetch is 500.
-
-    ```bullet.query.aggregation.max.size: 1024``` The max records you can fetch for any query is 1024.
-
-    ```bullet.query.aggregation.count.distinct.sketch.entries: 16384``` We can count 16384 unique values exactly. Approximates after.
-
-    ```bullet.query.aggregation.group.sketch.entries: 1024``` The max unique groups can be 1024. Uniform sample after.
-
-    ```bullet.query.aggregation.distribution.sketch.entries: 1024``` Determines the normalized rank error for distributions.
-
-    ```bullet.query.aggregation.top.k.sketch.entries: 1024``` 0.75 times this number is the number of unique items for which counts can be done exactly. Approximates after.
-
-    ```bullet.query.aggregation.distribution.max.points: 200``` The maximum number of points you can generate, use or provide for a Distribution aggregation.
-
-!!! note "Want to tweak the example topology code?"
-
-    You will need to clone the [examples repository](https://github.com/yahoo/bullet-docs/tree/master/examples/storm) and customize it. To build the examples, you'll need to install [Maven 3](https://maven.apache.org/install.html).
-
-    ```cd $BULLET_HOME && git clone git@github.com:yahoo/bullet-docs.git```
-
-    ```cd bullet-docs/examples/storm && mvn package```
-
-    You will find the ```bullet-storm-example-1.0-SNAPSHOT-jar-with-dependencies.jar``` in ```$BULLET_HOME/bullet-docs/examples/storm/target/```
-
-    You can also make the ```examples_artifacts.tar.gz``` file with all the settings that is placed in ```$BULLET_EXAMPLES``` by just running ```make``` in the ```bullet-docs/examples/``` folder.
-
-#### Step 6: Launch the topology
+#### Step 7: Setup Bullet-Spark and Example Data Producer
 
 ```bash
-cd $BULLET_HOME/backend/storm && ./launch.sh
+cp $BULLET_HOME/bullet-examples/backend/spark/* $BULLET_SPARK
+curl -Lo bullet-spark.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-spark/0.1.1/bullet-spark-0.1.1-standalone.jar
 ```
-Visit the UI and see if the topology is up. You should see the ```DataSource``` spout begin emitting records.
 
-Test the Bullet topology by:
+#### Step 8: Launch the Bullet Spark Backend
+
+**Note:** This is a single command (new-lines are escaped) - run it in a single bash command:
 
 ```bash
-curl -s -X POST -d '{"id":"", "content":"{}"}' http://localhost:3774/drpc/bullet-query
+$BULLET_SPARK/spark-2.2.1-bin-hadoop2.7/bin/spark-submit \
+    --master local[10]  \
+    --class com.yahoo.bullet.spark.BulletSparkStreamingMain \
+    --driver-class-path $BULLET_SPARK/bullet-spark.jar:$BULLET_HOME/pubsub/bullet-kafka.jar:$BULLET_SPARK/bullet-spark-example.jar \
+    $BULLET_SPARK/bullet-spark.jar \
+    --bullet-spark-conf=$BULLET_SPARK/bullet_spark_rest_settings.yaml &> log.txt &
+
 ```
 
-You should get a random record (serialized as a String inside a JSON message sent back through the PubSub) from Bullet.
+The backend will usually be up and running within 5-10 seconds. The Web Service will now be hooked up through the REST PubSub to the Spark backend. You can now run a Bullet query by hitting the web service directly:
+
+```bash
+curl -s -H 'Content-Type: text/plain' -X POST -d '{"aggregation": {"size": 1}}' http://localhost:9999/api/bullet/http-query
+```
+
+This query will return a result JSON containing a "records" field containing a single record, and a "meta" field with some meta information. 
 
 !!! note "What is this data?"
 
-    This data is randomly generated by the [custom Storm spout](https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/java/com/yahoo/bullet/storm/examples/RandomSpout.java) that is in the example topology you just launched. In practice, your spout would read from an actual data source such as Kafka instead. See [below](#storm-topology) for more details about this random data spout.
+    This data is randomly generated by the [custom data producer](https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/spark/src/main/scala/com/yahoo/bullet/spark/examples/receiver/RandomReceiver.scala) that was created for the sole purpose of generating toy data to demo Bullet. In practice, your spout would read from an actual data source such as Kafka.
 
-### Setting up the Bullet Web Service
 
-#### Step 7: Install the Bullet Web Service
 
-```bash
-cd $BULLET_HOME/service
-curl -Lo bullet-service.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/0.1.1/bullet-service-0.1.1-embedded.jar
-cp $BULLET_EXAMPLES/web-service/example* $BULLET_HOME/service/
-cp $BULLET_EXAMPLES/storm/*jar-with-dependencies.jar $BULLET_HOME/service/bullet-storm-jar-with-dependencies.jar
-```
 
-#### Step 8: Launch the Web Service
 
-```bash
-cd $BULLET_HOME/service
-java -Dloader.path=bullet-storm-jar-with-dependencies.jar -jar bullet-service.jar --bullet.pubsub.config=example_drpc_pubsub_config.yaml --bullet.schema.file=example_columns.json --server.port=9999  --logging.path=. --logging.file=log.txt &> log.txt &
-```
-You can verify that it is up by running a Bullet query or getting the example columns through the API:
 
-```bash
-curl -s -H 'Content-Type: text/plain' -X POST -d '{}' http://localhost:9999/api/bullet/query
-curl -s http://localhost:9999/api/bullet/columns
-```
+
+
 
 ### Setting up the Bullet UI
 
@@ -244,7 +194,7 @@ If you were performing the steps yourself, you can also manually cleanup **all t
 | -------------- | ---------------------------------------------------------------- |
 | UI             | ```pkill -f [e]xpress-server.js```                               |
 | Web Service    | ```pkill -f [e]xample_drpc_pubsub_config.yaml```                      |
-| Storm          | ```pkill -f [a]pache-storm-1.1.2```                              |
+| Spark          | ```pkill -f [b]ullet-spark```                                    |
 | File System    | ```rm -rf $BULLET_HOME /tmp/dev-storm-zookeeper /tmp/jetty-*```  |
 
 This does *not* delete ```$HOME/.nvm``` and some extra lines nvm may have added to your ```$HOME/{.profile, .bash_profile, .zshrc, .bashrc}```.

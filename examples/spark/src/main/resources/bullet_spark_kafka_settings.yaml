@@ -32,4 +32,3 @@ bullet.pubsub.class.name: "com.yahoo.bullet.kafka.KafkaPubSub"
 bullet.pubsub.kafka.bootstrap.servers: "localhost:9092"
 bullet.pubsub.kafka.request.topic.name: "bullet.requests"
 bullet.pubsub.kafka.response.topic.name: "bullet.responses"
-
