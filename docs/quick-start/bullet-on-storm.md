@@ -1,4 +1,7 @@
-# Quick Start
+# Quick Start - Bullet on Storm
+
+!!! note "NOTE: This is an old version of Bullet"
+    The version of Bullet this quickstart uses does not support the newest functionality such as Windowing. We are working hard to get new documentation up as soon as possible. Use [the Spark quickstart](bullet-on-spark.md) to see all the latest features. An updated quickstart for Storm is coming soon.
 
 This section gets you running a mock instance of Bullet to play around with. The instance will run using [Bullet on Storm](backend/storm-setup.md) and use the [DRPC Pubsub](pubsub/storm-drpc.md). Since we do not have an actual data source, we will produce some fake data and convert it into [Bullet Records](backend/ingestion.md) in a [custom Storm spout](https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/java/com/yahoo/bullet/storm/examples/RandomSpout.java). If you want to use Bullet for your data, you will need to do read and convert your data to Bullet Records in a similar manner.
 

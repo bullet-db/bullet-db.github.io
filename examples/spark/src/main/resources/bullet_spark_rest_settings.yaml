@@ -1,0 +1,36 @@
+########################################################################################################################
+######################################### Bullet Spark Settings #####################################
+########################################################################################################################
+bullet.spark.data.producer.class.name: "com.yahoo.bullet.spark.examples.RandomProducer"
+bullet.spark.batch.duration.ms: 1000
+bullet.spark.receiver.query.block.size: 1
+bullet.spark.receiver.query.coalesce.partitions: 10
+bullet.spark.data.producer.parallelism: 1
+bullet.spark.checkpoint.dir: "/tmp/spark-checkpoint"
+bullet.spark.recover.from.checkpoint.enable: false
+bullet.spark.app.name: "BulletSparkStreamingJob"
+bullet.spark.metrics.enabled: false
+bullet.spark.filter.partition.parallel.mode.enabled: false
+bullet.spark.filter.partition.parallel.mode.parallelism: 4
+bullet.spark.filter.partition.parallel.mode.min.query.threshold: 10
+
+########################################################################################################################
+######################################### Spark Streaming Settings #####################################
+########################################################################################################################
+spark.serializer: "org.apache.spark.serializer.KryoSerializer"
+spark.closure.serializer: "org.apache.spark.serializer.KryoSerializer"
+spark.kryo.registrator: "com.yahoo.bullet.spark.utils.BulletKryoRegistrator"
+spark.streaming.stopGracefullyOnShutdown: "true"
+spark.streaming.receiver.writeAheadLog.enable: "false"
+spark.streaming.driver.writeAheadLog.allowBatching: "false"
+
+########################################################################################################################
+######################################### Query PubSub Settings ########################################
+########################################################################################################################
+bullet.pubsub.context.name: "QUERY_PROCESSING"
+bullet.pubsub.class.name: "com.yahoo.bullet.pubsub.rest.RESTPubSub"
+# A list of url(s) for the query endpoint. In the web service, this should contain a single URL for the query endpoint
+# of the in-memory pubsub instance running on that web service. For the backend it should contain the urls of all
+# the pubsub instances.
+bullet.pubsub.rest.query.urls:
+    - "http://localhost:9999/api/bullet/pubsub/query"
