@@ -1388,9 +1388,7 @@ subtract 24 from it, you get the lower bound of the true count.
 Note that this also means the order of the items could be off. If two items had ```Count``` within 24 of each other, it is possible that the higher one *may* actually have had a true count *lower* than
 the second one and possibly be ranked higher. There is no such situation in this result set.
 
-## Windowed Query Examples
-
-### Tumbling Time Group-By
+### Window - Tumbling Group-By
 
 **Bullet Query**
 
@@ -1697,7 +1695,7 @@ data:{
 }
 ```
 
-### Additive Tumbling
+### Window - Additive Tumbling
 
 **Bullet Query**
 
