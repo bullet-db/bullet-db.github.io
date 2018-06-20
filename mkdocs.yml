@@ -29,7 +29,7 @@ pages:
 - Web Service:
   - Setup: ws/setup.md
   - API: ws/api.md
-  - Query Examples: ws/query-examples.md
+  - Query Examples: ws/examples.md
 - UI:
   - Setup: ui/setup.md
   - Usage: ui/usage.md

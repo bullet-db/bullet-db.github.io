@@ -1,4 +1,4 @@
-  ![Bullet Icons](../img/bullet-icons-line.png)
+  ![Bullet](../img/bullet-logo.png)
 
 # Bullet:
 
