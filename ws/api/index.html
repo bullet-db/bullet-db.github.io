@@ -87,8 +87,23 @@
                 
                 
                 
-                    <li >
-                        <a href="../../quick-start/">Quick Start</a>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Quick Start <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../quick-start/bullet-on-spark/">Bullet On Spark</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../quick-start/bullet-on-storm/">Bullet On Storm</a>
+</li>
+
+                        
+                        </ul>
                     </li>
                 
                 
@@ -130,6 +145,27 @@
   </li>
 
                         
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">Spark</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../backend/spark-architecture/">Architecture</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../backend/spark-setup/">Setup</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
                         </ul>
                     </li>
                 
@@ -157,6 +193,12 @@
 </li>
 
                         
+                            
+<li >
+    <a href="../../pubsub/rest/">REST</a>
+</li>
+
+                        
                         </ul>
                     </li>
                 
@@ -180,7 +222,7 @@
                         
                             
 <li >
-    <a href="../examples/">Examples</a>
+    <a href="../query-examples/">Query Examples</a>
 </li>
 
                         
@@ -254,7 +296,7 @@
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="../examples/">
+                        <a rel="prev" href="../query-examples/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
@@ -313,6 +355,18 @@
                     </li>
             
                     <li class="second-level">
+                        <a href="#window">Window</a>
+                        <ul class="nav">
+                        
+                            <li class="third-level">
+                                <a href="#currently-bullet-supports-the-following-window-types">Currently Bullet supports the following window types:</a>
+                                
+                            </li>
+                        
+                        </ul>
+                    </li>
+            
+                    <li class="second-level">
                         <a href="#results">Results</a>
                         
                     </li>
@@ -325,19 +379,33 @@
         <div class="col-md-9" role="main">
 
 <h1 id="api">API</h1>
-<p>See the <a href="../../ui/usage/">UI Usage section</a> for using the UI to build Bullet queries. This section deals with examples of the JSON query format that the API currently exposes (and the UI uses underneath).</p>
-<p>Bullet queries allow you to filter, project and aggregate data. It lets you fetch raw and aggregated data. Fields inside maps can be accessed using the '.' notation in queries. For example, myMap.key will access the key field inside the myMap map. There is no support for accessing fields inside Lists or inside nested Maps as of yet. Only the entire object can be operated on for now.</p>
-<p>The three main sections of a Bullet query are:</p>
+<p>This section gives a comprehensive overview of the Web Service API for launching Bullet queries.</p>
+<ul>
+<li>For info on how to use the UI, see the <a href="../../ui/usage/">UI Usage section</a></li>
+<li>For examples of specific queries see the <a href="examples.md">Examples</a> section</li>
+</ul>
+<p>The main constituents of a Bullet query are:</p>
+<ul>
+<li><strong>filters</strong>, which determine which records will be consumed by your query</li>
+<li><strong>projection</strong>, which determines which fields will be projected in the resulting output from Bullet</li>
+<li><strong>aggregation</strong>, which allows users to aggregate data and perform aggregation operations</li>
+<li><strong>window</strong>, which can be used to return incremental results on "windowed" data</li>
+<li><strong>duration</strong>, which determines the maximum duration of the query in milliseconds</li>
+</ul>
+<p>Fields inside maps can be accessed using the '.' notation in queries. For example,</p>
+<p><code>myMap.key</code></p>
+<p>will access the "key" field inside the "myMap" map. There is no support for accessing fields inside Lists or inside nested Maps as of yet. Only the entire object can be operated on for now.</p>
+<p>The main constituents of a Bullet query listed above create the top level fields of the Bullet query:</p>
 <pre><code class="javascript">{
-    &quot;filters&quot;: {},
+    &quot;filters&quot;: [{}, {}, ...],
     &quot;projection&quot;: {},
     &quot;aggregation&quot;: {}.
+    &quot;window&quot;: {},
     &quot;duration&quot;: 20000
 }
 </code></pre>
 
-<p>The duration represents how long the query runs for (a window from when you submit it to that many milliseconds into the future).</p>
-<p>See the <a href="#filters">Filters</a>, <a href="#projections">Projections</a> and <a href="#aggregations">Aggregation</a> sections for their respective specifications. Each of those sections are objects and you will need to be place the entire object in the respective sections above.</p>
+<p>We will describe how to specify each of these top-level fields below:</p>
 <h2 id="filters">Filters</h2>
 <p>Bullet supports two kinds of filters:</p>
 <ol>
@@ -369,7 +437,7 @@
 </tr>
 </tbody>
 </table>
-<p>The format for a Logical filter is:</p>
+<p>The format for a <strong>single</strong> Logical filter is:</p>
 <pre><code class="javascript">{
    &quot;operation&quot;: &quot;AND | OR | NOT&quot;
    &quot;clauses&quot;: [
@@ -382,6 +450,7 @@
 </code></pre>
 
 <p>Any other type of filter may be provided as a clause in clauses.</p>
+<p>Note that the "filter" field in the query is a <strong>list</strong> of as many filters as you'd like.</p>
 <h3 id="relational-filters">Relational Filters</h3>
 <p>Relational filters allow you to specify conditions on a field, using a comparison operator and a list of values.</p>
 <p>The current comparisons allowed in filters are:</p>
@@ -423,7 +492,7 @@
 </tr>
 </tbody>
 </table>
-<p>These operators are all typed based on the type of the left hand side from the Bullet record. If the elements on the right hand side cannot be
+<p>Note: These operators are all typed based on the type of the <strong>left hand side</strong> from the Bullet record. If the elements on the right hand side cannot be
 casted to the types on the LHS, those items will be ignored for the comparison.</p>
 <p>The format for a Relational filter is:</p>
 <pre><code class="javascript">{
@@ -655,6 +724,79 @@ perform the average across the numeric values for a field only.</p>
 </code></pre>
 
 <p>Note that the <code>K</code> in <code>TOP K</code> is specified using the <code>size</code> field in the <code>aggregation</code> object.</p>
+<h2 id="window">Window</h2>
+<p>The "window" field is <strong>optional</strong> and allows you to instruct Bullet to return incremental results. For example you might want to return the COUNT of a field and return that count every 2 seconds. </p>
+<p>If "window" is ommitted Bullet will emit only a single result at the very end of the query.</p>
+<p>An example window might look like this:</p>
+<pre><code class="javascript">&quot;window&quot;: { &quot;emit&quot;: { &quot;type&quot;: &quot;TIME/RECORD&quot;, &quot;every&quot;: 5000 },
+            &quot;include&quot;: { &quot;type&quot;: &quot;TIME/RECORD/ALL&quot;, &quot;first&quot;: 5000 } },
+</code></pre>
+
+<ul>
+<li>The <strong>emit</strong> field is used to specify when a window should be emmitted and the current results sent back to the user<ul>
+<li>The <strong>type</strong> subfield for "emit" can have two values:<ul>
+<li><strong>"TIME"</strong> specifies that the window will emit after a specific number of milliseconds </li>
+<li><strong>"RECORD"</strong> specifies that the window will emit after consuming a specific number of records</li>
+</ul>
+</li>
+<li>The <strong>every</strong> subfield for "emit" specifies how many records/milliseconds (depending on "type") will be counted before the window is emmitted</li>
+</ul>
+</li>
+<li>The <strong>include</strong> field is used to specify what will be included in the emmitted window<ul>
+<li>The <strong>type</strong> subfield for "include" can have three values:<ul>
+<li><strong>"TIME"</strong> specifies that the window will include all records seen in a certain time period in the window<ul>
+<li>e.g. All records seen in the first 2 seconds of a 10 second window</li>
+</ul>
+</li>
+<li><strong>"RECORD"</strong> specifies that the window will include the first n records, where n is specified in the "first" field below</li>
+<li><strong>"ALL"</strong> specifies that the window will include ALL results accumulated since the very beginning of the <strong>query</strong> (not just this window)</li>
+</ul>
+</li>
+<li>the <strong>first</strong> subfield for "include" specifies the number of records/milliseconds at the beginning of this window to include in the emmitted result - it should be ommitted if "type" is "ALL".</li>
+</ul>
+</li>
+</ul>
+<p><strong>NOTE: Not all windowing types are supported at this time.</strong></p>
+<h3 id="currently-bullet-supports-the-following-window-types"><strong>Currently Bullet supports the following window types</strong>:</h3>
+<ul>
+<li>Time-Based Tumbling Windows</li>
+<li>Additive Tumbling Windows</li>
+<li>Reactive Record-Based Windows</li>
+<li>No Window</li>
+</ul>
+<p>Support for more windows will be added in the future.</p>
+<p>Each currently supported window type will be described below:</p>
+<h4 id="time-based-tumbling-windows"><strong>Time-Based Tumbling Windows</strong></h4>
+<p>Currently time-based tumbling windows <strong>must</strong> have emit == include. In other words, only the entire window can be emitted, and windows must be adjacent.</p>
+<p><img alt="Time-Based Tumbling Windows" src="../../img/time-based-tumbling.png" /></p>
+<p>The above example windowing would be specified with the window:</p>
+<pre><code class="javascript">&quot;window&quot;: { &quot;emit&quot;: { &quot;type&quot;: &quot;TIME&quot;, &quot;every&quot;: 3000 },
+            &quot;include&quot;: { &quot;type&quot;: &quot;TIME&quot;, &quot;first&quot;: 3000 } },
+</code></pre>
+
+<p>Any aggregation can be done in each window, or the raw records themselves can be returned as specified in the "aggregation" object.</p>
+<p>In this example the first window would include 3 records, the second would include 4 records, the third would include 3 records and the fourth would include 2 records.</p>
+<h4 id="additive-tumbling-windows"><strong>Additive Tumbling Windows</strong></h4>
+<p>Additive tumbling windows emit with the same logic as time-based tumbling windows, but include ALL results from the beginning of the query:</p>
+<p><img alt="Additive Tumbling Windows" src="../../img/additive-tumbling.png" /></p>
+<p>The above example would be specified with the window:</p>
+<pre><code class="javascript">&quot;window&quot;: { &quot;emit&quot;: { &quot;type&quot;: &quot;TIME&quot;, &quot;every&quot;: 3000 },
+            &quot;include&quot;: { &quot;type&quot;: &quot;ALL&quot; } },
+</code></pre>
+
+<p>In this example the first window would include 3 records, the second would include 7 records, the third would include 10 records and the fourth would include 12 records.</p>
+<h4 id="sliding-reactive-windows"><strong>Sliding "Reactive" Windows</strong></h4>
+<p>Sliding windows emit based on the arrival of an event, rather than after a certain period of time. In general sliding windows often do some aggregation on the previous X records, or on all records that arrived in the last X seconds.
+Bullet will support this functionality in the future, at this time Bullet only supports <strong>Sliding Windows of size 1</strong>, often referred to as "reactive" windows. It does not support sliding windows with an aggregation at this time.
+Effectively this query will simply return every event that matches the filters instantly to the user.</p>
+<p><img alt="Reactive Windows" src="../../img/reactive.png" /></p>
+<p>The above example would be specified with the window:</p>
+<pre><code class="javascript">&quot;window&quot;: { &quot;emit&quot;: { &quot;type&quot;: &quot;RECORD&quot;, &quot;every&quot;: 1 },
+            &quot;include&quot;: { &quot;type&quot;: &quot;RECORD&quot;, &quot;last&quot;: 1 } },
+</code></pre>
+
+<h4 id="no-window"><strong>No Window</strong></h4>
+<p>If the "window" field is optional. If it is  ommitted, the query will only emit when the entire query is finished.</p>
 <h2 id="results">Results</h2>
 <p>Bullet results are JSON objects with two fields:</p>
 <table>
@@ -675,7 +817,7 @@ perform the average across the numeric values for a field only.</p>
 </tr>
 </tbody>
 </table>
-<p>For a detailed description of how to perform these queries and see example results, see <a href="../examples/">Examples</a>.</p></div>
+<p>For a detailed description of how to perform these queries and see example results, see <a href="examples.md">Examples</a>.</p></div>
         
     </div>
 

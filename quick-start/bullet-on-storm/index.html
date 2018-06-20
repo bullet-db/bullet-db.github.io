@@ -7,20 +7,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="The full documentation for Bullet - A Real Time Data Query Engine"> 
     <meta name="author" content="Akshai Sarma"> 
-    <link rel="canonical" href="https://yahoo.github.io/bullet-docs/quick-start/"> 
-    <link rel="shortcut icon" href="../img/favicon.ico">
+    <link rel="canonical" href="https://yahoo.github.io/bullet-docs/quick-start/bullet-on-storm/"> 
+    <link rel="shortcut icon" href="../../img/favicon.ico">
 
-    <title>Quick Start - Bullet Docs</title>
+    <title>Bullet On Storm - Bullet Docs</title>
 
-    <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+    <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/font-hack/2.018/css/hack.min.css">
     <link href='//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700,700italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
     <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
-    <link href="../css/base.css" rel="stylesheet">
-    <link href="../css/cinder.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/highlight.css">
-        <link href="../css/extra.css" rel="stylesheet">
+    <link href="../../css/base.css" rel="stylesheet">
+    <link href="../../css/cinder.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/highlight.css">
+        <link href="../../css/extra.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -71,7 +71,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="..">Bullet Docs<small class="small small-brand-text">v0.4.0</small></a>
+            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v0.4.0</small></a>
         </div>
 
         <!-- Expanded navigation -->
@@ -82,13 +82,28 @@
                 
                 
                     <li >
-                        <a href="..">Home</a>
+                        <a href="../..">Home</a>
                     </li>
                 
                 
                 
-                    <li class="active">
-                        <a href="./">Quick Start</a>
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Quick Start <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../bullet-on-spark/">Bullet On Spark</a>
+</li>
+
+                        
+                            
+<li class="active">
+    <a href="./">Bullet On Storm</a>
+</li>
+
+                        
+                        </ul>
                     </li>
                 
                 
@@ -99,7 +114,7 @@
                         
                             
 <li >
-    <a href="../backend/ingestion/">Getting your data into Bullet</a>
+    <a href="../../backend/ingestion/">Getting your data into Bullet</a>
 </li>
 
                         
@@ -110,19 +125,40 @@
         
             
 <li >
-    <a href="../backend/storm-architecture/">Architecture</a>
+    <a href="../../backend/storm-architecture/">Architecture</a>
 </li>
 
         
             
 <li >
-    <a href="../backend/storm-setup/">Setup</a>
+    <a href="../../backend/storm-setup/">Setup</a>
 </li>
 
         
             
 <li >
-    <a href="../backend/storm-performance/">Performance</a>
+    <a href="../../backend/storm-performance/">Performance</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">Spark</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../backend/spark-architecture/">Architecture</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../backend/spark-setup/">Setup</a>
 </li>
 
         
@@ -141,19 +177,25 @@
                         
                             
 <li >
-    <a href="../pubsub/architecture/">Architecture</a>
+    <a href="../../pubsub/architecture/">Architecture</a>
 </li>
 
                         
                             
 <li >
-    <a href="../pubsub/kafka/">Kafka</a>
+    <a href="../../pubsub/kafka/">Kafka</a>
 </li>
 
                         
                             
 <li >
-    <a href="../pubsub/storm-drpc/">Storm DRPC</a>
+    <a href="../../pubsub/storm-drpc/">Storm DRPC</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../pubsub/rest/">REST</a>
 </li>
 
                         
@@ -168,19 +210,19 @@
                         
                             
 <li >
-    <a href="../ws/setup/">Setup</a>
+    <a href="../../ws/setup/">Setup</a>
 </li>
 
                         
                             
 <li >
-    <a href="../ws/api/">API</a>
+    <a href="../../ws/api/">API</a>
 </li>
 
                         
                             
 <li >
-    <a href="../ws/examples/">Examples</a>
+    <a href="../../ws/query-examples/">Query Examples</a>
 </li>
 
                         
@@ -195,13 +237,13 @@
                         
                             
 <li >
-    <a href="../ui/setup/">Setup</a>
+    <a href="../../ui/setup/">Setup</a>
 </li>
 
                         
                             
 <li >
-    <a href="../ui/usage/">Usage</a>
+    <a href="../../ui/usage/">Usage</a>
 </li>
 
                         
@@ -211,7 +253,7 @@
                 
                 
                     <li >
-                        <a href="../releases/">Releases</a>
+                        <a href="../../releases/">Releases</a>
                     </li>
                 
                 
@@ -222,13 +264,13 @@
                         
                             
 <li >
-    <a href="../about/contributing/">Contributing</a>
+    <a href="../../about/contributing/">Contributing</a>
 </li>
 
                         
                             
 <li >
-    <a href="../about/contact/">Contact Us</a>
+    <a href="../../about/contact/">Contact Us</a>
 </li>
 
                         
@@ -249,12 +291,12 @@
                 
                 
                     <li >
-                        <a rel="next" href="..">
+                        <a rel="next" href="../bullet-on-spark/">
                             <i class="fa fa-arrow-left"></i> Previous
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="../backend/ingestion/">
+                        <a rel="prev" href="../../backend/ingestion/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
@@ -275,7 +317,7 @@
     <ul class="nav bs-sidenav">
     
         <li class="active">
-            <a href="#quick-start">Quick Start</a>
+            <a href="#quick-start-bullet-on-storm">Quick Start - Bullet on Storm</a>
             <ul class="nav">
                 
                     <li class="second-level">
@@ -311,6 +353,11 @@
                     </li>
             
                     <li class="second-level">
+                        <a href="#playing-around-with-the-instance">Playing around with the instance</a>
+                        
+                    </li>
+            
+                    <li class="second-level">
                         <a href="#teardown">Teardown</a>
                         
                     </li>
@@ -342,11 +389,6 @@
                         </ul>
                     </li>
             
-                    <li class="second-level">
-                        <a href="#playing-around-with-the-instance">Playing around with the instance</a>
-                        
-                    </li>
-            
             </ul>
         </li>
     
@@ -354,14 +396,18 @@
 </div></div>
         <div class="col-md-9" role="main">
 
-<h1 id="quick-start">Quick Start</h1>
-<p>This section gets you running a mock instance of Bullet to play around with. The instance will run using <a href="../backend/storm-setup/">Bullet on Storm</a> and use the <a href="../pubsub/storm-drpc/">DRPC Pubsub</a>. Since we do not have an actual data source, we will produce some fake data and convert it into <a href="../backend/ingestion/">Bullet Records</a> in a <a href="https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/java/com/yahoo/bullet/storm/examples/RandomSpout.java">custom Storm spout</a>. If you want to use Bullet for your data, you will need to do read and convert your data to Bullet Records in a similar manner.</p>
+<h1 id="quick-start-bullet-on-storm">Quick Start - Bullet on Storm</h1>
+<div class="admonition note">
+<p class="admonition-title">NOTE: This is an old version of Bullet</p>
+<p>The version of Bullet this quickstart uses does not support the newest functionality such as Windowing. We are working hard to get new documentation up as soon as possible. Use <a href="../bullet-on-spark/">the Spark quickstart</a> to see all the latest features. An updated quickstart for Storm is coming soon.</p>
+</div>
+<p>This section gets you running a mock instance of Bullet to play around with. The instance will run using <a href="backend/storm-setup.md">Bullet on Storm</a> and use the <a href="pubsub/storm-drpc.md">DRPC Pubsub</a>. Since we do not have an actual data source, we will produce some fake data and convert it into <a href="backend/ingestion.md">Bullet Records</a> in a <a href="https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/java/com/yahoo/bullet/storm/examples/RandomSpout.java">custom Storm spout</a>. If you want to use Bullet for your data, you will need to do read and convert your data to Bullet Records in a similar manner.</p>
 <p>At the end of this section, you will have:</p>
 <ul>
 <li>Setup the Bullet topology using a custom spout on <a href="https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.6.2">bullet-storm-0.6.2</a></li>
-<li>Setup the <a href="../ws/setup/">Web Service</a> talking to the topology and serving a schema for your UI using <a href="https://github.com/yahoo/bullet-service/releases/tag/bullet-service-0.1.1">bullet-service-0.1.1</a></li>
-<li>Setup the <a href="../pubsub/storm-drpc/">DRPC PubSub</a> talking to the topology and Web Service.</li>
-<li>Setup the <a href="../ui/setup/">UI</a> talking to the Web Service using <a href="https://github.com/yahoo/bullet-ui/releases/tag/v0.4.0">bullet-ui-0.4.0</a></li>
+<li>Setup the <a href="ws/setup.md">Web Service</a> talking to the topology and serving a schema for your UI using <a href="https://github.com/yahoo/bullet-service/releases/tag/bullet-service-0.1.1">bullet-service-0.1.1</a></li>
+<li>Setup the <a href="pubsub/storm-drpc.md">DRPC PubSub</a> talking to the topology and Web Service.</li>
+<li>Setup the <a href="ui/setup.md">UI</a> talking to the Web Service using <a href="https://github.com/yahoo/bullet-ui/releases/tag/v0.4.0">bullet-ui-0.4.0</a></li>
 </ul>
 <p><strong>Prerequisites</strong></p>
 <ul>
@@ -393,15 +439,15 @@ tar -xzf examples_artifacts.tar.gz
 export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 </code></pre>
 
-<h4 id="step-2-install-storm-10">Step 2: Install Storm 1.0</h4>
+<h4 id="step-2-install-storm-11">Step 2: Install Storm 1.1</h4>
 <pre><code class="bash">cd $BULLET_HOME/backend
-curl -O http://apache.org/dist/storm/apache-storm-1.0.3/apache-storm-1.0.3.zip
-unzip apache-storm-1.0.3.zip
-export PATH=$(pwd)/apache-storm-1.0.3/bin/:$PATH
+curl -O http://apache.org/dist/storm/apache-storm-1.1.2/apache-storm-1.1.2.zip
+unzip apache-storm-1.1.2.zip
+export PATH=$(pwd)/apache-storm-1.1.2/bin/:$PATH
 </code></pre>
 
 <p>Add a DRPC server setting to the Storm config:</p>
-<pre><code class="bash">echo 'drpc.servers: [&quot;127.0.0.1&quot;]' &gt;&gt; apache-storm-1.0.3/conf/storm.yaml
+<pre><code class="bash">echo 'drpc.servers: [&quot;127.0.0.1&quot;]' &gt;&gt; apache-storm-1.1.2/conf/storm.yaml
 </code></pre>
 
 <h4 id="step-3-launch-storm-components">Step 3: Launch Storm components</h4>
@@ -414,10 +460,11 @@ storm logviewer &amp;
 storm supervisor &amp;
 </code></pre>
 
+<p>It may take 30-60 seconds for all the components to launch.</p>
 <p>Once everything is up without errors, visit <a href="http://localhost:8080">http://localhost:8080</a> and see if the Storm UI loads.</p>
 <h4 id="step-4-test-storm-optional">Step 4: Test Storm (Optional)</h4>
 <p>Before Bullet, test to see if Storm and DRPC are up and running by launching a example topology that comes with your Storm installation:</p>
-<pre><code class="bash">storm jar apache-storm-1.0.3/examples/storm-starter/storm-starter-topologies-1.0.3.jar org.apache.storm.starter.BasicDRPCTopology topology
+<pre><code class="bash">storm jar apache-storm-1.1.2/examples/storm-starter/storm-starter-topologies-1.1.2.jar org.apache.storm.starter.BasicDRPCTopology topology
 </code></pre>
 
 <p>Visit your UI with a browser and see if a topology with name "topology" is running. If everything is good, you should be able to ping DRPC with:</p>
@@ -510,12 +557,14 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
 <pre><code class="bash">PORT=8800 node express-server.js &amp;
 </code></pre>
 
-<p>Visit <a href="http://localhost:8800">http://localhost:8800</a> to query your topology with the UI. See <a href="../ui/usage/">UI usage</a> for some example queries and interactions using this UI. You see what the Schema means by visiting the Schema section.</p>
+<p>Visit <a href="http://localhost:8800">http://localhost:8800</a> to query your topology with the UI. See <a href="ui/usage.md">UI usage</a> for some example queries and interactions using this UI. You see what the Schema means by visiting the Schema section.</p>
 <div class="admonition note">
 <p class="admonition-title">Running it remotely?</p>
 <p>If you access the UI from another machine than where your UI is actually running, you will need to edit <code>config/env-settings.json</code>. Since the UI is a client-side app, the machine that your browser is running on will fetch the UI and attempt to use these settings to talk to the Web Service. Since they point to localhost by default, your browser will attempt to connect there and fail. An easy fix is to change <code>localhost</code> in your env-settings.json to point to the host name where you will hosting the UI. This will be the same as the UI host you use in the browser. You can also do a local port forward on the machine accessing the UI by running:
 <code>ssh -N -L 8800:localhost:8800 -L 9999:localhost:9999 hostname-of-the-quickstart-components 2&gt;&amp;1</code></p>
 </div>
+<h2 id="playing-around-with-the-instance">Playing around with the instance</h2>
+<p>Check out and follow along with the <a href="ui/usage.md">UI Usage</a> page as it shows you some queries you can run using this UI.</p>
 <h2 id="teardown">Teardown</h2>
 <p>If you were using the <a href="#install-script">Install Script</a> or if you don't want to manually bring down everything, you can run:</p>
 <pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.4.0/examples/install-all.sh | bash -s cleanup
@@ -540,7 +589,7 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
 </tr>
 <tr>
 <td>Storm</td>
-<td><code>pkill -f [a]pache-storm-1.0.3</code></td>
+<td><code>pkill -f [a]pache-storm-1.1.2</code></td>
 </tr>
 <tr>
 <td>File System</td>
@@ -638,7 +687,7 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
 <p>This method generates some fields randomly and inserts them into a BulletRecord. Note that the BulletRecord is typed and all data must be inserted with the proper types.</p>
 <p>If you put Bullet on your data, you will need to write a Spout (or a topology if your reading is complex), that reads from your data source and emits BulletRecords with the fields you wish to be query-able placed into a BulletRecord similar to this example.</p>
 <h3 id="pubsub">PubSub</h3>
-<p>We used the <a href="../pubsub/storm-drpc/">DRPC PubSub</a> since we were using the Storm Backend. This code was included in the Bullet Storm artifact that we downloaded (the JAR with dependencies). We configured the Backend to use this PubSub by adding these settings to the YAML file that we passed to our Storm topology. Notice that we set the context to <code>QUERY_PROCESSING</code> since this is the Backend.</p>
+<p>We used the <a href="pubsub/storm-drpc.md">DRPC PubSub</a> since we were using the Storm Backend. This code was included in the Bullet Storm artifact that we downloaded (the JAR with dependencies). We configured the Backend to use this PubSub by adding these settings to the YAML file that we passed to our Storm topology. Notice that we set the context to <code>QUERY_PROCESSING</code> since this is the Backend.</p>
 <pre><code class="yaml">bullet.pubsub.context.name: &quot;QUERY_PROCESSING&quot;
 bullet.pubsub.class.name: &quot;com.yahoo.bullet.storm.drpc.DRPCPubSub&quot;
 bullet.pubsub.storm.drpc.function: &quot;bullet-query&quot;
@@ -745,9 +794,7 @@ bullet.pubsub.storm.drpc.http.connect.timeout.ms: 1000
 }
 </code></pre>
 
-<p>Since we served our schema through the same Web Service as our queries, both these point to our Web Service. Note that there is no <code>schemaPath</code> because it must be the constant string <code>columns</code>. If you define a custom endpoint for your schema, you must ensure that it can be obtained by making a GET request to <code>schemaHost/schemaNamespace/columns</code>.</p>
-<h2 id="playing-around-with-the-instance">Playing around with the instance</h2>
-<p>Check out and follow along with the <a href="../ui/usage/">UI Usage</a> page as it shows you some queries you can run using this UI.</p></div>
+<p>Since we served our schema through the same Web Service as our queries, both these point to our Web Service. Note that there is no <code>schemaPath</code> because it must be the constant string <code>columns</code>. If you define a custom endpoint for your schema, you must ensure that it can be obtained by making a GET request to <code>schemaHost/schemaNamespace/columns</code>.</p></div>
         
     </div>
 
@@ -765,15 +812,15 @@ bullet.pubsub.storm.drpc.http.connect.timeout.ms: 1000
         </div>
     </footer>
 
-    <script src="../js/jquery-1.10.2.min.js"></script>
-    <script src="../js/bootstrap-3.0.3.min.js"></script>
-    <script src="../js/highlight.pack.js"></script>
+    <script src="../../js/jquery-1.10.2.min.js"></script>
+    <script src="../../js/bootstrap-3.0.3.min.js"></script>
+    <script src="../../js/highlight.pack.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
     <script>
-    var base_url = '..';
+    var base_url = '../..';
     </script>
-    <script data-main="../mkdocs/js/search.js" src="../mkdocs/js/require.js"></script>
-    <script src="../js/base.js"></script>
+    <script data-main="../../mkdocs/js/search.js" src="../../mkdocs/js/require.js"></script>
+    <script src="../../js/base.js"></script>
 
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
         <div class="modal-dialog">

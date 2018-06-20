@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The full documentation for Bullet - A Real Time Data Query Engine"> 
+    <meta name="author" content="Akshai Sarma"> 
+    <link rel="canonical" href="https://yahoo.github.io/bullet-docs/quick-start/bullet-on-spark/"> 
+    <link rel="shortcut icon" href="../../img/favicon.ico">
+
+    <title>Bullet On Spark - Bullet Docs</title>
+
+    <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/font-hack/2.018/css/hack.min.css">
+    <link href='//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700,700italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href="../../css/base.css" rel="stylesheet">
+    <link href="../../css/cinder.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/highlight.css">
+        <link href="../../css/extra.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
+    <script>
+    WebFont.load({
+        google: {
+            families: ['Open Sans', 'PT Sans']
+        }
+    });
+    </script>
+
+    
+
+    
+    
+      
+    
+    
+    <style>
+        /* Collapse ToC */
+        .bs-sidebar .nav .nav {
+            display: none;
+        }
+    </style>
+    
+</head>
+
+<body data-spy="scroll" data-target=".bs-sidebar">
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v0.4.0</small></a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li >
+                        <a href="../..">Home</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Quick Start <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li class="active">
+    <a href="./">Bullet On Spark</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../bullet-on-storm/">Bullet On Storm</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Backend <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../backend/ingestion/">Getting your data into Bullet</a>
+</li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">Storm</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../backend/storm-architecture/">Architecture</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../backend/storm-setup/">Setup</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../backend/storm-performance/">Performance</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">Spark</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../backend/spark-architecture/">Architecture</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../backend/spark-setup/">Setup</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">PubSub <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../pubsub/architecture/">Architecture</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../pubsub/kafka/">Kafka</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../pubsub/storm-drpc/">Storm DRPC</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../pubsub/rest/">REST</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Web Service <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../ws/setup/">Setup</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../ws/api/">API</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../ws/query-examples/">Query Examples</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">UI <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../ui/setup/">Setup</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../ui/usage/">Usage</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../../releases/">Releases</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">About <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../about/contributing/">Contributing</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../about/contact/">Contact Us</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                </ul>
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                            <i class="fa fa-search"></i> Search
+                        </a>
+                  </li>
+                
+                
+                    <li >
+                        <a rel="next" href="../..">
+                            <i class="fa fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="prev" href="../bullet-on-storm/">
+                            Next <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+    <div class="container">
+        
+        <div class="col-md-3">
+
+  
+
+<div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="active">
+            <a href="#quick-start-bullet-on-spark">Quick Start - Bullet on Spark</a>
+            <ul class="nav">
+                
+                    <li class="second-level">
+                        <a href="#to-install-and-launch-bullet-locally">To Install and Launch Bullet Locally:</a>
+                        <ul class="nav">
+                        
+                            <li class="third-level">
+                                <a href="#setup-kafka">Setup Kafka</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#setup-web-service">Setup Web Service</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#setup-bullet-backend-on-spark">Setup Bullet Backend on Spark</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#setting-up-the-bullet-ui">Setting up the Bullet UI</a>
+                                
+                            </li>
+                        
+                        </ul>
+                    </li>
+            
+                    <li class="second-level">
+                        <a href="#congratulations-bullet-is-all-setup">Congratulations!! Bullet is all setup!</a>
+                        <ul class="nav">
+                        
+                            <li class="third-level">
+                                <a href="#playing-around-with-the-instance">Playing around with the instance:</a>
+                                
+                            </li>
+                        
+                        </ul>
+                    </li>
+            
+                    <li class="second-level">
+                        <a href="#teardown">Teardown</a>
+                        
+                    </li>
+            
+            </ul>
+        </li>
+    
+    </ul>
+</div></div>
+        <div class="col-md-9" role="main">
+
+<h1 id="quick-start-bullet-on-spark">Quick Start - Bullet on Spark</h1>
+<p>In this section we will setup a mock instance of Bullet to play around with. We will use <a href="https://github.com/bullet-db/bullet-spark">bullet-spark</a> to run the backend of Bullet on the <a href="https://spark.apache.org/">Spark</a> framework. And we will use the <a href="https://github.com/bullet-db/bullet-kafka">Bullet Kafka PubSub</a>.</p>
+<p>At the end of this section, you will have:</p>
+<ul>
+<li>Launched the Bullet backend on spark</li>
+<li>Setup the <a href="ws/setup.md">Web Service</a></li>
+<li>Setup the <a href="ui/setup.md">UI</a> to talk to the web service</li>
+</ul>
+<p><strong>Prerequisites</strong></p>
+<ul>
+<li>You will need to be on an Unix-based system (Mac OS X, Ubuntu ...) with <code>curl</code> installed</li>
+<li>You will need <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">JDK 8</a> installed</li>
+</ul>
+<h2 id="to-install-and-launch-bullet-locally">To Install and Launch Bullet Locally:</h2>
+<h3 id="setup-kafka">Setup Kafka</h3>
+<p>For this instance of Bullet we will use the kafka PubSub implementation found in <a href="https://github.com/bullet-db/bullet-spark">bullet-spark</a>. So we will first download and run Kafka, and setup a couple Kafka topics.</p>
+<h4 id="step-1-setup-directories-and-examples">Step 1: Setup directories and examples</h4>
+<pre><code class="bash">export BULLET_HOME=$(pwd)/bullet-quickstart
+mkdir -p $BULLET_HOME/backend/spark
+mkdir -p $BULLET_HOME/pubsub
+mkdir -p $BULLET_HOME/service
+mkdir -p $BULLET_HOME/ui
+cd $BULLET_HOME
+curl -LO https://github.com/bullet-db/bullet-db.github.io/releases/download/v0.5.0/examples_artifacts.tar.gz
+tar -xzf examples_artifacts.tar.gz
+export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
+</code></pre>
+
+<h4 id="step-2-download-and-install-kafka">Step 2: Download and Install Kafka</h4>
+<pre><code class="bash">cd $BULLET_HOME/pubsub
+curl -Lo bullet-kafka.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-kafka/0.3.0/bullet-kafka-0.3.0-fat.jar
+curl -LO https://archive.apache.org/dist/kafka/0.11.0.1/kafka_2.12-0.11.0.1.tgz
+tar -xzf kafka_2.12-0.11.0.1.tgz
+export KAFKA_DIR=$BULLET_HOME/pubsub/kafka_2.12-0.11.0.1
+</code></pre>
+
+<h4 id="step-3-start-zookeeper">Step 3: Start Zookeeper</h4>
+<pre><code class="bash">$KAFKA_DIR/bin/zookeeper-server-start.sh $KAFKA_DIR/config/zookeeper.properties &amp;
+</code></pre>
+
+<h4 id="step-4-start-kafka">Step 4: Start Kafka</h4>
+<p>Give Zookeeper a ~5-10 seconds to start up, then start Kafka:</p>
+<pre><code class="bash">$KAFKA_DIR/bin/kafka-server-start.sh $KAFKA_DIR/config/server.properties &amp;
+</code></pre>
+
+<h4 id="step-5-create-kafka-topics">Step 5: Create Kafka Topics</h4>
+<p>The Bullet Kafka PubSub uses two kafka topics. One to send messages from the web service to the backend, and one to send messages from the backend to the web service. So we will create a kafka topic called "bullet.requests" and another called "bullet.responses".</p>
+<pre><code class="bash">$KAFKA_DIR/bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic bullet.requests
+$KAFKA_DIR/bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic bullet.responses
+</code></pre>
+
+<h3 id="setup-web-service">Setup Web Service</h3>
+<h4 id="step-6-install-the-bullet-web-service">Step 6: Install the Bullet Web Service</h4>
+<pre><code class="bash">cd $BULLET_HOME/service
+curl -Lo bullet-service.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/0.2.1/bullet-service-0.2.1-embedded.jar
+cp $BULLET_EXAMPLES/web-service/example_kafka_pubsub_config.yaml $BULLET_HOME/service/
+cp $BULLET_EXAMPLES/web-service/example_columns.json $BULLET_HOME/service/
+</code></pre>
+
+<h4 id="step-7-launch-the-web-service">Step 7: Launch the Web Service</h4>
+<p><strong>Note:</strong> This is a single command (new-lines are escaped) - run it in a single bash command:</p>
+<pre><code class="bash">java -Dloader.path=$BULLET_HOME/pubsub/bullet-kafka.jar -jar bullet-service.jar \
+    --bullet.pubsub.config=$BULLET_HOME/service/example_kafka_pubsub_config.yaml \
+    --bullet.schema.file=$BULLET_HOME/service/example_columns.json \
+    --server.port=9999  \
+    --logging.path=. \
+    --logging.file=log.txt &amp;&gt; log.txt &amp;
+</code></pre>
+
+<h4 id="step-8-test-the-web-service-optional">Step 8: Test the Web Service (optional)</h4>
+<p>We can check that the Web Service is up and running by getting the example columns through the API:</p>
+<pre><code class="bash">curl -s http://localhost:9999/api/bullet/columns
+</code></pre>
+
+<p>You can also check the status of the Web Service by looking at the Web Service log: $BULLET_HOME/service/log.txt</p>
+<h3 id="setup-bullet-backend-on-spark">Setup Bullet Backend on Spark</h3>
+<p>We will run the bullet-spark backend using <a href="https://spark.apache.org/releases/spark-release-2-2-1.html">Spark 2.2.1</a>.</p>
+<h4 id="step-9-install-spark-221">Step 9: Install Spark 2.2.1</h4>
+<pre><code class="bash">export BULLET_SPARK=$BULLET_HOME/backend/spark
+cd $BULLET_SPARK
+curl -O http://www-eu.apache.org/dist/spark/spark-2.2.1/spark-2.2.1-bin-hadoop2.7.tgz
+tar -xzf spark-2.2.1-bin-hadoop2.7.tgz 
+</code></pre>
+
+<h4 id="step-10-setup-bullet-spark-and-example-data-producer">Step 10: Setup Bullet-Spark and Example Data Producer</h4>
+<pre><code class="bash">cp $BULLET_HOME/bullet-examples/backend/spark/* $BULLET_SPARK
+curl -Lo bullet-spark.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-spark/0.1.2/bullet-spark-0.1.2-standalone.jar
+</code></pre>
+
+<h4 id="step-11-launch-the-bullet-spark-backend">Step 11: Launch the Bullet Spark Backend</h4>
+<p><strong>Note:</strong> This is a single command (new-lines are escaped) - run it in a single bash command:</p>
+<pre><code class="bash">$BULLET_SPARK/spark-2.2.1-bin-hadoop2.7/bin/spark-submit \
+    --master local[10]  \
+    --class com.yahoo.bullet.spark.BulletSparkStreamingMain \
+    --jars $BULLET_HOME/pubsub/bullet-kafka.jar,$BULLET_SPARK/bullet-spark-example.jar \
+    $BULLET_SPARK/bullet-spark.jar \
+    --bullet-spark-conf=$BULLET_SPARK/bullet_spark_kafka_settings.yaml &amp;&gt; log.txt &amp;
+
+</code></pre>
+
+<p>The backend will usually be up and running usually within 5-10 seconds. Once it is running you can get information about the Spark job in the Spark UI, which can be seen in your browser at <strong>http://localhost:4040</strong> by default. The Web Service will now be hooked up through the Kafka PubSub to the Spark backend.
+To test it you can now run a Bullet query by hitting the web service directly:</p>
+<pre><code class="bash">curl -s -H 'Content-Type: text/plain' -X POST -d '{&quot;aggregation&quot;: {&quot;size&quot;: 1}}' http://localhost:9999/api/bullet/sse-query
+</code></pre>
+
+<p>This query will return a result JSON containing a "records" field containing a single record, and a "meta" field with some meta information. </p>
+<div class="admonition note">
+<p class="admonition-title">What is this data?</p>
+<p>This data is randomly generated by the <a href="https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/spark/src/main/scala/com/yahoo/bullet/spark/examples/receiver/RandomReceiver.scala">custom data producer</a> that was created for the sole purpose of generating toy data to demo Bullet. In practice, your spout would read from an actual data source such as Kafka.</p>
+</div>
+<h3 id="setting-up-the-bullet-ui">Setting up the Bullet UI</h3>
+<h4 id="step-12-install-node">Step 12: Install Node</h4>
+<pre><code class="bash">cd $BULLET_HOME/ui
+curl -s https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
+source ~/.bashrc
+nvm install v6.9.4
+nvm use v6.9.4
+</code></pre>
+
+<h4 id="step-13-install-the-bullet-ui">Step 13: Install the Bullet UI</h4>
+<pre><code class="bash">curl -LO https://github.com/bullet-db/bullet-ui/releases/download/v0.5.0/bullet-ui-v0.5.0.tar.gz
+tar -xzf bullet-ui-v0.5.0.tar.gz
+cp $BULLET_EXAMPLES/ui/env-settings.json config/
+</code></pre>
+
+<h4 id="step-14-launch-the-ui">Step 14: Launch the UI</h4>
+<pre><code class="bash">PORT=8800 node express-server.js &amp;
+</code></pre>
+
+<p>Visit <a href="http://localhost:8800">http://localhost:8800</a> to query your topology with the UI. See <a href="ui/usage.md">UI usage</a> for some example queries and interactions using this UI. You see what the Schema means by visiting the Schema section.</p>
+<div class="admonition note">
+<p class="admonition-title">Running it remotely?</p>
+<p>If you access the UI from another machine than where your UI is actually running, you will need to edit <code>config/env-settings.json</code>. Since the UI is a client-side app, the machine that your browser is running on will fetch the UI and attempt to use these settings to talk to the Web Service. Since they point to localhost by default, your browser will attempt to connect there and fail. An easy fix is to change <code>localhost</code> in your env-settings.json to point to the host name where you will hosting the UI. This will be the same as the UI host you use in the browser. You can also do a local port forward on the machine accessing the UI by running:
+<code>ssh -N -L 8800:localhost:8800 -L 9999:localhost:9999 hostname-of-the-quickstart-components 2&gt;&amp;1</code></p>
+</div>
+<h2 id="congratulations-bullet-is-all-setup">Congratulations!! Bullet is all setup!</h2>
+<h4 id="playing-around-with-the-instance">Playing around with the instance:</h4>
+<p>Check out and follow along with the <a href="ui/usage.md">UI Usage</a> page as it shows you some queries you can run using this UI.</p>
+<h2 id="teardown">Teardown</h2>
+<p>When you are done trying out Bullet, you can stop the processes and cleanup all the downloads using:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UI</td>
+<td><code>pkill -f [e]xpress-server.js</code></td>
+</tr>
+<tr>
+<td>Web Service</td>
+<td><code>pkill -f [e]xample_kafka_pubsub_config.yaml</code></td>
+</tr>
+<tr>
+<td>Spark</td>
+<td><code>pkill -f [b]ullet-spark</code></td>
+</tr>
+<tr>
+<td>Kafka</td>
+<td><code>${KAFKA_DIR}/bin/kafka-server-stop.sh</code></td>
+</tr>
+<tr>
+<td>Zookeeper</td>
+<td><code>${KAFKA_DIR}/bin/zookeeper-server-stop.sh</code></td>
+</tr>
+<tr>
+<td>File System</td>
+<td><code>rm -rf $BULLET_HOME</code></td>
+</tr>
+</tbody>
+</table>
+<p>Note: This does <em>not</em> delete <code>$HOME/.nvm</code>.</p></div>
+        
+    </div>
+
+    <footer class="col-md-12" >
+        <hr />
+        <div class="pull-left col-md-6">
+            
+            
+        </div>
+        <div class="pull-right col-md-4 text-right">
+            <p>
+            <small>Bullet is licensed under the <a href='https://github.com/yahoo/bullet/blob/master/LICENSE'>Apache 2 license<br></small>
+            
+            <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p></small>
+        </div>
+    </footer>
+
+    <script src="../../js/jquery-1.10.2.min.js"></script>
+    <script src="../../js/bootstrap-3.0.3.min.js"></script>
+    <script src="../../js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script>
+    var base_url = '../..';
+    </script>
+    <script data-main="../../mkdocs/js/search.js" src="../../mkdocs/js/require.js"></script>
+    <script src="../../js/base.js"></script>
+
+    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        From here you can search these documents. Enter your search terms below.
+                    </p>
+                    <form role="form">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                        </div>
+                    </form>
+                    <div id="mkdocs-search-results"></div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </body>
+
+</html>

@@ -87,8 +87,23 @@
                 
                 
                 
-                    <li >
-                        <a href="quick-start/">Quick Start</a>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Quick Start <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="quick-start/bullet-on-spark/">Bullet On Spark</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="quick-start/bullet-on-storm/">Bullet On Storm</a>
+</li>
+
+                        
+                        </ul>
                     </li>
                 
                 
@@ -130,6 +145,27 @@
   </li>
 
                         
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">Spark</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="backend/spark-architecture/">Architecture</a>
+</li>
+
+        
+            
+<li >
+    <a href="backend/spark-setup/">Setup</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
                         </ul>
                     </li>
                 
@@ -157,6 +193,12 @@
 </li>
 
                         
+                            
+<li >
+    <a href="pubsub/rest/">REST</a>
+</li>
+
+                        
                         </ul>
                     </li>
                 
@@ -180,7 +222,7 @@
                         
                             
 <li >
-    <a href="ws/examples/">Examples</a>
+    <a href="ws/query-examples/">Query Examples</a>
 </li>
 
                         
@@ -254,7 +296,7 @@
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="quick-start/">
+                        <a rel="prev" href="quick-start/bullet-on-spark/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
@@ -275,24 +317,17 @@
     <ul class="nav bs-sidenav">
     
         <li class="active">
-            <a href="#overview">Overview</a>
+            <a href="#bullet">Bullet:</a>
+            
+        </li>
+    
+        <li class="">
+            <a href="#how-is-this-useful">How is this useful</a>
             <ul class="nav">
                 
                     <li class="second-level">
-                        <a href="#bullet">Bullet ...</a>
+                        <a href="#example-how-bullet-is-used-at-yahoo">Example: How Bullet is used at Yahoo</a>
                         
-                    </li>
-            
-                    <li class="second-level">
-                        <a href="#how-is-this-useful">How is this useful</a>
-                        <ul class="nav">
-                        
-                            <li class="third-level">
-                                <a href="#example-how-bullet-is-used-at-yahoo">Example: How Bullet is used at Yahoo</a>
-                                
-                            </li>
-                        
-                        </ul>
                     </li>
             
             </ul>
@@ -376,38 +411,41 @@
 </div></div>
         <div class="col-md-9" role="main">
 
-<h1 id="overview">Overview</h1>
-<h2 id="bullet">Bullet ...</h2>
+<p><img alt="Bullet Icons" src="./../img/bullet-icons-line.png" /></p>
+<h1 id="bullet">Bullet:</h1>
 <ul>
 <li>
-<p>Is a real-time query engine that lets you run queries on very large data streams</p>
+<p><strong>Is a real-time query engine for very large data streams</strong></p>
 </li>
 <li>
-<p>Does not use a <strong>a persistence layer</strong>. This makes it <strong>light-weight, cheap and fast</strong></p>
+<p><strong>Has NO persistence layer</strong></p>
 </li>
 <li>
-<p>Is a <strong>look-forward</strong> query system. Queries are submitted first and they operate on data that arrive after the query is submitted</p>
+<p><strong>Is light-weight, cheap and fast</strong></p>
 </li>
 <li>
-<p>Supports rich queries for filtering and getting <strong>Raw data, Counting Distincts, Distincts, Grouping (Sum, Count, Min, Max, Avg), Distributions, and Top K</strong></p>
+<p><strong>Is multi-tenant</strong></p>
 </li>
 <li>
-<p>Is <strong>multi-tenant</strong> and can scale for more queries and/or for more data</p>
+<p><strong>Is pluggable to any data source</strong></p>
 </li>
 <li>
-<p>Provides a <strong>UI and Web Service</strong> that are also pluggable for a full end-to-end solution to your querying needs</p>
+<p><strong>Provides a UI and Web Service</strong></p>
 </li>
 <li>
-<p>Has an implementation on <a href="http://storm.apache.org">Storm</a> currently. There are plans to implement it on other Stream Processors.</p>
+<p><strong>Can filter raw data or aggregate data</strong></p>
 </li>
 <li>
-<p>Is <strong>pluggable</strong>. Any data source that can be read from Storm can be converted into a standard data container letting you query that data. Data is <strong>typed</strong></p>
+<p><strong>Can be run on storm or spark streaming</strong></p>
 </li>
 <li>
-<p>Is used at scale and in production at Yahoo with running 500+ queries simultaneously on 200,000 rps (records per second) and tested up to 2,000,000 rps</p>
+<p><strong>Is a look-forward query system</strong> - operates on data that arrive after the query is submitted</p>
+</li>
+<li>
+<p><strong>Is big-data scale-tested</strong> - used in production at Yahoo and tested running 500+ queries simultaneously on up to 2,000,000 rps</p>
 </li>
 </ul>
-<h2 id="how-is-this-useful">How is this useful</h2>
+<h1 id="how-is-this-useful">How is this useful</h1>
 <p>How Bullet is used is largely determined by the data source it consumes. Depending on what kind of data you put Bullet on, the types of queries you run on it and your use-cases will change. As a look-forward query system with no persistence, you will not be able to repeat your queries on the same data. The next time you run your query, it will operate on the different data that arrives after that submission. If this usage pattern is what you need and you are looking for a light-weight system that can tap into your streaming data, then Bullet is for you!</p>
 <h3 id="example-how-bullet-is-used-at-yahoo">Example: How Bullet is used at Yahoo</h3>
 <p>Bullet is used in production internally at Yahoo by having it sit on a subset of raw user engagement events from Yahoo sites and apps. This lets Yahoo developers automatically validate their instrumentation code <em>end-to-end</em> in their Continuous Delivery pipelines. Validating instrumentation is critical since it powers pretty much all decisions and products including machine learning, corporate KPIs, analytics, personalization, targeting.</p>
@@ -418,7 +456,7 @@
 </div>
 <hr />
 <h1 id="quick-start">Quick Start</h1>
-<p>See <a href="quick-start/">Quick Start</a> to set up Bullet using a local Storm topology. You will generate some synthetic streaming data that you can then query with Bullet.</p>
+<p>See <a href="quick-start.md">Quick Start</a> to set up Bullet using a local Storm topology. You will generate some synthetic streaming data that you can then query with Bullet.</p>
 <h1 id="setting-up-bullet-on-your-streaming-data">Setting up Bullet on your streaming data</h1>
 <p>To set up Bullet on a real data stream, you need:</p>
 <ol>
@@ -440,13 +478,13 @@
 <p>Bullet queries allow you to filter, project and aggregate data. It lets you fetch raw (the individual data records) as well as aggregated data.</p>
 <ul>
 <li>
-<p>See the <a href="ui/usage/">UI Usage section</a> for using the UI to build Bullet queries. This is the same UI you will build in the <a href="quick-start/">Quick Start</a></p>
+<p>See the <a href="ui/usage/">UI Usage section</a> for using the UI to build Bullet queries. This is the same UI you will build in the <a href="quick-start.md">Quick Start</a></p>
 </li>
 <li>
 <p>See the <a href="ws/api/">API section</a> for building Bullet API queries</p>
 </li>
 <li>
-<p>For examples using the API, see <a href="ws/examples/">Examples</a>. These are actual albeit cleansed queries sourced from the instance at Yahoo.</p>
+<p>For examples using the API, see <a href="ws/examples.md">Examples</a>. These are actual albeit cleansed queries sourced from the instance at Yahoo.</p>
 </li>
 </ul>
 <h2 id="termination-conditions">Termination conditions</h2>
@@ -641,5 +679,5 @@
 
 <!--
 MkDocs version : 0.16.3
-Build Date UTC : 2017-10-26 19:50:07
+Build Date UTC : 2018-06-20 23:17:28
 -->

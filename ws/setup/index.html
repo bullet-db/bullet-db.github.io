@@ -87,8 +87,23 @@
                 
                 
                 
-                    <li >
-                        <a href="../../quick-start/">Quick Start</a>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Quick Start <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../quick-start/bullet-on-spark/">Bullet On Spark</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../quick-start/bullet-on-storm/">Bullet On Storm</a>
+</li>
+
+                        
+                        </ul>
                     </li>
                 
                 
@@ -130,6 +145,27 @@
   </li>
 
                         
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">Spark</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../backend/spark-architecture/">Architecture</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../backend/spark-setup/">Setup</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
                         </ul>
                     </li>
                 
@@ -157,6 +193,12 @@
 </li>
 
                         
+                            
+<li >
+    <a href="../../pubsub/rest/">REST</a>
+</li>
+
+                        
                         </ul>
                     </li>
                 
@@ -180,7 +222,7 @@
                         
                             
 <li >
-    <a href="../examples/">Examples</a>
+    <a href="../query-examples/">Query Examples</a>
 </li>
 
                         
@@ -249,7 +291,7 @@
                 
                 
                     <li >
-                        <a rel="next" href="../../pubsub/storm-drpc/">
+                        <a rel="next" href="../../pubsub/rest/">
                             <i class="fa fa-arrow-left"></i> Previous
                         </a>
                     </li>
@@ -332,7 +374,7 @@
 <p>The Web Service essentially just wraps the PubSub layer and provides some helpful endpoints. When incremental updates drop, it will translate a PubSub's streaming responses back into incremental results for the user. It is also there to be a point of abstraction for implementing things like security, monitoring, access-control, rate-limiting, sharding, different query formats (e.g. SQL Bullet queries) etc, which are planned in the near future.</p>
 </div>
 <h2 id="prerequisites">Prerequisites</h2>
-<p>In order for your Web Service to work with Bullet, you should have an instance of the Backend such as <a href="../../backend/storm-setup/">Storm</a> and a PubSub instance such as <a href="../../pubsub/storm-drpc/#setup">Storm DRPC</a> or <a href="../../pubsub/kafka/#setup">Kafka</a> already set up.</p>
+<p>In order for your Web Service to work with Bullet, you should have an instance of the Backend such as <a href="../../backend/storm-setup/">Storm</a> and a PubSub instance such as <a href="../../pubsub/storm-drpc/#setup">Storm DRPC</a> or <a href="../../pubsub/kafka/#setup">Kafka</a> already set up. Alternitively you can run the RESTPubSub as part of the web service. See <a href="../../pubsub/rest/">RESTPubSub</a> for more info.</p>
 <h2 id="installation">Installation</h2>
 <p>You can download the JAR file directly from <a href="http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/">JCenter</a>. The Web Service is a <a href="https://projects.spring.io/spring-boot/">Spring Boot</a> application. It executes as a standalone application. Note that prior to version 0.1.1, bullet-service was a WAR file that you deployed onto a servlet container like Jetty. It now embeds a <a href="http://tomcat.apache.org/">Apache Tomcat</a> servlet container.</p>
 <p>If you need to depend on the source code directly (to add new endpoints for your own purposes or to build a WAR file out of the JAR), you need to add the JCenter repository and get the artifact through your dependency management system. Maven is shown below.</p>
