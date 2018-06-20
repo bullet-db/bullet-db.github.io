@@ -25,6 +25,7 @@ pages:
   - Architecture: pubsub/architecture.md
   - Kafka: pubsub/kafka.md
   - Storm DRPC: pubsub/storm-drpc.md
+  - REST: pubsub/rest.md
 - Web Service:
   - Setup: ws/setup.md
   - API: ws/api.md

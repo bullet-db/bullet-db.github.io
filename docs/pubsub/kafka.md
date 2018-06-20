@@ -1,6 +1,6 @@
 # Kafka PubSub
 
-The Kafka implemented of the Bullet PubSub can be used on any Backend and Web Service. It uses [Apache Kafka](https://kafka.apache.org) as the backing PubSub queue and works on all Backends.
+The Kafka implementation of the Bullet PubSub can be used on any Backend and Web Service. It uses [Apache Kafka](https://kafka.apache.org) as the backing PubSub queue and works on all Backends.
 
 ## How does it work?
 
