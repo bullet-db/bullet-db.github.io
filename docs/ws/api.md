@@ -1,21 +1,36 @@
 # API
 
-See the [UI Usage section](../ui/usage.md) for using the UI to build Bullet queries. This section deals with examples of the JSON query format that the API currently exposes (and the UI uses underneath).
+This section gives a comprehensive overview of the Web Service API for launching Bullet queries.
 
-Bullet queries allow you to filter, project and aggregate data. It lets you fetch raw and aggregated data. Fields inside maps can be accessed using the '.' notation in queries. For example, myMap.key will access the key field inside the myMap map. There is no support for accessing fields inside Lists or inside nested Maps as of yet. Only the entire object can be operated on for now.
+* For info on how to use the UI, see the [UI Usage section](../ui/usage.md)
+* For examples of specific queries see the [Examples](examples.md) section
 
-The three main sections of a Bullet query are:
+The main constituents of a Bullet query are:
+
+* __filters__, which determine which records will be consumed by your query
+* __projection__, which determines which fields will be projected in the resulting output from Bullet
+* __aggregation__, which allows users to aggregate data and perform aggregation operations
+* __window__, which can be used to return incremental results on "windowed" data
+* __duration__, which determines the maximum duration of the query in milliseconds
+
+Fields inside maps can be accessed using the '.' notation in queries. For example,
+
+`myMap.key`
+
+will access the "key" field inside the "myMap" map. There is no support for accessing fields inside Lists or inside nested Maps as of yet. Only the entire object can be operated on for now.
+
+The main constituents of a Bullet query listed above create the top level fields of the Bullet query:
 ```javascript
 {
-    "filters": {},
+    "filters": [{}, {}, ...],
     "projection": {},
     "aggregation": {}.
+    "window": {},
     "duration": 20000
 }
 ```
-The duration represents how long the query runs for (a window from when you submit it to that many milliseconds into the future).
 
-See the [Filters](#filters), [Projections](#projections) and [Aggregation](#aggregations) sections for their respective specifications. Each of those sections are objects and you will need to be place the entire object in the respective sections above.
+We will describe how to specify each of these top-level fields below:
 
 ## Filters
 
@@ -36,7 +51,7 @@ The current logical operators allowed in filters are:
 | OR               | Any filter must be true. The first true filter evaluated left to right will short-circuit the computation. |
 | NOT              | Negates the value of the first filter clause. The filter is satisfied iff the value is true. |
 
-The format for a Logical filter is:
+The format for a __single__ Logical filter is:
 
 ```javascript
 {
@@ -51,6 +66,8 @@ The format for a Logical filter is:
 ```
 
 Any other type of filter may be provided as a clause in clauses.
+
+Note that the "filter" field in the query is a __list__ of as many filters as you'd like.
 
 ### Relational Filters
 
@@ -68,7 +85,7 @@ The current comparisons allowed in filters are:
 | >          | Greater than any value in values |
 | RLIKE      | Matches using [Java Regex notation](http://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html), any Regex value in values |
 
-These operators are all typed based on the type of the left hand side from the Bullet record. If the elements on the right hand side cannot be
+Note: These operators are all typed based on the type of the __left hand side__ from the Bullet record. If the elements on the right hand side cannot be
 casted to the types on the LHS, those items will be ignored for the comparison.
 
 The format for a Relational filter is:
@@ -262,6 +279,96 @@ The following attributes are supported for ```TOP K```:
 ```
 
 Note that the ```K``` in ```TOP K``` is specified using the ```size``` field in the ```aggregation``` object.
+
+## Window
+
+The "window" field is **optional** and allows you to instruct Bullet to return incremental results. For example you might want to return the COUNT of a field and return that count every 2 seconds. 
+
+If "window" is ommitted Bullet will emit only a single result at the very end of the query.
+
+An example window might look like this:
+
+```javascript
+"window": { "emit": { "type": "TIME/RECORD", "every": 5000 },
+            "include": { "type": "TIME/RECORD/ALL", "first": 5000 } },
+```
+
+* The __emit__ field is used to specify when a window should be emmitted and the current results sent back to the user
+    * The __type__ subfield for "emit" can have two values:
+        * __"TIME"__ specifies that the window will emit after a specific number of milliseconds 
+        * __"RECORD"__ specifies that the window will emit after consuming a specific number of records
+    * The __every__ subfield for "emit" specifies how many records/milliseconds (depending on "type") will be counted before the window is emmitted
+* The __include__ field is used to specify what will be included in the emmitted window
+    * The __type__ subfield for "include" can have three values:
+        * __"TIME"__ specifies that the window will include all records seen in a certain time period in the window
+            * e.g. All records seen in the first 2 seconds of a 10 second window
+        * __"RECORD"__ specifies that the window will include the first n records, where n is specified in the "first" field below
+        * __"ALL"__ specifies that the window will include ALL results accumulated since the very beginning of the __query__ (not just this window)
+    * the __first__ subfield for "include" specifies the number of records/milliseconds at the beginning of this window to include in the emmitted result - it should be ommitted if "type" is "ALL".
+
+**NOTE: Not all windowing types are supported at this time.**
+
+### **Currently Bullet supports the following window types**:
+
+* Time-Based Tumbling Windows
+* Additive Tumbling Windows
+* Reactive Record-Based Windows
+* No Window
+
+Support for more windows will be added in the future.
+
+Each currently supported window type will be described below:
+
+#### **Time-Based Tumbling Windows**
+
+Currently time-based tumbling windows **must** have emit == include. In other words, only the entire window can be emitted, and windows must be adjacent.
+
+![Time-Based Tumbling Windows](../img/time-based-tumbling.png)
+
+The above example windowing would be specified with the window:
+
+```javascript
+"window": { "emit": { "type": "TIME", "every": 3000 },
+            "include": { "type": "TIME", "first": 3000 } },
+```
+
+Any aggregation can be done in each window, or the raw records themselves can be returned as specified in the "aggregation" object.
+
+In this example the first window would include 3 records, the second would include 4 records, the third would include 3 records and the fourth would include 2 records.
+
+#### **Additive Tumbling Windows**
+
+Additive tumbling windows emit with the same logic as time-based tumbling windows, but include ALL results from the beginning of the query:
+
+![Additive Tumbling Windows](../img/additive-tumbling.png)
+
+The above example would be specified with the window:
+
+```javascript
+"window": { "emit": { "type": "TIME", "every": 3000 },
+            "include": { "type": "ALL" } },
+```
+
+In this example the first window would include 3 records, the second would include 7 records, the third would include 10 records and the fourth would include 12 records.
+
+#### **Sliding "Reactive" Windows**
+
+Sliding windows emit based on the arrival of an event, rather than after a certain period of time. In general sliding windows often do some aggregation on the previous X records, or on all records that arrived in the last X seconds.
+Bullet will support this functionality in the future, at this time Bullet only supports **Sliding Windows of size 1**, often referred to as "reactive" windows. It does not support sliding windows with an aggregation at this time.
+Effectively this query will simply return every event that matches the filters instantly to the user.
+
+![Reactive Windows](../img/reactive.png)
+
+The above example would be specified with the window:
+
+```javascript
+"window": { "emit": { "type": "RECORD", "every": 1 },
+            "include": { "type": "RECORD", "last": 1 } },
+```
+
+#### **No Window**
+
+If the "window" field is optional. If it is  ommitted, the query will only emit when the entire query is finished.
 
 ## Results
 

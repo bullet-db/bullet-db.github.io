@@ -15,7 +15,7 @@ There are two main purposes for this layer at this time:
 
 ## Prerequisites
 
-In order for your Web Service to work with Bullet, you should have an instance of the Backend such as [Storm](../backend/storm-setup.md) and a PubSub instance such as [Storm DRPC](../pubsub/storm-drpc.md#setup) or [Kafka](../pubsub/kafka.md#setup) already set up.
+In order for your Web Service to work with Bullet, you should have an instance of the Backend such as [Storm](../backend/storm-setup.md) and a PubSub instance such as [Storm DRPC](../pubsub/storm-drpc.md#setup) or [Kafka](../pubsub/kafka.md#setup) already set up. Alternitively you can run the RESTPubSub as part of the web service. See [RESTPubSub](../pubsub/rest.md) for more info.
 
 ## Installation
 

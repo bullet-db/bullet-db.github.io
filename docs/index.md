@@ -1,26 +1,28 @@
-# Overview
+  ![Bullet Icons](../img/bullet-icons-line.png)
 
-## Bullet ...
+# Bullet:
 
-* Is a real-time query engine that lets you run queries on very large data streams
+* **Is a real-time query engine for very large data streams**
 
-* Does not use a **a persistence layer**. This makes it **light-weight, cheap and fast**
+* **Has NO persistence layer**
 
-* Is a **look-forward** query system. Queries are submitted first and they operate on data that arrive after the query is submitted
+* **Is light-weight, cheap and fast**
 
-* Supports rich queries for filtering and getting **Raw data, Counting Distincts, Distincts, Grouping (Sum, Count, Min, Max, Avg), Distributions, and Top K**
+* **Is multi-tenant**
 
-* Is **multi-tenant** and can scale for more queries and/or for more data
+* **Is pluggable to any data source**
 
-* Provides a **UI and Web Service** that are also pluggable for a full end-to-end solution to your querying needs
+* **Provides a UI and Web Service**
 
-* Has an implementation on [Storm](http://storm.apache.org) currently. There are plans to implement it on other Stream Processors.
+* **Can filter raw data or aggregate data**
 
-* Is **pluggable**. Any data source that can be read from Storm can be converted into a standard data container letting you query that data. Data is **typed**
+* **Can be run on storm or spark streaming**
 
-* Is used at scale and in production at Yahoo with running 500+ queries simultaneously on 200,000 rps (records per second) and tested up to 2,000,000 rps
+* **Is a look-forward query system** - operates on data that arrive after the query is submitted
 
-## How is this useful
+* **Is big-data scale-tested** - used in production at Yahoo and tested running 500+ queries simultaneously on up to 2,000,000 rps
+
+# How is this useful
 
 How Bullet is used is largely determined by the data source it consumes. Depending on what kind of data you put Bullet on, the types of queries you run on it and your use-cases will change. As a look-forward query system with no persistence, you will not be able to repeat your queries on the same data. The next time you run your query, it will operate on the different data that arrives after that submission. If this usage pattern is what you need and you are looking for a light-weight system that can tap into your streaming data, then Bullet is for you!
 
