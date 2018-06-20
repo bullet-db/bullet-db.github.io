@@ -351,9 +351,11 @@ The above example would be specified with the window:
 
 In this example the first window would include 3 records, the second would include 7 records, the third would include 10 records and the fourth would include 12 records.
 
-#### **Reactive Windows**
+#### **Sliding "Reactive" Windows**
 
-Reactive windows are record-based rather than time-based. At this time we only support record-based windows of size 1, which will simply emit whenever a record matching the query filters is found:
+Sliding windows emit based on the arrival of an event, rather than after a certain period of time. In general sliding windows often do some aggregation on the previous X records, or on all records that arrived in the last X seconds.
+Bullet will support this functionality in the future, at this time Bullet only supports **Sliding Windows of size 1**, often referred to as "reactive" windows. It does not support sliding windows with an aggregation at this time.
+Effectively this query will simply return every event that matches the filters instantly to the user.
 
 ![Reactive Windows](../img/reactive.png)
 
