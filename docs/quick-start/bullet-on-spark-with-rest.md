@@ -117,7 +117,7 @@ curl -Lo bullet-spark.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-spa
 $BULLET_SPARK/spark-2.2.1-bin-hadoop2.7/bin/spark-submit \
     --master local[10]  \
     --class com.yahoo.bullet.spark.BulletSparkStreamingMain \
-    --driver-class-path $BULLET_SPARK/bullet-spark.jar:$BULLET_HOME/pubsub/bullet-kafka.jar:$BULLET_SPARK/bullet-spark-example.jar \
+    --jars $BULLET_SPARK/bullet-spark-example.jar \
     $BULLET_SPARK/bullet-spark.jar \
     --bullet-spark-conf=$BULLET_SPARK/bullet_spark_rest_settings.yaml &> log.txt &
 
