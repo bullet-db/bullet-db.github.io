@@ -222,7 +222,7 @@
                         
                             
 <li >
-    <a href="../../ws/query-examples/">Query Examples</a>
+    <a href="../../ws/examples/">Query Examples</a>
 </li>
 
                         
@@ -693,7 +693,7 @@ bullet.query.aggregation.distribution.max.points: 200
 <li>We are using 256 acker tasks. There is acking from the DataSource Spout to the Filter Bolt and from the DRPCSpout and the PrepareRequestBolt, so about ~130 components will be acking. We could get away with using much less ackers as they are very light-weight.</li>
 </ol>
 <h2 id="test-1-measuring-the-minimum-latency-of-bullet">Test 1: Measuring the minimum latency of Bullet</h2>
-<p>We are <a href="../ws/examples.md#simplest-query">running this query</a> in this test. This <code>RAW</code> query without any filters will serve to measure the intrinsic delay added by Bullet. The data record pulled out has a timestamp for when the record was emitted into Kafka, Bullet will inject the timestamp into the record when the Filter Bolt sends it on and the metadata collection logs timestamps for when the query was received and terminated. Using these, we can measure the end-to-end latency for getting one record through Bullet.</p>
+<p>We are <a href="../../ws/examples/#simplest-query">running this query</a> in this test. This <code>RAW</code> query without any filters will serve to measure the intrinsic delay added by Bullet. The data record pulled out has a timestamp for when the record was emitted into Kafka, Bullet will inject the timestamp into the record when the Filter Bolt sends it on and the metadata collection logs timestamps for when the query was received and terminated. Using these, we can measure the end-to-end latency for getting one record through Bullet.</p>
 <h3 id="result">Result</h3>
 <p>The following table shows the timestamps averaged by running <strong>100</strong> of these queries. The delays below are shown <em>relative</em> to the Query Received timestamp (when the query was received by Bullet at the Join Bolt).</p>
 <div class="one-text-numeri-table"></div>
@@ -728,7 +728,7 @@ bullet.query.aggregation.distribution.max.points: 200
 <h3 id="conclusion">Conclusion</h3>
 <p>Bullet adds a delay of a few ms - <strong><code>1.66 ms</code></strong> in the test above - to just pull out a record. This result shows that this is the fastest Bullet can be. It cannot return data any faster than this for meaningful queries.</p>
 <h2 id="test-2-measuring-the-time-to-find-a-record">Test 2: Measuring the time to find a record</h2>
-<p>The <a href="#test-1-measuring-the-minimum-latency-of-bullet">last test</a> attempted to measure how long Bullet takes to pick out a record. Here we will measure how long it takes to find a record <em>that we generate</em>. This is the average of running <strong>100</strong> queries across a time interval of 30 minutes trying to filter for a record with a single unique value in a field <a href="../ws/examples.md#simple-filtering">similar to this query</a>.</p>
+<p>The <a href="#test-1-measuring-the-minimum-latency-of-bullet">last test</a> attempted to measure how long Bullet takes to pick out a record. Here we will measure how long it takes to find a record <em>that we generate</em>. This is the average of running <strong>100</strong> queries across a time interval of 30 minutes trying to filter for a record with a single unique value in a field <a href="../../ws/examples/#simple-filtering">similar to this query</a>.</p>
 <p>We added a timestamp into the record when the record was initially read by the DataSource Spout. Using this and the Bullet Filtered timestamp and Query Finished timestamps, we can easily track the record through Bullet.</p>
 <p>Since we are looking at values in the data, the average data volume across this test was: <code>Data: 76,000 R/s and 101 MiB/s</code></p>
 <h3 id="result_1">Result</h3>
@@ -769,7 +769,7 @@ bullet.query.aggregation.distribution.max.points: 200
 <h3 id="conclusion_1">Conclusion</h3>
 <p>We see that Bullet took on average <code>1006.8 ms - 996.5 ms</code> or <strong><code>10.3 ms</code></strong> from the time it saw the record first in DataSource Spout to finishing up the query and returning it in the Join Bolt.</p>
 <h2 id="test-3-measuring-the-maximum-number-of-parallel-raw-queries">Test 3: Measuring the maximum number of parallel <code>RAW</code> queries</h2>
-<p>This test runs a query similar to the <a href="../ws/examples.md#simple-filtering">simple filtering query</a>. The query looks for <code>10</code> records that match the filter or runs for <code>30</code> seconds, whichever comes first. The average, uncompressed record size was about <code>1.8 KiB</code>.</p>
+<p>This test runs a query similar to the <a href="../../ws/examples/#simple-filtering">simple filtering query</a>. The query looks for <code>10</code> records that match the filter or runs for <code>30</code> seconds, whichever comes first. The average, uncompressed record size was about <code>1.8 KiB</code>.</p>
 <h3 id="what-is-meant-by-maximum">What is meant by maximum?</h3>
 <p>We want to see how many of these queries we can have running simultaneously till the Filter Bolt is unable to process records from the spouts in time. If a Filter Bolt is unable to keep up with the rate of data produced by the spouts, our queries will not find all 10 records. Workers may start dying (killed by RAS for exceeding capacity) as well. We will be trying to find the number of queries in parallel that we can run without these happening.</p>
 <p>The average data volume across this test was: <code>Data: 85,000 R/s and 126 MiB/s</code></p>
