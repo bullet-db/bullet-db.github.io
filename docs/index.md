@@ -1,26 +1,24 @@
   ![Bullet](../img/bullet-logo.png)
 
-# Bullet:
+* A real-time query engine for very large data streams
 
-* **Is a real-time query engine for very large data streams**
+* NO persistence layer
 
-* **Has NO persistence layer**
+* Light-weight, cheap and fast
 
-* **Is light-weight, cheap and fast**
+* Multi-tenant
 
-* **Is multi-tenant**
+* Pluggable to any data source
 
-* **Is pluggable to any data source**
+* Provides a UI and Web Service
 
-* **Provides a UI and Web Service**
+* Filter raw data or aggregate data
 
-* **Can filter raw data or aggregate data**
+* Can be run on storm or spark streaming
 
-* **Can be run on storm or spark streaming**
+* A look-forward query system - operates on data that arrive after the query is submitted
 
-* **Is a look-forward query system** - operates on data that arrive after the query is submitted
-
-* **Is big-data scale-tested** - used in production at Yahoo and tested running 500+ queries simultaneously on up to 2,000,000 rps
+* Big-data scale-tested - used in production at Yahoo and tested running 500+ queries simultaneously on up to 2,000,000 rps
 
 # How is this useful
 
@@ -40,7 +38,7 @@ This instance of Bullet also powers other use-cases such as letting analysts val
 
 # Quick Start
 
-See [Quick Start](quick-start.md) to set up Bullet using a local Storm topology. You will generate some synthetic streaming data that you can then query with Bullet.
+See [Quick Start](quick-start/bullet-on-spark.md) to set up Bullet locally using spark-streaming. You will generate some synthetic streaming data that you can then query with Bullet.
 
 # Setting up Bullet on your streaming data
 
