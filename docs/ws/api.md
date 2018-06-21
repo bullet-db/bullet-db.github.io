@@ -284,7 +284,7 @@ Note that the ```K``` in ```TOP K``` is specified using the ```size``` field in 
 
 The "window" field is **optional** and allows you to instruct Bullet to return incremental results. For example you might want to return the COUNT of a field and return that count every 2 seconds. 
 
-If "window" is ommitted Bullet will emit only a single result at the very end of the query.
+If "window" is omitted Bullet will emit only a single result at the very end of the query.
 
 An example window might look like this:
 
@@ -293,22 +293,18 @@ An example window might look like this:
             "include": { "type": "TIME/RECORD/ALL", "first": 5000 } },
 ```
 
-* The __emit__ field is used to specify when a window should be emmitted and the current results sent back to the user
-    * The __type__ subfield for "emit" can have two values:
-        * __"TIME"__ specifies that the window will emit after a specific number of milliseconds 
-        * __"RECORD"__ specifies that the window will emit after consuming a specific number of records
-    * The __every__ subfield for "emit" specifies how many records/milliseconds (depending on "type") will be counted before the window is emmitted
-* The __include__ field is used to specify what will be included in the emmitted window
-    * The __type__ subfield for "include" can have three values:
-        * __"TIME"__ specifies that the window will include all records seen in a certain time period in the window
-            * e.g. All records seen in the first 2 seconds of a 10 second window
-        * __"RECORD"__ specifies that the window will include the first n records, where n is specified in the "first" field below
-        * __"ALL"__ specifies that the window will include ALL results accumulated since the very beginning of the __query__ (not just this window)
-    * the __first__ subfield for "include" specifies the number of records/milliseconds at the beginning of this window to include in the emmitted result - it should be ommitted if "type" is "ALL".
+| Field   | SubField | Meaning |
+| ------- | --------- | ------- |
+| emit    |           | This object specifies when a window should be emitted and the current results sent back to the user |
+|         | type      | Must be "TIME" or "RECORD" - specifying if the window should be emitted after X number of milliseconds, or X number of records |
+|         | every     | The number of milliseconds or records (determined by "type" above) that will be contained in the emitted window |
+| include |           | This object specifies what will be included in the emitted window |
+|         | type      | Must be "TIME", "RECORD" or "ALL" - specifying if the window should include X number of milliseconds, X number of records, or all results since the beginning of the whole query |
+|         | first     | Specifies the number of records/milliseconds at the beginning of this window to include in the emitted result - it should be omitted if "type" is "ALL" |
 
 **NOTE: Not all windowing types are supported at this time.**
 
-### **Currently Bullet supports the following window types**:
+**Currently Bullet supports the following window types**:
 
 * Time-Based Tumbling Windows
 * Additive Tumbling Windows
@@ -368,7 +364,7 @@ The above example would be specified with the window:
 
 #### **No Window**
 
-If the "window" field is optional. If it is  ommitted, the query will only emit when the entire query is finished.
+If the "window" field is optional. If it is  omitted, the query will only emit when the entire query is finished.
 
 ## Results
 

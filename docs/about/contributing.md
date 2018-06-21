@@ -16,13 +16,8 @@ This list is neither comprehensive nor in any particular order.
 
 | Feature             | Components  | Description               | Status        |
 |-------------------- | ----------- | ------------------------- | ------------- |
-| Incremental updates | BE, WS, UI  | Push results back to users during the query lifetime. Micro-batching, windowing and other features need to be implemented | In Progress |
-| Bullet on Spark     | BE          | Implement Bullet on Spark Streaming. Compared with SQL on Spark Streaming which stores data in memory, Bullet will be light-weight | In Progress |
 | Security            | WS, UI      | The obvious enterprise security for locking down access to the data and the instance of Bullet. Considering SSL, Kerberos, LDAP etc. Ideally, without a database | Planning |
-| In-Memory PubSub    | PubSub      | For users who don't want a PubSub like Kafka, we could add REST based in-memory PubSub layer that runs in the WS. The backend will then communicate directly with the WS | Planning |
-| LocalForage         | UI          | Migration the UI to LocalForage to distance ourselves from the relatively small LocalStorage space | [#9](https://github.com/yahoo/bullet-ui/issues/9) |
 | Bullet on X         | BE          | With the pub/sub feature, Bullet can be implemented on other Stream Processors like Flink, Kafka Streaming, Samza etc | Open |
 | Bullet on Beam      | BE          | Bullet can be implemented on [Apache Beam](https://beam.apache.org) as an alternative to implementing it on various Stream Processors | Open |
-| SQL API             | BE, WS      | WS supports an endpoint that converts a SQL-like query into Bullet queries | Open |
+| SQL API             | BE, WS      | WS supports an endpoint that converts a SQL-like query into Bullet queries | In Progress |
 | Packaging           | UI, BE, WS  | Github releases and building from source are the only two options for the UI. Docker images or the like for quick setup and to mix and match various pluggable components would be really useful | Open |
-| Spring Boot Reactor | WS          | Migrate the Web Service to use Spring Boot reactor instead of servlet containers | Open |

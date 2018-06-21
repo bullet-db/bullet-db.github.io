@@ -20,7 +20,7 @@
 
 * Big-data scale-tested - used in production at Yahoo and tested running 500+ queries simultaneously on up to 2,000,000 rps
 
-# How is this useful
+# How is Bullet useful
 
 How Bullet is used is largely determined by the data source it consumes. Depending on what kind of data you put Bullet on, the types of queries you run on it and your use-cases will change. As a look-forward query system with no persistence, you will not be able to repeat your queries on the same data. The next time you run your query, it will operate on the different data that arrives after that submission. If this usage pattern is what you need and you are looking for a light-weight system that can tap into your streaming data, then Bullet is for you!
 
@@ -40,15 +40,15 @@ This instance of Bullet also powers other use-cases such as letting analysts val
 
 See [Quick Start](quick-start/bullet-on-spark.md) to set up Bullet locally using spark-streaming. You will generate some synthetic streaming data that you can then query with Bullet.
 
-# Setting up Bullet on your streaming data
+# Setup Bullet on your streaming data
 
 To set up Bullet on a real data stream, you need:
 
-1. To setup the Bullet Backend on a stream processing framework. Currently, we support [Bullet on Storm](backend/storm-setup.md):
+1. To setup the Bullet Backend on a stream processing framework. Currently, we support [Bullet on Storm](backend/storm-setup.md) and [Bullet on Spark](backend/spark-setup.md).
     1. Plug in your source of data. See [Getting your data into Bullet](backend/ingestion.md) for details
     2. Consume your data stream
 2. The [Web Service](ws/setup.md) set up to convey queries and return results back from the backend
-3. To choose a [PubSub implementation](pubsub/architecture.md) that connects the Web Service and the Backend. We currently support [Kafka](pubsub/kafka.md) on any Backend and [Storm DRPC](pubsub/storm-drpc.md) for the Storm Backend.
+3. To choose a [PubSub implementation](pubsub/architecture.md) that connects the Web Service and the Backend. We currently support [Kafka](pubsub/kafka.md) and a [REST PubSub](pubsub/rest.md) on any Backend and [Storm DRPC](pubsub/storm-drpc.md) for the Storm Backend.
 4. The optional [UI](ui/setup.md) set up to talk to your Web Service. You can skip the UI if all your access is programmatic
 
 !!! note "Schema in the UI"
@@ -59,9 +59,9 @@ To set up Bullet on a real data stream, you need:
 
 # Querying in Bullet
 
-Bullet queries allow you to filter, project and aggregate data. It lets you fetch raw (the individual data records) as well as aggregated data.
+Bullet queries allow you to filter, project and aggregate data. You can also specify a window to get incremental results. Bullet lets you fetch raw (the individual data records) as well as aggregated data.
 
-* See the [UI Usage section](ui/usage.md) for using the UI to build Bullet queries. This is the same UI you will build in the [Quick Start](quick-start.md)
+* See the [UI Usage section](ui/usage.md) for using the UI to build Bullet queries. This is the same UI you will build in the [Quick Start](quick-start/bullet-on-spark.md)
 
 * See the [API section](ws/api.md) for building Bullet API queries
 
@@ -111,6 +111,16 @@ Currently we support ```GROUP``` aggregations with the following operations:
 | MAX            | Returns the maximum of the non-null values in the provided field for all the elements in the group |
 | AVG            | Computes the average of the non-null values in the provided field for all the elements in the group |
 
+## Windows
+
+Windows in a Bullet query allow you to specify how often you'd like Bullet to return results.
+
+For example, you could launch a query for 2 minutes, and have Bullet return a COUNT DISTINCT on a particular field every 3 seconds:
+
+![Time-Based Tumbling Windows](../img/time-based-tumbling.png)
+
+See documentation on [the Web Service API](ws/api.md) for more info.
+
 # Results
 
 The Bullet Web Service returns your query result as well as associated metadata information in a structured JSON format. The UI can display the results in different formats.
@@ -145,17 +155,19 @@ The Bullet Backend can be split into three main conceptual sub-systems:
 2. Data Processor - reads data from a input stream, converts it to an unified data format and matches it against queries
 3. Combiner - combines results for different queries, performs final aggregations and returns results
 
-The core of Bullet querying is not tied to the Backend and lives in a core library. This allows you implement the flow shown above in any stream processor you like. We are currently working on Bullet on [Spark Streaming](https://spark.apache.org/streaming).
+The core of Bullet querying is not tied to the Backend and lives in a core library. This allows you implement the flow shown above in any stream processor you like.
+
+Implementations of [Bullet on Storm](backend/storm-architecture.md) and [Bullet on Spark](backend/spark-architecture.md) are currently supported.
 
 ## PubSub
 
-The PubSub is responsible for transmitting queries from the API to the Backend and returning results back from the Backend to the clients. It decouples whatever particular Backend you are using with the API. We currently provide a PubSub implementation using Kafka as the transport layer. You can very easily [implement your own](pubsub/architecture.md#implementing-your-own-pubsub) by defining a few interfaces that we provide.
+The PubSub is responsible for transmitting queries from the API to the Backend and returning results back from the Backend to the clients. It decouples whatever particular Backend you are using with the API.
+We currently support two different PubSub implementation:
 
-In the case of Bullet on Storm, there is an [additional simplified option](pubsub/storm-drpc.md) using [Storm DRPC](http://storm.apache.org/releases/1.0.0/Distributed-RPC.html) as the PubSub. This layer is planned to only support a request-response model for querying in the future.
+* [Kafka](pubsub/kafka.md)
+* [REST](pubsub/rest.md)
 
-!!! note "DRPC PubSub"
-
-    This was how Bullet was first implemented in Storm. Storm DRPC provided a really simple way to communicate with Storm that we took advantage of. We provide this as a legacy adapter or for users who use Storm but don't want a PubSub layer.
+You can also very easily [implement your own](pubsub/architecture.md#implementing-your-own-pubsub) by defining a few interfaces that we provide.
 
 ## Web Service and UI
 
