@@ -71,7 +71,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v0.4.0</small></a>
+            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v0.5.0</small></a>
         </div>
 
         <!-- Expanded navigation -->
@@ -361,13 +361,21 @@
 <p>The rest of this page gives more information about the Record container and how to depend on it in code directly. If you are setting up Bullet, the Record is already included by default with the Bullet artifact. You can head on over to <a href="../storm-setup/#installation">setting up the Storm topology</a> to build the piece that gets your data into the Record container.</p>
 </div>
 <h2 id="bullet-record">Bullet Record</h2>
-<p>The Bullet Record is a serializable data container based on <a href="http://avro.apache.org">Avro</a>. It is typed and has a generic schema. You can refer to the <a href="https://github.com/yahoo/bullet-record/blob/master/src/main/avro/BulletAvro.avsc">Avro Schema</a> file for details if you wish to see the internals of the data model. The Bullet Record is also lazy and only deserializes itself when you try to read something from it. So, you can pass it around before sending to Bullet with minimal cost. Partial deserialization is being considered if performance is key. This will let you deserialize a much narrower chunk of the Record if you are just looking for a couple of fields.</p>
+<p>The Bullet backend processes data that must be stored in a <a href="https://github.com/bullet-db/bullet-record/blob/master/src/main/java/com/yahoo/bullet/record/BulletRecord.java">Bullet Record</a> which is an abstract Java class that can
+be implemented as to be optimized for different backends or use-cases.</p>
+<p>There are currently two concrete implementations of BulletRecord:</p>
+<ol>
+<li><a href="https://github.com/bullet-db/bullet-record/blob/master/src/main/java/com/yahoo/bullet/record/SimpleBulletRecord.java">SimpleBulletRecord</a> which is based on a simple Java HashMap</li>
+<li><a href="https://github.com/bullet-db/bullet-record/blob/master/src/main/java/com/yahoo/bullet/record/AvroBulletRecord.java">AvroBulletRecord</a> which uses <a href="http://avro.apache.org">Avro</a> for serialization</li>
+</ol>
 <h2 id="types">Types</h2>
 <p>Data placed into a Bullet Record is strongly typed. We support these types currently:</p>
 <h3 id="primitives">Primitives</h3>
 <ol>
 <li>Boolean</li>
+<li>Integer</li>
 <li>Long</li>
+<li>Float</li>
 <li>Double</li>
 <li>String</li>
 </ol>
@@ -379,7 +387,7 @@
 </ol>
 <p>With these types, it is unlikely you would have data that cannot be represented as Bullet Record but if you do, please let us know and we are more than willing to accommodate.</p>
 <h2 id="installing-the-record-directly">Installing the Record directly</h2>
-<p>Generally, you depend on the Bullet Core artifact for your Stream Processor when you plug in the piece that gets your data into the Stream processor. The Bullet Core artifact already brings in the Bullet Record container as well. See the usage for the <a href="../storm-setup/#installation">Storm</a> for an example.</p>
+<p>Generally, you depend on the Bullet Core artifact for your Stream Processor when you plug in the piece that gets your data into the Stream processor. The Bullet Core artifact already brings in the Bullet Record containers as well. See the usage for the <a href="../storm-setup/#installation">Storm</a> for an example.</p>
 <p>However, if you need it, the artifacts are available through JCenter to depend on them in code directly. You will need to add the repository. Below is a Maven example:</p>
 <pre><code class="xml">&lt;repositories&gt;
     &lt;repository&gt;

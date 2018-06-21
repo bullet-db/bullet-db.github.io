@@ -71,7 +71,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="..">Bullet Docs<small class="small small-brand-text">v0.4.0</small></a>
+            <a class="navbar-brand" href="..">Bullet Docs<small class="small small-brand-text">v0.5.0</small></a>
         </div>
 
         <!-- Expanded navigation -->
@@ -465,6 +465,36 @@
 </thead>
 <tbody>
 <tr>
+<td>2018-06-18</td>
+<td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.4.0"><strong>0.4.0</strong></a></td>
+<td>Added support for Integer and Float data types, and configurable BulletRecordProvider class used to instantiate BulletRecords in bullet-core</td>
+</tr>
+<tr>
+<td>2018-04-11</td>
+<td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.3.4"><strong>0.3.4</strong></a></td>
+<td>Pre-Start delaying and Buffering changes - queries are now buffered at the start of a query instead of start of each window</td>
+</tr>
+<tr>
+<td>2018-03-30</td>
+<td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.3.3"><strong>0.3.3</strong></a></td>
+<td>Bug fix for com.yahoo.bullet.core.querying.Querier#isClosedForPartition</td>
+</tr>
+<tr>
+<td>2018-03-20</td>
+<td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.3.2"><strong>0.3.2</strong></a></td>
+<td>Added headers to RESTPubSub http requests</td>
+</tr>
+<tr>
+<td>2018-03-16</td>
+<td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.3.1"><strong>0.3.1</strong></a></td>
+<td>Added RESTPubSub implementation</td>
+</tr>
+<tr>
+<td>2018-02-22</td>
+<td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.3.0"><strong>0.3.0</strong></a></td>
+<td>Supports windowing / incremental updates</td>
+</tr>
+<tr>
 <td>2017-10-04</td>
 <td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.2.5"><strong>0.2.5</strong></a></td>
 <td>Supports an in-memory BufferingSubscriber implementation for reliable subscribing</td>
@@ -561,6 +591,36 @@
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>2018-06-18</td>
+<td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.8.3"><strong>0.8.3</strong></a></td>
+<td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.8.3"><strong>0.8.3</strong></a></td>
+<td>Using new bullet-record and bullet-core supporting Integer and Float data types</td>
+</tr>
+<tr>
+<td>2018-04-12</td>
+<td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.8.2"><strong>0.8.2</strong></a></td>
+<td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.8.2"><strong>0.8.2</strong></a></td>
+<td>Delaying query start in Join Bolt</td>
+</tr>
+<tr>
+<td>2018-04-04</td>
+<td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.8.1"><strong>0.8.1</strong></a></td>
+<td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.8.1"><strong>0.8.1</strong></a></td>
+<td>Fixed bug in JoinBolt</td>
+</tr>
+<tr>
+<td>2018-03-30</td>
+<td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.8.0"><strong>0.8.0</strong></a></td>
+<td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.8.0"><strong>0.8.0</strong></a></td>
+<td>Supports windowing / incremental updates</td>
+</tr>
+<tr>
+<td>2017-11-07</td>
+<td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.7.0"><strong>0.7.0</strong></a></td>
+<td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.7.0"><strong>0.7.0</strong></a></td>
+<td>Merge Query and Metadata Streams</td>
+</tr>
 <tr>
 <td>2017-10-24</td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.6.2"><strong>0.6.2</strong></a></td>
@@ -684,6 +744,11 @@
 </thead>
 <tbody>
 <tr>
+<td>2018-06-18</td>
+<td><a href="https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-0.1.2"><strong>0.1.2</strong></a></td>
+<td>Uses SimpleBulletRecord to avoid some Spark serialization issues with Avro</td>
+</tr>
+<tr>
 <td>2018-06-08</td>
 <td><a href="https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-0.1.1"><strong>0.1.1</strong></a></td>
 <td>Adds a command flag to pass custom setting file</td>
@@ -742,6 +807,21 @@
 </thead>
 <tbody>
 <tr>
+<td>2018-06-14</td>
+<td><a href="https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.2.2"><strong>0.2.2</strong></a></td>
+<td>Addding settings to configure websocket</td>
+</tr>
+<tr>
+<td>2018-04-02</td>
+<td><a href="https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.2.1"><strong>0.2.1</strong></a></td>
+<td>Moved and renamed settings</td>
+</tr>
+<tr>
+<td>2018-03-30</td>
+<td><a href="https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.2.0"><strong>0.2.0</strong></a></td>
+<td>Supporting windowing / incremental updates</td>
+</tr>
+<tr>
 <td>2017-10-19</td>
 <td><a href="https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.1.1"><strong>0.1.1</strong></a></td>
 <td>New PubSub architecture. Switching to Spring Boot and executable JAR instead of WAR</td>
@@ -795,6 +875,11 @@
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>2018-06-18</td>
+<td><a href="https://github.com/bullet-db/bullet-ui/releases/tag/v0.5.0"><strong>0.5.0</strong></a></td>
+<td>Supports windowing, uses IndexedDB and Ember 3!</td>
+</tr>
 <tr>
 <td>2017-08-22</td>
 <td><a href="https://github.com/bullet-db/bullet-ui/releases/tag/v0.4.0"><strong>0.4.0</strong></a></td>
@@ -880,6 +965,11 @@
 </thead>
 <tbody>
 <tr>
+<td>2018-06-14</td>
+<td><a href="https://github.com/bullet-db/bullet-record/releases/tag/bullet-record-0.2.0"><strong>0.2.0</strong></a></td>
+<td>Makes BulletRecord pluggable, adds simple record and avro record implementations</td>
+</tr>
+<tr>
 <td>2017-05-19</td>
 <td><a href="https://github.com/bullet-db/bullet-record/releases/tag/bullet-record-0.1.2"><strong>0.1.2</strong></a></td>
 <td>Reduces the memory footprint needed to serialize itself by a factor of 128 for small records</td>
@@ -908,11 +998,11 @@
 <tbody>
 <tr>
 <td><strong>Repository</strong></td>
-<td><a href="https://github.com/bullet-db/bullet-kafka">https://github.com/bullet-db/bullet-record</a></td>
+<td><a href="https://github.com/bullet-db/bullet-kafka">https://github.com/bullet-db/bullet-kafka</a></td>
 </tr>
 <tr>
 <td><strong>Issues</strong></td>
-<td><a href="https://github.com/bullet-db/bullet-kafka/issues">https://github.com/bullet-db/bullet-record/issues</a></td>
+<td><a href="https://github.com/bullet-db/bullet-kafka/issues">https://github.com/bullet-db/bullet-kafka/issues</a></td>
 </tr>
 <tr>
 <td><strong>Last Tag</strong></td>
@@ -938,6 +1028,11 @@
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>2018-02-27</td>
+<td><a href="https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-0.3.0"><strong>0.3.0</strong></a></td>
+<td>Uses bullet-core-0.3.0 - windows / incremental updates</td>
+</tr>
 <tr>
 <td>2017-10-19</td>
 <td><a href="https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-0.2.0"><strong>0.2.0</strong></a></td>

@@ -71,7 +71,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v0.4.0</small></a>
+            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v0.5.0</small></a>
         </div>
 
         <!-- Expanded navigation -->
@@ -359,7 +359,22 @@
                         <ul class="nav">
                         
                             <li class="third-level">
-                                <a href="#currently-bullet-supports-the-following-window-types">Currently Bullet supports the following window types:</a>
+                                <a href="#time-based-tumbling-windows">Time-Based Tumbling Windows</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#additive-tumbling-windows">Additive Tumbling Windows</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#sliding-reactive-windows">Sliding "Reactive" Windows</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#no-window">No Window</a>
                                 
                             </li>
                         
@@ -726,38 +741,55 @@ perform the average across the numeric values for a field only.</p>
 <p>Note that the <code>K</code> in <code>TOP K</code> is specified using the <code>size</code> field in the <code>aggregation</code> object.</p>
 <h2 id="window">Window</h2>
 <p>The "window" field is <strong>optional</strong> and allows you to instruct Bullet to return incremental results. For example you might want to return the COUNT of a field and return that count every 2 seconds. </p>
-<p>If "window" is ommitted Bullet will emit only a single result at the very end of the query.</p>
+<p>If "window" is omitted Bullet will emit only a single result at the very end of the query.</p>
 <p>An example window might look like this:</p>
 <pre><code class="javascript">&quot;window&quot;: { &quot;emit&quot;: { &quot;type&quot;: &quot;TIME/RECORD&quot;, &quot;every&quot;: 5000 },
             &quot;include&quot;: { &quot;type&quot;: &quot;TIME/RECORD/ALL&quot;, &quot;first&quot;: 5000 } },
 </code></pre>
 
-<ul>
-<li>The <strong>emit</strong> field is used to specify when a window should be emmitted and the current results sent back to the user<ul>
-<li>The <strong>type</strong> subfield for "emit" can have two values:<ul>
-<li><strong>"TIME"</strong> specifies that the window will emit after a specific number of milliseconds </li>
-<li><strong>"RECORD"</strong> specifies that the window will emit after consuming a specific number of records</li>
-</ul>
-</li>
-<li>The <strong>every</strong> subfield for "emit" specifies how many records/milliseconds (depending on "type") will be counted before the window is emmitted</li>
-</ul>
-</li>
-<li>The <strong>include</strong> field is used to specify what will be included in the emmitted window<ul>
-<li>The <strong>type</strong> subfield for "include" can have three values:<ul>
-<li><strong>"TIME"</strong> specifies that the window will include all records seen in a certain time period in the window<ul>
-<li>e.g. All records seen in the first 2 seconds of a 10 second window</li>
-</ul>
-</li>
-<li><strong>"RECORD"</strong> specifies that the window will include the first n records, where n is specified in the "first" field below</li>
-<li><strong>"ALL"</strong> specifies that the window will include ALL results accumulated since the very beginning of the <strong>query</strong> (not just this window)</li>
-</ul>
-</li>
-<li>the <strong>first</strong> subfield for "include" specifies the number of records/milliseconds at the beginning of this window to include in the emmitted result - it should be ommitted if "type" is "ALL".</li>
-</ul>
-</li>
-</ul>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>SubField</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>emit</td>
+<td></td>
+<td>This object specifies when a window should be emitted and the current results sent back to the user</td>
+</tr>
+<tr>
+<td></td>
+<td>type</td>
+<td>Must be "TIME" or "RECORD" - specifying if the window should be emitted after X number of milliseconds, or X number of records</td>
+</tr>
+<tr>
+<td></td>
+<td>every</td>
+<td>The number of milliseconds or records (determined by "type" above) that will be contained in the emitted window</td>
+</tr>
+<tr>
+<td>include</td>
+<td></td>
+<td>This object specifies what will be included in the emitted window</td>
+</tr>
+<tr>
+<td></td>
+<td>type</td>
+<td>Must be "TIME", "RECORD" or "ALL" - specifying if the window should include X number of milliseconds, X number of records, or all results since the beginning of the whole query</td>
+</tr>
+<tr>
+<td></td>
+<td>first</td>
+<td>Specifies the number of records/milliseconds at the beginning of this window to include in the emitted result - it should be omitted if "type" is "ALL"</td>
+</tr>
+</tbody>
+</table>
 <p><strong>NOTE: Not all windowing types are supported at this time.</strong></p>
-<h3 id="currently-bullet-supports-the-following-window-types"><strong>Currently Bullet supports the following window types</strong>:</h3>
+<p><strong>Currently Bullet supports the following window types</strong>:</p>
 <ul>
 <li>Time-Based Tumbling Windows</li>
 <li>Additive Tumbling Windows</li>
@@ -796,7 +828,7 @@ Effectively this query will simply return every event that matches the filters i
 </code></pre>
 
 <h4 id="no-window"><strong>No Window</strong></h4>
-<p>If the "window" field is optional. If it is  ommitted, the query will only emit when the entire query is finished.</p>
+<p>If the "window" field is optional. If it is  omitted, the query will only emit when the entire query is finished.</p>
 <h2 id="results">Results</h2>
 <p>Bullet results are JSON objects with two fields:</p>
 <table>

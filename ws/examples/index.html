@@ -71,7 +71,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v0.4.0</small></a>
+            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v0.5.0</small></a>
         </div>
 
         <!-- Expanded navigation -->
@@ -1725,34 +1725,33 @@ the second one and possibly be ranked higher. There is no such situation in this
 
 <p>This query specifies a tumbling window that will emit every 5 seconds and contain 5 seconds of data per window. Results will come back to the user every 5 seconds, and since the duration of the query is 20 seconds,
 the user will receive a total of 4 results. Since the aggregation size is set to 5, each returned window will contain only 5 groups (which will be chosen randomly). The result might look like this:</p>
-<pre><code class="javascript">data:{
-    &quot;records&quot;:[
-        {
-            &quot;country&quot;:&quot;Germany&quot;,
-            &quot;count&quot;:1,
-            &quot;averageAge&quot;:25.0
-        },
-        {
-            &quot;country&quot;:&quot;Canada&quot;,
-            &quot;count&quot;:106,
-            &quot;averageAge&quot;:22.58490566037736
-        },
-        {
-            &quot;country&quot;:&quot;USA&quot;,
-            &quot;count&quot;:1,
-            &quot;averageAge&quot;:28.0
-        },
-        {
-            &quot;country&quot;:&quot;England&quot;,
-            &quot;count&quot;:8,
-            &quot;averageAge&quot;:34.25
-        },
-        {
-            &quot;country&quot;:&quot;Peru&quot;,
-            &quot;count&quot;:9,
-            &quot;averageAge&quot;:30.0
-        }
-    ],
+<pre><code class="javascript">&quot;records&quot;:[
+    {
+        &quot;country&quot;:&quot;Germany&quot;,
+        &quot;count&quot;:1,
+        &quot;averageAge&quot;:25.0
+    },
+    {
+        &quot;country&quot;:&quot;Canada&quot;,
+        &quot;count&quot;:106,
+        &quot;averageAge&quot;:22.58490566037736
+    },
+    {
+        &quot;country&quot;:&quot;USA&quot;,
+        &quot;count&quot;:1,
+        &quot;averageAge&quot;:28.0
+    },
+    {
+        &quot;country&quot;:&quot;England&quot;,
+        &quot;count&quot;:8,
+        &quot;averageAge&quot;:34.25
+    },
+    {
+        &quot;country&quot;:&quot;Peru&quot;,
+        &quot;count&quot;:9,
+        &quot;averageAge&quot;:30.0
+    }
+],
 &quot;meta&quot;:{
     &quot;Window&quot;:{
         &quot;Number&quot;:1,
@@ -1788,191 +1787,187 @@ the user will receive a total of 4 results. Since the aggregation size is set to
 }
 
 
-data:{  
-   &quot;records&quot;:[  
-      {  
-         &quot;country&quot;:&quot;Canada&quot;,
-         &quot;count&quot;:101,
-         &quot;averageAge&quot;:32.742574257425744
-      },
-      {  
-         &quot;country&quot;:&quot;ht&quot;,
-         &quot;count&quot;:2,
-         &quot;averageAge&quot;:32.0
-      },
-      {  
-         &quot;country&quot;:&quot;England&quot;,
-         &quot;count&quot;:16,
-         &quot;averageAge&quot;:27.0625
-      },
-      {  
-         &quot;country&quot;:&quot;Peru&quot;,
-         &quot;count&quot;:8,
-         &quot;averageAge&quot;:23.625
-      },
-      {  
-         &quot;country&quot;:&quot;Bangladesh&quot;,
-         &quot;count&quot;:3,
-         &quot;averageAge&quot;:27.66666666666667
-      }
-   ],
-   &quot;meta&quot;:{  
-      &quot;Window&quot;:{  
-         &quot;Number&quot;:2,
-         &quot;Emit Time&quot;:1529458408036,
-         &quot;Expected Emit Time&quot;:1529458408023,
-         &quot;Name&quot;:&quot;Tumbling&quot;
-      },
-      &quot;Query&quot;:{  
-         &quot;ID&quot;:&quot;448d228a-1eed-471f-8777-c800cc866535&quot;,
-         &quot;Receive Time&quot;:1529458398023,
-         &quot;Body&quot;:&quot;...(query body)...&quot;
-      },
-      &quot;Sketch&quot;:{  
-         &quot;Was Estimated&quot;:false,
-         &quot;Uniques Estimate&quot;:98.0,
-         &quot;Family&quot;:&quot;TUPLE&quot;,
-         &quot;Theta&quot;:1.0,
-         &quot;Standard Deviations&quot;:{  
-            &quot;1&quot;:{  
-               &quot;upperBound&quot;:98.0,
-               &quot;lowerBound&quot;:98.0
-            },
-            &quot;2&quot;:{  
-               &quot;upperBound&quot;:98.0,
-               &quot;lowerBound&quot;:98.0
-            },
-            &quot;3&quot;:{  
-               &quot;upperBound&quot;:98.0,
-               &quot;lowerBound&quot;:98.0
-            }
+&quot;records&quot;:[  
+   {  
+      &quot;country&quot;:&quot;Canada&quot;,
+      &quot;count&quot;:101,
+      &quot;averageAge&quot;:32.742574257425744
+   },
+   {  
+      &quot;country&quot;:&quot;ht&quot;,
+      &quot;count&quot;:2,
+      &quot;averageAge&quot;:32.0
+   },
+   {  
+      &quot;country&quot;:&quot;England&quot;,
+      &quot;count&quot;:16,
+      &quot;averageAge&quot;:27.0625
+   },
+   {  
+      &quot;country&quot;:&quot;Peru&quot;,
+      &quot;count&quot;:8,
+      &quot;averageAge&quot;:23.625
+   },
+   {  
+      &quot;country&quot;:&quot;Bangladesh&quot;,
+      &quot;count&quot;:3,
+      &quot;averageAge&quot;:27.66666666666667
+   }
+],
+&quot;meta&quot;:{  
+   &quot;Window&quot;:{  
+      &quot;Number&quot;:2,
+      &quot;Emit Time&quot;:1529458408036,
+      &quot;Expected Emit Time&quot;:1529458408023,
+      &quot;Name&quot;:&quot;Tumbling&quot;
+   },
+   &quot;Query&quot;:{  
+      &quot;ID&quot;:&quot;448d228a-1eed-471f-8777-c800cc866535&quot;,
+      &quot;Receive Time&quot;:1529458398023,
+      &quot;Body&quot;:&quot;...(query body)...&quot;
+   },
+   &quot;Sketch&quot;:{  
+      &quot;Was Estimated&quot;:false,
+      &quot;Uniques Estimate&quot;:98.0,
+      &quot;Family&quot;:&quot;TUPLE&quot;,
+      &quot;Theta&quot;:1.0,
+      &quot;Standard Deviations&quot;:{  
+         &quot;1&quot;:{  
+            &quot;upperBound&quot;:98.0,
+            &quot;lowerBound&quot;:98.0
+         },
+         &quot;2&quot;:{  
+            &quot;upperBound&quot;:98.0,
+            &quot;lowerBound&quot;:98.0
+         },
+         &quot;3&quot;:{  
+            &quot;upperBound&quot;:98.0,
+            &quot;lowerBound&quot;:98.0
          }
       }
    }
 }
 
-data:{  
-   &quot;records&quot;:[  
-      {  
-         &quot;country&quot;:&quot;Canada&quot;,
-         &quot;count&quot;:121,
-         &quot;averageAge&quot;:27.97520661157025
-      },
-      {  
-         &quot;country&quot;:&quot;Haiti&quot;,
-         &quot;count&quot;:3,
-         &quot;averageAge&quot;:39.0
-      },
-      {  
-         &quot;country&quot;:&quot;Cabuyao laguna&quot;,
-         &quot;count&quot;:2,
-         &quot;averageAge&quot;:28.0
-      },
-      {  
-         &quot;country&quot;:&quot;USA&quot;,
-         &quot;count&quot;:1,
-         &quot;averageAge&quot;:20.0
-      },
-      {  
-         &quot;country&quot;:&quot;England&quot;,
-         &quot;count&quot;:23,
-         &quot;averageAge&quot;:40.869565217391305
-      }
-   ],
-   &quot;meta&quot;:{  
-      &quot;Window&quot;:{  
-         &quot;Number&quot;:3,
-         &quot;Emit Time&quot;:1529458413031,
-         &quot;Expected Emit Time&quot;:1529458413023,
-         &quot;Name&quot;:&quot;Tumbling&quot;
-      },
-      &quot;Query&quot;:{  
-         &quot;ID&quot;:&quot;448d228a-1eed-471f-8777-c800cc866535&quot;,
-         &quot;Receive Time&quot;:1529458398023,
-         &quot;Body&quot;:&quot;...(query body)...&quot;
-      },
-      &quot;Sketch&quot;:{  
-         &quot;Was Estimated&quot;:false,
-         &quot;Uniques Estimate&quot;:104.0,
-         &quot;Family&quot;:&quot;TUPLE&quot;,
-         &quot;Theta&quot;:1.0,
-         &quot;Standard Deviations&quot;:{  
-            &quot;1&quot;:{  
-               &quot;upperBound&quot;:104.0,
-               &quot;lowerBound&quot;:104.0
-            },
-            &quot;2&quot;:{  
-               &quot;upperBound&quot;:104.0,
-               &quot;lowerBound&quot;:104.0
-            },
-            &quot;3&quot;:{  
-               &quot;upperBound&quot;:104.0,
-               &quot;lowerBound&quot;:104.0
-            }
+
+&quot;records&quot;:[  
+   {  
+      &quot;country&quot;:&quot;Canada&quot;,
+      &quot;count&quot;:121,
+      &quot;averageAge&quot;:27.97520661157025
+   },
+   {  
+      &quot;country&quot;:&quot;Haiti&quot;,
+      &quot;count&quot;:3,
+      &quot;averageAge&quot;:39.0
+   },
+   {  
+      &quot;country&quot;:&quot;Cabuyao laguna&quot;,
+      &quot;count&quot;:2,
+      &quot;averageAge&quot;:28.0
+   },
+   {  
+      &quot;country&quot;:&quot;USA&quot;,
+      &quot;count&quot;:1,
+      &quot;averageAge&quot;:20.0
+   },
+   {  
+      &quot;country&quot;:&quot;England&quot;,
+      &quot;count&quot;:23,
+      &quot;averageAge&quot;:40.869565217391305
+   }
+],
+&quot;meta&quot;:{  
+   &quot;Window&quot;:{  
+      &quot;Number&quot;:3,
+      &quot;Emit Time&quot;:1529458413031,
+      &quot;Expected Emit Time&quot;:1529458413023,
+      &quot;Name&quot;:&quot;Tumbling&quot;
+   },
+   &quot;Query&quot;:{  
+      &quot;ID&quot;:&quot;448d228a-1eed-471f-8777-c800cc866535&quot;,
+      &quot;Receive Time&quot;:1529458398023,
+      &quot;Body&quot;:&quot;...(query body)...&quot;
+   },
+   &quot;Sketch&quot;:{  
+      &quot;Was Estimated&quot;:false,
+      &quot;Uniques Estimate&quot;:104.0,
+      &quot;Family&quot;:&quot;TUPLE&quot;,
+      &quot;Theta&quot;:1.0,
+      &quot;Standard Deviations&quot;:{  
+         &quot;1&quot;:{  
+            &quot;upperBound&quot;:104.0,
+            &quot;lowerBound&quot;:104.0
+         },
+         &quot;2&quot;:{  
+            &quot;upperBound&quot;:104.0,
+            &quot;lowerBound&quot;:104.0
+         },
+         &quot;3&quot;:{  
+            &quot;upperBound&quot;:104.0,
+            &quot;lowerBound&quot;:104.0
          }
       }
    }
 }
 
-data:{  
-   &quot;records&quot;:[  
-      {  
-         &quot;country&quot;:&quot;Canada&quot;,
-         &quot;count&quot;:117,
-         &quot;averageAge&quot;:21.82051282051282
-      },
-      {  
-         &quot;country&quot;:&quot;Azerbaijan&quot;,
-         &quot;count&quot;:1,
-         &quot;averageAge&quot;:30.0
-      },
-      {  
-         &quot;country&quot;:&quot;England&quot;,
-         &quot;count&quot;:13,
-         &quot;averageAge&quot;:30.923076923076923
-      },
-      {  
-         &quot;country&quot;:&quot;Congo&quot;,
-         &quot;count&quot;:1,
-         &quot;averageAge&quot;:32.0
-      },
-      {  
-         &quot;country&quot;:&quot;Bangladesh&quot;,
-         &quot;count&quot;:3,
-         &quot;averageAge&quot;:24.333333333333336
-      }
-   ],
-   &quot;meta&quot;:{  
-      &quot;Window&quot;:{  
-         &quot;Number&quot;:4,
-         &quot;Emit Time&quot;:1529458418030,
-         &quot;Expected Emit Time&quot;:1529458418023,
-         &quot;Name&quot;:&quot;Tumbling&quot;
-      },
-      &quot;Query&quot;:{  
-         &quot;Finish Time&quot;:1529458418030,
-         &quot;ID&quot;:&quot;448d228a-1eed-471f-8777-c800cc866535&quot;,
-         &quot;Receive Time&quot;:1529458398023,
-         &quot;Body&quot;:&quot;...(query body)...&quot;
-      },
-      &quot;Sketch&quot;:{  
-         &quot;Was Estimated&quot;:false,
-         &quot;Uniques Estimate&quot;:108.0,
-         &quot;Family&quot;:&quot;TUPLE&quot;,
-         &quot;Theta&quot;:1.0,
-         &quot;Standard Deviations&quot;:{  
-            &quot;1&quot;:{  
-               &quot;upperBound&quot;:108.0,
-               &quot;lowerBound&quot;:108.0
-            },
-            &quot;2&quot;:{  
-               &quot;upperBound&quot;:108.0,
-               &quot;lowerBound&quot;:108.0
-            },
-            &quot;3&quot;:{  
-               &quot;upperBound&quot;:108.0,
-               &quot;lowerBound&quot;:108.0
-            }
+
+&quot;records&quot;:[  
+   {  
+      &quot;country&quot;:&quot;Canada&quot;,
+      &quot;count&quot;:117,
+      &quot;averageAge&quot;:21.82051282051282
+   },
+   {  
+      &quot;country&quot;:&quot;Azerbaijan&quot;,
+      &quot;count&quot;:1,
+      &quot;averageAge&quot;:30.0
+   },
+   {  
+      &quot;country&quot;:&quot;England&quot;,
+      &quot;count&quot;:13,
+      &quot;averageAge&quot;:30.923076923076923
+   },
+   {  
+      &quot;country&quot;:&quot;Congo&quot;,
+      &quot;count&quot;:1,
+      &quot;averageAge&quot;:32.0
+   },
+   {  
+      &quot;country&quot;:&quot;Bangladesh&quot;,
+      &quot;count&quot;:3,
+      &quot;averageAge&quot;:24.333333333333336
+   }
+],
+&quot;meta&quot;:{  
+   &quot;Window&quot;:{  
+      &quot;Number&quot;:4,
+      &quot;Emit Time&quot;:1529458418030,
+      &quot;Expected Emit Time&quot;:1529458418023,
+      &quot;Name&quot;:&quot;Tumbling&quot;
+   },
+   &quot;Query&quot;:{  
+      &quot;Finish Time&quot;:1529458418030,
+      &quot;ID&quot;:&quot;448d228a-1eed-471f-8777-c800cc866535&quot;,
+      &quot;Receive Time&quot;:1529458398023,
+      &quot;Body&quot;:&quot;...(query body)...&quot;
+   },
+   &quot;Sketch&quot;:{  
+      &quot;Was Estimated&quot;:false,
+      &quot;Uniques Estimate&quot;:108.0,
+      &quot;Family&quot;:&quot;TUPLE&quot;,
+      &quot;Theta&quot;:1.0,
+      &quot;Standard Deviations&quot;:{  
+         &quot;1&quot;:{  
+            &quot;upperBound&quot;:108.0,
+            &quot;lowerBound&quot;:108.0
+         },
+         &quot;2&quot;:{  
+            &quot;upperBound&quot;:108.0,
+            &quot;lowerBound&quot;:108.0
+         },
+         &quot;3&quot;:{  
+            &quot;upperBound&quot;:108.0,
+            &quot;lowerBound&quot;:108.0
          }
       }
    }
@@ -2021,92 +2016,88 @@ data:{
 </code></pre>
 
 <p>The above query will run for 20 seconds and emit a result every 5 seconds. The result will contain the average age and the count of the records seen since the very beginning of the query. Results might look like this:</p>
-<pre><code class="javascript">data:{  
-   &quot;records&quot;:[  
-      {  
-         &quot;count&quot;:8493,
-         &quot;averageAge&quot;:28.8828796983622
-      }
-   ],
-   &quot;meta&quot;:{  
-      &quot;Window&quot;:{  
-         &quot;Number&quot;:1,
-         &quot;Emit Time&quot;:1529522392188,
-         &quot;Expected Emit Time&quot;:1529522392089,
-         &quot;Name&quot;:&quot;Tumbling&quot;
-      },
-      &quot;Query&quot;:{  
-         &quot;ID&quot;:&quot;12e48fbd-a20f-4f5e-8135-0f012d9ba3ef&quot;,
-         &quot;Receive Time&quot;:1529522387089,
-         &quot;Body&quot;:&quot;...(query body)...&quot;
-      }
+<pre><code class="javascript">&quot;records&quot;:[  
+   {  
+      &quot;count&quot;:8493,
+      &quot;averageAge&quot;:28.8828796983622
+   }
+],
+&quot;meta&quot;:{  
+   &quot;Window&quot;:{  
+      &quot;Number&quot;:1,
+      &quot;Emit Time&quot;:1529522392188,
+      &quot;Expected Emit Time&quot;:1529522392089,
+      &quot;Name&quot;:&quot;Tumbling&quot;
+   },
+   &quot;Query&quot;:{  
+      &quot;ID&quot;:&quot;12e48fbd-a20f-4f5e-8135-0f012d9ba3ef&quot;,
+      &quot;Receive Time&quot;:1529522387089,
+      &quot;Body&quot;:&quot;...(query body)...&quot;
    }
 }
 
-data:{  
-   &quot;records&quot;:[  
-      {  
-         &quot;count&quot;:17580,
-         &quot;averageAge&quot;:29.842629482071715
-      }
-   ],
-   &quot;meta&quot;:{  
-      &quot;Window&quot;:{  
-         &quot;Number&quot;:2,
-         &quot;Emit Time&quot;:1529522397191,
-         &quot;Expected Emit Time&quot;:1529522397089,
-         &quot;Name&quot;:&quot;Tumbling&quot;
-      },
-      &quot;Query&quot;:{  
-         &quot;ID&quot;:&quot;12e48fbd-a20f-4f5e-8135-0f012d9ba3ef&quot;,
-         &quot;Receive Time&quot;:1529522387089,
-         &quot;Body&quot;:&quot;...(query body)...&quot;
-      }
+
+&quot;records&quot;:[  
+   {  
+      &quot;count&quot;:17580,
+      &quot;averageAge&quot;:29.842629482071715
+   }
+],
+&quot;meta&quot;:{  
+   &quot;Window&quot;:{  
+      &quot;Number&quot;:2,
+      &quot;Emit Time&quot;:1529522397191,
+      &quot;Expected Emit Time&quot;:1529522397089,
+      &quot;Name&quot;:&quot;Tumbling&quot;
+   },
+   &quot;Query&quot;:{  
+      &quot;ID&quot;:&quot;12e48fbd-a20f-4f5e-8135-0f012d9ba3ef&quot;,
+      &quot;Receive Time&quot;:1529522387089,
+      &quot;Body&quot;:&quot;...(query body)...&quot;
    }
 }
 
-data:{  
-   &quot;records&quot;:[  
-      {  
-         &quot;count&quot;:26317,
-         &quot;averageAge&quot;:29.86675792835957
-      }
-   ],
-   &quot;meta&quot;:{  
-      &quot;Window&quot;:{  
-         &quot;Number&quot;:3,
-         &quot;Emit Time&quot;:1529522402185,
-         &quot;Expected Emit Time&quot;:1529522402089,
-         &quot;Name&quot;:&quot;Tumbling&quot;
-      },
-      &quot;Query&quot;:{  
-         &quot;ID&quot;:&quot;12e48fbd-a20f-4f5e-8135-0f012d9ba3ef&quot;,
-         &quot;Receive Time&quot;:1529522387089,
-         &quot;Body&quot;:&quot;...(query body)...&quot;
-      }
+
+&quot;records&quot;:[  
+   {  
+      &quot;count&quot;:26317,
+      &quot;averageAge&quot;:29.86675792835957
+   }
+],
+&quot;meta&quot;:{  
+   &quot;Window&quot;:{  
+      &quot;Number&quot;:3,
+      &quot;Emit Time&quot;:1529522402185,
+      &quot;Expected Emit Time&quot;:1529522402089,
+      &quot;Name&quot;:&quot;Tumbling&quot;
+   },
+   &quot;Query&quot;:{  
+      &quot;ID&quot;:&quot;12e48fbd-a20f-4f5e-8135-0f012d9ba3ef&quot;,
+      &quot;Receive Time&quot;:1529522387089,
+      &quot;Body&quot;:&quot;...(query body)...&quot;
    }
 }
 
-data:{  
-   &quot;records&quot;:[  
-      {  
-         &quot;count&quot;:35259,
-         &quot;averageAge&quot;:29.8303102557552
-      }
-   ],
-   &quot;meta&quot;:{  
-      &quot;Window&quot;:{  
-         &quot;Number&quot;:4,
-         &quot;Emit Time&quot;:1529522407182,
-         &quot;Expected Emit Time&quot;:1529522407089,
-         &quot;Name&quot;:&quot;Tumbling&quot;
-      },
-      &quot;Query&quot;:{  
-         &quot;Finish Time&quot;:1529522407182,
-         &quot;ID&quot;:&quot;12e48fbd-a20f-4f5e-8135-0f012d9ba3ef&quot;,
-         &quot;Receive Time&quot;:1529522387089,
-         &quot;Body&quot;:&quot;...(query body)...&quot;
-      }
+
+
+&quot;records&quot;:[  
+   {  
+      &quot;count&quot;:35259,
+      &quot;averageAge&quot;:29.8303102557552
+   }
+],
+&quot;meta&quot;:{  
+   &quot;Window&quot;:{  
+      &quot;Number&quot;:4,
+      &quot;Emit Time&quot;:1529522407182,
+      &quot;Expected Emit Time&quot;:1529522407089,
+      &quot;Name&quot;:&quot;Tumbling&quot;
+   },
+   &quot;Query&quot;:{  
+      &quot;Finish Time&quot;:1529522407182,
+      &quot;ID&quot;:&quot;12e48fbd-a20f-4f5e-8135-0f012d9ba3ef&quot;,
+      &quot;Receive Time&quot;:1529522387089,
+      &quot;Body&quot;:&quot;...(query body)...&quot;
    }
 }
 </code></pre>
@@ -2152,49 +2143,46 @@ data:{
 
 <p>This is a query that will capture raw data, and has a sliding window of size 1. This query will return window results immedietly whenever a single record that matches the filters flows through the system. The filters in this example
 will only match records from a particular browser. The query will run for 20 seconds, and the results might look like this:</p>
-<pre><code class="javascript">data:{  
-   &quot;records&quot;:[  
-      {  
-         &quot;country&quot;:&quot;USA&quot;,
-         &quot;event&quot;:&quot;page&quot;,
-         &quot;browser-id&quot;:&quot;2siknmdd6kaqm&quot;
-      }
-   ],
-   &quot;meta&quot;:{  
-      &quot;Window&quot;:{  
-         &quot;Number&quot;:1,
-         &quot;Size&quot;:1,
-         &quot;Emit Time&quot;:1529521479235,
-         &quot;Name&quot;:&quot;Sliding&quot;
-      },
-      &quot;Query&quot;:{  
-         &quot;ID&quot;:&quot;31d65a12-ed56-4cc8-81ec-6a8bfe9301ba&quot;,
-         &quot;Receive Time&quot;:1529521475015,
-         &quot;Body&quot;:&quot;...(query body)... &quot;
-      }
+<pre><code class="javascript">&quot;records&quot;:[  
+   {  
+      &quot;country&quot;:&quot;USA&quot;,
+      &quot;event&quot;:&quot;page&quot;,
+      &quot;browser-id&quot;:&quot;2siknmdd6kaqm&quot;
+   }
+],
+&quot;meta&quot;:{  
+   &quot;Window&quot;:{  
+      &quot;Number&quot;:1,
+      &quot;Size&quot;:1,
+      &quot;Emit Time&quot;:1529521479235,
+      &quot;Name&quot;:&quot;Sliding&quot;
+   },
+   &quot;Query&quot;:{  
+      &quot;ID&quot;:&quot;31d65a12-ed56-4cc8-81ec-6a8bfe9301ba&quot;,
+      &quot;Receive Time&quot;:1529521475015,
+      &quot;Body&quot;:&quot;...(query body)... &quot;
    }
 }
 
-data:{  
-   &quot;records&quot;:[  
-      {  
-         &quot;country&quot;:&quot;USA&quot;,
-         &quot;event&quot;:&quot;click&quot;,
-         &quot;browser-id&quot;:&quot;2siknmdd6kaqm&quot;
-      }
-   ],
-   &quot;meta&quot;:{  
-      &quot;Window&quot;:{  
-         &quot;Number&quot;:6,
-         &quot;Size&quot;:1,
-         &quot;Emit Time&quot;:1529521764875,
-         &quot;Name&quot;:&quot;Sliding&quot;
-      },
-      &quot;Query&quot;:{  
-         &quot;ID&quot;:&quot;e9595eb4-ea95-418b-8cff-d00736bf216f&quot;,
-         &quot;Receive Time&quot;:1529521757459,
-         &quot;Body&quot;:&quot;...(query body)...&quot;
-      }
+
+&quot;records&quot;:[  
+   {  
+      &quot;country&quot;:&quot;USA&quot;,
+      &quot;event&quot;:&quot;click&quot;,
+      &quot;browser-id&quot;:&quot;2siknmdd6kaqm&quot;
+   }
+],
+&quot;meta&quot;:{  
+   &quot;Window&quot;:{  
+      &quot;Number&quot;:6,
+      &quot;Size&quot;:1,
+      &quot;Emit Time&quot;:1529521764875,
+      &quot;Name&quot;:&quot;Sliding&quot;
+   },
+   &quot;Query&quot;:{  
+      &quot;ID&quot;:&quot;e9595eb4-ea95-418b-8cff-d00736bf216f&quot;,
+      &quot;Receive Time&quot;:1529521757459,
+      &quot;Body&quot;:&quot;...(query body)...&quot;
    }
 }
 

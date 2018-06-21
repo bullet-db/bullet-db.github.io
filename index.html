@@ -71,7 +71,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href=".">Bullet Docs<small class="small small-brand-text">v0.4.0</small></a>
+            <a class="navbar-brand" href=".">Bullet Docs<small class="small small-brand-text">v0.5.0</small></a>
         </div>
 
         <!-- Expanded navigation -->
@@ -317,12 +317,7 @@
     <ul class="nav bs-sidenav">
     
         <li class="active">
-            <a href="#bullet">Bullet:</a>
-            
-        </li>
-    
-        <li class="">
-            <a href="#how-is-this-useful">How is this useful</a>
+            <a href="#how-is-bullet-useful">How is Bullet useful</a>
             <ul class="nav">
                 
                     <li class="second-level">
@@ -339,7 +334,7 @@
         </li>
     
         <li class="">
-            <a href="#setting-up-bullet-on-your-streaming-data">Setting up Bullet on your streaming data</a>
+            <a href="#setup-bullet-on-your-streaming-data">Setup Bullet on your streaming data</a>
             
         </li>
     
@@ -364,6 +359,11 @@
             
                     <li class="second-level">
                         <a href="#aggregations">Aggregations</a>
+                        
+                    </li>
+            
+                    <li class="second-level">
+                        <a href="#windows">Windows</a>
                         
                     </li>
             
@@ -412,40 +412,39 @@
         <div class="col-md-9" role="main">
 
 <p><img alt="Bullet" src="./../img/bullet-logo.png" /></p>
-<h1 id="bullet">Bullet:</h1>
 <ul>
 <li>
-<p><strong>Is a real-time query engine for very large data streams</strong></p>
+<p>A real-time query engine for very large data streams</p>
 </li>
 <li>
-<p><strong>Has NO persistence layer</strong></p>
+<p>NO persistence layer</p>
 </li>
 <li>
-<p><strong>Is light-weight, cheap and fast</strong></p>
+<p>Light-weight, cheap and fast</p>
 </li>
 <li>
-<p><strong>Is multi-tenant</strong></p>
+<p>Multi-tenant</p>
 </li>
 <li>
-<p><strong>Is pluggable to any data source</strong></p>
+<p>Pluggable to any data source</p>
 </li>
 <li>
-<p><strong>Provides a UI and Web Service</strong></p>
+<p>Provides a UI and Web Service</p>
 </li>
 <li>
-<p><strong>Can filter raw data or aggregate data</strong></p>
+<p>Filter raw data or aggregate data</p>
 </li>
 <li>
-<p><strong>Can be run on storm or spark streaming</strong></p>
+<p>Can be run on storm or spark streaming</p>
 </li>
 <li>
-<p><strong>Is a look-forward query system</strong> - operates on data that arrive after the query is submitted</p>
+<p>A look-forward query system - operates on data that arrive after the query is submitted</p>
 </li>
 <li>
-<p><strong>Is big-data scale-tested</strong> - used in production at Yahoo and tested running 500+ queries simultaneously on up to 2,000,000 rps</p>
+<p>Big-data scale-tested - used in production at Yahoo and tested running 500+ queries simultaneously on up to 2,000,000 rps</p>
 </li>
 </ul>
-<h1 id="how-is-this-useful">How is this useful</h1>
+<h1 id="how-is-bullet-useful">How is Bullet useful</h1>
 <p>How Bullet is used is largely determined by the data source it consumes. Depending on what kind of data you put Bullet on, the types of queries you run on it and your use-cases will change. As a look-forward query system with no persistence, you will not be able to repeat your queries on the same data. The next time you run your query, it will operate on the different data that arrives after that submission. If this usage pattern is what you need and you are looking for a light-weight system that can tap into your streaming data, then Bullet is for you!</p>
 <h3 id="example-how-bullet-is-used-at-yahoo">Example: How Bullet is used at Yahoo</h3>
 <p>Bullet is used in production internally at Yahoo by having it sit on a subset of raw user engagement events from Yahoo sites and apps. This lets Yahoo developers automatically validate their instrumentation code <em>end-to-end</em> in their Continuous Delivery pipelines. Validating instrumentation is critical since it powers pretty much all decisions and products including machine learning, corporate KPIs, analytics, personalization, targeting.</p>
@@ -456,17 +455,17 @@
 </div>
 <hr />
 <h1 id="quick-start">Quick Start</h1>
-<p>See <a href="quick-start.md">Quick Start</a> to set up Bullet using a local Storm topology. You will generate some synthetic streaming data that you can then query with Bullet.</p>
-<h1 id="setting-up-bullet-on-your-streaming-data">Setting up Bullet on your streaming data</h1>
+<p>See <a href="quick-start/bullet-on-spark/">Quick Start</a> to set up Bullet locally using spark-streaming. You will generate some synthetic streaming data that you can then query with Bullet.</p>
+<h1 id="setup-bullet-on-your-streaming-data">Setup Bullet on your streaming data</h1>
 <p>To set up Bullet on a real data stream, you need:</p>
 <ol>
-<li>To setup the Bullet Backend on a stream processing framework. Currently, we support <a href="backend/storm-setup/">Bullet on Storm</a>:<ol>
+<li>To setup the Bullet Backend on a stream processing framework. Currently, we support <a href="backend/storm-setup/">Bullet on Storm</a> and <a href="backend/spark-setup/">Bullet on Spark</a>.<ol>
 <li>Plug in your source of data. See <a href="backend/ingestion/">Getting your data into Bullet</a> for details</li>
 <li>Consume your data stream</li>
 </ol>
 </li>
 <li>The <a href="ws/setup/">Web Service</a> set up to convey queries and return results back from the backend</li>
-<li>To choose a <a href="pubsub/architecture/">PubSub implementation</a> that connects the Web Service and the Backend. We currently support <a href="pubsub/kafka/">Kafka</a> on any Backend and <a href="pubsub/storm-drpc/">Storm DRPC</a> for the Storm Backend.</li>
+<li>To choose a <a href="pubsub/architecture/">PubSub implementation</a> that connects the Web Service and the Backend. We currently support <a href="pubsub/kafka/">Kafka</a> and a <a href="pubsub/rest/">REST PubSub</a> on any Backend and <a href="pubsub/storm-drpc/">Storm DRPC</a> for the Storm Backend.</li>
 <li>The optional <a href="ui/setup/">UI</a> set up to talk to your Web Service. You can skip the UI if all your access is programmatic</li>
 </ol>
 <div class="admonition note">
@@ -475,10 +474,10 @@
 </div>
 <hr />
 <h1 id="querying-in-bullet">Querying in Bullet</h1>
-<p>Bullet queries allow you to filter, project and aggregate data. It lets you fetch raw (the individual data records) as well as aggregated data.</p>
+<p>Bullet queries allow you to filter, project and aggregate data. You can also specify a window to get incremental results. Bullet lets you fetch raw (the individual data records) as well as aggregated data.</p>
 <ul>
 <li>
-<p>See the <a href="ui/usage/">UI Usage section</a> for using the UI to build Bullet queries. This is the same UI you will build in the <a href="quick-start.md">Quick Start</a></p>
+<p>See the <a href="ui/usage/">UI Usage section</a> for using the UI to build Bullet queries. This is the same UI you will build in the <a href="quick-start/bullet-on-spark/">Quick Start</a></p>
 </li>
 <li>
 <p>See the <a href="ws/api/">API section</a> for building Bullet API queries</p>
@@ -579,6 +578,11 @@
 </tr>
 </tbody>
 </table>
+<h2 id="windows">Windows</h2>
+<p>Windows in a Bullet query allow you to specify how often you'd like Bullet to return results.</p>
+<p>For example, you could launch a query for 2 minutes, and have Bullet return a COUNT DISTINCT on a particular field every 3 seconds:</p>
+<p><img alt="Time-Based Tumbling Windows" src="./../img/time-based-tumbling.png" /></p>
+<p>See documentation on <a href="ws/api/">the Web Service API</a> for more info.</p>
 <h1 id="results">Results</h1>
 <p>The Bullet Web Service returns your query result as well as associated metadata information in a structured JSON format. The UI can display the results in different formats.</p>
 <hr />
@@ -599,14 +603,16 @@
 <li>Data Processor - reads data from a input stream, converts it to an unified data format and matches it against queries</li>
 <li>Combiner - combines results for different queries, performs final aggregations and returns results</li>
 </ol>
-<p>The core of Bullet querying is not tied to the Backend and lives in a core library. This allows you implement the flow shown above in any stream processor you like. We are currently working on Bullet on <a href="https://spark.apache.org/streaming">Spark Streaming</a>.</p>
+<p>The core of Bullet querying is not tied to the Backend and lives in a core library. This allows you implement the flow shown above in any stream processor you like.</p>
+<p>Implementations of <a href="backend/storm-architecture/">Bullet on Storm</a> and <a href="backend/spark-architecture/">Bullet on Spark</a> are currently supported.</p>
 <h2 id="pubsub">PubSub</h2>
-<p>The PubSub is responsible for transmitting queries from the API to the Backend and returning results back from the Backend to the clients. It decouples whatever particular Backend you are using with the API. We currently provide a PubSub implementation using Kafka as the transport layer. You can very easily <a href="pubsub/architecture/#implementing-your-own-pubsub">implement your own</a> by defining a few interfaces that we provide.</p>
-<p>In the case of Bullet on Storm, there is an <a href="pubsub/storm-drpc/">additional simplified option</a> using <a href="http://storm.apache.org/releases/1.0.0/Distributed-RPC.html">Storm DRPC</a> as the PubSub. This layer is planned to only support a request-response model for querying in the future.</p>
-<div class="admonition note">
-<p class="admonition-title">DRPC PubSub</p>
-<p>This was how Bullet was first implemented in Storm. Storm DRPC provided a really simple way to communicate with Storm that we took advantage of. We provide this as a legacy adapter or for users who use Storm but don't want a PubSub layer.</p>
-</div>
+<p>The PubSub is responsible for transmitting queries from the API to the Backend and returning results back from the Backend to the clients. It decouples whatever particular Backend you are using with the API.
+We currently support two different PubSub implementation:</p>
+<ul>
+<li><a href="pubsub/kafka/">Kafka</a></li>
+<li><a href="pubsub/rest/">REST</a></li>
+</ul>
+<p>You can also very easily <a href="pubsub/architecture/#implementing-your-own-pubsub">implement your own</a> by defining a few interfaces that we provide.</p>
 <h2 id="web-service-and-ui">Web Service and UI</h2>
 <p>The rest of the pieces are just the standard other two pieces in a full-stack application:</p>
 <ul>
@@ -679,5 +685,5 @@
 
 <!--
 MkDocs version : 0.16.3
-Build Date UTC : 2018-06-20 23:41:20
+Build Date UTC : 2018-06-21 03:33:45
 -->

@@ -71,7 +71,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v0.4.0</small></a>
+            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v0.5.0</small></a>
         </div>
 
         <!-- Expanded navigation -->
@@ -369,9 +369,9 @@
 <h1 id="pubsub-architecture">PubSub Architecture</h1>
 <p>This section describes how the Publish-Subscribe or <a href="../..#pubsub">PubSub layer</a> works in Bullet.</p>
 <h2 id="why-a-pubsub">Why a PubSub?</h2>
-<p>When we initially created Bullet, it was built on <a href="https://storm.apache.org">Apache Storm</a> and leveraged a feature in it called <a href="http://storm.apache.org/releases/1.0.3/Distributed-RPC.html">Storm DRPC</a> to deliver queries to and extract results from the Bullet Backend. Storm DRPC is supported by a set of clusters that are physically part of the Storm cluster and is a shared resource for the cluster. While many other stream processors support some form of RPC and we could support multiple versions of the Web Service for those, it quickly became clear that abstracting the transport layer from the Web Service to the Backend was needed. This was particularly highlighted when we wanted to switch Bullet queries from operating in a request-response model (one response at the end of the query) to a streaming model. Streaming responses back to the user for a query through DRPC would be cumbersome and require a lot of logic to handle. A PubSub system was a natural solution to this. Since DRPC was a shared resource per cluster, we also were <a href="../../backend/storm-performance/#test-4-improving-the-maximum-number-of-simultaneous-raw-queries">tying the Backend's scalability</a> to a resource that we didn't control.</p>
+<p>When we initially created Bullet, it was built on <a href="https://storm.apache.org">Apache Storm</a> and leveraged a feature in it called Storm DRPC to deliver queries to and extract results from the Bullet Backend. Storm DRPC is supported by a set of clusters that are physically part of the Storm cluster and is a shared resource for the cluster. While many other stream processors support some form of RPC and we could support multiple versions of the Web Service for those, it quickly became clear that abstracting the transport layer from the Web Service to the Backend was needed. This was particularly highlighted when we wanted to switch Bullet queries from operating in a request-response model (one response at the end of the query) to a streaming model. Streaming responses back to the user for a query through DRPC would be cumbersome and require a lot of logic to handle. A PubSub system was a natural solution to this. Since DRPC was a shared resource per cluster, we also were <a href="../../backend/storm-performance/#test-4-improving-the-maximum-number-of-simultaneous-raw-queries">tying the Backend's scalability</a> to a resource that we didn't control.</p>
 <p>However, we didn't want to pick a particular PubSub like Kafka and restrict a user's choice. So, we added a PubSub layer that was generic and entirely pluggable into both the Backend and the Web Service. We would support a select few like <a href="https://github.com/yahoo/bullet-kafka">Kafka</a> or <a href="https://github.com/yahoo/bullet-storm">Storm DRPC</a>. See <a href="#implementing-your-own-pubsub">below</a> for how to create your own.</p>
-<p>With the transport mechanism abstracted out, it opens up a lot of possibilities like implementing Bullet on other stream processors (<a href="https://spark.apache.org">Apache Spark</a> is in the works) and adding streaming, incremental results, sharding and much more.</p>
+<p>With the transport mechanism abstracted out, it opens up a lot of possibilities like implementing Bullet on other stream processors, allowing for the development of <a href="../../backend/spark-architecture/">Bullet on Spark</a> along with other possible implementations in the future.</p>
 <h2 id="what-does-it-do">What does it do?</h2>
 <p>A PubSub operates in two contexts:</p>
 <ol>
@@ -385,6 +385,7 @@
 <p>If you want to use an implementation already built, we currently support:</p>
 <ol>
 <li><a href="../kafka/#setup">Kafka</a> for any Backend</li>
+<li><a href="../rest/#setup">REST</a> for any Backend</li>
 <li><a href="../storm-drpc/#setup">Storm DRPC</a> if you're using Bullet on Storm as your Backend</li>
 </ol>
 <h2 id="implementing-your-own-pubsub">Implementing your own PubSub</h2>

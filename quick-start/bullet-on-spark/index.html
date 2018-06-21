@@ -71,7 +71,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v0.4.0</small></a>
+            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v0.5.0</small></a>
         </div>
 
         <!-- Expanded navigation -->
@@ -321,26 +321,97 @@
             <ul class="nav">
                 
                     <li class="second-level">
-                        <a href="#to-install-and-launch-bullet-locally">To Install and Launch Bullet Locally:</a>
+                        <a href="#setup-kafka">Setup Kafka</a>
                         <ul class="nav">
                         
                             <li class="third-level">
-                                <a href="#setup-kafka">Setup Kafka</a>
+                                <a href="#step-1-setup-directories-and-examples">Step 1: Setup directories and examples</a>
                                 
                             </li>
                         
                             <li class="third-level">
-                                <a href="#setup-web-service">Setup Web Service</a>
+                                <a href="#step-2-download-and-install-kafka">Step 2: Download and Install Kafka</a>
                                 
                             </li>
                         
                             <li class="third-level">
-                                <a href="#setup-bullet-backend-on-spark">Setup Bullet Backend on Spark</a>
+                                <a href="#step-3-start-zookeeper">Step 3: Start Zookeeper</a>
                                 
                             </li>
                         
                             <li class="third-level">
-                                <a href="#setting-up-the-bullet-ui">Setting up the Bullet UI</a>
+                                <a href="#step-4-start-kafka">Step 4: Start Kafka</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#step-5-create-kafka-topics">Step 5: Create Kafka Topics</a>
+                                
+                            </li>
+                        
+                        </ul>
+                    </li>
+            
+                    <li class="second-level">
+                        <a href="#setup-web-service">Setup Web Service</a>
+                        <ul class="nav">
+                        
+                            <li class="third-level">
+                                <a href="#step-6-install-the-bullet-web-service">Step 6: Install the Bullet Web Service</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#step-7-launch-the-web-service">Step 7: Launch the Web Service</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#step-8-test-the-web-service-optional">Step 8: Test the Web Service (optional)</a>
+                                
+                            </li>
+                        
+                        </ul>
+                    </li>
+            
+                    <li class="second-level">
+                        <a href="#setup-bullet-backend-on-spark">Setup Bullet Backend on Spark</a>
+                        <ul class="nav">
+                        
+                            <li class="third-level">
+                                <a href="#step-9-install-spark-221">Step 9: Install Spark 2.2.1</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#step-10-setup-bullet-spark-and-example-data-producer">Step 10: Setup Bullet-Spark and Example Data Producer</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#step-11-launch-the-bullet-spark-backend">Step 11: Launch the Bullet Spark Backend</a>
+                                
+                            </li>
+                        
+                        </ul>
+                    </li>
+            
+                    <li class="second-level">
+                        <a href="#setting-up-the-bullet-ui">Setting up the Bullet UI</a>
+                        <ul class="nav">
+                        
+                            <li class="third-level">
+                                <a href="#step-12-install-node">Step 12: Install Node</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#step-13-install-the-bullet-ui">Step 13: Install the Bullet UI</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#step-14-launch-the-ui">Step 14: Launch the UI</a>
                                 
                             </li>
                         
@@ -384,7 +455,6 @@
 <li>You will need to be on an Unix-based system (Mac OS X, Ubuntu ...) with <code>curl</code> installed</li>
 <li>You will need <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">JDK 8</a> installed</li>
 </ul>
-<h2 id="to-install-and-launch-bullet-locally">To Install and Launch Bullet Locally:</h2>
 <h3 id="setup-kafka">Setup Kafka</h3>
 <p>For this instance of Bullet we will use the kafka PubSub implementation found in <a href="https://github.com/bullet-db/bullet-spark">bullet-spark</a>. So we will first download and run Kafka, and setup a couple Kafka topics.</p>
 <h4 id="step-1-setup-directories-and-examples">Step 1: Setup directories and examples</h4>
@@ -506,7 +576,7 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
 <p>If you access the UI from another machine than where your UI is actually running, you will need to edit <code>config/env-settings.json</code>. Since the UI is a client-side app, the machine that your browser is running on will fetch the UI and attempt to use these settings to talk to the Web Service. Since they point to localhost by default, your browser will attempt to connect there and fail. An easy fix is to change <code>localhost</code> in your env-settings.json to point to the host name where you will hosting the UI. This will be the same as the UI host you use in the browser. You can also do a local port forward on the machine accessing the UI by running:
 <code>ssh -N -L 8800:localhost:8800 -L 9999:localhost:9999 hostname-of-the-quickstart-components 2&gt;&amp;1</code></p>
 </div>
-<h2 id="congratulations-bullet-is-all-setup">Congratulations!! Bullet is all setup!</h2>
+<h3 id="congratulations-bullet-is-all-setup">Congratulations!! Bullet is all setup!</h3>
 <h4 id="playing-around-with-the-instance">Playing around with the instance:</h4>
 <p>Check out and follow along with the <a href="ui/usage.md">UI Usage</a> page as it shows you some queries you can run using this UI.</p>
 <h2 id="teardown">Teardown</h2>
