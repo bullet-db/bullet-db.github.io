@@ -8,7 +8,13 @@ Bullet operates on a generic data container that it understands. In order to get
 
 ## Bullet Record
 
-The Bullet Record is a serializable data container based on [Avro](http://avro.apache.org). It is typed and has a generic schema. You can refer to the [Avro Schema](https://github.com/yahoo/bullet-record/blob/master/src/main/avro/BulletAvro.avsc) file for details if you wish to see the internals of the data model. The Bullet Record is also lazy and only deserializes itself when you try to read something from it. So, you can pass it around before sending to Bullet with minimal cost. Partial deserialization is being considered if performance is key. This will let you deserialize a much narrower chunk of the Record if you are just looking for a couple of fields.
+The Bullet backend processes data that must be stored in a [Bullet Record](https://github.com/bullet-db/bullet-record/blob/master/src/main/java/com/yahoo/bullet/record/BulletRecord.java) which is an abstract Java class that can
+be implemented as to be optimized for different backends or use-cases.
+
+There are currently two concrete implementations of BulletRecord:
+
+1. [SimpleBulletRecord](https://github.com/bullet-db/bullet-record/blob/master/src/main/java/com/yahoo/bullet/record/SimpleBulletRecord.java) which is based on a simple Java HashMap
+2. [AvroBulletRecord](https://github.com/bullet-db/bullet-record/blob/master/src/main/java/com/yahoo/bullet/record/AvroBulletRecord.java) which uses [Avro](http://avro.apache.org) for serialization
 
 ## Types
 
@@ -17,9 +23,11 @@ Data placed into a Bullet Record is strongly typed. We support these types curre
 ### Primitives
 
 1. Boolean
-2. Long
-3. Double
-4. String
+2. Integer
+3. Long
+4. Float
+5. Double
+6. String
 
 ### Complex
 
@@ -31,7 +39,7 @@ With these types, it is unlikely you would have data that cannot be represented 
 
 ## Installing the Record directly
 
-Generally, you depend on the Bullet Core artifact for your Stream Processor when you plug in the piece that gets your data into the Stream processor. The Bullet Core artifact already brings in the Bullet Record container as well. See the usage for the [Storm](storm-setup.md#installation) for an example.
+Generally, you depend on the Bullet Core artifact for your Stream Processor when you plug in the piece that gets your data into the Stream processor. The Bullet Core artifact already brings in the Bullet Record containers as well. See the usage for the [Storm](storm-setup.md#installation) for an example.
 
 However, if you need it, the artifacts are available through JCenter to depend on them in code directly. You will need to add the repository. Below is a Maven example:
 
