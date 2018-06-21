@@ -1441,34 +1441,33 @@ This query specifies a tumbling window that will emit every 5 seconds and contai
 the user will receive a total of 4 results. Since the aggregation size is set to 5, each returned window will contain only 5 groups (which will be chosen randomly). The result might look like this:
 
 ```javascript
-data:{
-    "records":[
-        {
-            "country":"Germany",
-            "count":1,
-            "averageAge":25.0
-        },
-        {
-            "country":"Canada",
-            "count":106,
-            "averageAge":22.58490566037736
-        },
-        {
-            "country":"USA",
-            "count":1,
-            "averageAge":28.0
-        },
-        {
-            "country":"England",
-            "count":8,
-            "averageAge":34.25
-        },
-        {
-            "country":"Peru",
-            "count":9,
-            "averageAge":30.0
-        }
-    ],
+"records":[
+    {
+        "country":"Germany",
+        "count":1,
+        "averageAge":25.0
+    },
+    {
+        "country":"Canada",
+        "count":106,
+        "averageAge":22.58490566037736
+    },
+    {
+        "country":"USA",
+        "count":1,
+        "averageAge":28.0
+    },
+    {
+        "country":"England",
+        "count":8,
+        "averageAge":34.25
+    },
+    {
+        "country":"Peru",
+        "count":9,
+        "averageAge":30.0
+    }
+],
 "meta":{
     "Window":{
         "Number":1,
@@ -1504,191 +1503,187 @@ data:{
 }
 
 
-data:{  
-   "records":[  
-      {  
-         "country":"Canada",
-         "count":101,
-         "averageAge":32.742574257425744
-      },
-      {  
-         "country":"ht",
-         "count":2,
-         "averageAge":32.0
-      },
-      {  
-         "country":"England",
-         "count":16,
-         "averageAge":27.0625
-      },
-      {  
-         "country":"Peru",
-         "count":8,
-         "averageAge":23.625
-      },
-      {  
-         "country":"Bangladesh",
-         "count":3,
-         "averageAge":27.66666666666667
-      }
-   ],
-   "meta":{  
-      "Window":{  
-         "Number":2,
-         "Emit Time":1529458408036,
-         "Expected Emit Time":1529458408023,
-         "Name":"Tumbling"
-      },
-      "Query":{  
-         "ID":"448d228a-1eed-471f-8777-c800cc866535",
-         "Receive Time":1529458398023,
-         "Body":"...(query body)..."
-      },
-      "Sketch":{  
-         "Was Estimated":false,
-         "Uniques Estimate":98.0,
-         "Family":"TUPLE",
-         "Theta":1.0,
-         "Standard Deviations":{  
-            "1":{  
-               "upperBound":98.0,
-               "lowerBound":98.0
-            },
-            "2":{  
-               "upperBound":98.0,
-               "lowerBound":98.0
-            },
-            "3":{  
-               "upperBound":98.0,
-               "lowerBound":98.0
-            }
+"records":[  
+   {  
+      "country":"Canada",
+      "count":101,
+      "averageAge":32.742574257425744
+   },
+   {  
+      "country":"ht",
+      "count":2,
+      "averageAge":32.0
+   },
+   {  
+      "country":"England",
+      "count":16,
+      "averageAge":27.0625
+   },
+   {  
+      "country":"Peru",
+      "count":8,
+      "averageAge":23.625
+   },
+   {  
+      "country":"Bangladesh",
+      "count":3,
+      "averageAge":27.66666666666667
+   }
+],
+"meta":{  
+   "Window":{  
+      "Number":2,
+      "Emit Time":1529458408036,
+      "Expected Emit Time":1529458408023,
+      "Name":"Tumbling"
+   },
+   "Query":{  
+      "ID":"448d228a-1eed-471f-8777-c800cc866535",
+      "Receive Time":1529458398023,
+      "Body":"...(query body)..."
+   },
+   "Sketch":{  
+      "Was Estimated":false,
+      "Uniques Estimate":98.0,
+      "Family":"TUPLE",
+      "Theta":1.0,
+      "Standard Deviations":{  
+         "1":{  
+            "upperBound":98.0,
+            "lowerBound":98.0
+         },
+         "2":{  
+            "upperBound":98.0,
+            "lowerBound":98.0
+         },
+         "3":{  
+            "upperBound":98.0,
+            "lowerBound":98.0
          }
       }
    }
 }
 
-data:{  
-   "records":[  
-      {  
-         "country":"Canada",
-         "count":121,
-         "averageAge":27.97520661157025
-      },
-      {  
-         "country":"Haiti",
-         "count":3,
-         "averageAge":39.0
-      },
-      {  
-         "country":"Cabuyao laguna",
-         "count":2,
-         "averageAge":28.0
-      },
-      {  
-         "country":"USA",
-         "count":1,
-         "averageAge":20.0
-      },
-      {  
-         "country":"England",
-         "count":23,
-         "averageAge":40.869565217391305
-      }
-   ],
-   "meta":{  
-      "Window":{  
-         "Number":3,
-         "Emit Time":1529458413031,
-         "Expected Emit Time":1529458413023,
-         "Name":"Tumbling"
-      },
-      "Query":{  
-         "ID":"448d228a-1eed-471f-8777-c800cc866535",
-         "Receive Time":1529458398023,
-         "Body":"...(query body)..."
-      },
-      "Sketch":{  
-         "Was Estimated":false,
-         "Uniques Estimate":104.0,
-         "Family":"TUPLE",
-         "Theta":1.0,
-         "Standard Deviations":{  
-            "1":{  
-               "upperBound":104.0,
-               "lowerBound":104.0
-            },
-            "2":{  
-               "upperBound":104.0,
-               "lowerBound":104.0
-            },
-            "3":{  
-               "upperBound":104.0,
-               "lowerBound":104.0
-            }
+
+"records":[  
+   {  
+      "country":"Canada",
+      "count":121,
+      "averageAge":27.97520661157025
+   },
+   {  
+      "country":"Haiti",
+      "count":3,
+      "averageAge":39.0
+   },
+   {  
+      "country":"Cabuyao laguna",
+      "count":2,
+      "averageAge":28.0
+   },
+   {  
+      "country":"USA",
+      "count":1,
+      "averageAge":20.0
+   },
+   {  
+      "country":"England",
+      "count":23,
+      "averageAge":40.869565217391305
+   }
+],
+"meta":{  
+   "Window":{  
+      "Number":3,
+      "Emit Time":1529458413031,
+      "Expected Emit Time":1529458413023,
+      "Name":"Tumbling"
+   },
+   "Query":{  
+      "ID":"448d228a-1eed-471f-8777-c800cc866535",
+      "Receive Time":1529458398023,
+      "Body":"...(query body)..."
+   },
+   "Sketch":{  
+      "Was Estimated":false,
+      "Uniques Estimate":104.0,
+      "Family":"TUPLE",
+      "Theta":1.0,
+      "Standard Deviations":{  
+         "1":{  
+            "upperBound":104.0,
+            "lowerBound":104.0
+         },
+         "2":{  
+            "upperBound":104.0,
+            "lowerBound":104.0
+         },
+         "3":{  
+            "upperBound":104.0,
+            "lowerBound":104.0
          }
       }
    }
 }
 
-data:{  
-   "records":[  
-      {  
-         "country":"Canada",
-         "count":117,
-         "averageAge":21.82051282051282
-      },
-      {  
-         "country":"Azerbaijan",
-         "count":1,
-         "averageAge":30.0
-      },
-      {  
-         "country":"England",
-         "count":13,
-         "averageAge":30.923076923076923
-      },
-      {  
-         "country":"Congo",
-         "count":1,
-         "averageAge":32.0
-      },
-      {  
-         "country":"Bangladesh",
-         "count":3,
-         "averageAge":24.333333333333336
-      }
-   ],
-   "meta":{  
-      "Window":{  
-         "Number":4,
-         "Emit Time":1529458418030,
-         "Expected Emit Time":1529458418023,
-         "Name":"Tumbling"
-      },
-      "Query":{  
-         "Finish Time":1529458418030,
-         "ID":"448d228a-1eed-471f-8777-c800cc866535",
-         "Receive Time":1529458398023,
-         "Body":"...(query body)..."
-      },
-      "Sketch":{  
-         "Was Estimated":false,
-         "Uniques Estimate":108.0,
-         "Family":"TUPLE",
-         "Theta":1.0,
-         "Standard Deviations":{  
-            "1":{  
-               "upperBound":108.0,
-               "lowerBound":108.0
-            },
-            "2":{  
-               "upperBound":108.0,
-               "lowerBound":108.0
-            },
-            "3":{  
-               "upperBound":108.0,
-               "lowerBound":108.0
-            }
+
+"records":[  
+   {  
+      "country":"Canada",
+      "count":117,
+      "averageAge":21.82051282051282
+   },
+   {  
+      "country":"Azerbaijan",
+      "count":1,
+      "averageAge":30.0
+   },
+   {  
+      "country":"England",
+      "count":13,
+      "averageAge":30.923076923076923
+   },
+   {  
+      "country":"Congo",
+      "count":1,
+      "averageAge":32.0
+   },
+   {  
+      "country":"Bangladesh",
+      "count":3,
+      "averageAge":24.333333333333336
+   }
+],
+"meta":{  
+   "Window":{  
+      "Number":4,
+      "Emit Time":1529458418030,
+      "Expected Emit Time":1529458418023,
+      "Name":"Tumbling"
+   },
+   "Query":{  
+      "Finish Time":1529458418030,
+      "ID":"448d228a-1eed-471f-8777-c800cc866535",
+      "Receive Time":1529458398023,
+      "Body":"...(query body)..."
+   },
+   "Sketch":{  
+      "Was Estimated":false,
+      "Uniques Estimate":108.0,
+      "Family":"TUPLE",
+      "Theta":1.0,
+      "Standard Deviations":{  
+         "1":{  
+            "upperBound":108.0,
+            "lowerBound":108.0
+         },
+         "2":{  
+            "upperBound":108.0,
+            "lowerBound":108.0
+         },
+         "3":{  
+            "upperBound":108.0,
+            "lowerBound":108.0
          }
       }
    }
@@ -1742,92 +1737,88 @@ data:{
 The above query will run for 20 seconds and emit a result every 5 seconds. The result will contain the average age and the count of the records seen since the very beginning of the query. Results might look like this:
 
 ```javascript
-data:{  
-   "records":[  
-      {  
-         "count":8493,
-         "averageAge":28.8828796983622
-      }
-   ],
-   "meta":{  
-      "Window":{  
-         "Number":1,
-         "Emit Time":1529522392188,
-         "Expected Emit Time":1529522392089,
-         "Name":"Tumbling"
-      },
-      "Query":{  
-         "ID":"12e48fbd-a20f-4f5e-8135-0f012d9ba3ef",
-         "Receive Time":1529522387089,
-         "Body":"...(query body)..."
-      }
+"records":[  
+   {  
+      "count":8493,
+      "averageAge":28.8828796983622
+   }
+],
+"meta":{  
+   "Window":{  
+      "Number":1,
+      "Emit Time":1529522392188,
+      "Expected Emit Time":1529522392089,
+      "Name":"Tumbling"
+   },
+   "Query":{  
+      "ID":"12e48fbd-a20f-4f5e-8135-0f012d9ba3ef",
+      "Receive Time":1529522387089,
+      "Body":"...(query body)..."
    }
 }
 
-data:{  
-   "records":[  
-      {  
-         "count":17580,
-         "averageAge":29.842629482071715
-      }
-   ],
-   "meta":{  
-      "Window":{  
-         "Number":2,
-         "Emit Time":1529522397191,
-         "Expected Emit Time":1529522397089,
-         "Name":"Tumbling"
-      },
-      "Query":{  
-         "ID":"12e48fbd-a20f-4f5e-8135-0f012d9ba3ef",
-         "Receive Time":1529522387089,
-         "Body":"...(query body)..."
-      }
+
+"records":[  
+   {  
+      "count":17580,
+      "averageAge":29.842629482071715
+   }
+],
+"meta":{  
+   "Window":{  
+      "Number":2,
+      "Emit Time":1529522397191,
+      "Expected Emit Time":1529522397089,
+      "Name":"Tumbling"
+   },
+   "Query":{  
+      "ID":"12e48fbd-a20f-4f5e-8135-0f012d9ba3ef",
+      "Receive Time":1529522387089,
+      "Body":"...(query body)..."
    }
 }
 
-data:{  
-   "records":[  
-      {  
-         "count":26317,
-         "averageAge":29.86675792835957
-      }
-   ],
-   "meta":{  
-      "Window":{  
-         "Number":3,
-         "Emit Time":1529522402185,
-         "Expected Emit Time":1529522402089,
-         "Name":"Tumbling"
-      },
-      "Query":{  
-         "ID":"12e48fbd-a20f-4f5e-8135-0f012d9ba3ef",
-         "Receive Time":1529522387089,
-         "Body":"...(query body)..."
-      }
+
+"records":[  
+   {  
+      "count":26317,
+      "averageAge":29.86675792835957
+   }
+],
+"meta":{  
+   "Window":{  
+      "Number":3,
+      "Emit Time":1529522402185,
+      "Expected Emit Time":1529522402089,
+      "Name":"Tumbling"
+   },
+   "Query":{  
+      "ID":"12e48fbd-a20f-4f5e-8135-0f012d9ba3ef",
+      "Receive Time":1529522387089,
+      "Body":"...(query body)..."
    }
 }
 
-data:{  
-   "records":[  
-      {  
-         "count":35259,
-         "averageAge":29.8303102557552
-      }
-   ],
-   "meta":{  
-      "Window":{  
-         "Number":4,
-         "Emit Time":1529522407182,
-         "Expected Emit Time":1529522407089,
-         "Name":"Tumbling"
-      },
-      "Query":{  
-         "Finish Time":1529522407182,
-         "ID":"12e48fbd-a20f-4f5e-8135-0f012d9ba3ef",
-         "Receive Time":1529522387089,
-         "Body":"...(query body)..."
-      }
+
+
+"records":[  
+   {  
+      "count":35259,
+      "averageAge":29.8303102557552
+   }
+],
+"meta":{  
+   "Window":{  
+      "Number":4,
+      "Emit Time":1529522407182,
+      "Expected Emit Time":1529522407089,
+      "Name":"Tumbling"
+   },
+   "Query":{  
+      "Finish Time":1529522407182,
+      "ID":"12e48fbd-a20f-4f5e-8135-0f012d9ba3ef",
+      "Receive Time":1529522387089,
+      "Body":"...(query body)..."
    }
 }
 ```
@@ -1878,49 +1869,46 @@ This is a query that will capture raw data, and has a sliding window of size 1. 
 will only match records from a particular browser. The query will run for 20 seconds, and the results might look like this:
 
 ```javascript
-data:{  
-   "records":[  
-      {  
-         "country":"USA",
-         "event":"page",
-         "browser-id":"2siknmdd6kaqm"
-      }
-   ],
-   "meta":{  
-      "Window":{  
-         "Number":1,
-         "Size":1,
-         "Emit Time":1529521479235,
-         "Name":"Sliding"
-      },
-      "Query":{  
-         "ID":"31d65a12-ed56-4cc8-81ec-6a8bfe9301ba",
-         "Receive Time":1529521475015,
-         "Body":"...(query body)... "
-      }
+"records":[  
+   {  
+      "country":"USA",
+      "event":"page",
+      "browser-id":"2siknmdd6kaqm"
+   }
+],
+"meta":{  
+   "Window":{  
+      "Number":1,
+      "Size":1,
+      "Emit Time":1529521479235,
+      "Name":"Sliding"
+   },
+   "Query":{  
+      "ID":"31d65a12-ed56-4cc8-81ec-6a8bfe9301ba",
+      "Receive Time":1529521475015,
+      "Body":"...(query body)... "
    }
 }
 
-data:{  
-   "records":[  
-      {  
-         "country":"USA",
-         "event":"click",
-         "browser-id":"2siknmdd6kaqm"
-      }
-   ],
-   "meta":{  
-      "Window":{  
-         "Number":6,
-         "Size":1,
-         "Emit Time":1529521764875,
-         "Name":"Sliding"
-      },
-      "Query":{  
-         "ID":"e9595eb4-ea95-418b-8cff-d00736bf216f",
-         "Receive Time":1529521757459,
-         "Body":"...(query body)..."
-      }
+
+"records":[  
+   {  
+      "country":"USA",
+      "event":"click",
+      "browser-id":"2siknmdd6kaqm"
+   }
+],
+"meta":{  
+   "Window":{  
+      "Number":6,
+      "Size":1,
+      "Emit Time":1529521764875,
+      "Name":"Sliding"
+   },
+   "Query":{  
+      "ID":"e9595eb4-ea95-418b-8cff-d00736bf216f",
+      "Receive Time":1529521757459,
+      "Body":"...(query body)..."
    }
 }
 
