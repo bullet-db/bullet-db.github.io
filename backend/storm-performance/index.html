@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="The full documentation for Bullet - A Real Time Data Query Engine"> 
     <meta name="author" content="Akshai Sarma"> 
-    <link rel="canonical" href="https://yahoo.github.io/bullet-docs/backend/storm-performance/"> 
+    <link rel="canonical" href="https://bullet-db.github.io/backend/storm-performance/"> 
     <link rel="shortcut icon" href="../../img/favicon.ico">
 
     <title>Performance - Bullet Docs</title>
@@ -93,13 +93,13 @@
                         
                             
 <li >
-    <a href="../../quick-start/bullet-on-spark/">Bullet On Spark</a>
+    <a href="../../quick-start/spark/">Spark</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../quick-start/bullet-on-storm/">Bullet On Storm</a>
+    <a href="../../quick-start/storm/">Storm</a>
 </li>
 
                         
@@ -189,13 +189,13 @@
                         
                             
 <li >
-    <a href="../../pubsub/storm-drpc/">Storm DRPC</a>
+    <a href="../../pubsub/rest/">REST</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../pubsub/rest/">REST</a>
+    <a href="../../pubsub/storm-drpc/">Storm DRPC</a>
 </li>
 
                         
@@ -301,6 +301,15 @@
                         </a>
                     </li>
                 
+                
+                    <li>
+                        <a href="https://github.com/bullet-db">
+                            
+                                <i class="fa fa-github"></i>
+                            
+                            GitHub
+                        </a>
+                    </li>
                 
             </ul>
         </div>
@@ -522,10 +531,10 @@
 <h2 id="prerequisites">Prerequisites</h2>
 <p>You should be familiar with <a href="http://storm.apache.org">Storm</a>, <a href="http://kafka.apache.org">Kafka</a> and the <a href="../storm-architecture/">Bullet on Storm architecture</a>.</p>
 <h2 id="how-was-this-tested">How was this tested?</h2>
-<p>All tests run here were using <a href="https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.4.2">Bullet-Storm 0.4.2</a> and <a href="https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.4.3">Bullet-Storm 0.4.3</a>. We are working with just the Storm piece without going through the Web Service or the UI. The DRPC REST endpoint provided by Storm lets us do just that.</p>
+<p>All tests run here were using <a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.4.2">Bullet-Storm 0.4.2</a> and <a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.4.3">Bullet-Storm 0.4.3</a>. We are working with just the Storm piece without going through the Web Service or the UI. The DRPC REST endpoint provided by Storm lets us do just that.</p>
 <p>This particular version of Bullet on Storm was <strong>prior to the architecture shift</strong> to a PubSub layer but this would be the equivalent to using the Storm DRPC PubSub layer on a newer version of Bullet on Storm. You can replace DRPC spout and PrepareRequest bolt with Query spout and ReturnResults bolt with Result bolt conceptually. The actual implementation of the DRPC based PubSub layer just uses these spout and bolt implementations underneath anyway for the Publishers and Subscribers so the parallelisms and CPU utilizations should map 1-1.</p>
 <p>Using the pluggable metrics interface in Bullet on Storm, we captured worker level metrics such as CPU time, Heap usage, GC times and types, sent them to a in-house monitoring service for time-slicing and graphing. The figures shown below use this service.</p>
-<p>See <a href="https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.3.0">0.3.0</a> for how to plug in your own metrics collection.</p>
+<p>See <a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.3.0">0.3.0</a> for how to plug in your own metrics collection.</p>
 <h3 id="tools-used">Tools used</h3>
 <ul>
 <li><a href="https://stedolan.github.io/jq/">jq</a> - a nice tool to parse Bullet JSON responses</li>
@@ -575,7 +584,7 @@ bullet.query.aggregation.raw.max.size: 500
 bullet.query.aggregation.distribution.max.points: 200
 </code></pre>
 
-<p>Any setting not listed here defaults to the defaults in <a href="https://github.com/yahoo/bullet-storm/blob/bullet-storm-0.4.2/src/main/resources/bullet_defaults.yaml">bullet_defaults.yaml</a>. In particular, <strong>metadata collection</strong> and <strong>timestamp injection</strong> is enabled. <code>RAW</code> type queries also micro-batch by size 1 (in other words, do not micro-batch).</p>
+<p>Any setting not listed here defaults to the defaults in <a href="https://github.com/bullet-db/bullet-storm/blob/bullet-storm-0.4.2/src/main/resources/bullet_defaults.yaml">bullet_defaults.yaml</a>. In particular, <strong>metadata collection</strong> and <strong>timestamp injection</strong> is enabled. <code>RAW</code> type queries also micro-batch by size 1 (in other words, do not micro-batch).</p>
 <p>The parallelisms, CPU and memory settings for the components are listed below.</p>
 <h2 id="testing-on-kafka-0901">Testing on Kafka 0.9.0.1</h2>
 <p>For Tests 1 through 4, we read from a Kafka 0.9 cluster with the following configuration for the various Bullet components (unless specified). We use the single Spout model to read from the Kafka topic, partitioned into <code>64</code> partitions.</p>
@@ -1211,7 +1220,7 @@ hiccups in our collection mechanism (the collection granularity was not 5s as we
 <p>With this configuration, we were able to run <strong><code>680</code></strong> queries simultaneously before we hit the DRPC limit. Since DRPC is a shared resource for the cluster, this limit is slightly lower than the previously observed number possibly due to our test environment being multi-tenant and other topologies using the shared resource.</p>
 <div class="admonition note">
 <p class="admonition-title">Measuring latency in Bullet</p>
-<p>So far, we have been using data being delayed long enough as a proxy for queries failing. <a href="https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.4.3">Bullet-Storm 0.4.3</a> adds an average latency metric computed in the Filter Bolts. For the next tests, we add a timestamp in the Data Source spouts when the record is read and this latency metric tells us exactly how long it takes for the record to be matched against a query and acked. By setting a limit for this latency, we can much more accurately measure acceptable performance.</p>
+<p>So far, we have been using data being delayed long enough as a proxy for queries failing. <a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.4.3">Bullet-Storm 0.4.3</a> adds an average latency metric computed in the Filter Bolts. For the next tests, we add a timestamp in the Data Source spouts when the record is read and this latency metric tells us exactly how long it takes for the record to be matched against a query and acked. By setting a limit for this latency, we can much more accurately measure acceptable performance.</p>
 </div>
 <h2 id="test-6-scaling-for-more-data">Test 6: Scaling for More Data</h2>
 <p>For this test, we'll establish how much resources we need to read various data volumes. We want to be able to:</p>
@@ -1938,7 +1947,7 @@ hiccups in our collection mechanism (the collection granularity was not 5s as we
         </div>
         <div class="pull-right col-md-4 text-right">
             <p>
-            <small>Bullet is licensed under the <a href='https://github.com/yahoo/bullet/blob/master/LICENSE'>Apache 2 license<br></small>
+            <small>Bullet is licensed under the <a href='https://github.com/bullet-db/bullet-core/blob/master/LICENSE'>Apache 2 license<br></small>
             
             <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p></small>
         </div>

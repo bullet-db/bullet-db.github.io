@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="The full documentation for Bullet - A Real Time Data Query Engine"> 
     <meta name="author" content="Akshai Sarma"> 
-    <link rel="canonical" href="https://yahoo.github.io/bullet-docs/backend/storm-architecture/"> 
+    <link rel="canonical" href="https://bullet-db.github.io/backend/storm-architecture/"> 
     <link rel="shortcut icon" href="../../img/favicon.ico">
 
     <title>Architecture - Bullet Docs</title>
@@ -93,13 +93,13 @@
                         
                             
 <li >
-    <a href="../../quick-start/bullet-on-spark/">Bullet On Spark</a>
+    <a href="../../quick-start/spark/">Spark</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../quick-start/bullet-on-storm/">Bullet On Storm</a>
+    <a href="../../quick-start/storm/">Storm</a>
 </li>
 
                         
@@ -189,13 +189,13 @@
                         
                             
 <li >
-    <a href="../../pubsub/storm-drpc/">Storm DRPC</a>
+    <a href="../../pubsub/rest/">REST</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../pubsub/rest/">REST</a>
+    <a href="../../pubsub/storm-drpc/">Storm DRPC</a>
 </li>
 
                         
@@ -302,6 +302,15 @@
                     </li>
                 
                 
+                    <li>
+                        <a href="https://github.com/bullet-db">
+                            
+                                <i class="fa fa-github"></i>
+                            
+                            GitHub
+                        </a>
+                    </li>
+                
             </ul>
         </div>
     </div>
@@ -369,7 +378,7 @@
 <h3 id="data-processing">Data processing</h3>
 <p>Bullet can accept arbitrary sources of data as long as they can be read from Storm. You can either:</p>
 <ol>
-<li>Write a Storm spout that reads your data from where ever it is (Kafka etc) and <a href="../ingestion/">converts it to Bullet Records</a>. See <a href="../quick-start.md#storm-topology">Quick Start</a> for an example.</li>
+<li>Write a Storm spout that reads your data from where ever it is (Kafka etc) and <a href="../ingestion/">converts it to Bullet Records</a>. See <a href="../../quick-start/storm/#storm-topology">Quick Start</a> for an example.</li>
 <li>Hook up an existing topology that is doing something else directly to Bullet. You will still write and hook up a component that converts your data into Bullet Records in your existing topology.</li>
 </ol>
 <table>
@@ -401,7 +410,7 @@
 <p>Your data is then emitted to the Filter bolt.  If you have no queries in your system, the Filter bolt will promptly drop all Bullet Records and do absolutely nothing. If there are queries in the Filter bolt, the record is checked against the <a href="../..#filters">filters</a> in each query and if it matches, it is processed by the query. Each query type can choose to emit matched records in micro-batches. By default, <code>RAW</code> or <code>LIMIT</code> queries do not micro-batch. Each matched record up to the maximum for the query is emitted at once at the Filter bolt. Queries that aggregate, on the other hand, keep the query around till its duration is up and emit the local result. This is because these queries <em>cannot</em> return till they see all the data in your time window anyway because some late arriving data may update an existing aggregate. When the upcoming incremental results lands, queries will periodically (configurable) emit their intermediate results for combining in the Join bolt.</p>
 <div class="admonition note">
 <p class="admonition-title">Why support micro-batching?</p>
-<p><code>RAW</code> queries do not micro-batch by default, which makes Bullet really snappy when running those queries. As soon as your maximum record limit is reached, the query immediately returns. You can use a setting in <a href="https://github.com/yahoo/bullet-storm/blob/master/src/main/resources/bullet_defaults.yaml">bullet_defaults.yaml</a> to turn on batching if you like. In the near future, micro-batching will let Bullet provide incremental results - partial results arrive over the duration of the query. Bullet can emit intermediate aggregations as they are all <a href="#combining">additive</a>.</p>
+<p><code>RAW</code> queries do not micro-batch by default, which makes Bullet really snappy when running those queries. As soon as your maximum record limit is reached, the query immediately returns. You can use a setting in <a href="https://github.com/bullet-db/bullet-storm/blob/master/src/main/resources/bullet_defaults.yaml">bullet_defaults.yaml</a> to turn on batching if you like. In the near future, micro-batching will let Bullet provide incremental results - partial results arrive over the duration of the query. Bullet can emit intermediate aggregations as they are all <a href="#combining">additive</a>.</p>
 </div>
 <h3 id="request-processing">Request processing</h3>
 <p>The Query spouts fetch Bullet queries through the PubSub layer using the Subscribers provided by the plugged in PubSub layer. The queries received through the PubSub also contain information about the query such as its unique identifier and potentially other metadata. The Query spouts broadcasts the query body to every Filter bolt. Since every Filter bolt has a copy of every query, the shuffled data from the source of data can be compared against the query no matter which particular Filter bolt it ends up at. Each Filter bolt has access to the unique query id and is able to key group by the id to the Join bolt with the intermediate results for the query.</p>
@@ -434,7 +443,7 @@
         </div>
         <div class="pull-right col-md-4 text-right">
             <p>
-            <small>Bullet is licensed under the <a href='https://github.com/yahoo/bullet/blob/master/LICENSE'>Apache 2 license<br></small>
+            <small>Bullet is licensed under the <a href='https://github.com/bullet-db/bullet-core/blob/master/LICENSE'>Apache 2 license<br></small>
             
             <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p></small>
         </div>

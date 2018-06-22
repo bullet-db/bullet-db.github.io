@@ -3,8 +3,8 @@
 
     
     <url>
-     <loc>https://yahoo.github.io/bullet-docs/</loc>
-     <lastmod>2018-06-20</lastmod>
+     <loc>https://bullet-db.github.io//</loc>
+     <lastmod>2018-06-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -12,14 +12,14 @@
     
         
     <url>
-     <loc>https://yahoo.github.io/bullet-docs/quick-start/bullet-on-spark/</loc>
-     <lastmod>2018-06-20</lastmod>
+     <loc>https://bullet-db.github.io//quick-start/spark/</loc>
+     <lastmod>2018-06-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
-     <loc>https://yahoo.github.io/bullet-docs/quick-start/bullet-on-storm/</loc>
-     <lastmod>2018-06-20</lastmod>
+     <loc>https://bullet-db.github.io//quick-start/storm/</loc>
+     <lastmod>2018-06-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
@@ -28,19 +28,19 @@
     
         
     <url>
-     <loc>https://yahoo.github.io/bullet-docs/backend/ingestion/</loc>
-     <lastmod>2018-06-20</lastmod>
+     <loc>https://bullet-db.github.io//backend/ingestion/</loc>
+     <lastmod>2018-06-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
-     <loc>https://yahoo.github.io/bullet-docs</loc>
+     <loc>https://bullet-db.github.io/</loc>
      <lastmod></lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
-     <loc>https://yahoo.github.io/bullet-docs</loc>
+     <loc>https://bullet-db.github.io/</loc>
      <lastmod></lastmod>
      <changefreq>daily</changefreq>
     </url>
@@ -50,48 +50,26 @@
     
         
     <url>
-     <loc>https://yahoo.github.io/bullet-docs/pubsub/architecture/</loc>
-     <lastmod>2018-06-20</lastmod>
+     <loc>https://bullet-db.github.io//pubsub/architecture/</loc>
+     <lastmod>2018-06-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
-     <loc>https://yahoo.github.io/bullet-docs/pubsub/kafka/</loc>
-     <lastmod>2018-06-20</lastmod>
+     <loc>https://bullet-db.github.io//pubsub/kafka/</loc>
+     <lastmod>2018-06-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
-     <loc>https://yahoo.github.io/bullet-docs/pubsub/storm-drpc/</loc>
-     <lastmod>2018-06-20</lastmod>
+     <loc>https://bullet-db.github.io//pubsub/rest/</loc>
+     <lastmod>2018-06-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
-     <loc>https://yahoo.github.io/bullet-docs/pubsub/rest/</loc>
-     <lastmod>2018-06-20</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    
-
-    
-        
-    <url>
-     <loc>https://yahoo.github.io/bullet-docs/ws/setup/</loc>
-     <lastmod>2018-06-20</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    <url>
-     <loc>https://yahoo.github.io/bullet-docs/ws/api/</loc>
-     <lastmod>2018-06-20</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    <url>
-     <loc>https://yahoo.github.io/bullet-docs/ws/examples/</loc>
-     <lastmod>2018-06-20</lastmod>
+     <loc>https://bullet-db.github.io//pubsub/storm-drpc/</loc>
+     <lastmod>2018-06-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
@@ -100,14 +78,36 @@
     
         
     <url>
-     <loc>https://yahoo.github.io/bullet-docs/ui/setup/</loc>
-     <lastmod>2018-06-20</lastmod>
+     <loc>https://bullet-db.github.io//ws/setup/</loc>
+     <lastmod>2018-06-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
-     <loc>https://yahoo.github.io/bullet-docs/ui/usage/</loc>
-     <lastmod>2018-06-20</lastmod>
+     <loc>https://bullet-db.github.io//ws/api/</loc>
+     <lastmod>2018-06-22</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>https://bullet-db.github.io//ws/examples/</loc>
+     <lastmod>2018-06-22</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    
+
+    
+        
+    <url>
+     <loc>https://bullet-db.github.io//ui/setup/</loc>
+     <lastmod>2018-06-22</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>https://bullet-db.github.io//ui/usage/</loc>
+     <lastmod>2018-06-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
@@ -115,8 +115,8 @@
 
     
     <url>
-     <loc>https://yahoo.github.io/bullet-docs/releases/</loc>
-     <lastmod>2018-06-20</lastmod>
+     <loc>https://bullet-db.github.io//releases/</loc>
+     <lastmod>2018-06-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -124,14 +124,14 @@
     
         
     <url>
-     <loc>https://yahoo.github.io/bullet-docs/about/contributing/</loc>
-     <lastmod>2018-06-20</lastmod>
+     <loc>https://bullet-db.github.io//about/contributing/</loc>
+     <lastmod>2018-06-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
-     <loc>https://yahoo.github.io/bullet-docs/about/contact/</loc>
-     <lastmod>2018-06-20</lastmod>
+     <loc>https://bullet-db.github.io//about/contact/</loc>
+     <lastmod>2018-06-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
         

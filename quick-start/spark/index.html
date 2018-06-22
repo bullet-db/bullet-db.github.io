@@ -7,10 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="The full documentation for Bullet - A Real Time Data Query Engine"> 
     <meta name="author" content="Akshai Sarma"> 
-    <link rel="canonical" href="https://yahoo.github.io/bullet-docs/quick-start/bullet-on-spark/"> 
+    <link rel="canonical" href="https://bullet-db.github.io/quick-start/spark/"> 
     <link rel="shortcut icon" href="../../img/favicon.ico">
 
-    <title>Bullet On Spark - Bullet Docs</title>
+    <title>Spark - Bullet Docs</title>
 
     <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
@@ -93,13 +93,13 @@
                         
                             
 <li class="active">
-    <a href="./">Bullet On Spark</a>
+    <a href="./">Spark</a>
 </li>
 
                         
                             
 <li >
-    <a href="../bullet-on-storm/">Bullet On Storm</a>
+    <a href="../storm/">Storm</a>
 </li>
 
                         
@@ -189,13 +189,13 @@
                         
                             
 <li >
-    <a href="../../pubsub/storm-drpc/">Storm DRPC</a>
+    <a href="../../pubsub/rest/">REST</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../pubsub/rest/">REST</a>
+    <a href="../../pubsub/storm-drpc/">Storm DRPC</a>
 </li>
 
                         
@@ -296,11 +296,20 @@
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="../bullet-on-storm/">
+                        <a rel="prev" href="../storm/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
                 
+                
+                    <li>
+                        <a href="https://github.com/bullet-db">
+                            
+                                <i class="fa fa-github"></i>
+                            
+                            GitHub
+                        </a>
+                    </li>
                 
             </ul>
         </div>
@@ -317,7 +326,7 @@
     <ul class="nav bs-sidenav">
     
         <li class="active">
-            <a href="#quick-start-bullet-on-spark">Quick Start - Bullet on Spark</a>
+            <a href="#quick-start-on-spark">Quick Start on Spark</a>
             <ul class="nav">
                 
                     <li class="second-level">
@@ -415,13 +424,6 @@
                                 
                             </li>
                         
-                        </ul>
-                    </li>
-            
-                    <li class="second-level">
-                        <a href="#congratulations-bullet-is-all-setup">Congratulations!! Bullet is all setup!</a>
-                        <ul class="nav">
-                        
                             <li class="third-level">
                                 <a href="#playing-around-with-the-instance">Playing around with the instance:</a>
                                 
@@ -442,13 +444,13 @@
 </div></div>
         <div class="col-md-9" role="main">
 
-<h1 id="quick-start-bullet-on-spark">Quick Start - Bullet on Spark</h1>
-<p>In this section we will setup a mock instance of Bullet to play around with. We will use <a href="https://github.com/bullet-db/bullet-spark">bullet-spark</a> to run the backend of Bullet on the <a href="https://spark.apache.org/">Spark</a> framework. And we will use the <a href="https://github.com/bullet-db/bullet-kafka">Bullet Kafka PubSub</a>.</p>
+<h1 id="quick-start-on-spark">Quick Start on Spark</h1>
+<p>In this section we will setup a mock instance of Bullet to play around with. We will use <a href="https://github.com/bullet-db/bullet-spark">Bullet Spark</a> to run the backend of Bullet on the <a href="https://spark.apache.org/">Spark</a> framework. And we will use the <a href="https://github.com/bullet-db/bullet-kafka">Bullet Kafka PubSub</a>.</p>
 <p>At the end of this section, you will have:</p>
 <ul>
-<li>Launched the Bullet backend on spark</li>
-<li>Setup the <a href="ws/setup.md">Web Service</a></li>
-<li>Setup the <a href="ui/setup.md">UI</a> to talk to the web service</li>
+<li>Launched the Bullet backend on Spark</li>
+<li>Setup the <a href="../../ws/setup/">Web Service</a></li>
+<li>Setup the <a href="../../ui/setup/">UI</a> to talk to the Web Service</li>
 </ul>
 <p><strong>Prerequisites</strong></p>
 <ul>
@@ -456,7 +458,7 @@
 <li>You will need <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">JDK 8</a> installed</li>
 </ul>
 <h3 id="setup-kafka">Setup Kafka</h3>
-<p>For this instance of Bullet we will use the kafka PubSub implementation found in <a href="https://github.com/bullet-db/bullet-spark">bullet-spark</a>. So we will first download and run Kafka, and setup a couple Kafka topics.</p>
+<p>For this instance of Bullet we will use the Kafka PubSub implementation found in <a href="https://github.com/bullet-db/bullet-spark">bullet-spark</a>. So we will first download and run Kafka, and setup a couple Kafka topics.</p>
 <h4 id="step-1-setup-directories-and-examples">Step 1: Setup directories and examples</h4>
 <pre><code class="bash">export BULLET_HOME=$(pwd)/bullet-quickstart
 mkdir -p $BULLET_HOME/backend/spark
@@ -482,12 +484,12 @@ export KAFKA_DIR=$BULLET_HOME/pubsub/kafka_2.12-0.11.0.1
 </code></pre>
 
 <h4 id="step-4-start-kafka">Step 4: Start Kafka</h4>
-<p>Give Zookeeper a ~5-10 seconds to start up, then start Kafka:</p>
+<p>Give Zookeeper ~5-10 seconds to start up, then start Kafka:</p>
 <pre><code class="bash">$KAFKA_DIR/bin/kafka-server-start.sh $KAFKA_DIR/config/server.properties &amp;
 </code></pre>
 
 <h4 id="step-5-create-kafka-topics">Step 5: Create Kafka Topics</h4>
-<p>The Bullet Kafka PubSub uses two kafka topics. One to send messages from the web service to the backend, and one to send messages from the backend to the web service. So we will create a kafka topic called "bullet.requests" and another called "bullet.responses".</p>
+<p>The Bullet Kafka PubSub uses two topics. One to send messages from the Web Service to the Backend, and one to send messages from the Backend to the Web Service. So we will create a Kafka topic called "bullet.requests" and another called "bullet.responses".</p>
 <pre><code class="bash">$KAFKA_DIR/bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic bullet.requests
 $KAFKA_DIR/bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic bullet.responses
 </code></pre>
@@ -501,7 +503,7 @@ cp $BULLET_EXAMPLES/web-service/example_columns.json $BULLET_HOME/service/
 </code></pre>
 
 <h4 id="step-7-launch-the-web-service">Step 7: Launch the Web Service</h4>
-<p><strong>Note:</strong> This is a single command (new-lines are escaped) - run it in a single bash command:</p>
+<p>Run this multi-line command (new lines are escaped):</p>
 <pre><code class="bash">java -Dloader.path=$BULLET_HOME/pubsub/bullet-kafka.jar -jar bullet-service.jar \
     --bullet.pubsub.config=$BULLET_HOME/service/example_kafka_pubsub_config.yaml \
     --bullet.schema.file=$BULLET_HOME/service/example_columns.json \
@@ -522,7 +524,7 @@ cp $BULLET_EXAMPLES/web-service/example_columns.json $BULLET_HOME/service/
 <pre><code class="bash">export BULLET_SPARK=$BULLET_HOME/backend/spark
 cd $BULLET_SPARK
 curl -O http://www-eu.apache.org/dist/spark/spark-2.2.1/spark-2.2.1-bin-hadoop2.7.tgz
-tar -xzf spark-2.2.1-bin-hadoop2.7.tgz 
+tar -xzf spark-2.2.1-bin-hadoop2.7.tgz
 </code></pre>
 
 <h4 id="step-10-setup-bullet-spark-and-example-data-producer">Step 10: Setup Bullet-Spark and Example Data Producer</h4>
@@ -531,7 +533,7 @@ curl -Lo bullet-spark.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-spa
 </code></pre>
 
 <h4 id="step-11-launch-the-bullet-spark-backend">Step 11: Launch the Bullet Spark Backend</h4>
-<p><strong>Note:</strong> This is a single command (new-lines are escaped) - run it in a single bash command:</p>
+<p>Run this multi-line command (new lines are escaped):</p>
 <pre><code class="bash">$BULLET_SPARK/spark-2.2.1-bin-hadoop2.7/bin/spark-submit \
     --master local[10]  \
     --class com.yahoo.bullet.spark.BulletSparkStreamingMain \
@@ -541,15 +543,14 @@ curl -Lo bullet-spark.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-spa
 
 </code></pre>
 
-<p>The backend will usually be up and running usually within 5-10 seconds. Once it is running you can get information about the Spark job in the Spark UI, which can be seen in your browser at <strong>http://localhost:4040</strong> by default. The Web Service will now be hooked up through the Kafka PubSub to the Spark backend.
-To test it you can now run a Bullet query by hitting the web service directly:</p>
+<p>The Backend will usually be up and running usually within 5-10 seconds. Once it is running you can get information about the Spark job in the Spark UI, which can be seen in your browser at <code>http://localhost:4040</code> by default. The Web Service will now be hooked up through the Kafka PubSub to the Spark backend. To test it you can now run a Bullet query by hitting the Web Service directly:</p>
 <pre><code class="bash">curl -s -H 'Content-Type: text/plain' -X POST -d '{&quot;aggregation&quot;: {&quot;size&quot;: 1}}' http://localhost:9999/api/bullet/sse-query
 </code></pre>
 
-<p>This query will return a result JSON containing a "records" field containing a single record, and a "meta" field with some meta information. </p>
+<p>This query will return a result JSON containing a "records" field containing a single record, and a "meta" field with some meta information.</p>
 <div class="admonition note">
 <p class="admonition-title">What is this data?</p>
-<p>This data is randomly generated by the <a href="https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/spark/src/main/scala/com/yahoo/bullet/spark/examples/receiver/RandomReceiver.scala">custom data producer</a> that was created for the sole purpose of generating toy data to demo Bullet. In practice, your spout would read from an actual data source such as Kafka.</p>
+<p>This data is randomly generated by the <a href="https://github.com/bullet-db/bullet-db.github.io/blob/v0.5.0/examples/spark/src/main/scala/com/yahoo/bullet/spark/examples/receiver/RandomReceiver.scala">custom data producer</a> that generates toy data to demo Bullet. In practice, your producer would read from an actual data source such as Kafka.</p>
 </div>
 <h3 id="setting-up-the-bullet-ui">Setting up the Bullet UI</h3>
 <h4 id="step-12-install-node">Step 12: Install Node</h4>
@@ -570,15 +571,13 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
 <pre><code class="bash">PORT=8800 node express-server.js &amp;
 </code></pre>
 
-<p>Visit <a href="http://localhost:8800">http://localhost:8800</a> to query your topology with the UI. See <a href="ui/usage.md">UI usage</a> for some example queries and interactions using this UI. You see what the Schema means by visiting the Schema section.</p>
+<p>Visit <a href="http://localhost:8800">http://localhost:8800</a> to query your topology with the UI. See <a href="../../ui/usage/">UI usage</a> for some example queries and interactions using this UI. You see what the Schema means by visiting the Schema section.</p>
 <div class="admonition note">
 <p class="admonition-title">Running it remotely?</p>
-<p>If you access the UI from another machine than where your UI is actually running, you will need to edit <code>config/env-settings.json</code>. Since the UI is a client-side app, the machine that your browser is running on will fetch the UI and attempt to use these settings to talk to the Web Service. Since they point to localhost by default, your browser will attempt to connect there and fail. An easy fix is to change <code>localhost</code> in your env-settings.json to point to the host name where you will hosting the UI. This will be the same as the UI host you use in the browser. You can also do a local port forward on the machine accessing the UI by running:
-<code>ssh -N -L 8800:localhost:8800 -L 9999:localhost:9999 hostname-of-the-quickstart-components 2&gt;&amp;1</code></p>
+<p>If you access the UI from another machine than where your UI is actually running, you will need to edit <code>config/env-settings.json</code>. Since the UI is a client-side app, the machine that your browser is running on will fetch the UI and attempt to use these settings to talk to the Web Service. Since they point to localhost by default, your browser will attempt to connect there and fail. An easy fix is to change <code>localhost</code> in your env-settings.json to point to the host name where you will hosting the UI. This will be the same as the UI host you use in the browser. You can also do a local port forward on the machine accessing the UI by running: <code>ssh -N -L 8800:localhost:8800 -L 9999:localhost:9999 hostname-of-the-quickstart-components 2&gt;&amp;1</code>.</p>
 </div>
-<h3 id="congratulations-bullet-is-all-setup">Congratulations!! Bullet is all setup!</h3>
 <h4 id="playing-around-with-the-instance">Playing around with the instance:</h4>
-<p>Check out and follow along with the <a href="ui/usage.md">UI Usage</a> page as it shows you some queries you can run using this UI.</p>
+<p>Check out and follow along with the <a href="../../ui/usage/">UI Usage</a> page as it shows you some queries you can run using this UI.</p>
 <h2 id="teardown">Teardown</h2>
 <p>When you are done trying out Bullet, you can stop the processes and cleanup all the downloads using:</p>
 <table>
@@ -627,7 +626,7 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
         </div>
         <div class="pull-right col-md-4 text-right">
             <p>
-            <small>Bullet is licensed under the <a href='https://github.com/yahoo/bullet/blob/master/LICENSE'>Apache 2 license<br></small>
+            <small>Bullet is licensed under the <a href='https://github.com/bullet-db/bullet-core/blob/master/LICENSE'>Apache 2 license<br></small>
             
             <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p></small>
         </div>

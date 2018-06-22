@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="The full documentation for Bullet - A Real Time Data Query Engine"> 
     <meta name="author" content="Akshai Sarma"> 
-    <link rel="canonical" href="https://yahoo.github.io/bullet-docs/pubsub/storm-drpc/"> 
+    <link rel="canonical" href="https://bullet-db.github.io/pubsub/storm-drpc/"> 
     <link rel="shortcut icon" href="../../img/favicon.ico">
 
     <title>Storm DRPC - Bullet Docs</title>
@@ -93,13 +93,13 @@
                         
                             
 <li >
-    <a href="../../quick-start/bullet-on-spark/">Bullet On Spark</a>
+    <a href="../../quick-start/spark/">Spark</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../quick-start/bullet-on-storm/">Bullet On Storm</a>
+    <a href="../../quick-start/storm/">Storm</a>
 </li>
 
                         
@@ -188,14 +188,14 @@
 
                         
                             
-<li class="active">
-    <a href="./">Storm DRPC</a>
+<li >
+    <a href="../rest/">REST</a>
 </li>
 
                         
                             
-<li >
-    <a href="../rest/">REST</a>
+<li class="active">
+    <a href="./">Storm DRPC</a>
 </li>
 
                         
@@ -291,16 +291,25 @@
                 
                 
                     <li >
-                        <a rel="next" href="../kafka/">
+                        <a rel="next" href="../rest/">
                             <i class="fa fa-arrow-left"></i> Previous
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="../rest/">
+                        <a rel="prev" href="../../ws/setup/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
                 
+                
+                    <li>
+                        <a href="https://github.com/bullet-db">
+                            
+                                <i class="fa fa-github"></i>
+                            
+                            GitHub
+                        </a>
+                    </li>
                 
             </ul>
         </div>
@@ -406,7 +415,7 @@ bullet.pubsub.storm.drpc.function: &quot;custom-name&quot;
 <h3 id="plug-into-the-web-service">Plug into the Web Service</h3>
 <p>When you're plugging in the DRPC PubSub layer into your Web Service, you will need the Bullet Storm JAR with dependencies that you can download from <a href="../../releases/#bullet-storm">JCenter</a>. The classifier for this JAR is <code>fat</code> if you are depending on it through Maven. You can also download the JAR for the 0.6.2 version directly through <a href="http://jcenter.bintray.com/com/yahoo/bullet/bullet-storm/0.6.2/">JCenter here</a>.</p>
 <p>You should then plug in this JAR to your Web Service following the instructions <a href="../../ws/setup/#launch">here</a>.</p>
-<p>For configuration, you should <a href="../../ws/setup/#pubsub-configuration">follow the steps here</a> and add the context and class name listed above. You will need to point to your DRPC servers and set the function to the same value you chose <a href="#storm-backend">above</a>. You can configure this and other settings that are explained further in the <a href="https://github.com/yahoo/bullet-storm/blob/master/src/main/resources/bullet_storm_defaults.yaml">PubSub and PubSub Storm DRPC defaults section</a> in the Bullet Storm defaults file.</p>
+<p>For configuration, you should <a href="../../ws/setup/#pubsub-configuration">follow the steps here</a> and add the context and class name listed above. You will need to point to your DRPC servers and set the function to the same value you chose <a href="#storm-backend">above</a>. You can configure this and other settings that are explained further in the <a href="https://github.com/bullet-db/bullet-storm/blob/master/src/main/resources/bullet_storm_defaults.yaml">PubSub and PubSub Storm DRPC defaults section</a> in the Bullet Storm defaults file.</p>
 <pre><code class="yaml">bullet.pubsub.context.name: &quot;QUERY_SUBMISSION&quot;
 bullet.pubsub.class.name: &quot;com.yahoo.bullet.storm.drpc.DRPCPubSub&quot;
 bullet.pubsub.storm.drpc.servers:
@@ -441,7 +450,7 @@ bullet.pubsub.storm.drpc.http.connect.timeout.ms: 1000
         </div>
         <div class="pull-right col-md-4 text-right">
             <p>
-            <small>Bullet is licensed under the <a href='https://github.com/yahoo/bullet/blob/master/LICENSE'>Apache 2 license<br></small>
+            <small>Bullet is licensed under the <a href='https://github.com/bullet-db/bullet-core/blob/master/LICENSE'>Apache 2 license<br></small>
             
             <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p></small>
         </div>

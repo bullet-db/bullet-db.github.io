@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="The full documentation for Bullet - A Real Time Data Query Engine"> 
     <meta name="author" content="Akshai Sarma"> 
-    <link rel="canonical" href="https://yahoo.github.io/bullet-docs/about/contributing/"> 
+    <link rel="canonical" href="https://bullet-db.github.io/about/contributing/"> 
     <link rel="shortcut icon" href="../../img/favicon.ico">
 
     <title>Contributing - Bullet Docs</title>
@@ -93,13 +93,13 @@
                         
                             
 <li >
-    <a href="../../quick-start/bullet-on-spark/">Bullet On Spark</a>
+    <a href="../../quick-start/spark/">Spark</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../quick-start/bullet-on-storm/">Bullet On Storm</a>
+    <a href="../../quick-start/storm/">Storm</a>
 </li>
 
                         
@@ -189,13 +189,13 @@
                         
                             
 <li >
-    <a href="../../pubsub/storm-drpc/">Storm DRPC</a>
+    <a href="../../pubsub/rest/">REST</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../pubsub/rest/">REST</a>
+    <a href="../../pubsub/storm-drpc/">Storm DRPC</a>
 </li>
 
                         
@@ -302,6 +302,15 @@
                     </li>
                 
                 
+                    <li>
+                        <a href="https://github.com/bullet-db">
+                            
+                                <i class="fa fa-github"></i>
+                            
+                            GitHub
+                        </a>
+                    </li>
+                
             </ul>
         </div>
     </div>
@@ -340,8 +349,7 @@
 <h1 id="contributing">Contributing</h1>
 <p>We welcome all contributions! We also welcome all usage experiences, stories, annoyances and whatever else you want to say. Head on over to our <a href="../contact/">Contact Us page</a> and let us know!</p>
 <h2 id="contributor-license-agreement-cla">Contributor License Agreement (CLA)</h2>
-<p>Bullet is hosted under the <a href="https://github.com/yahoo">Yahoo Github Organization</a>. In order to contribute to any Yahoo project, you will need to submit a CLA. When you submit a Pull Request to any Bullet repository, a CLABot will ask  you to sign the CLA if you haven't signed one already.</p>
-<p>Read the <a href="https://yahoocla.herokuapp.com/">human-readable summary</a> of the CLA.</p>
+<p>Bullet is hosted under the <a href="https://github.com/bullet-db">Bullet Github Organization</a>, a subsidiary of the <a href="https://github.com/yahoo">Yahoo Github Organization</a>. In order to contribute to any Yahoo project, you will need to submit a CLA. When you submit a Pull Request to any Bullet repository, a CLABot will ask  you to sign the CLA if you haven't signed one already. Read the <a href="https://yahoocla.herokuapp.com/">human-readable summary</a> of the CLA.</p>
 <h2 id="future-plans">Future plans</h2>
 <p>Here is a selected list of features we are currently considering/working on. Feel free to <a href="../contact/">contact us</a> with any ideas/suggestions/PRs for features mentioned here or anything else you think about!</p>
 <p>This list is neither comprehensive nor in any particular order.</p>
@@ -356,15 +364,33 @@
 </thead>
 <tbody>
 <tr>
-<td>Security</td>
-<td>WS, UI</td>
-<td>The obvious enterprise security for locking down access to the data and the instance of Bullet. Considering SSL, Kerberos, LDAP etc. Ideally, without a database</td>
-<td>Planning</td>
-</tr>
-<tr>
 <td>Bullet on X</td>
 <td>BE</td>
 <td>With the pub/sub feature, Bullet can be implemented on other Stream Processors like Flink, Kafka Streaming, Samza etc</td>
+<td>Open</td>
+</tr>
+<tr>
+<td>SQL API</td>
+<td>BE, WS</td>
+<td>WS supports an endpoint that converts a SQL-like query into Bullet queries</td>
+<td>In Progress</td>
+</tr>
+<tr>
+<td>More Windows</td>
+<td>BE</td>
+<td>We have implemented a few of the windows we wanted to support initially but there are still more we can add</td>
+<td>Open</td>
+</tr>
+<tr>
+<td>More Aggregations</td>
+<td>BE, UI</td>
+<td>We can add more aggregations like Group By Count Distinct etc</td>
+<td>Open</td>
+</tr>
+<tr>
+<td>Post Aggregations</td>
+<td>BE, UI</td>
+<td>Post aggregations once the aggregations are done is useful</td>
 <td>Open</td>
 </tr>
 <tr>
@@ -374,10 +400,10 @@
 <td>Open</td>
 </tr>
 <tr>
-<td>SQL API</td>
-<td>BE, WS</td>
-<td>WS supports an endpoint that converts a SQL-like query into Bullet queries</td>
-<td>In Progress</td>
+<td>Security</td>
+<td>WS, UI</td>
+<td>The obvious enterprise security for locking down access to the data and the instance of Bullet. Considering SSL, Kerberos, LDAP etc. Ideally, without a database</td>
+<td>Planning</td>
 </tr>
 <tr>
 <td>Packaging</td>
@@ -398,7 +424,7 @@
         </div>
         <div class="pull-right col-md-4 text-right">
             <p>
-            <small>Bullet is licensed under the <a href='https://github.com/yahoo/bullet/blob/master/LICENSE'>Apache 2 license<br></small>
+            <small>Bullet is licensed under the <a href='https://github.com/bullet-db/bullet-core/blob/master/LICENSE'>Apache 2 license<br></small>
             
             <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p></small>
         </div>

@@ -7,10 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="The full documentation for Bullet - A Real Time Data Query Engine"> 
     <meta name="author" content="Akshai Sarma"> 
-    <link rel="canonical" href="https://yahoo.github.io/bullet-docs/quick-start/bullet-on-storm/"> 
+    <link rel="canonical" href="https://bullet-db.github.io/quick-start/storm/"> 
     <link rel="shortcut icon" href="../../img/favicon.ico">
 
-    <title>Bullet On Storm - Bullet Docs</title>
+    <title>Storm - Bullet Docs</title>
 
     <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
@@ -93,13 +93,13 @@
                         
                             
 <li >
-    <a href="../bullet-on-spark/">Bullet On Spark</a>
+    <a href="../spark/">Spark</a>
 </li>
 
                         
                             
 <li class="active">
-    <a href="./">Bullet On Storm</a>
+    <a href="./">Storm</a>
 </li>
 
                         
@@ -189,13 +189,13 @@
                         
                             
 <li >
-    <a href="../../pubsub/storm-drpc/">Storm DRPC</a>
+    <a href="../../pubsub/rest/">REST</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../pubsub/rest/">REST</a>
+    <a href="../../pubsub/storm-drpc/">Storm DRPC</a>
 </li>
 
                         
@@ -291,7 +291,7 @@
                 
                 
                     <li >
-                        <a rel="next" href="../bullet-on-spark/">
+                        <a rel="next" href="../spark/">
                             <i class="fa fa-arrow-left"></i> Previous
                         </a>
                     </li>
@@ -301,6 +301,15 @@
                         </a>
                     </li>
                 
+                
+                    <li>
+                        <a href="https://github.com/bullet-db">
+                            
+                                <i class="fa fa-github"></i>
+                            
+                            GitHub
+                        </a>
+                    </li>
                 
             </ul>
         </div>
@@ -317,7 +326,7 @@
     <ul class="nav bs-sidenav">
     
         <li class="active">
-            <a href="#quick-start-bullet-on-storm">Quick Start - Bullet on Storm</a>
+            <a href="#quick-start-on-storm">Quick Start on Storm</a>
             <ul class="nav">
                 
                     <li class="second-level">
@@ -396,18 +405,18 @@
 </div></div>
         <div class="col-md-9" role="main">
 
-<h1 id="quick-start-bullet-on-storm">Quick Start - Bullet on Storm</h1>
+<h1 id="quick-start-on-storm">Quick Start on Storm</h1>
 <div class="admonition note">
 <p class="admonition-title">NOTE: This is an old version of Bullet</p>
-<p>The version of Bullet this quickstart uses does not support the newest functionality such as Windowing. We are working hard to get new documentation up as soon as possible. Use <a href="../bullet-on-spark/">the Spark quickstart</a> to see all the latest features. An updated quickstart for Storm is coming soon.</p>
+<p>The version of Bullet this Quick Start uses does not support the newest functionality such as Windowing. We are working hard to get new documentation up as soon as possible. Use the <a href="../spark/">Spark Quick Start</a> to see all the latest features. An updated Quick Start for Storm is coming soon.</p>
 </div>
-<p>This section gets you running a mock instance of Bullet to play around with. The instance will run using <a href="backend/storm-setup.md">Bullet on Storm</a> and use the <a href="pubsub/storm-drpc.md">DRPC Pubsub</a>. Since we do not have an actual data source, we will produce some fake data and convert it into <a href="backend/ingestion.md">Bullet Records</a> in a <a href="https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/java/com/yahoo/bullet/storm/examples/RandomSpout.java">custom Storm spout</a>. If you want to use Bullet for your data, you will need to do read and convert your data to Bullet Records in a similar manner.</p>
+<p>This section gets you running a mock instance of Bullet to play around with. The instance will run using <a href="../../backend/storm-setup/">Bullet on Storm</a> and use the <a href="../../pubsub/storm-drpc/">DRPC Pubsub</a>. Since we do not have an actual data source, we will produce some fake data and convert it into <a href="../../backend/ingestion/">Bullet Records</a> in a <a href="https://github.com/bullet-db/bullet-db.github.io/blob/master/examples/storm/src/main/java/com/yahoo/bullet/storm/examples/RandomSpout.java">custom Storm spout</a>. If you want to use Bullet for your data, you will need to do read and convert your data to Bullet Records in a similar manner.</p>
 <p>At the end of this section, you will have:</p>
 <ul>
-<li>Setup the Bullet topology using a custom spout on <a href="https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.6.2">bullet-storm-0.6.2</a></li>
-<li>Setup the <a href="ws/setup.md">Web Service</a> talking to the topology and serving a schema for your UI using <a href="https://github.com/yahoo/bullet-service/releases/tag/bullet-service-0.1.1">bullet-service-0.1.1</a></li>
-<li>Setup the <a href="pubsub/storm-drpc.md">DRPC PubSub</a> talking to the topology and Web Service.</li>
-<li>Setup the <a href="ui/setup.md">UI</a> talking to the Web Service using <a href="https://github.com/yahoo/bullet-ui/releases/tag/v0.4.0">bullet-ui-0.4.0</a></li>
+<li>Setup the Bullet topology using a custom spout on <a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.6.2">bullet-storm-0.6.2</a></li>
+<li>Setup the <a href="../../ws/setup/">Web Service</a> talking to the topology and serving a schema for your UI using <a href="https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.1.1">bullet-service-0.1.1</a></li>
+<li>Setup the <a href="../../pubsub/storm-drpc/">DRPC PubSub</a> talking to the topology and Web Service.</li>
+<li>Setup the <a href="../../ui/setup/">UI</a> talking to the Web Service using <a href="https://github.com/bullet-db/bullet-ui/releases/tag/v0.4.0">bullet-ui-0.4.0</a></li>
 </ul>
 <p><strong>Prerequisites</strong></p>
 <ul>
@@ -417,7 +426,7 @@
 </ul>
 <h2 id="install-script">Install Script</h2>
 <p>Simply run:</p>
-<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.4.0/examples/install-all.sh | bash
+<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/bullet-db/bullet-db.github.io/src/examples/install-all.sh | bash
 </code></pre>
 
 <p>This will setup a local Storm cluster, a Bullet running on it, the Bullet Web Service and a Bullet UI for you. Once everything has launched, you should be able to go to the Bullet UI running locally at <a href="http://localhost:8800">http://localhost:8800</a>. You can then <a href="#what-did-we-do"><strong>continue this guide from here</strong></a>.</p>
@@ -434,7 +443,7 @@ mkdir -p $BULLET_HOME/backend/storm
 mkdir -p $BULLET_HOME/service
 mkdir -p $BULLET_HOME/ui
 cd $BULLET_HOME
-curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.4.0/examples_artifacts.tar.gz
+curl -LO https://github.com/bullet-db/bullet-db.github.io/releases/download/src/examples_artifacts.tar.gz
 tar -xzf examples_artifacts.tar.gz
 export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 </code></pre>
@@ -481,14 +490,14 @@ storm supervisor &amp;
 <p>If you notice any problems while setting up storm or while relaunching a topology, it may be because some state is corrupted. When running Storm in this fashion, states and serializations are stored in <code>storm-local</code> and <code>/tmp/</code>. You may want to <code>rm -rf storm-local/* /tmp/dev-storm-zookeeper</code> to clean up this state before relaunching Storm components. See the <a href="#teardown">tear down section</a> on how to kill any running instances.</p>
 </div>
 <h3 id="setting-up-the-example-bullet-topology">Setting up the example Bullet topology</h3>
-<p>Now that Storm is up and running, we can put Bullet on it. We will use an example Spout that runs on Bullet 0.4.3 on our Storm cluster. The source is available <a href="https://github.com/yahoo/bullet-docs/blob/master/examples/storm">here</a>. This was part of the artifact that you installed in Step 1.</p>
+<p>Now that Storm is up and running, we can put Bullet on it. We will use an example Spout that runs on Bullet 0.4.3 on our Storm cluster. The source is available <a href="https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/storm">here</a>. This was part of the artifact that you installed in Step 1.</p>
 <h4 id="step-5-setup-the-storm-example">Step 5: Setup the Storm example</h4>
 <pre><code class="bash">cp $BULLET_EXAMPLES/storm/* $BULLET_HOME/backend/storm
 </code></pre>
 
 <div class="admonition note">
 <p class="admonition-title">Settings</p>
-<p>Take a look at bullet_settings.yaml for the settings that are being overridden for this example. You can add or change settings as you like by referring to <a href="https://github.com/yahoo/bullet-core/blob/master/src/main/resources/bullet_defaults.yaml">core Bullet settings in bullet_defaults.yaml</a> and <a href="https://github.com/yahoo/bullet-storm/blob/master/src/main/resources/bullet_storm_defaults.yaml">Storm settings in bullet_storm_defaults.yaml</a>. In particular, we have <a href="https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/resources/bullet_settings.yaml">customized these settings</a> that affect the Bullet queries you can run:</p>
+<p>Take a look at bullet_settings.yaml for the settings that are being overridden for this example. You can add or change settings as you like by referring to <a href="https://github.com/bullet-db/bullet-core/blob/master/src/main/resources/bullet_defaults.yaml">core Bullet settings in bullet_defaults.yaml</a> and <a href="https://github.com/bullet-db/bullet-storm/blob/master/src/main/resources/bullet_storm_defaults.yaml">Storm settings in bullet_storm_defaults.yaml</a>. In particular, we have <a href="https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/storm/src/main/resources/bullet_settings.yaml">customized these settings</a> that affect the Bullet queries you can run:</p>
 <p><code>bullet.query.max.duration: 570000</code> Longest query time can be 570s. The Storm cluster default DRPC timeout is 600s.</p>
 <p><code>bullet.query.aggregation.raw.max.size: 500</code> The max <code>RAW</code> records you can fetch is 500.</p>
 <p><code>bullet.query.aggregation.max.size: 1024</code> The max records you can fetch for any query is 1024.</p>
@@ -500,8 +509,8 @@ storm supervisor &amp;
 </div>
 <div class="admonition note">
 <p class="admonition-title">Want to tweak the example topology code?</p>
-<p>You will need to clone the <a href="https://github.com/yahoo/bullet-docs/tree/master/examples/storm">examples repository</a> and customize it. To build the examples, you'll need to install <a href="https://maven.apache.org/install.html">Maven 3</a>.</p>
-<p><code>cd $BULLET_HOME &amp;&amp; git clone git@github.com:yahoo/bullet-docs.git</code></p>
+<p>You will need to clone the <a href="https://github.com/bullet-db/bullet-db.github.io/tree/src/examples/storm">examples repository</a> and customize it. To build the examples, you'll need to install <a href="https://maven.apache.org/install.html">Maven 3</a>.</p>
+<p><code>cd $BULLET_HOME &amp;&amp; git clone git@github.com:bullet-db/bullet-db.github.io.git</code></p>
 <p><code>cd bullet-docs/examples/storm &amp;&amp; mvn package</code></p>
 <p>You will find the <code>bullet-storm-example-1.0-SNAPSHOT-jar-with-dependencies.jar</code> in <code>$BULLET_HOME/bullet-docs/examples/storm/target/</code></p>
 <p>You can also make the <code>examples_artifacts.tar.gz</code> file with all the settings that is placed in <code>$BULLET_EXAMPLES</code> by just running <code>make</code> in the <code>bullet-docs/examples/</code> folder.</p>
@@ -518,7 +527,7 @@ storm supervisor &amp;
 <p>You should get a random record (serialized as a String inside a JSON message sent back through the PubSub) from Bullet.</p>
 <div class="admonition note">
 <p class="admonition-title">What is this data?</p>
-<p>This data is randomly generated by the <a href="https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/java/com/yahoo/bullet/storm/examples/RandomSpout.java">custom Storm spout</a> that is in the example topology you just launched. In practice, your spout would read from an actual data source such as Kafka instead. See <a href="#storm-topology">below</a> for more details about this random data spout.</p>
+<p>This data is randomly generated by the <a href="https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/storm/src/main/java/com/yahoo/bullet/storm/examples/RandomSpout.java">custom Storm spout</a> that is in the example topology you just launched. In practice, your spout would read from an actual data source such as Kafka instead. See <a href="#storm-topology">below</a> for more details about this random data spout.</p>
 </div>
 <h3 id="setting-up-the-bullet-web-service">Setting up the Bullet Web Service</h3>
 <h4 id="step-7-install-the-bullet-web-service">Step 7: Install the Bullet Web Service</h4>
@@ -548,7 +557,7 @@ nvm use v6.9.4
 
 <h4 id="step-10-install-the-bullet-ui">Step 10: Install the Bullet UI</h4>
 <pre><code class="bash">cd $BULLET_HOME/ui
-curl -LO https://github.com/yahoo/bullet-ui/releases/download/v0.4.0/bullet-ui-v0.4.0.tar.gz
+curl -LO https://github.com/bullet-db/bullet-ui/releases/download/src/bullet-ui-v0.4.0.tar.gz
 tar -xzf bullet-ui-v0.4.0.tar.gz
 cp $BULLET_EXAMPLES/ui/env-settings.json config/
 </code></pre>
@@ -557,17 +566,16 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
 <pre><code class="bash">PORT=8800 node express-server.js &amp;
 </code></pre>
 
-<p>Visit <a href="http://localhost:8800">http://localhost:8800</a> to query your topology with the UI. See <a href="ui/usage.md">UI usage</a> for some example queries and interactions using this UI. You see what the Schema means by visiting the Schema section.</p>
+<p>Visit <a href="http://localhost:8800">http://localhost:8800</a> to query your topology with the UI. See <a href="../../ui/usage/">UI usage</a> for some example queries and interactions using this UI. You see what the Schema means by visiting the Schema section.</p>
 <div class="admonition note">
 <p class="admonition-title">Running it remotely?</p>
-<p>If you access the UI from another machine than where your UI is actually running, you will need to edit <code>config/env-settings.json</code>. Since the UI is a client-side app, the machine that your browser is running on will fetch the UI and attempt to use these settings to talk to the Web Service. Since they point to localhost by default, your browser will attempt to connect there and fail. An easy fix is to change <code>localhost</code> in your env-settings.json to point to the host name where you will hosting the UI. This will be the same as the UI host you use in the browser. You can also do a local port forward on the machine accessing the UI by running:
-<code>ssh -N -L 8800:localhost:8800 -L 9999:localhost:9999 hostname-of-the-quickstart-components 2&gt;&amp;1</code></p>
+<p>If you access the UI from another machine than where your UI is actually running, you will need to edit <code>config/env-settings.json</code>. Since the UI is a client-side app, the machine that your browser is running on will fetch the UI and attempt to use these settings to talk to the Web Service. Since they point to localhost by default, your browser will attempt to connect there and fail. An easy fix is to change <code>localhost</code> in your env-settings.json to point to the host name where you will hosting the UI. This will be the same as the UI host you use in the browser. You can also do a local port forward on the machine accessing the UI by running: <code>ssh -N -L 8800:localhost:8800 -L 9999:localhost:9999 hostname-of-the-quickstart-components 2&gt;&amp;1</code></p>
 </div>
 <h2 id="playing-around-with-the-instance">Playing around with the instance</h2>
-<p>Check out and follow along with the <a href="ui/usage.md">UI Usage</a> page as it shows you some queries you can run using this UI.</p>
+<p>Check out and follow along with the <a href="../../ui/usage/">UI Usage</a> page as it shows you some queries you can run using this UI.</p>
 <h2 id="teardown">Teardown</h2>
 <p>If you were using the <a href="#install-script">Install Script</a> or if you don't want to manually bring down everything, you can run:</p>
-<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.4.0/examples/install-all.sh | bash -s cleanup
+<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/bullet-db/bullet-db.github.io/src/examples/install-all.sh | bash -s cleanup
 </code></pre>
 
 <p>If you were performing the steps yourself, you can also manually cleanup <strong>all the components and all the downloads</strong> using:</p>
@@ -601,7 +609,7 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
 <h2 id="what-did-we-do">What did we do?</h2>
 <p>This section will go over the various custom pieces this example plugged into Bullet, so you can better understand what we did.</p>
 <h3 id="storm-topology">Storm topology</h3>
-<p>The topology was the Bullet topology plugged in with a custom spout. This spout is implemented in this <a href="https://github.com/yahoo/bullet-docs/blob/master/examples/storm/">example project</a> and was already built for you when you <a href="#step-1-setup-directories-and-examples">downloaded the examples</a>. It does not read from any data source and just produces random, structured data. It also produces only up to a maximum number of records in a given period. Both this maximum and the length of a period are configurable. If you examine $BULLET_HOME/backend/storm/launch.sh, you'll see the following:</p>
+<p>The topology was the Bullet topology plugged in with a custom spout. This spout is implemented in this <a href="https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/storm/">example project</a> and was already built for you when you <a href="#step-1-setup-directories-and-examples">downloaded the examples</a>. It does not read from any data source and just produces random, structured data. It also produces only up to a maximum number of records in a given period. Both this maximum and the length of a period are configurable. If you examine $BULLET_HOME/backend/storm/launch.sh, you'll see the following:</p>
 <pre><code class="bash">storm jar bullet-storm-example-1.0-SNAPSHOT-jar-with-dependencies.jar \
           com.yahoo.bullet.Topology \
           --bullet-conf bullet_settings.yaml \
@@ -619,7 +627,7 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
 <p class="admonition-title">I thought you said hundreds of thousands of records...</p>
 <p>200 records is not Big Data by any stretch of the imagination but this Quick Start is running everything on one machine and is meant to introduce you to what Bullet does. In practice, you would scale and run your components with CPU and memory configurations to accommodate for your data volume and querying needs.</p>
 </div>
-<p>Let's look at the <a href="https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/java/com/yahoo/bullet/storm/examples/RandomSpout.java">custom spout code</a> that generates the data.</p>
+<p>Let's look at the <a href="https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/storm/src/main/java/com/yahoo/bullet/storm/examples/RandomSpout.java">custom spout code</a> that generates the data.</p>
 <pre><code class="java">    @Override
     public void nextTuple() {
         long timeNow = System.nanoTime();
@@ -687,7 +695,7 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
 <p>This method generates some fields randomly and inserts them into a BulletRecord. Note that the BulletRecord is typed and all data must be inserted with the proper types.</p>
 <p>If you put Bullet on your data, you will need to write a Spout (or a topology if your reading is complex), that reads from your data source and emits BulletRecords with the fields you wish to be query-able placed into a BulletRecord similar to this example.</p>
 <h3 id="pubsub">PubSub</h3>
-<p>We used the <a href="pubsub/storm-drpc.md">DRPC PubSub</a> since we were using the Storm Backend. This code was included in the Bullet Storm artifact that we downloaded (the JAR with dependencies). We configured the Backend to use this PubSub by adding these settings to the YAML file that we passed to our Storm topology. Notice that we set the context to <code>QUERY_PROCESSING</code> since this is the Backend.</p>
+<p>We used the <a href="../../pubsub/storm-drpc/">DRPC PubSub</a> since we were using the Storm Backend. This code was included in the Bullet Storm artifact that we downloaded (the JAR with dependencies). We configured the Backend to use this PubSub by adding these settings to the YAML file that we passed to our Storm topology. Notice that we set the context to <code>QUERY_PROCESSING</code> since this is the Backend.</p>
 <pre><code class="yaml">bullet.pubsub.context.name: &quot;QUERY_PROCESSING&quot;
 bullet.pubsub.class.name: &quot;com.yahoo.bullet.storm.drpc.DRPCPubSub&quot;
 bullet.pubsub.storm.drpc.function: &quot;bullet-query&quot;
@@ -709,7 +717,7 @@ bullet.pubsub.storm.drpc.http.connect.timeout.ms: 1000
 <h3 id="web-service">Web Service</h3>
 <p>We launched the Web Service using two custom files - a PubSub configuration YAML file and JSON schema file.</p>
 <p>The JSON columns file contains the schema for our data specified in JSON. Since our schema is not going to change, we use the Web Service to serve it from a file. If your schema changes dynamically, you will need to provide your own endpoint to the UI.</p>
-<p>The following is a snippet from the <a href="https://github.com/yahoo/bullet-docs/blob/master/examples/web-service/example_columns.json">JSON file</a>. Notice how the types of the fields are specified. Also, if you have generated BulletRecord with Map fields whose keys are known, you can specify them here using <code>enumerations</code>.</p>
+<p>The following is a snippet from the <a href="https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/web-service/example_columns.json">JSON file</a>. Notice how the types of the fields are specified. Also, if you have generated BulletRecord with Map fields whose keys are known, you can specify them here using <code>enumerations</code>.</p>
 <pre><code class="javascript">[
     {
         &quot;name&quot;: &quot;probability&quot;,
@@ -736,7 +744,7 @@ bullet.pubsub.storm.drpc.http.connect.timeout.ms: 1000
 ]
 </code></pre>
 
-<p>The contents of the <a href="https://github.com/yahoo/bullet-docs/blob/master/examples/web-service/example_drpc_pubsub_config.yaml">PubSub configuration file</a> was discussed in the <a href="#pubsub">PubSub section above</a>.</p>
+<p>The contents of the <a href="https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/web-service/example_drpc_pubsub_config.yaml">PubSub configuration file</a> was discussed in the <a href="#pubsub">PubSub section above</a>.</p>
 <h3 id="ui">UI</h3>
 <p>Finally, we configured the UI with the custom environment specific settings file. We did not add any environments since we only had the one.</p>
 <pre><code class="javascript">{
@@ -806,7 +814,7 @@ bullet.pubsub.storm.drpc.http.connect.timeout.ms: 1000
         </div>
         <div class="pull-right col-md-4 text-right">
             <p>
-            <small>Bullet is licensed under the <a href='https://github.com/yahoo/bullet/blob/master/LICENSE'>Apache 2 license<br></small>
+            <small>Bullet is licensed under the <a href='https://github.com/bullet-db/bullet-core/blob/master/LICENSE'>Apache 2 license<br></small>
             
             <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p></small>
         </div>

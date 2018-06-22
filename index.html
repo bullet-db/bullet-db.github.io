@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="The full documentation for Bullet - A Real Time Data Query Engine"> 
     <meta name="author" content="Akshai Sarma"> 
-    <link rel="canonical" href="https://yahoo.github.io/bullet-docs/"> 
+    <link rel="canonical" href="https://bullet-db.github.io/"> 
     <link rel="shortcut icon" href="./img/favicon.ico">
 
     <title>Home - Bullet Docs</title>
@@ -93,13 +93,13 @@
                         
                             
 <li >
-    <a href="quick-start/bullet-on-spark/">Bullet On Spark</a>
+    <a href="quick-start/spark/">Spark</a>
 </li>
 
                         
                             
 <li >
-    <a href="quick-start/bullet-on-storm/">Bullet On Storm</a>
+    <a href="quick-start/storm/">Storm</a>
 </li>
 
                         
@@ -189,13 +189,13 @@
                         
                             
 <li >
-    <a href="pubsub/storm-drpc/">Storm DRPC</a>
+    <a href="pubsub/rest/">REST</a>
 </li>
 
                         
                             
 <li >
-    <a href="pubsub/rest/">REST</a>
+    <a href="pubsub/storm-drpc/">Storm DRPC</a>
 </li>
 
                         
@@ -296,11 +296,20 @@
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="quick-start/bullet-on-spark/">
+                        <a rel="prev" href="quick-start/spark/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
                 
+                
+                    <li>
+                        <a href="https://github.com/bullet-db">
+                            
+                                <i class="fa fa-github"></i>
+                            
+                            GitHub
+                        </a>
+                    </li>
                 
             </ul>
         </div>
@@ -455,7 +464,7 @@
 </div>
 <hr />
 <h1 id="quick-start">Quick Start</h1>
-<p>See <a href="quick-start/bullet-on-spark/">Quick Start</a> to set up Bullet locally using spark-streaming. You will generate some synthetic streaming data that you can then query with Bullet.</p>
+<p>See <a href="quick-start/spark/">Quick Start</a> to set up Bullet locally using Spark Streaming. You will generate some synthetic streaming data that you can then query with Bullet.</p>
 <h1 id="setup-bullet-on-your-streaming-data">Setup Bullet on your streaming data</h1>
 <p>To set up Bullet on a real data stream, you need:</p>
 <ol>
@@ -477,7 +486,7 @@
 <p>Bullet queries allow you to filter, project and aggregate data. You can also specify a window to get incremental results. Bullet lets you fetch raw (the individual data records) as well as aggregated data.</p>
 <ul>
 <li>
-<p>See the <a href="ui/usage/">UI Usage section</a> for using the UI to build Bullet queries. This is the same UI you will build in the <a href="quick-start/bullet-on-spark/">Quick Start</a></p>
+<p>See the <a href="ui/usage/">UI Usage section</a> for using the UI to build Bullet queries. This is the same UI you will build in the Quick Starts.</p>
 </li>
 <li>
 <p>See the <a href="ws/api/">API section</a> for building Bullet API queries</p>
@@ -607,10 +616,11 @@
 <p>Implementations of <a href="backend/storm-architecture/">Bullet on Storm</a> and <a href="backend/spark-architecture/">Bullet on Spark</a> are currently supported.</p>
 <h2 id="pubsub">PubSub</h2>
 <p>The PubSub is responsible for transmitting queries from the API to the Backend and returning results back from the Backend to the clients. It decouples whatever particular Backend you are using with the API.
-We currently support two different PubSub implementation:</p>
+We currently support three different PubSub implementations:</p>
 <ul>
 <li><a href="pubsub/kafka/">Kafka</a></li>
 <li><a href="pubsub/rest/">REST</a></li>
+<li><a href="pubsub/storm-drpc/">Storm DRPC</a> (only for non-windowed queries)</li>
 </ul>
 <p>You can also very easily <a href="pubsub/architecture/#implementing-your-own-pubsub">implement your own</a> by defining a few interfaces that we provide.</p>
 <h2 id="web-service-and-ui">Web Service and UI</h2>
@@ -623,7 +633,7 @@ We currently support two different PubSub implementation:</p>
 <p>The Web Service can be deployed as a standalone Java application (a JAR file) or easily rebuilt as a WAR to deploy your favorite servlet container like <a href="http://www.eclipse.org/jetty/">Jetty</a>. The UI is a client-side application that can be served using <a href="http://nodejs.org/">Node.js</a></p>
 <div class="admonition note">
 <p class="admonition-title">Want to know more?</p>
-<p>In practice, the backend is implemented using the basic components that the Stream processing framework provides. See <a href="backend/storm-architecture/">Storm Architecture</a> for details.</p>
+<p>In practice, the backend is implemented using the basic components that the Stream processing framework provides. See <a href="backend/storm-architecture/">Storm Architecture</a> and <a href="backend/spark-architecture/">Spark Architecture</a> for details.</p>
 </div></div>
         
     </div>
@@ -636,7 +646,7 @@ We currently support two different PubSub implementation:</p>
         </div>
         <div class="pull-right col-md-4 text-right">
             <p>
-            <small>Bullet is licensed under the <a href='https://github.com/yahoo/bullet/blob/master/LICENSE'>Apache 2 license<br></small>
+            <small>Bullet is licensed under the <a href='https://github.com/bullet-db/bullet-core/blob/master/LICENSE'>Apache 2 license<br></small>
             
             <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p></small>
         </div>
@@ -685,5 +695,5 @@ We currently support two different PubSub implementation:</p>
 
 <!--
 MkDocs version : 0.16.3
-Build Date UTC : 2018-06-21 03:33:45
+Build Date UTC : 2018-06-22 21:47:05
 -->

@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="The full documentation for Bullet - A Real Time Data Query Engine"> 
     <meta name="author" content="Akshai Sarma"> 
-    <link rel="canonical" href="https://yahoo.github.io/bullet-docs/releases/"> 
+    <link rel="canonical" href="https://bullet-db.github.io/releases/"> 
     <link rel="shortcut icon" href="../img/favicon.ico">
 
     <title>Releases - Bullet Docs</title>
@@ -93,13 +93,13 @@
                         
                             
 <li >
-    <a href="../quick-start/bullet-on-spark/">Bullet On Spark</a>
+    <a href="../quick-start/spark/">Spark</a>
 </li>
 
                         
                             
 <li >
-    <a href="../quick-start/bullet-on-storm/">Bullet On Storm</a>
+    <a href="../quick-start/storm/">Storm</a>
 </li>
 
                         
@@ -189,13 +189,13 @@
                         
                             
 <li >
-    <a href="../pubsub/storm-drpc/">Storm DRPC</a>
+    <a href="../pubsub/rest/">REST</a>
 </li>
 
                         
                             
 <li >
-    <a href="../pubsub/rest/">REST</a>
+    <a href="../pubsub/storm-drpc/">Storm DRPC</a>
 </li>
 
                         
@@ -301,6 +301,15 @@
                         </a>
                     </li>
                 
+                
+                    <li>
+                        <a href="https://github.com/bullet-db">
+                            
+                                <i class="fa fa-github"></i>
+                            
+                            GitHub
+                        </a>
+                    </li>
                 
             </ul>
         </div>
@@ -423,7 +432,7 @@
 <p>For downloading any artifact listed below manually, you should preferably use the <a href="https://jcenter.bintray.com/com/yahoo/bullet/"><strong>JCenter mirror here</strong></a>. For resolving artifacts in your build tool, follow the directions in each of the components' Package Manager Setup sections.</p>
 <hr />
 <h2 id="bullet-core">Bullet Core</h2>
-<p>The core Bullet logic (a library) that can be used to implement Bullet on different Stream Processors (like Flink, Storm, Kafka Streams etc.). This core library can also be reused in other Bullet components that wish to depend on core Bullet concepts. This actually lived inside the <a href="#bullet-storm">Bullet Storm</a> package prior to version <a href="https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.5.0">0.5.0</a>. Starting with 0.5.0, Bullet Storm only includes the logic to implement Bullet on Storm.</p>
+<p>The core Bullet logic (a library) that can be used to implement Bullet on different Stream Processors (like Flink, Storm, Kafka Streams etc.). This core library can also be reused in other Bullet components that wish to depend on core Bullet concepts. This actually lived inside the <a href="#bullet-storm">Bullet Storm</a> package prior to version <a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.5.0">0.5.0</a>. Starting with 0.5.0, Bullet Storm only includes the logic to implement Bullet on Storm.</p>
 <table>
 <thead>
 <tr>
@@ -1061,7 +1070,7 @@
         </div>
         <div class="pull-right col-md-4 text-right">
             <p>
-            <small>Bullet is licensed under the <a href='https://github.com/yahoo/bullet/blob/master/LICENSE'>Apache 2 license<br></small>
+            <small>Bullet is licensed under the <a href='https://github.com/bullet-db/bullet-core/blob/master/LICENSE'>Apache 2 license<br></small>
             
             <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p></small>
         </div>

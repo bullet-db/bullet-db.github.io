@@ -30,15 +30,21 @@ video {
   width: 100%;
 }
 
+@media (min-width: 1300px) {
+  .container {
+    width: 1200px;
+  }
+}
+
 @media (min-width: 1650px) {
-  body > .container {
-    width: 1400px;
+  .container {
+    width: 1500px;
   }
 }
 
 @media (min-width: 1920px) {
-  body > .container {
-    width: 1680px;
+  .container {
+    width: 1750px;
   }
 }
 

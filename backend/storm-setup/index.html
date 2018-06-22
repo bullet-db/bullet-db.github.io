@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="The full documentation for Bullet - A Real Time Data Query Engine"> 
     <meta name="author" content="Akshai Sarma"> 
-    <link rel="canonical" href="https://yahoo.github.io/bullet-docs/backend/storm-setup/"> 
+    <link rel="canonical" href="https://bullet-db.github.io/backend/storm-setup/"> 
     <link rel="shortcut icon" href="../../img/favicon.ico">
 
     <title>Setup - Bullet Docs</title>
@@ -93,13 +93,13 @@
                         
                             
 <li >
-    <a href="../../quick-start/bullet-on-spark/">Bullet On Spark</a>
+    <a href="../../quick-start/spark/">Spark</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../quick-start/bullet-on-storm/">Bullet On Storm</a>
+    <a href="../../quick-start/storm/">Storm</a>
 </li>
 
                         
@@ -189,13 +189,13 @@
                         
                             
 <li >
-    <a href="../../pubsub/storm-drpc/">Storm DRPC</a>
+    <a href="../../pubsub/rest/">REST</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../pubsub/rest/">REST</a>
+    <a href="../../pubsub/storm-drpc/">Storm DRPC</a>
 </li>
 
                         
@@ -302,6 +302,15 @@
                     </li>
                 
                 
+                    <li>
+                        <a href="https://github.com/bullet-db">
+                            
+                                <i class="fa fa-github"></i>
+                            
+                            GitHub
+                        </a>
+                    </li>
+                
             </ul>
         </div>
     </div>
@@ -352,7 +361,7 @@
 <h1 id="bullet-on-storm">Bullet on Storm</h1>
 <p>This section explains how to set up and run Bullet on Storm. If you're using the Storm DRPC PubSub, refer to <a href="../../pubsub/storm-drpc/">this section</a> for further details.</p>
 <h2 id="configuration">Configuration</h2>
-<p>Bullet is configured at run-time using settings defined in a file. Settings not overridden will default to the values in <a href="https://github.com/yahoo/bullet-storm/blob/master/src/main/resources/bullet_defaults.yaml">bullet_defaults.yaml</a>. There are too many to list here. You can find out what these settings do in the comments listed in the defaults.</p>
+<p>Bullet is configured at run-time using settings defined in a file. Settings not overridden will default to the values in <a href="https://github.com/bullet-db/bullet-storm/blob/master/src/main/resources/bullet_defaults.yaml">bullet_defaults.yaml</a>. There are too many to list here. You can find out what these settings do in the comments listed in the defaults.</p>
 <h2 id="installation">Installation</h2>
 <p>To use Bullet, you need to implement a way to read from your data source and convert your data into Bullet Records (bullet-record is a transitive dependency for Bullet and can be found <a href="../ingestion/#installing-the-record-directly">in JCenter</a>. You have two options in how to get your data into Bullet:</p>
 <ol>
@@ -388,8 +397,8 @@
 </code></pre>
 
 <p>If you just need the jar artifact directly, you can download it from <a href="http://jcenter.bintray.com/com/yahoo/bullet/bullet-storm/">JCenter</a>.</p>
-<p>You can also add <code>&lt;classifier&gt;sources&lt;/classifier&gt;</code>  or <code>&lt;classifier&gt;javadoc&lt;/classifier&gt;</code> if you want the sources or javadoc. We also package up our test code where we have some helper classes to deal with <a href="https://github.com/yahoo/bullet-storm/tree/master/src/test/java/com/yahoo/bullet/storm">Storm components</a>. If you wish to use these to help with testing your topology, you can add another dependency on bullet-storm with <code>&lt;type&gt;test-jar&lt;/type&gt;</code>.</p>
-<p>If you are going to use the second option (directly pipe data into Bullet from your Storm topology), then you will need a main class that directly calls the submit method with your wired up topology and the name of the component that is going to emit Bullet Records in that wired up topology. The submit method can be found in <a href="https://github.com/yahoo/bullet-storm/blob/master/src/main/java/com/yahoo/bullet/Topology.java">Topology.java</a>. The submit method submits the topology so it should be the last thing you do in your main.</p>
+<p>You can also add <code>&lt;classifier&gt;sources&lt;/classifier&gt;</code>  or <code>&lt;classifier&gt;javadoc&lt;/classifier&gt;</code> if you want the sources or javadoc. We also package up our test code where we have some helper classes to deal with <a href="https://github.com/bullet-db/bullet-storm/tree/master/src/test/java/com/yahoo/bullet/storm">Storm components</a>. If you wish to use these to help with testing your topology, you can add another dependency on bullet-storm with <code>&lt;type&gt;test-jar&lt;/type&gt;</code>.</p>
+<p>If you are going to use the second option (directly pipe data into Bullet from your Storm topology), then you will need a main class that directly calls the submit method with your wired up topology and the name of the component that is going to emit Bullet Records in that wired up topology. The submit method can be found in <a href="https://github.com/bulletbullet-storm/blob/master/src/main/java/com/yahoo/bullet/Topology.java">Topology.java</a>. The submit method submits the topology so it should be the last thing you do in your main.</p>
 <p>If you are just implementing a Spout, see the <a href="#launch">Launch</a> section below on how to use the main class in Bullet to create and submit your topology.</p>
 <p>Storm topologies are generally launched with "fat" jars (jar-with-dependencies), excluding storm itself:</p>
 <pre><code class="xml">&lt;plugin&gt;
@@ -459,7 +468,7 @@ your Storm cluster is still not at 1.0 or higher. You change your dependency to:
         </div>
         <div class="pull-right col-md-4 text-right">
             <p>
-            <small>Bullet is licensed under the <a href='https://github.com/yahoo/bullet/blob/master/LICENSE'>Apache 2 license<br></small>
+            <small>Bullet is licensed under the <a href='https://github.com/bullet-db/bullet-core/blob/master/LICENSE'>Apache 2 license<br></small>
             
             <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p></small>
         </div>

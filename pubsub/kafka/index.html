@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="The full documentation for Bullet - A Real Time Data Query Engine"> 
     <meta name="author" content="Akshai Sarma"> 
-    <link rel="canonical" href="https://yahoo.github.io/bullet-docs/pubsub/kafka/"> 
+    <link rel="canonical" href="https://bullet-db.github.io/pubsub/kafka/"> 
     <link rel="shortcut icon" href="../../img/favicon.ico">
 
     <title>Kafka - Bullet Docs</title>
@@ -93,13 +93,13 @@
                         
                             
 <li >
-    <a href="../../quick-start/bullet-on-spark/">Bullet On Spark</a>
+    <a href="../../quick-start/spark/">Spark</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../quick-start/bullet-on-storm/">Bullet On Storm</a>
+    <a href="../../quick-start/storm/">Storm</a>
 </li>
 
                         
@@ -189,13 +189,13 @@
                         
                             
 <li >
-    <a href="../storm-drpc/">Storm DRPC</a>
+    <a href="../rest/">REST</a>
 </li>
 
                         
                             
 <li >
-    <a href="../rest/">REST</a>
+    <a href="../storm-drpc/">Storm DRPC</a>
 </li>
 
                         
@@ -296,11 +296,20 @@
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="../storm-drpc/">
+                        <a rel="prev" href="../rest/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
                 
+                
+                    <li>
+                        <a href="https://github.com/bullet-db">
+                            
+                                <i class="fa fa-github"></i>
+                            
+                            GitHub
+                        </a>
+                    </li>
                 
             </ul>
         </div>
@@ -393,7 +402,7 @@ bullet.pubsub.kafka.request.topic.name: &quot;your-query-topic&quot;
 bullet.pubsub.kafka.response.topic.name: &quot;your-result-topic&quot;
 </code></pre>
 
-<p>You will then need to configure the Publishers and Subscribers. For details on what to configure and what the defaults are, see the <a href="https://github.com/yahoo/bullet-kafka/blob/master/src/main/resources/bullet_kafka_defaults.yaml">configuration file</a>.</p>
+<p>You will then need to configure the Publishers and Subscribers. For details on what to configure and what the defaults are, see the <a href="https://github.com/bullet-db/bullet-kafka/blob/master/src/main/resources/bullet_kafka_defaults.yaml">configuration file</a>.</p>
 <h3 id="plug-into-the-web-service">Plug into the Web Service</h3>
 <p>You will need the Head over to our <a href="../../releases/#bullet-kafka">releases page</a> and get the JAR artifact with the <code>fat</code> classifier. For example, you can download the artifact for the 0.2.0 release <a href="http://jcenter.bintray.com/com/yahoo/bullet/bullet-kafka/0.2.0/">directly from JCenter</a>).</p>
 <p>You should then plug in this JAR to your Web Service following the instructions <a href="../../ws/setup/#launch">here</a>.</p>
@@ -405,7 +414,7 @@ bullet.pubsub.kafka.request.topic.name: &quot;your-query-topic&quot;
 bullet.pubsub.kafka.response.topic.name: &quot;your-result-topic&quot;
 </code></pre>
 
-<p>As with the Backend, you will then need to configure the Publishers and Subscribers. See the <a href="https://github.com/yahoo/bullet-kafka/blob/master/src/main/resources/bullet_kafka_defaults.yaml">configuration file</a>. Remember that your Subscribers in the Backend are reading what the Producers in your Web Service are producing and vice-versa, so make sure to match up the topics and settings accordingly if you have any custom changes.</p>
+<p>As with the Backend, you will then need to configure the Publishers and Subscribers. See the <a href="https://github.com/bullet-db/bullet-kafka/blob/master/src/main/resources/bullet_kafka_defaults.yaml">configuration file</a>. Remember that your Subscribers in the Backend are reading what the Producers in your Web Service are producing and vice-versa, so make sure to match up the topics and settings accordingly if you have any custom changes.</p>
 <h2 id="passthrough-configuration">Passthrough Configuration</h2>
 <p>You can pass additional Kafka Producer or Consumer properties to the PubSub Publishers and Subscribers by prefixing them with either <code>bullet.pubsub.kafka.producer.</code> for Producers or <code>bullet.pubsub.kafka.consumer.</code> for Consumers. The PubSub configuration uses and provides a few defaults for settings it thinks is important to manage. You can tweak them and add others. For a list of properties that you can configure, see the <a href="https://kafka.apache.org/0102/documentation.html#producerconfigs">Producer</a> or <a href="https://kafka.apache.org/0102/documentation.html#newconsumerconfigs">Consumer</a> configs in Kafka.</p>
 <div class="admonition note">
@@ -419,7 +428,7 @@ bullet.pubsub.kafka.response.topic.name: &quot;your-result-topic&quot;
 <li>You may use two topics and partition one or both for scalability when reading and writing</li>
 <li>You may use two topics and partition one or both for sharding across multiple Web Service instances (and multiple instances in your Backend)</li>
 </ol>
-<p>You can accomplish all this with partition maps. You can configure what partitions your Publishers (Web Service or Backend) will write to using <code>bullet.pubsub.kafka.request.partitions</code> and what partitions your Subscribers will read from using <code>bullet.pubsub.kafka.response.partitions</code>. Providing these to an instance of the Web Service or the Backend in the YAML file ensures that the Publishers in that instance only write to these request partitions and Subscribers only read from the response partitions. The Publishers will randomly adds one of the response partitions in the messages sent to ensure that the responses only arrive to one of those partitions this instance's Subscribers are waiting on. For more details, see the <a href="https://github.com/yahoo/bullet-kafka/blob/master/src/main/resources/bullet_kafka_defaults.yaml">configuration file</a>.</p>
+<p>You can accomplish all this with partition maps. You can configure what partitions your Publishers (Web Service or Backend) will write to using <code>bullet.pubsub.kafka.request.partitions</code> and what partitions your Subscribers will read from using <code>bullet.pubsub.kafka.response.partitions</code>. Providing these to an instance of the Web Service or the Backend in the YAML file ensures that the Publishers in that instance only write to these request partitions and Subscribers only read from the response partitions. The Publishers will randomly adds one of the response partitions in the messages sent to ensure that the responses only arrive to one of those partitions this instance's Subscribers are waiting on. For more details, see the <a href="https://github.com/bullet-db/bullet-kafka/blob/master/src/main/resources/bullet_kafka_defaults.yaml">configuration file</a>.</p>
 <h2 id="security">Security</h2>
 <p>If you're using secure Kafka, you will need to do the necessary metadata setup to make sure your principals have access to your topic(s) for reading and writing. If you're using SSL for securing your Kafka cluster, you will need to add the necessary SSL certificates to the keystore for your JVM before launching the Web Service or the Backend.</p>
 <h3 id="storm">Storm</h3>
@@ -451,7 +460,7 @@ bullet.pubsub.kafka.response.topic.name: &quot;your-result-topic&quot;
         </div>
         <div class="pull-right col-md-4 text-right">
             <p>
-            <small>Bullet is licensed under the <a href='https://github.com/yahoo/bullet/blob/master/LICENSE'>Apache 2 license<br></small>
+            <small>Bullet is licensed under the <a href='https://github.com/bullet-db/bullet-core/blob/master/LICENSE'>Apache 2 license<br></small>
             
             <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p></small>
         </div>
