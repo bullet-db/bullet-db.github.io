@@ -55,7 +55,7 @@ There are two levels of configuration:
 
 ### Web Service Configuration
 
-Take a look at the [settings](https://github.com/yahoo/bullet-service/blob/master/src/main/resources/application.yaml) for a list of the settings that are configured. The Web Service settings start with ```bullet.```.
+Take a look at the [settings](https://github.com/bullet-db/bullet-service/blob/master/src/main/resources/application.yaml) for a list of the settings that are configured. The Web Service settings start with ```bullet.```.
 
 If you provide a custom settings ```application.yaml```, you will **need** to specify the default values in this file since the framework uses your file instead of these defaults.
 
@@ -63,7 +63,7 @@ If you provide a custom settings ```application.yaml```, you will **need** to sp
 
 The Web Service can also provide a endpoint that serves your data schema to your UI. You do not necessarily have to use this to serve your schema. The UI can use any JSON API schema specification. But if your schema is fixed or does not change often, it might be simpler for you to use this endpoint to provide the schema for the UI, instead of creating a new one. The Web Service also takes care to provide the right [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS) headers so that your UI can communicate with it.
 
-You can use [sample_columns.json](https://github.com/yahoo/bullet-service/blob/master/src/main/resources/sample_columns.json) as a guideline for what your actual schema file should look like or if you want to create your own Web Service that dynamically serves your schema to the UI if it changes frequently.
+You can use [sample_columns.json](https://github.com/bullet-db/bullet-service/blob/master/src/main/resources/sample_columns.json) as a guideline for what your actual schema file should look like or if you want to create your own Web Service that dynamically serves your schema to the UI if it changes frequently.
 
 Once you have your schema file, you can provide it to the Web Service by setting the ```bullet.schema.file``` to the path to your file.
 
@@ -88,7 +88,7 @@ To launch, you will need your PubSub implementation JAR file and launch the appl
 java -Dloader.path=bullet-kafka.jar -jar bullet-service.jar --bullet.pubsub.config=pubsub_settings.yaml  --logging.level.root=INFO
 ```
 
-This launches the Web Service using Kafka as the PubSub, no custom schema (the default sample columns) and the default values in [settings](https://github.com/yahoo/bullet-service/blob/master/src/main/resources/application.yaml). It also uses a root logging level of ```INFO```.
+This launches the Web Service using Kafka as the PubSub, no custom schema (the default sample columns) and the default values in [settings](https://github.com/bullet-db/bullet-service/blob/master/src/main/resources/application.yaml). It also uses a root logging level of ```INFO```.
 
 You could also tweak the various Bullet Web Service or Spring Boot settings by passing them in to the command above. For instance, you could also provide a path to your schema file using ```--bullet.schema.file=/path/to/schema.json```. You could also have a custom ```application.yaml``` file (you can change the name using ```spring.config.name```) and pass it to the Web Service instead by running:
 
@@ -114,4 +114,4 @@ You should receive a random record flowing through Bullet instantly (if you left
 
 If you provided a path to a schema file in your configuration file when you [launch](#launch) the Web Service, you can also HTTP GET your schema at ```http://localhost:5555/api/bullet/columns```
 
-If you did not, the schema in [sample_columns.json](https://github.com/yahoo/bullet-service/blob/master/src/main/resources/sample_columns.json) is the response. The Web Service converts it to a JSON API response and provides the right headers for CORS.
+If you did not, the schema in [sample_columns.json](https://github.com/bullet-db/bullet-service/blob/master/src/main/resources/sample_columns.json) is the response. The Web Service converts it to a JSON API response and provides the right headers for CORS.

@@ -1,16 +1,16 @@
-# Quick Start - Bullet on Storm
+# Quick Start on Storm
 
 !!! note "NOTE: This is an old version of Bullet"
-    The version of Bullet this quickstart uses does not support the newest functionality such as Windowing. We are working hard to get new documentation up as soon as possible. Use [the Spark quickstart](bullet-on-spark.md) to see all the latest features. An updated quickstart for Storm is coming soon.
+    The version of Bullet this Quick Start uses does not support the newest functionality such as Windowing. We are working hard to get new documentation up as soon as possible. Use the [Spark Quick Start](spark.md) to see all the latest features. An updated Quick Start for Storm is coming soon.
 
-This section gets you running a mock instance of Bullet to play around with. The instance will run using [Bullet on Storm](backend/storm-setup.md) and use the [DRPC Pubsub](pubsub/storm-drpc.md). Since we do not have an actual data source, we will produce some fake data and convert it into [Bullet Records](backend/ingestion.md) in a [custom Storm spout](https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/java/com/yahoo/bullet/storm/examples/RandomSpout.java). If you want to use Bullet for your data, you will need to do read and convert your data to Bullet Records in a similar manner.
+This section gets you running a mock instance of Bullet to play around with. The instance will run using [Bullet on Storm](../backend/storm-setup.md) and use the [DRPC Pubsub](../pubsub/storm-drpc.md). Since we do not have an actual data source, we will produce some fake data and convert it into [Bullet Records](../backend/ingestion.md) in a [custom Storm spout](https://github.com/bullet-db/bullet-db.github.io/blob/master/examples/storm/src/main/java/com/yahoo/bullet/storm/examples/RandomSpout.java). If you want to use Bullet for your data, you will need to do read and convert your data to Bullet Records in a similar manner.
 
 At the end of this section, you will have:
 
-  * Setup the Bullet topology using a custom spout on [bullet-storm-0.6.2](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.6.2)
-  * Setup the [Web Service](ws/setup.md) talking to the topology and serving a schema for your UI using [bullet-service-0.1.1](https://github.com/yahoo/bullet-service/releases/tag/bullet-service-0.1.1)
-  * Setup the [DRPC PubSub](pubsub/storm-drpc.md) talking to the topology and Web Service.
-  * Setup the [UI](ui/setup.md) talking to the Web Service using [bullet-ui-0.4.0](https://github.com/yahoo/bullet-ui/releases/tag/v0.4.0)
+  * Setup the Bullet topology using a custom spout on [bullet-storm-0.6.2](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.6.2)
+  * Setup the [Web Service](../ws/setup.md) talking to the topology and serving a schema for your UI using [bullet-service-0.1.1](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.1.1)
+  * Setup the [DRPC PubSub](../pubsub/storm-drpc.md) talking to the topology and Web Service.
+  * Setup the [UI](../ui/setup.md) talking to the Web Service using [bullet-ui-0.4.0](https://github.com/bullet-db/bullet-ui/releases/tag/v0.4.0)
 
 **Prerequisites**
 
@@ -23,7 +23,7 @@ At the end of this section, you will have:
 Simply run:
 
 ```bash
-curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.4.0/examples/install-all.sh | bash
+curl -sLo- https://raw.githubusercontent.com/bullet-db/bullet-db.github.io/src/examples/install-all.sh | bash
 ```
 
 This will setup a local Storm cluster, a Bullet running on it, the Bullet Web Service and a Bullet UI for you. Once everything has launched, you should be able to go to the Bullet UI running locally at [http://localhost:8800](http://localhost:8800). You can then [**continue this guide from here**](#what-did-we-do).
@@ -46,7 +46,7 @@ mkdir -p $BULLET_HOME/backend/storm
 mkdir -p $BULLET_HOME/service
 mkdir -p $BULLET_HOME/ui
 cd $BULLET_HOME
-curl -LO https://github.com/yahoo/bullet-docs/releases/download/v0.4.0/examples_artifacts.tar.gz
+curl -LO https://github.com/bullet-db/bullet-db.github.io/releases/download/src/examples_artifacts.tar.gz
 tar -xzf examples_artifacts.tar.gz
 export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 ```
@@ -110,7 +110,7 @@ storm kill topology
 
 ### Setting up the example Bullet topology
 
-Now that Storm is up and running, we can put Bullet on it. We will use an example Spout that runs on Bullet 0.4.3 on our Storm cluster. The source is available [here](https://github.com/yahoo/bullet-docs/blob/master/examples/storm). This was part of the artifact that you installed in Step 1.
+Now that Storm is up and running, we can put Bullet on it. We will use an example Spout that runs on Bullet 0.4.3 on our Storm cluster. The source is available [here](https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/storm). This was part of the artifact that you installed in Step 1.
 
 #### Step 5: Setup the Storm example
 
@@ -120,7 +120,7 @@ cp $BULLET_EXAMPLES/storm/* $BULLET_HOME/backend/storm
 
 !!! note "Settings"
 
-    Take a look at bullet_settings.yaml for the settings that are being overridden for this example. You can add or change settings as you like by referring to [core Bullet settings in bullet_defaults.yaml](https://github.com/yahoo/bullet-core/blob/master/src/main/resources/bullet_defaults.yaml) and [Storm settings in bullet_storm_defaults.yaml](https://github.com/yahoo/bullet-storm/blob/master/src/main/resources/bullet_storm_defaults.yaml). In particular, we have [customized these settings](https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/resources/bullet_settings.yaml) that affect the Bullet queries you can run:
+    Take a look at bullet_settings.yaml for the settings that are being overridden for this example. You can add or change settings as you like by referring to [core Bullet settings in bullet_defaults.yaml](https://github.com/bullet-db/bullet-core/blob/master/src/main/resources/bullet_defaults.yaml) and [Storm settings in bullet_storm_defaults.yaml](https://github.com/bullet-db/bullet-storm/blob/master/src/main/resources/bullet_storm_defaults.yaml). In particular, we have [customized these settings](https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/storm/src/main/resources/bullet_settings.yaml) that affect the Bullet queries you can run:
 
     ```bullet.query.max.duration: 570000``` Longest query time can be 570s. The Storm cluster default DRPC timeout is 600s.
 
@@ -140,9 +140,9 @@ cp $BULLET_EXAMPLES/storm/* $BULLET_HOME/backend/storm
 
 !!! note "Want to tweak the example topology code?"
 
-    You will need to clone the [examples repository](https://github.com/yahoo/bullet-docs/tree/master/examples/storm) and customize it. To build the examples, you'll need to install [Maven 3](https://maven.apache.org/install.html).
+    You will need to clone the [examples repository](https://github.com/bullet-db/bullet-db.github.io/tree/src/examples/storm) and customize it. To build the examples, you'll need to install [Maven 3](https://maven.apache.org/install.html).
 
-    ```cd $BULLET_HOME && git clone git@github.com:yahoo/bullet-docs.git```
+    ```cd $BULLET_HOME && git clone git@github.com:bullet-db/bullet-db.github.io.git```
 
     ```cd bullet-docs/examples/storm && mvn package```
 
@@ -167,7 +167,7 @@ You should get a random record (serialized as a String inside a JSON message sen
 
 !!! note "What is this data?"
 
-    This data is randomly generated by the [custom Storm spout](https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/java/com/yahoo/bullet/storm/examples/RandomSpout.java) that is in the example topology you just launched. In practice, your spout would read from an actual data source such as Kafka instead. See [below](#storm-topology) for more details about this random data spout.
+    This data is randomly generated by the [custom Storm spout](https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/storm/src/main/java/com/yahoo/bullet/storm/examples/RandomSpout.java) that is in the example topology you just launched. In practice, your spout would read from an actual data source such as Kafka instead. See [below](#storm-topology) for more details about this random data spout.
 
 ### Setting up the Bullet Web Service
 
@@ -208,7 +208,7 @@ nvm use v6.9.4
 
 ```bash
 cd $BULLET_HOME/ui
-curl -LO https://github.com/yahoo/bullet-ui/releases/download/v0.4.0/bullet-ui-v0.4.0.tar.gz
+curl -LO https://github.com/bullet-db/bullet-ui/releases/download/src/bullet-ui-v0.4.0.tar.gz
 tar -xzf bullet-ui-v0.4.0.tar.gz
 cp $BULLET_EXAMPLES/ui/env-settings.json config/
 ```
@@ -219,23 +219,22 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
 PORT=8800 node express-server.js &
 ```
 
-Visit [http://localhost:8800](http://localhost:8800) to query your topology with the UI. See [UI usage](ui/usage.md) for some example queries and interactions using this UI. You see what the Schema means by visiting the Schema section.
+Visit [http://localhost:8800](http://localhost:8800) to query your topology with the UI. See [UI usage](../ui/usage.md) for some example queries and interactions using this UI. You see what the Schema means by visiting the Schema section.
 
 !!! note "Running it remotely?"
 
-    If you access the UI from another machine than where your UI is actually running, you will need to edit ```config/env-settings.json```. Since the UI is a client-side app, the machine that your browser is running on will fetch the UI and attempt to use these settings to talk to the Web Service. Since they point to localhost by default, your browser will attempt to connect there and fail. An easy fix is to change ```localhost``` in your env-settings.json to point to the host name where you will hosting the UI. This will be the same as the UI host you use in the browser. You can also do a local port forward on the machine accessing the UI by running:
-    ```ssh -N -L 8800:localhost:8800 -L 9999:localhost:9999 hostname-of-the-quickstart-components 2>&1```
+    If you access the UI from another machine than where your UI is actually running, you will need to edit ```config/env-settings.json```. Since the UI is a client-side app, the machine that your browser is running on will fetch the UI and attempt to use these settings to talk to the Web Service. Since they point to localhost by default, your browser will attempt to connect there and fail. An easy fix is to change ```localhost``` in your env-settings.json to point to the host name where you will hosting the UI. This will be the same as the UI host you use in the browser. You can also do a local port forward on the machine accessing the UI by running: ```ssh -N -L 8800:localhost:8800 -L 9999:localhost:9999 hostname-of-the-quickstart-components 2>&1```
 
 ##  Playing around with the instance
 
-Check out and follow along with the [UI Usage](ui/usage.md) page as it shows you some queries you can run using this UI.
+Check out and follow along with the [UI Usage](../ui/usage.md) page as it shows you some queries you can run using this UI.
 
 ## Teardown
 
 If you were using the [Install Script](#install-script) or if you don't want to manually bring down everything, you can run:
 
 ```bash
-curl -sLo- https://raw.githubusercontent.com/yahoo/bullet-docs/v0.4.0/examples/install-all.sh | bash -s cleanup
+curl -sLo- https://raw.githubusercontent.com/bullet-db/bullet-db.github.io/src/examples/install-all.sh | bash -s cleanup
 ```
 
 If you were performing the steps yourself, you can also manually cleanup **all the components and all the downloads** using:
@@ -255,7 +254,7 @@ This section will go over the various custom pieces this example plugged into Bu
 
 ### Storm topology
 
-The topology was the Bullet topology plugged in with a custom spout. This spout is implemented in this [example project](https://github.com/yahoo/bullet-docs/blob/master/examples/storm/) and was already built for you when you [downloaded the examples](#step-1-setup-directories-and-examples). It does not read from any data source and just produces random, structured data. It also produces only up to a maximum number of records in a given period. Both this maximum and the length of a period are configurable. If you examine $BULLET_HOME/backend/storm/launch.sh, you'll see the following:
+The topology was the Bullet topology plugged in with a custom spout. This spout is implemented in this [example project](https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/storm/) and was already built for you when you [downloaded the examples](#step-1-setup-directories-and-examples). It does not read from any data source and just produces random, structured data. It also produces only up to a maximum number of records in a given period. Both this maximum and the length of a period are configurable. If you examine $BULLET_HOME/backend/storm/launch.sh, you'll see the following:
 
 ```bash
 storm jar bullet-storm-example-1.0-SNAPSHOT-jar-with-dependencies.jar \
@@ -278,7 +277,7 @@ The settings defined by ```--bullet-conf bullet_settings.yaml``` and the argumen
     200 records is not Big Data by any stretch of the imagination but this Quick Start is running everything on one machine and is meant to introduce you to what Bullet does. In practice, you would scale and run your components with CPU and memory configurations to accommodate for your data volume and querying needs.
 
 
-Let's look at the [custom spout code](https://github.com/yahoo/bullet-docs/blob/master/examples/storm/src/main/java/com/yahoo/bullet/storm/examples/RandomSpout.java) that generates the data.
+Let's look at the [custom spout code](https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/storm/src/main/java/com/yahoo/bullet/storm/examples/RandomSpout.java) that generates the data.
 
 ```java
     @Override
@@ -353,7 +352,7 @@ If you put Bullet on your data, you will need to write a Spout (or a topology if
 
 ### PubSub
 
-We used the [DRPC PubSub](pubsub/storm-drpc.md) since we were using the Storm Backend. This code was included in the Bullet Storm artifact that we downloaded (the JAR with dependencies). We configured the Backend to use this PubSub by adding these settings to the YAML file that we passed to our Storm topology. Notice that we set the context to ```QUERY_PROCESSING``` since this is the Backend.
+We used the [DRPC PubSub](../pubsub/storm-drpc.md) since we were using the Storm Backend. This code was included in the Bullet Storm artifact that we downloaded (the JAR with dependencies). We configured the Backend to use this PubSub by adding these settings to the YAML file that we passed to our Storm topology. Notice that we set the context to ```QUERY_PROCESSING``` since this is the Backend.
 
 ```yaml
 bullet.pubsub.context.name: "QUERY_PROCESSING"
@@ -382,7 +381,7 @@ We launched the Web Service using two custom files - a PubSub configuration YAML
 
 The JSON columns file contains the schema for our data specified in JSON. Since our schema is not going to change, we use the Web Service to serve it from a file. If your schema changes dynamically, you will need to provide your own endpoint to the UI.
 
-The following is a snippet from the [JSON file](https://github.com/yahoo/bullet-docs/blob/master/examples/web-service/example_columns.json). Notice how the types of the fields are specified. Also, if you have generated BulletRecord with Map fields whose keys are known, you can specify them here using ```enumerations```.
+The following is a snippet from the [JSON file](https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/web-service/example_columns.json). Notice how the types of the fields are specified. Also, if you have generated BulletRecord with Map fields whose keys are known, you can specify them here using ```enumerations```.
 
 ```javascript
 [
@@ -410,7 +409,7 @@ The following is a snippet from the [JSON file](https://github.com/yahoo/bullet-
     }
 ]
 ```
-The contents of the [PubSub configuration file](https://github.com/yahoo/bullet-docs/blob/master/examples/web-service/example_drpc_pubsub_config.yaml) was discussed in the [PubSub section above](#pubsub).
+The contents of the [PubSub configuration file](https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/web-service/example_drpc_pubsub_config.yaml) was discussed in the [PubSub section above](#pubsub).
 
 ### UI
 

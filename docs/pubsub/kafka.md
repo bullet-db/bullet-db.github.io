@@ -32,7 +32,7 @@ bullet.pubsub.kafka.request.topic.name: "your-query-topic"
 bullet.pubsub.kafka.response.topic.name: "your-result-topic"
 ```
 
-You will then need to configure the Publishers and Subscribers. For details on what to configure and what the defaults are, see the [configuration file](https://github.com/yahoo/bullet-kafka/blob/master/src/main/resources/bullet_kafka_defaults.yaml).
+You will then need to configure the Publishers and Subscribers. For details on what to configure and what the defaults are, see the [configuration file](https://github.com/bullet-db/bullet-kafka/blob/master/src/main/resources/bullet_kafka_defaults.yaml).
 
 ### Plug into the Web Service
 
@@ -50,7 +50,7 @@ bullet.pubsub.kafka.request.topic.name: "your-query-topic"
 bullet.pubsub.kafka.response.topic.name: "your-result-topic"
 ```
 
-As with the Backend, you will then need to configure the Publishers and Subscribers. See the [configuration file](https://github.com/yahoo/bullet-kafka/blob/master/src/main/resources/bullet_kafka_defaults.yaml). Remember that your Subscribers in the Backend are reading what the Producers in your Web Service are producing and vice-versa, so make sure to match up the topics and settings accordingly if you have any custom changes.
+As with the Backend, you will then need to configure the Publishers and Subscribers. See the [configuration file](https://github.com/bullet-db/bullet-kafka/blob/master/src/main/resources/bullet_kafka_defaults.yaml). Remember that your Subscribers in the Backend are reading what the Producers in your Web Service are producing and vice-versa, so make sure to match up the topics and settings accordingly if you have any custom changes.
 
 ## Passthrough Configuration
 
@@ -68,7 +68,7 @@ You may choose to partition your topics for a couple of reasons:
 2. You may use two topics and partition one or both for scalability when reading and writing
 3. You may use two topics and partition one or both for sharding across multiple Web Service instances (and multiple instances in your Backend)
 
-You can accomplish all this with partition maps. You can configure what partitions your Publishers (Web Service or Backend) will write to using ```bullet.pubsub.kafka.request.partitions``` and what partitions your Subscribers will read from using ```bullet.pubsub.kafka.response.partitions```. Providing these to an instance of the Web Service or the Backend in the YAML file ensures that the Publishers in that instance only write to these request partitions and Subscribers only read from the response partitions. The Publishers will randomly adds one of the response partitions in the messages sent to ensure that the responses only arrive to one of those partitions this instance's Subscribers are waiting on. For more details, see the [configuration file](https://github.com/yahoo/bullet-kafka/blob/master/src/main/resources/bullet_kafka_defaults.yaml).
+You can accomplish all this with partition maps. You can configure what partitions your Publishers (Web Service or Backend) will write to using ```bullet.pubsub.kafka.request.partitions``` and what partitions your Subscribers will read from using ```bullet.pubsub.kafka.response.partitions```. Providing these to an instance of the Web Service or the Backend in the YAML file ensures that the Publishers in that instance only write to these request partitions and Subscribers only read from the response partitions. The Publishers will randomly adds one of the response partitions in the messages sent to ensure that the responses only arrive to one of those partitions this instance's Subscribers are waiting on. For more details, see the [configuration file](https://github.com/bullet-db/bullet-kafka/blob/master/src/main/resources/bullet_kafka_defaults.yaml).
 
 ## Security
 

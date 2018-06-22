@@ -1,8 +1,9 @@
 # Navigating the UI
 
-The UI should (hopefully) be self-explanatory. Any particular section that requires additional information has the ![info](../img/info.png) icon next to it. Clicking this will display information relevant to that section. The interactions in this page are running on the topology that was set up in the [Quick Start](../quick-start.md).  Recall that the example backend is configured to produce *20 data records every 101 ms.*.
+The UI should (hopefully) be self-explanatory. Any particular section that requires additional information has the ![info](../img/info.png) icon next to it. Clicking this will display information relevant to that section. The interactions in this page are running on the topology that was set up in the [Quick Start on Storm](../quick-start/storm.md).  Recall that the example backend is configured to produce *20 data records every 101 ms.*.
 
-The examples that show the various query types below were done on [Bullet UI v0.2.2](https://github.com/yahoo/bullet-ui/releases/tag/v0.2.2). Any example that uses a different version will make that explicit.
+!!! note "NOTE: This is an old version of the Bullet UI"
+    The version of Bullet this page shows does not support the newest functionality such as Windowing. We are working hard to get new documentation up as soon as possible. Use the [Spark Quick Start](../quick-start/spark.md) to see all the latest features. The examples that show the various query types below were done on [Bullet UI v0.2.2](https://github.com/bullet-db/bullet-ui/releases/tag/v0.2.2).
 
 ## Landing page
 
@@ -27,13 +28,13 @@ The schema you [plug into the UI](setup.md#configuration) is shown here so the u
 
 ## A simple first query
 
-If you create a new query, it defaults to getting a raw data record. This query returns immediately even though the maximum duration is set to 20s because the [Quick Start topology](../quick-start.md#storm-topology) produces about 200 records/s and we are looking for one record with no filters.
+If you create a new query, it defaults to getting a raw data record. This query returns immediately even though the maximum duration is set to 20s because the [Quick Start topology](../quick-start/storm.md#storm-topology) produces about 200 records/s and we are looking for one record with no filters.
 
 ### Results
 
 Since the entire record was asked to be returned instead of particular fields, the result defaults to a JSON view of the data. You can click the Show as Table button to switch the mode. In this mode, you can click on each cell to get a popover showing the data formatted.
 
-You can also download the results in JSON, CSV or flattened CSV (fields inside maps and lists are exploded). Any metadata returned for the query is collapsed by default. Any relevant metadata for the query [as configured](../quick-start.md#setting-up-the-example-bullet-topology) is shown here. As always the help icons display help messages for each section.
+You can also download the results in JSON, CSV or flattened CSV (fields inside maps and lists are exploded). Any metadata returned for the query is collapsed by default. Any relevant metadata for the query [as configured](../quick-start/storm.md#setting-up-the-example-bullet-topology) is shown here. As always the help icons display help messages for each section.
 
 **Example: Picking a random record from the stream**
 
@@ -84,7 +85,7 @@ The querybuilder is also type aware. The operations you can perform change based
 
 ### Exact
 
-The settings you had [configured when launching](../quick-start.md#step-5-setup-the-storm-example) the backend determines the number of unique values that Bullet can [count exactly](../index.md#approximate-computation). The example UI shown here used the default configuration value of ```16384``` that the example provided, so for all Count Distinct queries where the cardinality of the field combination is less than this number, the result is exact. The metadata also reflects this.
+The settings you had [configured when launching](../quick-start/storm.md#step-5-setup-the-storm-example) the backend determines the number of unique values that Bullet can [count exactly](../index.md#approximate-computation). The example UI shown here used the default configuration value of ```16384``` that the example provided, so for all Count Distinct queries where the cardinality of the field combination is less than this number, the result is exact. The metadata also reflects this.
 
 You can also optionally rename the result.
 
@@ -158,7 +159,7 @@ In this example, we group by ```tuple_number```. Recall that this is the number 
 
 !!! note "What happens if I group by uuid?"
 
-    Try it out! Nothing bad should happen. If the number of unique group values exceeds the [maximum configured](../quick-start.md#setting-up-the-example-bullet-topology) (we used 1024 for this example), you will receive a *uniform sample* across your unique group values. The results for your metrics however, are **not sampled**. It is the groups that are sampled on. This means that is **no** guarantee of order if you were expecting the *most popular* groups or similar. You should use the Top K query in that scenario.
+    Try it out! Nothing bad should happen. If the number of unique group values exceeds the [maximum configured](../quick-start/storm.md#setting-up-the-example-bullet-topology) (we used 1024 for this example), you will receive a *uniform sample* across your unique group values. The results for your metrics however, are **not sampled**. It is the groups that are sampled on. This means that is **no** guarantee of order if you were expecting the *most popular* groups or similar. You should use the Top K query in that scenario.
 
 !!! note "Why no Count Distinct after Grouping"
 
@@ -247,7 +248,7 @@ By adding ```duration``` into the fields, the number of unique values for ```(ty
 
 ## Charting
 
-[Bullet UI v0.3.0 and above](https://github.com/yahoo/bullet-ui/releases/tag/v0.3.0) added support for charting and pivoting. This example shows how to get a basic chart on [Bullet UI v0.3.1](https://github.com/yahoo/bullet-ui/releases/tag/v0.3.1). If you are following the [Quick Start](../quick-start.md), then this should be in your UI. The charting and pivoting modes are only enabled for queries that are *not* Count Distinct or Group without Group Fields. This is because these results only have a single row and it does not make sense to graph them. They are enabled for all other queries.
+[Bullet UI v0.3.0 and above](https://github.com/bullet-db/bullet-ui/releases/tag/v0.3.0) added support for charting and pivoting. This example shows how to get a basic chart on [Bullet UI v0.3.1](https://github.com/bullet-db/bullet-ui/releases/tag/v0.3.1). If you are following the [Quick Start on Storm](../quick-start/storm.md), then this should be in your UI. The charting and pivoting modes are only enabled for queries that are *not* Count Distinct or Group without Group Fields. This is because these results only have a single row and it does not make sense to graph them. They are enabled for all other queries.
 
 The charting example below shows how to get a quick chart of a ```Group``` query with 3 metrics.
 

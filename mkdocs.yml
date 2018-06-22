@@ -3,15 +3,14 @@ theme: cinder
 site_name: Bullet Docs
 site_description: The full documentation for Bullet - A Real Time Data Query Engine
 site_author: Akshai Sarma
-site_url: https://yahoo.github.io/bullet-docs
-site_favicon: img/favicon.ico
-repo_name: yahoo/bullet-core
+site_url: https://bullet-db.github.io/
+repo_url: https://github.com/bullet-db
 
 pages:
 - Home: index.md
 - Quick Start:
-  - Bullet On Spark: quick-start/bullet-on-spark.md
-  - Bullet On Storm: quick-start/bullet-on-storm.md
+  - Spark: quick-start/spark.md
+  - Storm: quick-start/storm.md
 - Backend:
   - Getting your data into Bullet: backend/ingestion.md
   - Storm:
@@ -24,8 +23,8 @@ pages:
 - PubSub:
   - Architecture: pubsub/architecture.md
   - Kafka: pubsub/kafka.md
-  - Storm DRPC: pubsub/storm-drpc.md
   - REST: pubsub/rest.md
+  - Storm DRPC: pubsub/storm-drpc.md
 - Web Service:
   - Setup: ws/setup.md
   - API: ws/api.md
@@ -49,4 +48,4 @@ extra:
 extra_css:
   - css/extra.css
 
-copyright: "Bullet is licensed under the <a href='https://github.com/yahoo/bullet/blob/master/LICENSE'>Apache 2 license"
+copyright: "Bullet is licensed under the <a href='https://github.com/bullet-db/bullet-core/blob/master/LICENSE'>Apache 2 license"

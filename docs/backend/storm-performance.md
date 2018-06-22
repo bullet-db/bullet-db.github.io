@@ -21,13 +21,13 @@ You should be familiar with [Storm](http://storm.apache.org), [Kafka](http://kaf
 
 ##  How was this tested?
 
-All tests run here were using [Bullet-Storm 0.4.2](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.4.2) and [Bullet-Storm 0.4.3](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.4.3). We are working with just the Storm piece without going through the Web Service or the UI. The DRPC REST endpoint provided by Storm lets us do just that.
+All tests run here were using [Bullet-Storm 0.4.2](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.4.2) and [Bullet-Storm 0.4.3](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.4.3). We are working with just the Storm piece without going through the Web Service or the UI. The DRPC REST endpoint provided by Storm lets us do just that.
 
 This particular version of Bullet on Storm was **prior to the architecture shift** to a PubSub layer but this would be the equivalent to using the Storm DRPC PubSub layer on a newer version of Bullet on Storm. You can replace DRPC spout and PrepareRequest bolt with Query spout and ReturnResults bolt with Result bolt conceptually. The actual implementation of the DRPC based PubSub layer just uses these spout and bolt implementations underneath anyway for the Publishers and Subscribers so the parallelisms and CPU utilizations should map 1-1.
 
 Using the pluggable metrics interface in Bullet on Storm, we captured worker level metrics such as CPU time, Heap usage, GC times and types, sent them to a in-house monitoring service for time-slicing and graphing. The figures shown below use this service.
 
-See [0.3.0](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.3.0) for how to plug in your own metrics collection.
+See [0.3.0](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.3.0) for how to plug in your own metrics collection.
 
 ### Tools used
 
@@ -76,7 +76,7 @@ bullet.query.aggregation.max.size: 512
 bullet.query.aggregation.raw.max.size: 500
 bullet.query.aggregation.distribution.max.points: 200
 ```
-Any setting not listed here defaults to the defaults in [bullet_defaults.yaml](https://github.com/yahoo/bullet-storm/blob/bullet-storm-0.4.2/src/main/resources/bullet_defaults.yaml). In particular, **metadata collection** and **timestamp injection** is enabled. ```RAW``` type queries also micro-batch by size 1 (in other words, do not micro-batch).
+Any setting not listed here defaults to the defaults in [bullet_defaults.yaml](https://github.com/bullet-db/bullet-storm/blob/bullet-storm-0.4.2/src/main/resources/bullet_defaults.yaml). In particular, **metadata collection** and **timestamp injection** is enabled. ```RAW``` type queries also micro-batch by size 1 (in other words, do not micro-batch).
 
 The parallelisms, CPU and memory settings for the components are listed below.
 
@@ -434,7 +434,7 @@ With this configuration, we were able to run **```680```** queries simultaneousl
 
 !!! note "Measuring latency in Bullet"
 
-    So far, we have been using data being delayed long enough as a proxy for queries failing. [Bullet-Storm 0.4.3](https://github.com/yahoo/bullet-storm/releases/tag/bullet-storm-0.4.3) adds an average latency metric computed in the Filter Bolts. For the next tests, we add a timestamp in the Data Source spouts when the record is read and this latency metric tells us exactly how long it takes for the record to be matched against a query and acked. By setting a limit for this latency, we can much more accurately measure acceptable performance.
+    So far, we have been using data being delayed long enough as a proxy for queries failing. [Bullet-Storm 0.4.3](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.4.3) adds an average latency metric computed in the Filter Bolts. For the next tests, we add a timestamp in the Data Source spouts when the record is read and this latency metric tells us exactly how long it takes for the record to be matched against a query and acked. By setting a limit for this latency, we can much more accurately measure acceptable performance.
 
 ## Test 6: Scaling for More Data
 

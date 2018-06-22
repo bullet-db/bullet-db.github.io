@@ -1,13 +1,10 @@
 # The UI Layer
 
-The Bullet UI lets you easily create and work with Bullet queries and results for your custom data. It stores all created queries, results and other metadata in the local browser storage or [LocalStorage](https://www.w3schools.com/html/html5_webstorage.asp).
+The Bullet UI lets you easily create and work with Bullet queries and results for your custom data. It stores all created queries, results and other metadata in the local browser storage or [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API).
 
-While LocalStorage is sufficient for simple usage, UI users can run out of space when a lot of queries and results are being stored. We are looking into more robust solutions like [LocalForage](https://localforage.github.io/localForage/). See [#9](https://github.com/yahoo/bullet-ui/issues/9). This should be landing soon&trade;.
-
-!!! note "Really!? LocalStorage only!?"
+!!! note "Really!? Browser Storage only!?"
 
     We're serious about the no persistence thing with Bullet! And while we're at it, we are also not interested in supporting old browsers. Joking aside though, we wanted to keep Bullet as light and simple as possible to start with. We can look into extending support from the server-side by adding a database or the like if needed. In practice, we have found that this isn't as important as it initially seems.
-
 
 ## Prerequisites
 
@@ -31,12 +28,11 @@ We are considering various packaging options at the moment like Docker etc. In t
 ### Build from source
 
 * Install [Node](https://nodejs.org/) (recommend using [nvm](https://github.com/creationix/nvm) to manage Node versions).
-* Install [Bower](https://bower.io/). Use NPM to install it with ```sudo npm install -g bower```
+* Install [Yarn](https://yarnpkg.com/lang/en/). Use NPM to install it with ```npm install -g yarn```
 * Install [Ember](http://emberjs.com/). ```sudo npm install -g ember-cli``` (sudo required only if not using nvm)
-* git clone git@github.com:yahoo/bullet-ui.git
+* git clone git@github.com:bullet-db/bullet-ui.git
 * cd bullet-ui
-* `npm install`
-* `bower install`
+* `yarn`
 * `ember build --environment production`
 
 The entire application with all its assets and dependencies are compiled and placed into dist/. You could point a web server directly at this folder but you will **only** be able to use the default configuration (see [below](#configuration)).
@@ -73,21 +69,23 @@ Visit localhost:8800 to see your UI that should be configured with the right set
 
 ## Configuration
 
-All of the configuration for the UI is **environment-specific**. This lets you have different instances of Bullet for different environments (e.g. CI, Staging, Production). These settings can be found in [env-settings.json](https://github.com/yahoo/bullet-ui/blob/master/config/env-settings.json).
+The configuration for the UI lets you have different instances of Bullet for different environments (e.g. CI, Staging, Production). These settings can be found in [env-settings.json](https://github.com/bullet-db/bullet-ui/blob/master/config/env-settings.json).
 
-|    Setting      |     Meaning      |
-| --------------- | ---------------- |
-| queryHost       | The end point (port included) of your Web Service machine that is talking to the Bullet backend |
-| queryNamespace  | Any qualifiers you have after your host and port on your Web Service running on your ```queryHost``` |
-| queryPath       | The path fragment after the ```queryNamespace``` on your Web Service running on your ```queryHost``` |
-| schemaHost      | The end point (port included) of your Web Service machine that is serving your schema in the JSON API format (see [Web Service setup](../ws/setup.md) for details.)|
-| schemaNamespace | The path fragment on your schema Web Service running on the ```schemaHost```. There is no ```schemaPath``` because it **must** be ```columns``` in order for the UI to be able fetch the column resource (the fields in your schema).|
-| modelVersion    | This is used an indicator to apply changes to the stored queries, results etc. It is monotonically increasing. On startup, changes specified in ```migrations``` will be applied if the old modelVersion is not present or is < than this number |
-| migrations      | is an object that currently supports one key: ```deletions``` of type string. The value can be set to either ```result``` or ```query```. The former wipes all existing results. The latter wipes everything. See ```modelVersion``` above. |
-| helpLinks       | Is a list of objects, where each object is a help link. These links populate the "Help" drop-down on the UI's top navbar. You can add links to explain your data for example |
-| defaultFilter   | Can either be a [API Filter](../ws/api.md#filters) or a URL from which one could be fetched dynamically. The UI adds this to every newly created Query. You could use this as a way to have user specific (for example, cookie based) filters created for your users when they create a new query in the UI. Note that if you have are accessing a map subfield and your field value in the filter is set as ```foo.bar``` and you want ```bar``` to be the subfield in the UI query builder, you will need to add a key called ```subfield``` in the filter (not supported by the API) and set its value to ```true``` |
-| bugLink         | Is a URL that by default points to the issues page for the UI GitHub repository. You can change it to point to your own custom JIRA queue or something else |
-| defaultValues   | Is an object that lets you configures defaults for various query parameters and lets you tie your custom backend settings to the UI. |
+|    Setting                |     Meaning      |
+| ------------------------- | ---------------- |
+| queryHost                 | The end point (port included) of your Web Service machine that is talking to the Bullet backend |
+| queryNamespace            | Any qualifiers you have after your host and port on your Web Service running on your ```queryHost``` |
+| queryPath                 | The path fragment after the ```queryNamespace``` on your Web Service running on your ```queryHost``` for the WebSocket endpoint |
+| queryStompRequestChannel  | The fragment after this is the Stomp Request channel as configured in your Web Service for the WebSocket endpoint |
+| queryStompResponseChannel | The fragment after this is the Stomp Response channel as configured in your Web Service for the WebSocket endpoint |
+| schemaHost                | The end point (port included) of your Web Service machine that is serving your schema in the JSON API format (see [Web Service setup](../ws/setup.md) for details.)|
+| schemaNamespace           | The path fragment on your schema Web Service running on the ```schemaHost```. There is no ```schemaPath``` because it **must** be ```columns``` in order for the UI to be able fetch the column resource (the fields in your schema).|
+| modelVersion              | This is used an indicator to apply changes to the stored queries, results etc. It is monotonically increasing. On startup, changes specified in ```migrations``` will be applied if the old modelVersion is not present or is < than this number |
+| migrations                | is an object that currently supports one key: ```deletions``` of type string. The value can be set to either ```result``` or ```query```. The former wipes all existing results. The latter wipes everything. See ```modelVersion``` above. |
+| helpLinks                 | Is a list of objects, where each object is a help link. These links populate the "Help" drop-down on the UI's top navbar. You can add links to explain your data for example |
+| defaultFilter             | Can either be a [API Filter](../ws/api.md#filters) or a URL from which one could be fetched dynamically. The UI adds this to every newly created Query. You could use this as a way to have user specific (for example, cookie based) filters created for your users when they create a new query in the UI. Note that if you have are accessing a map subfield and your field value in the filter is set as ```foo.bar``` and you want ```bar``` to be the subfield in the UI query builder, you will need to add a key called ```subfield``` in the filter (not supported by the API) and set its value to ```true``` |
+| bugLink                   | Is a URL that by default points to the issues page for the UI GitHub repository. You can change it to point to your own custom JIRA queue or something else |
+| defaultValues             | Is an object that lets you configures defaults for various query parameters and lets you tie your custom backend settings to the UI |
 
 These are the properties in the ```defaultValues``` object. The Validated column denotes if the value is used when validating a query for correctness and the In Help column denotes if the value is displayed in the popover help messages in the UI.
 
@@ -101,13 +99,18 @@ These are the properties in the ```defaultValues``` object. The Validated column
 | distributionQuantileStart               | No        | No      | The default value filled in for the Start field for Quantile Distribution aggregations |
 | distributionQuantileEnd                 | No        | No      | The default value filled in for the End field for Quantile Distribution aggregations |
 | distributionQuantileIncrement           | No        | No      | The default value filled in for the Increment field for Quantile Distribution aggregations |
-| queryTimeoutSecs                        | No        | Yes     | The additional time past the duration of the query for Bullet to timeout the query. This is number of ticks * the tick interval |
+| windowEmitFrequencyMinSecs              | Yes       | No      | The minimum time interval at which a time based window can be returned. Set this to the minimum window emit frequency from your backend configuration |
+| everyForRecordBasedWindow               | No        | No      | The default value for the number of records in a window for a record based window |
+| everyForTimeBasedWindow                 | No        | No      | The default value for the number of records in a window for a time based window |
 | sketches.countDistinctMaxEntries        | No        | Yes     | The maximum entries configured for your Count Distinct sketch in your backend configuration |
 | sketches.groupByMaxEntries              | No        | Yes     | The maximum entries configured for your Group sketch in your backend configuration |
 | sketches.distributionMaxEntries         | No        | Yes     | The maximum entries configured for your Distribution sketch in your backend configuration |
 | sketches.distributionMaxNumberOfPoints  | Yes       | Yes     | The maximum number of points allowed for Distribution aggregations in your backend configuration |
 | sketches.topKMaxEntries                 | No        | Yes     | The maximum entries configured for your Top K sketch in your backend configuration |
 | sketches.topKErrorType                  | No        | Yes     | The ErrorType used for your Top K sketch in your backend configuration. You should set this to the full String rather than ```NFN``` or ```NFP``` |
+| metadataKeyMapping.querySection         | No        | Yes     | The name of the Metadata key for the Query Concept in your backend configuration |
+| metadataKeyMapping.windowSection        | No        | Yes     | The name of the Metadata key for the Window Concept in your backend configuration |
+| metadataKeyMapping.sketchSection        | No        | Yes     | The name of the Metadata key for the Theta Concept in your backend configuration |
 | metadataKeyMapping.theta                | No        | Yes     | The name of the Metadata key for the Theta Concept in your backend configuration |
 | metadataKeyMapping.uniquesEstimate      | No        | Yes     | The name of the Metadata key for the Uniques Estimate Concept in your backend configuration |
 | metadataKeyMapping.queryCreationTime    | No        | Yes     | The name of the Metadata key for the Query Creation Time Concept in your backend configuration |
@@ -123,7 +126,7 @@ These are the properties in the ```defaultValues``` object. The Validated column
 You can specify values for each property above in the ```env-settings.json``` file. These will be used when running a custom instance of the UI (see [above](#Running)).
 
 The ```default``` property in the ```env-settings.json``` that loads default settings for the UI that can be selectively overridden based on which environment you are running on. All settings explained above have default values
-that are the same as the [default backend settings](https://github.com/yahoo/bullet-storm/blob/master/src/main/resources/bullet_defaults.yaml). However, the defaults do not add the ```defaultFilter``` setting explained above.
+that are the same as the [default backend settings](https://github.com/bullet-db/bullet-storm/blob/master/src/main/resources/bullet_defaults.yaml). However, the defaults do not add the ```defaultFilter``` setting explained above.
 
 ```json
 {
@@ -136,10 +139,10 @@ that are the same as the [default backend settings](https://github.com/yahoo/bul
     "helpLinks": [
       {
         "name": "Tutorials",
-        "link": "https://yahoo.github.io/bullet-docs/ui/usage"
+        "link": "https://bullet-db.github.io/ui/usage"
       }
     ],
-    "bugLink": "https://github.com/yahoo/bullet-ui/issues",
+    "bugLink": "https://github.com/bullet-db/bullet-ui/issues",
     "modelVersion": 1,
     "defaultValues": {
       "aggregationMaxSize": 512,

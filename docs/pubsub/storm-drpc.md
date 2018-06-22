@@ -43,7 +43,7 @@ When you're plugging in the DRPC PubSub layer into your Web Service, you will ne
 
 You should then plug in this JAR to your Web Service following the instructions [here](../ws/setup.md#launch).
 
-For configuration, you should [follow the steps here](../ws/setup.md#pubsub-configuration) and add the context and class name listed above. You will need to point to your DRPC servers and set the function to the same value you chose [above](#storm-backend). You can configure this and other settings that are explained further in the [PubSub and PubSub Storm DRPC defaults section](https://github.com/yahoo/bullet-storm/blob/master/src/main/resources/bullet_storm_defaults.yaml) in the Bullet Storm defaults file.
+For configuration, you should [follow the steps here](../ws/setup.md#pubsub-configuration) and add the context and class name listed above. You will need to point to your DRPC servers and set the function to the same value you chose [above](#storm-backend). You can configure this and other settings that are explained further in the [PubSub and PubSub Storm DRPC defaults section](https://github.com/bullet-db/bullet-storm/blob/master/src/main/resources/bullet_storm_defaults.yaml) in the Bullet Storm defaults file.
 
 ```yaml
 bullet.pubsub.context.name: "QUERY_SUBMISSION"

@@ -22,7 +22,7 @@ The red colored lines are the path for the queries that come in through the PubS
 
 Bullet can accept arbitrary sources of data as long as they can be read from Storm. You can either:
 
-1. Write a Storm spout that reads your data from where ever it is (Kafka etc) and [converts it to Bullet Records](ingestion.md). See [Quick Start](../quick-start.md#storm-topology) for an example.
+1. Write a Storm spout that reads your data from where ever it is (Kafka etc) and [converts it to Bullet Records](ingestion.md). See [Quick Start](../quick-start/storm.md#storm-topology) for an example.
 2. Hook up an existing topology that is doing something else directly to Bullet. You will still write and hook up a component that converts your data into Bullet Records in your existing topology.
 
 |          | Pros                                                                             | Cons                                                                                 |
@@ -35,7 +35,7 @@ Your data is then emitted to the Filter bolt.  If you have no queries in your sy
 
 !!! note "Why support micro-batching?"
 
-    ```RAW``` queries do not micro-batch by default, which makes Bullet really snappy when running those queries. As soon as your maximum record limit is reached, the query immediately returns. You can use a setting in [bullet_defaults.yaml](https://github.com/yahoo/bullet-storm/blob/master/src/main/resources/bullet_defaults.yaml) to turn on batching if you like. In the near future, micro-batching will let Bullet provide incremental results - partial results arrive over the duration of the query. Bullet can emit intermediate aggregations as they are all [additive](#combining).
+    ```RAW``` queries do not micro-batch by default, which makes Bullet really snappy when running those queries. As soon as your maximum record limit is reached, the query immediately returns. You can use a setting in [bullet_defaults.yaml](https://github.com/bullet-db/bullet-storm/blob/master/src/main/resources/bullet_defaults.yaml) to turn on batching if you like. In the near future, micro-batching will let Bullet provide incremental results - partial results arrive over the duration of the query. Bullet can emit intermediate aggregations as they are all [additive](#combining).
 
 ### Request processing
 

@@ -38,7 +38,7 @@ This instance of Bullet also powers other use-cases such as letting analysts val
 
 # Quick Start
 
-See [Quick Start](quick-start/bullet-on-spark.md) to set up Bullet locally using spark-streaming. You will generate some synthetic streaming data that you can then query with Bullet.
+See [Quick Start](quick-start/spark.md) to set up Bullet locally using Spark Streaming. You will generate some synthetic streaming data that you can then query with Bullet.
 
 # Setup Bullet on your streaming data
 
@@ -61,7 +61,7 @@ To set up Bullet on a real data stream, you need:
 
 Bullet queries allow you to filter, project and aggregate data. You can also specify a window to get incremental results. Bullet lets you fetch raw (the individual data records) as well as aggregated data.
 
-* See the [UI Usage section](ui/usage.md) for using the UI to build Bullet queries. This is the same UI you will build in the [Quick Start](quick-start/bullet-on-spark.md)
+* See the [UI Usage section](ui/usage.md) for using the UI to build Bullet queries. This is the same UI you will build in the Quick Starts.
 
 * See the [API section](ws/api.md) for building Bullet API queries
 
@@ -162,10 +162,11 @@ Implementations of [Bullet on Storm](backend/storm-architecture.md) and [Bullet 
 ## PubSub
 
 The PubSub is responsible for transmitting queries from the API to the Backend and returning results back from the Backend to the clients. It decouples whatever particular Backend you are using with the API.
-We currently support two different PubSub implementation:
+We currently support three different PubSub implementations:
 
 * [Kafka](pubsub/kafka.md)
 * [REST](pubsub/rest.md)
+* [Storm DRPC](pubsub/storm-drpc.md) (only for non-windowed queries)
 
 You can also very easily [implement your own](pubsub/architecture.md#implementing-your-own-pubsub) by defining a few interfaces that we provide.
 
@@ -182,4 +183,4 @@ The Web Service can be deployed as a standalone Java application (a JAR file) or
 
 !!! note "Want to know more?"
 
-    In practice, the backend is implemented using the basic components that the Stream processing framework provides. See [Storm Architecture](backend/storm-architecture.md) for details.
+    In practice, the backend is implemented using the basic components that the Stream processing framework provides. See [Storm Architecture](backend/storm-architecture.md) and [Spark Architecture](backend/spark-architecture.md) for details.
