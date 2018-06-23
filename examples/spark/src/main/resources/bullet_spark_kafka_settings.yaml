@@ -99,5 +99,15 @@ bullet.pubsub.kafka.response.topic.name: "bullet.responses"
 ## https://github.com/bullet-db/bullet-core/blob/master/src/main/resources/bullet_defaults.yaml
 ########################################################################################################################
 ########################################################################################################################
+bullet.query.aggregation.raw.max.size: 500
+bullet.query.aggregation.max.size: 1024
+bullet.query.aggregation.count.distinct.sketch.entries: 16384
+bullet.query.aggregation.group.sketch.entries: 1024
+bullet.query.aggregation.distribution.sketch.entries: 1024
+bullet.query.aggregation.distribution.max.points: 200
+bullet.query.aggregation.distribution.generated.points.rounding: 6
+bullet.query.aggregation.top.k.sketch.entries: 1024
+bullet.query.aggregation.top.k.sketch.error.type: "NFN"
+bullet.result.metadata.enable: true
 # Factory class to get new BulletRecords.
 bullet.record.provider.class.name: "com.yahoo.bullet.record.SimpleBulletRecordProvider"

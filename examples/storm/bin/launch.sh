@@ -3,7 +3,7 @@
 # We pass 20 and 100 to the RandomSpout, which means it generates up to 20 random records every 100 ms.
 storm jar bullet-storm-example-1.0-SNAPSHOT-jar-with-dependencies.jar \
           com.yahoo.bullet.storm.Topology \
-          --bullet-conf bullet_settings.yaml \
+          --bullet-conf ./bullet_settings.yaml \
           --bullet-spout com.yahoo.bullet.storm.examples.RandomSpout \
           --bullet-spout-parallelism 1 \
           --bullet-spout-cpu-load 100.0 \
