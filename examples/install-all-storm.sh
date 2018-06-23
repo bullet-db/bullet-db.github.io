@@ -2,10 +2,10 @@
 
 set -euo pipefail
 
-BULLET_EXAMPLES_VERSION=0.4.0
-BULLET_UI_VERSION=0.4.0
-BULLET_WS_VERSION=0.1.1
-STORM_VERSION=1.0.3
+BULLET_EXAMPLES_VERSION=0.5.1
+BULLET_UI_VERSION=0.5.0
+BULLET_WS_VERSION=0.2.2
+STORM_VERSION=1.2.2
 NVM_VERSION=0.33.1
 NODE_VERSION=6.9.4
 
@@ -80,7 +80,6 @@ install_storm() {
 
     println "Configuring Storm ..."
     export PATH="${BACKEND}/${STORM}/bin/:${PATH}"
-    echo 'drpc.servers: ["127.0.0.1"]' >> "${BACKEND}/${STORM}/conf/storm.yaml"
     println "Done!"
 }
 
@@ -90,9 +89,6 @@ launch_storm() {
 
     println "Launching Storm Nimbus..."
     storm nimbus &
-
-    println "Launching Storm DRPC..."
-    storm drpc &
 
     println "Launching Storm UI..."
     storm ui &
@@ -112,7 +108,7 @@ launch_storm() {
 
 launch_bullet_storm() {
     println "Copying Bullet topology configuration and artifacts..."
-    cp "${BULLET_EXAMPLES}/storm"/* "${BULLET_HOME}/backend/storm"
+    cp "${BULLET_EXAMPLES}/backend/storm"/* "${BULLET_HOME}/backend/storm"
 
     println "Launching the Bullet topology..."
     println "=============================================================================="
@@ -123,11 +119,6 @@ launch_bullet_storm() {
     println "=============================================================================="
     sleep 30
     println "=============================================================================="
-
-    println "Testing the Storm topology"
-    println ""
-    println "Getting one random record from the Bullet topology..."
-    curl -s -X POST -d '{"id":"", "content":"{}"}' http://localhost:3774/drpc/bullet-query
     println "Done!"
 }
 
@@ -138,16 +129,16 @@ launch_bullet_web_service() {
     println "Downloading Bullet Web Service ${BULLET_WS_VERSION}..."
     download "http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/${BULLET_WS_VERSION}" "${BULLET_WS_JAR}"
 
-    println "Configuring Bullet Web Service and plugging in Storm DRPC PubSub..."
+    println "Configuring Bullet Web Service and plugging in In-Memory REST PubSub..."
     cp "${BULLET_DOWNLOADS}/${BULLET_WS_JAR}" "${BULLET_SERVICE_HOME}/bullet-service.jar"
-    cp "${BULLET_EXAMPLES}/storm"/*jar-with-dependencies.jar "${BULLET_SERVICE_HOME}/bullet-storm-jar-with-dependencies.jar"
     cp "${BULLET_EXAMPLES}/web-service/"example_* "${BULLET_SERVICE_HOME}/"
 
-    println "Launching Bullet Web Service..."
+    println "Launching Bullet Web Service with the built-in REST PubSub enabled..."
     cd "${BULLET_SERVICE_HOME}"
-    java -Dloader.path=bullet-storm-jar-with-dependencies.jar -jar bullet-service.jar \
-         --bullet.pubsub.config=example_drpc_pubsub_config.yaml --bullet.schema.file=example_columns.json \
-         --server.port=9999  --logging.path="${BULLET_SERVICE_HOME}" --logging.file=log.txt &> "${BULLET_SERVICE_HOME}/log.txt" &
+    java -jar ./bullet-service.jar \
+         --bullet.pubsub.config=example_rest_pubsub_config.yaml --bullet.schema.file=example_columns.json \
+         --server.port=9999  --bullet.pubsub.builtin.rest.enabled=true --logging.path="${BULLET_SERVICE_HOME}" \
+         --logging.file=log.txt &> "${BULLET_SERVICE_HOME}/log.txt" &
 
     println "Sleeping for 15 s to ensure Bullet Web Service is up..."
     sleep 15
@@ -160,7 +151,7 @@ launch_bullet_web_service() {
     println "Getting column schema from the Web Service..."
     println ""
     curl -s http://localhost:9999/api/bullet/columns
-    println "Finished Bullet Web Service test"
+    println "Finished Bullet Web Service test!"
 }
 
 install_node() {

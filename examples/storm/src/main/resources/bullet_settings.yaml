@@ -1,29 +1,36 @@
-# Custom settings for the example
+# Custom or notable settings for the example
 # Settings not overridden will default to the defaults in bullet_storm_defaults.yaml in the bullet-storm artifact
 # and to the defaults in bullet_defaults.yaml in the bullet-core artifact.
-# Settings that start with bullet.topology are Storm settings and everything else are Bullet Core settings.
+
+# Storm settings
 bullet.topology.name: "bullet"
 bullet.topology.metrics.enable: false
 bullet.topology.metrics.built.in.enable: false
 bullet.topology.query.spout.parallelism: 1
 bullet.topology.query.spout.cpu.load: 30.0
 bullet.topology.query.spout.memory.on.heap.load: 256.0
-bullet.topology.query.spout.memory.off.heap.load: 192.0
+bullet.topology.query.spout.memory.off.heap.load: 160.0
 bullet.topology.filter.bolt.parallelism: 1
 bullet.topology.filter.bolt.cpu.load: 100.0
 bullet.topology.filter.bolt.memory.on.heap.load: 256.0
-bullet.topology.filter.bolt.memory.off.heap.load: 192.0
+bullet.topology.filter.bolt.memory.off.heap.load: 160.0
 bullet.topology.return.bolt.parallelism: 1
 bullet.topology.result.bolt.cpu.load: 10.0
 bullet.topology.result.bolt.memory.on.heap.load: 128.0
-bullet.topology.result.bolt.memory.off.heap.load: 192.0
+bullet.topology.result.bolt.memory.off.heap.load: 160.0
+bullet.topology.loop.bolt.parallelism: 1
+bullet.topology.loop.bolt.cpu.load: 10.0
+bullet.topology.loop.bolt.memory.on.heap.load: 128.0
+bullet.topology.loop.bolt.memory.off.heap.load: 160.0
 bullet.topology.join.bolt.parallelism: 1
 bullet.topology.join.bolt.cpu.load: 20.0
 bullet.topology.join.bolt.memory.on.heap.load: 128.0
-bullet.topology.join.bolt.memory.off.heap.load: 192.0
-bullet.topology.join.bolt.error.tick.timeout: 3
-bullet.topology.join.bolt.query.tick.timeout: 3
-bullet.topology.tick.interval.secs: 1
+bullet.topology.join.bolt.memory.off.heap.load: 160.0
+bullet.topology.join.bolt.query.post.finish.buffer.ticks: 3
+bullet.topology.join.bolt.query.pre.start.delay.ticks: 2
+bullet.topology.tick.spout.interval.ms: 100
+
+# Bullet Core settings
 bullet.query.aggregation.raw.max.size: 500
 bullet.query.aggregation.max.size: 1024
 bullet.query.aggregation.count.distinct.sketch.entries: 16384
@@ -33,47 +40,11 @@ bullet.query.aggregation.distribution.max.points: 200
 bullet.query.aggregation.distribution.generated.points.rounding: 6
 bullet.query.aggregation.top.k.sketch.entries: 1024
 bullet.query.aggregation.top.k.sketch.error.type: "NFN"
-bullet.query.max.duration: 570000
 bullet.result.metadata.enable: true
-bullet.result.metadata.metrics:
-    - name: "Query Identifier"
-      key: "query_id"
-    - name: "Query Body"
-      key: "query"
-    - name: "Query Creation Time"
-      key: "query_receive_time"
-    - name: "Query Termination Time"
-      key: "query_finish_time"
-    - name: "Sketch Metadata"
-      key: "sketches"
-    - name: "Estimated Result"
-      key: "was_estimated"
-    - name: "Standard Deviations"
-      key: "standard_deviations"
-    - name: "Family"
-      key: "family"
-    - name: "Size"
-      key: "size"
-    - name: "Theta"
-      key: "theta"
-    - name: "Uniques Estimate"
-      key: "uniques_estimate"
-    - name: "Minimum Value"
-      key: "minimum_value"
-    - name: "Maximum Value"
-      key: "maximum_value"
-    - name: "Items Seen"
-      key: "items_seen"
-    - name: "Normalized Rank Error"
-      key: "normalized_rank_error"
-    - name: "Maximum Count Error"
-      key: "maximum_count_error"
-    - name: "Active Items"
-      key: "active_items"
-bullet.record.inject.timestamp.enable: true
-bullet.record.inject.timestamp.key: "receive_timestamp"
 
-# Storm DRPC PubSub settings
+# REST PubSub settings
 bullet.pubsub.context.name: "QUERY_PROCESSING"
-bullet.pubsub.class.name: "com.yahoo.bullet.storm.drpc.DRPCPubSub"
-bullet.pubsub.storm.drpc.function: "bullet-query"
+bullet.pubsub.class.name: "com.yahoo.bullet.pubsub.rest.RESTPubSub"
+bullet.pubsub.rest.query.urls:
+    - "http://localhost:9999/api/bullet/pubsub/query"
+bullet.pubsub.rest.result.url: "http://localhost:9999/api/bullet/pubsub/result"
