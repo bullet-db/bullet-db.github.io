@@ -5,7 +5,7 @@ This section gets you running a mock instance of Bullet to play around with. The
 At the end of this section, you will have:
 
   * Setup the Bullet topology using a custom spout on [bullet-storm-0.8.3](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.8.3)
-  * Setup the [Web Service](../ws/setup.md) talking to the topology and serving a schema for your UI using [bullet-service-0.2.2](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.2.2)
+  * Setup the [Web Service](../ws/setup.md) talking to the topology and serving a schema for your UI using [bullet-service-0.3.0](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.3.0)
   * Setup the [REST PubSub](../pubsub/rest.md) talking to the topology and Web Service.
   * Setup the [UI](../ui/setup.md) talking to the Web Service using [bullet-ui-0.5.0](https://github.com/bullet-db/bullet-ui/releases/tag/v0.5.0)
 
@@ -133,7 +133,7 @@ Visit the UI and see if the topology is up. You should see the ```DataSource``` 
 
 ```bash
 cd $BULLET_HOME/service
-curl -Lo bullet-service.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/0.2.2/bullet-service-0.2.2-embedded.jar
+curl -Lo bullet-service.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/0.3.0/bullet-service-0.3.0-embedded.jar
 cp $BULLET_EXAMPLES/web-service/example* $BULLET_HOME/service/
 ```
 
@@ -313,11 +313,14 @@ If you put Bullet on your data, you will need to write a Spout (or a topology if
 
 ### PubSub
 
-We used the [REST PubSub](../pubsub/rest.md). Note that even though we support a DRPC PubSub, it doesn't actually support windowing so we have not used it for this example. We configured the Backend to use this PubSub by adding these settings to the YAML file that we passed to our Storm topology. Notice that we set the context to ```QUERY_PROCESSING``` since this is the Backend.
+We used the [REST PubSub](../pubsub/rest.md). Note that even though we support a DRPC PubSub, it doesn't actually support windowing so we have not used it for this example. We configured the Backend to use this PubSub by adding these settings to the YAML file that we passed to our Storm topology. Notice that we set the context to ```QUERY_PROCESSING``` since this is the Backend. We do not set ```bullet.pubsub.rest.result.url``` because each query sent to the topology has this information so that the results could be returned back to it.
+
 
 ```yaml
 bullet.pubsub.context.name: "QUERY_PROCESSING"
 bullet.pubsub.class.name: "com.yahoo.bullet.pubsub.rest.RESTPubSub"
+bullet.pubsub.rest.query.urls:
+    - "http://localhost:9999/api/bullet/pubsub/query"
 ```
 
 For the Web Service, we passed in a YAML file that pointed to itself for the REST endpoints that serve as the PubSub interface. Notice that we set the context to ```QUERY_SUBMISSION``` since this is the Web Service.
@@ -328,8 +331,8 @@ bullet.pubsub.class.name: "com.yahoo.bullet.pubsub.rest.RESTPubSub"
 bullet.pubsub.rest.query.urls:
     - "http://localhost:9999/api/bullet/pubsub/query"
 bullet.pubsub.rest.result.url: "http://localhost:9999/api/bullet/pubsub/result"
-bullet.pubsub.rest.connect.timeout.ms: 30000
-bullet.pubsub.rest.connect.retry.limit: 10
+bullet.pubsub.rest.subscriber.connect.timeout.ms: 5000
+bullet.pubsub.rest.publisher.connect.timeout.ms: 5000
 bullet.pubsub.rest.subscriber.max.uncommitted.messages: 100
 bullet.pubsub.rest.result.subscriber.min.wait.ms: 10
 bullet.pubsub.rest.query.subscriber.min.wait.ms: 10
