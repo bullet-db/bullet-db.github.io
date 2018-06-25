@@ -20,7 +20,7 @@ At the end of this section, you will have:
 Simply run:
 
 ```bash
-curl -sLo- https://raw.githubusercontent.com/bullet-db/bullet-db.github.io/src/examples/install-all.sh | bash
+curl -sLo- https://raw.githubusercontent.com/bullet-db/bullet-db.github.io/src/examples/install-all-storm.sh | bash
 ```
 
 This will setup a local Storm cluster, a Bullet running on it, the Bullet Web Service and a Bullet UI for you. Once everything has launched, you should be able to go to the Bullet UI running locally at [http://localhost:8800](http://localhost:8800). You can then [**continue this guide from here**](#what-did-we-do).
@@ -149,7 +149,7 @@ Note that we turned on the built-in REST pubsub in the Web Service when launchin
 You can verify that it is up by running a Bullet query or getting the example columns through the API:
 
 ```bash
-curl -s -H 'Content-Type: text/plain' -X POST -d '{}' http://localhost:9999/api/bullet/query
+curl -s -H 'Content-Type: text/plain' -X POST -d '{"aggregation": {"size": 1}}' http://localhost:9999/api/bullet/sse-query
 curl -s http://localhost:9999/api/bullet/columns
 ```
 
@@ -194,7 +194,7 @@ Check out and follow along with the [UI Usage](../ui/usage.md) page as it shows 
 If you were using the [Install Script](#install-script) or if you don't want to manually bring down everything, you can run:
 
 ```bash
-curl -sLo- https://raw.githubusercontent.com/bullet-db/bullet-db.github.io/src/examples/install-all.sh | bash -s cleanup
+curl -sLo- https://raw.githubusercontent.com/bullet-db/bullet-db.github.io/src/examples/install-all-storm.sh | bash -s cleanup
 ```
 
 If you were performing the steps yourself, you can also manually cleanup **all the components and all the downloads** using:

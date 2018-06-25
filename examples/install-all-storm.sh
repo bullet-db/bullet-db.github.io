@@ -146,7 +146,7 @@ launch_bullet_web_service() {
     println "Testing the Web Service"
     println ""
     println "Getting one random record from Bullet through the Web Service..."
-    curl -s -H 'Content-Type: text/plain' -X POST -d '{}' http://localhost:9999/api/bullet/query
+    curl -s -H 'Content-Type: text/plain' -X POST -d '{"aggregation": {"size": 1}}' http://localhost:9999/api/bullet/sse-query
     println ""
     println "Getting column schema from the Web Service..."
     println ""
@@ -207,7 +207,7 @@ cleanup() {
 
     pkill -f "[a]pache-storm-${STORM_VERSION}"
     pkill -f "[e]xpress-server.js"
-    pkill -f "[e]xample_drpc_pubsub_config.yaml"
+    pkill -f "[e]xample_rest_pubsub_config.yaml"
 
     sleep 3
 
