@@ -422,7 +422,7 @@
 </ul>
 <h2 id="install-script">Install Script</h2>
 <p>Simply run:</p>
-<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/bullet-db/bullet-db.github.io/src/examples/install-all.sh | bash
+<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/bullet-db/bullet-db.github.io/src/examples/install-all-storm.sh | bash
 </code></pre>
 
 <p>This will setup a local Storm cluster, a Bullet running on it, the Bullet Web Service and a Bullet UI for you. Once everything has launched, you should be able to go to the Bullet UI running locally at <a href="http://localhost:8800">http://localhost:8800</a>. You can then <a href="#what-did-we-do"><strong>continue this guide from here</strong></a>.</p>
@@ -514,7 +514,7 @@ java -jar bullet-service.jar --bullet.pubsub.config=example_rest_pubsub_config.y
 
 <p>Note that we turned on the built-in REST pubsub in the Web Service when launching it. The REST PubSub is bundled into the Bullet API by default, so no additional jars are needed.</p>
 <p>You can verify that it is up by running a Bullet query or getting the example columns through the API:</p>
-<pre><code class="bash">curl -s -H 'Content-Type: text/plain' -X POST -d '{}' http://localhost:9999/api/bullet/query
+<pre><code class="bash">curl -s -H 'Content-Type: text/plain' -X POST -d '{&quot;aggregation&quot;: {&quot;size&quot;: 1}}' http://localhost:9999/api/bullet/sse-query
 curl -s http://localhost:9999/api/bullet/columns
 </code></pre>
 
@@ -546,7 +546,7 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
 <p>Check out and follow along with the <a href="../../ui/usage/">UI Usage</a> page as it shows you some queries you can run using this UI.</p>
 <h2 id="teardown">Teardown</h2>
 <p>If you were using the <a href="#install-script">Install Script</a> or if you don't want to manually bring down everything, you can run:</p>
-<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/bullet-db/bullet-db.github.io/src/examples/install-all.sh | bash -s cleanup
+<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/bullet-db/bullet-db.github.io/src/examples/install-all-storm.sh | bash -s cleanup
 </code></pre>
 
 <p>If you were performing the steps yourself, you can also manually cleanup <strong>all the components and all the downloads</strong> using:</p>
