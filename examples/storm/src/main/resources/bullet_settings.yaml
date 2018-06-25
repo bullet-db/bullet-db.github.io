@@ -14,7 +14,7 @@ bullet.topology.filter.bolt.parallelism: 1
 bullet.topology.filter.bolt.cpu.load: 100.0
 bullet.topology.filter.bolt.memory.on.heap.load: 256.0
 bullet.topology.filter.bolt.memory.off.heap.load: 160.0
-bullet.topology.return.bolt.parallelism: 1
+bullet.topology.result.bolt.parallelism: 1
 bullet.topology.result.bolt.cpu.load: 10.0
 bullet.topology.result.bolt.memory.on.heap.load: 128.0
 bullet.topology.result.bolt.memory.off.heap.load: 160.0
