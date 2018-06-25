@@ -1,6 +1,6 @@
 # Quick Start on Storm
 
-This section gets you running a mock instance of Bullet to play around with. The instance will run using [Bullet on Storm](../backend/storm-setup.md) and use the [DRPC Pubsub](../pubsub/storm-drpc.md). Since we do not have an actual data source, we will produce some fake data and convert it into [Bullet Records](../backend/ingestion.md) in a [custom Storm spout](https://github.com/bullet-db/bullet-db.github.io/blob/master/examples/storm/src/main/java/com/yahoo/bullet/storm/examples/RandomSpout.java). If you want to use Bullet for your data, you will need to do read and convert your data to Bullet Records in a similar manner.
+This section gets you running a mock instance of Bullet to play around with. The instance will run using [Bullet on Storm](../backend/storm-setup.md) and use the [REST Pubsub](../pubsub/rest.md). Since we do not have an actual data source, we will produce some fake data and convert it into [Bullet Records](../backend/ingestion.md) in a [custom Storm spout](https://github.com/bullet-db/bullet-db.github.io/blob/master/examples/storm/src/main/java/com/yahoo/bullet/storm/examples/RandomSpout.java). If you want to use Bullet for your data, you will need to do read and convert your data to Bullet Records in a similar manner.
 
 At the end of this section, you will have:
 
