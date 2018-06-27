@@ -101,6 +101,11 @@
             <artifactId>bullet-record</artifactId>
             <version>${bullet.record.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.yahoo.bullet</groupId>
+            <artifactId>bullet-core</artifactId>
+            <version>${bullet.core.version}</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
