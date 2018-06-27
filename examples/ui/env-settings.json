@@ -34,7 +34,7 @@
         "countDistinctMaxEntries": 16384,
         "groupByMaxEntries": 512,
         "distributionMaxEntries": 1024,
-        "distributionMaxNumberOfPoints": 100,
+        "distributionMaxNumberOfPoints": 200,
         "topKMaxEntries": 1024,
         "topKErrorType": "No False Negatives"
       },
