@@ -1,9 +1,11 @@
 # Navigating the UI
 
-The UI should (hopefully) be self-explanatory. Any particular section that requires additional information has the ![info](../img/info.png) icon next to it. Clicking this will display information relevant to that section. The interactions in this page are running on the topology that was set up in the [Quick Start on Storm](../quick-start/storm.md).  Recall that the example backend is configured to produce *20 data records every 101 ms.*.
+The UI should (hopefully) be self-explanatory. Any particular section that requires additional information has the ![info](../img/info.png) icon next to it. Clicking this will display information relevant to that section.
 
-!!! note "NOTE: This is an old version of the Bullet UI"
-    The version of Bullet this page shows does not support the newest functionality such as Windowing. We are working hard to get new documentation up as soon as possible. Use the [Spark Quick Start](../quick-start/spark.md) to see all the latest features. The examples that show the various query types below were done on [Bullet UI v0.2.2](https://github.com/bullet-db/bullet-ui/releases/tag/v0.2.2).
+The interactions in this page are running on the topology that was set up in the [Quick Start on Storm](../quick-start/storm.md).  Recall that the example backend is configured to produce *20 data records every 101 ms.*.
+
+!!! note "NOTE: Some of these videos use an old version of the Bullet UI"
+    We are currently in progress adding new videos with windowing, etc.
 
 ## Landing page
 
@@ -43,10 +45,6 @@ You can also download the results in JSON, CSV or flattened CSV (fields inside m
   Your browser does not support the video tag.
 </video>
 
-!!! note "receive_timestamp"
-
-    This was enabled as part of the configuration for the example backend. This was the timestamp when Bullet first saw this record. If you have timestamps in your data (as this example does), you will be able to tell exactly when your data was received by Bullet. This coupled with the timestamps in the Result Metadata for when your query was submitted and terminated, you will be able to tell why or why not a particular record was or was not seen in Bullet.
-
 ## Filtering and projecting data
 
 The Filters section in the UI features a querybuilder (a modified version of the [jQuery-QueryBuilder](http://querybuilder.js.org/)) that you can use to add filters. These allow you to [pick at the slice of data](../ws/api.md#filters) from your stream that is relevant to you.
@@ -63,6 +61,30 @@ The Output Data section lets you aggregate or choose to see raw data records. Yo
 !!! note "Default result display"
 
     If you choose the Show All Fields selection in the Output Data option, the results will default to the JSON data view. Otherwise, it defaults to the table.
+
+## Stream Raw Events
+
+A very simple but useful query is a query with a filter and a [Sliding Window of size 1](../ws/api/#sliding-reactive-windows). This query will run for the extent of your duration and stream back events that match your filters as they arrive:
+
+<iframe width="900" height="508" src="https://www.youtube.com/embed/y2Gzs27OjSw?autoplay=1&loop=1&playlist=y2Gzs27OjSw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+**Be careful** when you use this query to ensure that your filter is sufficient to avoid returning TOO many results too fast. If this occurs Bullet will kill your query because of rate limiting (the default rate limit is 500 records per second).
+
+## Tumbling Windows
+
+[Time-Based Tumbling Windows](../ws/api/#time-based-tumbling-windows) will return results every X seconds:
+
+<iframe width="900" height="508" src="https://www.youtube.com/embed/smy6jNfCVs4?autoplay=1&loop=1&playlist=smy6jNfCVs4" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+This example groups-by "type" and computes a couple metrics for each 2 second window.
+
+## Additive Tumbling Windows
+
+[Additive tumbling windows](../ws/api/#additive-tumbling-windows) will also return results every X seconds, but the results will contain all the data collected since the beginning of the query:
+
+<iframe iframe width="900" height="508" src="https://www.youtube.com/embed/Lu7vSuv1NYA?autoplay=1&loop=1&playlist=Lu7vSuv1NYA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+In this example we compute bucket'ed frequency for the "probability" field. You can see from the scale of the Y axis that these computations are accumulated over the life of the query.
 
 ### Complex Filtering
 
