@@ -132,7 +132,7 @@ $BULLET_SPARK/spark-2.2.1-bin-hadoop2.7/bin/spark-submit \
 
 ```
 
-The Backend will usually be up and running usually within 5-10 seconds. Once it is running you can get information about the Spark job in the Spark UI, which can be seen in your browser at ```http://localhost:4040``` by default. The Web Service will now be hooked up through the Kafka PubSub to the Spark backend. To test it you can now run a Bullet query by hitting the Web Service directly:
+The Backend will usually be up and running usually within 5-10 seconds. Once it is running you can get information about the Spark job in the Spark UI, which can be seen in your browser at [http://localhost:4040](http://localhost:4040) by default. The Web Service will now be hooked up through the Kafka PubSub to the Spark backend. To test it you can now run a Bullet query by hitting the Web Service directly:
 
 ```bash
 curl -s -H 'Content-Type: text/plain' -X POST -d '{"aggregation": {"size": 1}}' http://localhost:9999/api/bullet/sse-query

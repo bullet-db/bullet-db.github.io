@@ -7,6 +7,7 @@ If you have any issues with any of the particular Bullet sub-components, feel fr
 |               |        |
 | ------------- | ------ |
 | Storm         | [https://github.com/bullet-db/bullet-storm/issues](https://github.com/bullet-db/bullet-storm/issues)     |
+| Spark         | [https://github.com/bullet-db/bullet-spark/issues](https://github.com/bullet-db/bullet-spark/issues)     |
 | Web Service   | [https://github.com/bullet-db/bullet-service/issues](https://github.com/bullet-db/bullet-service/issues) |
 | UI            | [https://github.com/bullet-db/bullet-ui/issues](https://github.com/bullet-db/bullet-ui/issues)           |
 | Record        | [https://github.com/bullet-db/bullet-record/issues](https://github.com/bullet-db/bullet-record/issues)   |

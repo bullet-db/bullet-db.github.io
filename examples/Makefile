@@ -3,6 +3,7 @@ all: clean build
 clean:
 	rm -rf examples_artifacts.tar.gz bullet-examples
 	cd storm && mvn clean
+	cd spark && mvn clean
 
 build-storm:
 	mkdir -p bullet-examples/backend/storm
