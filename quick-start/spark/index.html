@@ -543,7 +543,7 @@ curl -Lo bullet-spark.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-spa
 
 </code></pre>
 
-<p>The Backend will usually be up and running usually within 5-10 seconds. Once it is running you can get information about the Spark job in the Spark UI, which can be seen in your browser at <code>http://localhost:4040</code> by default. The Web Service will now be hooked up through the Kafka PubSub to the Spark backend. To test it you can now run a Bullet query by hitting the Web Service directly:</p>
+<p>The Backend will usually be up and running usually within 5-10 seconds. Once it is running you can get information about the Spark job in the Spark UI, which can be seen in your browser at <a href="http://localhost:4040">http://localhost:4040</a> by default. The Web Service will now be hooked up through the Kafka PubSub to the Spark backend. To test it you can now run a Bullet query by hitting the Web Service directly:</p>
 <pre><code class="bash">curl -s -H 'Content-Type: text/plain' -X POST -d '{&quot;aggregation&quot;: {&quot;size&quot;: 1}}' http://localhost:9999/api/bullet/sse-query
 </code></pre>
 
