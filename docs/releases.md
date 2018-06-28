@@ -26,6 +26,7 @@ The core Bullet logic (a library) that can be used to implement Bullet on differ
 
 |    Date      |                                        Release                                        | Highlights |
 | ------------ | ------------------------------------------------------------------------------------- | ---------- |
+| 2018-06-26   | [**0.4.2**](https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.4.2)  | Fixes a bug with unclosed connections in the RESTPubSub |
 | 2018-06-22   | [**0.4.1**](https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.4.1)  | Added RESTPublisher HTTP Timeout Setting |
 | 2018-06-18   | [**0.4.0**](https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.4.0)  | Added support for Integer and Float data types, and configurable BulletRecordProvider class used to instantiate BulletRecords in bullet-core |
 | 2018-04-11   | [**0.3.4**](https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.3.4)  | Pre-Start delaying and Buffering changes - queries are now buffered at the start of a query instead of start of each window |
