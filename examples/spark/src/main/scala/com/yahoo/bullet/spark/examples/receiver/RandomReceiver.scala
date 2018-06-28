@@ -7,6 +7,7 @@ package com.yahoo.bullet.spark.examples.receiver
 
 import java.util.UUID
 import java.util.HashMap
+import java.util.Map
 import java.util.Arrays.asList
 
 import scala.util.Random
@@ -22,11 +23,13 @@ object RandomReceiver {
   private val STRING = "uuid"
   private val LONG = "tuple_number"
   private val DOUBLE = "probability"
+  private val GAUSSIAN = "gaussian";
   private val BOOLEAN_MAP = "tags"
   private val STATS_MAP = "stats"
   private val LIST = "classifiers"
   private val DURATION = "duration"
   private val TYPE = "type"
+  private val SUBTYPES_MAP = "subtypes"
   private val RANDOM_MAP_KEY_A = "field_A"
   private val RANDOM_MAP_KEY_B = "field_B"
   private val PERIOD_COUNT = "period_count"
@@ -90,23 +93,35 @@ class RandomReceiver(val config: BulletSparkConfig)
     }
   }
 
+  private def makeRandomMap: Map[java.lang.String, java.lang.String] = {
+    val randomMap = new HashMap[java.lang.String, java.lang.String](2)
+    randomMap.put(RandomReceiver.RANDOM_MAP_KEY_A, RandomReceiver.STRING_POOL(Random.nextInt(RandomReceiver.STRING_POOL.length)))
+    randomMap.put(RandomReceiver.RANDOM_MAP_KEY_B, RandomReceiver.STRING_POOL(Random.nextInt(RandomReceiver.STRING_POOL.length)))
+    randomMap
+  }
+
   private def generateRecord(): BulletRecord = {
     val record = new SimpleBulletRecord()
     val uuid = UUID.randomUUID().toString
     record.setString(RandomReceiver.STRING, uuid)
     record.setLong(RandomReceiver.LONG, generatedThisPeriod)
     record.setDouble(RandomReceiver.DOUBLE, Random.nextDouble())
+    record.setDouble(RandomReceiver.GAUSSIAN, Random.nextGaussian())
     record.setString(RandomReceiver.TYPE, RandomReceiver.STRING_POOL(Random.nextInt(RandomReceiver.STRING_POOL.length)))
     record.setLong(RandomReceiver.DURATION, System.nanoTime() % RandomReceiver.INTEGER_POOL(Random.nextInt(RandomReceiver.INTEGER_POOL.length)))
 
     // Don't use Scala Map and convert it by asJava when calling setxxxMap method in BulletRecord.
     // It converts Scala Map to scala.collection.convert.Wrappers$MapWrapper which is not serializable in scala 2.11.x (https://issues.scala-lang.org/browse/SI-8911).
+
+    record.setStringMap(RandomReceiver.SUBTYPES_MAP, makeRandomMap);
+
     val booleanMap = new HashMap[java.lang.String, java.lang.Boolean](4)
     booleanMap.put(uuid.substring(0, 8), Random.nextBoolean())
     booleanMap.put(uuid.substring(9, 13), Random.nextBoolean())
     booleanMap.put(uuid.substring(14, 18), Random.nextBoolean())
     booleanMap.put(uuid.substring(19, 23), Random.nextBoolean())
     record.setBooleanMap(RandomReceiver.BOOLEAN_MAP, booleanMap)
+
 
     val statsMap = new HashMap[java.lang.String, java.lang.Long](4)
     statsMap.put(RandomReceiver.PERIOD_COUNT, periodCount)
@@ -115,14 +130,7 @@ class RandomReceiver(val config: BulletSparkConfig)
     statsMap.put(RandomReceiver.TIMESTAMP, System.nanoTime())
     record.setLongMap(RandomReceiver.STATS_MAP, statsMap)
 
-    val randomMapA = new HashMap[java.lang.String, java.lang.String](2)
-    randomMapA.put(RandomReceiver.RANDOM_MAP_KEY_A, RandomReceiver.STRING_POOL(Random.nextInt(RandomReceiver.STRING_POOL.length)))
-    randomMapA.put(RandomReceiver.RANDOM_MAP_KEY_B, RandomReceiver.STRING_POOL(Random.nextInt(RandomReceiver.STRING_POOL.length)))
-    val randomMapB = new HashMap[java.lang.String, java.lang.String](2)
-    randomMapB.put(RandomReceiver.RANDOM_MAP_KEY_A, RandomReceiver.STRING_POOL(Random.nextInt(RandomReceiver.STRING_POOL.length)))
-    randomMapB.put(RandomReceiver.RANDOM_MAP_KEY_B, RandomReceiver.STRING_POOL(Random.nextInt(RandomReceiver.STRING_POOL.length)))
-    record.setListOfStringMap(RandomReceiver.LIST, asList(randomMapA, randomMapB))
+    record.setListOfStringMap(RandomReceiver.LIST, asList(makeRandomMap, makeRandomMap))
     record
   }
 }
-

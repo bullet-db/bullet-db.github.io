@@ -5,6 +5,11 @@
         "description": "Generated from Random#nextDouble"
     },
     {
+        "name": "gaussian",
+        "type": "DOUBLE",
+        "description": "Generated from Random#nextGaussian"
+    },
+    {
         "name": "uuid",
         "type": "STRING",
         "description": "A UUID string generated from UUID#randomUUID"
@@ -23,6 +28,12 @@
         "name": "type",
         "type": "STRING",
         "description": "A random string chosen from: foo, bar, baz, qux, quux, norf"
+    },
+    {
+        "name": "subtypes",
+        "type": "MAP",
+        "subtype": "STRING",
+        "description": "Contains two keys: field_A and field_B whose values are randomly chosen from: foo, bar, baz, qux, quux, norf"
     },
     {
         "name": "tags",

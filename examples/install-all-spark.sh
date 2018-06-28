@@ -2,9 +2,9 @@
 
 set -euo pipefail
 
-BULLET_EXAMPLES_VERSION=0.4.0
-BULLET_UI_VERSION=0.4.0
-BULLET_WS_VERSION=0.2.1
+BULLET_EXAMPLES_VERSION=0.5.1
+BULLET_UI_VERSION=0.5.0
+BULLET_WS_VERSION=0.3.0
 BULLET_KAFKA_VERSION=0.3.0
 KAFKA_VERSION=0.11.0.1
 SPARK_VERSION=2.2.1
@@ -25,6 +25,8 @@ print_versions() {
     println "Bullet Examples:    ${BULLET_EXAMPLES_VERSION}"
     println "Bullet Web Service: ${BULLET_WS_VERSION}"
     println "Bullet UI:          ${BULLET_UI_VERSION}"
+    println "Bullet Kafka:       ${BULLET_KAFKA_VERSION}"
+    println "Spark:              ${SPARK_VERSION}"
     println "Kafka:              ${KAFKA_VERSION}"
     println "NVM:                ${NVM_VERSION}"
     println "Node.js:            ${NODE_VERSION}"
@@ -51,9 +53,13 @@ export_vars() {
 
     println "Exporting some variables..."
     export BULLET_HOME="${PWD}/bullet-quickstart"
-    export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
-    export BULLET_DOWNLOADS=$BULLET_HOME/bullet-downloads
-    export BULLET_SPARK=${BULLET_HOME}/backend/spark
+    export BULLET_EXAMPLES="$BULLET_HOME/bullet-examples"
+    export BULLET_DOWNLOADS="$BULLET_HOME/bullet-downloads"
+    export BULLET_SPARK="${BULLET_HOME}/backend/spark"
+    export KAFKA_DISTRO="kafka_2.12-${KAFKA_VERSION}"
+    export KAFKA_DIR="${BULLET_HOME}/pubsub"
+    export SPARK_DISTRO="spark-${SPARK_VERSION}-bin-hadoop2.7"
+    export SPARK_DIR="${BULLET_SPARK}/${SPARK_DISTRO}"
     println "Done!"
 }
 
@@ -77,51 +83,48 @@ install_bullet_examples() {
 }
 
 install_kafka() {
-    local KAFKA="kafka_2.12-${KAFKA_VERSION}"
-    local PUBSUB="${BULLET_HOME}/pubsub/"
-
     println "Downloading Kafka ${KAFKA_VERSION}..."
-    download "https://archive.apache.org/dist/kafka/${KAFKA_VERSION}" "${KAFKA}.tgz"
+    download "https://archive.apache.org/dist/kafka/${KAFKA_VERSION}" "${KAFKA_DISTRO}.tgz"
 
-    println "Installing Kafka ..."
-    tar -xzf ${BULLET_DOWNLOADS}/${KAFKA}.tgz -C ${PUBSUB}
-    export KAFKA_DIR=${PUBSUB}${KAFKA}
+    println "Installing Kafka to ${KAFKA_DIR}..."
+    tar -xzf ${BULLET_DOWNLOADS}/${KAFKA}.tgz -C ${KAFKA_DIR}
 
     println "Done!"
 }
 
 install_bullet_kafka() {
     local BULLET_KAFKA="bullet-kafka-${BULLET_KAFKA_VERSION}-fat.jar"
-    local PUBSUB="${BULLET_HOME}/pubsub/"
 
     println "Downloading bullet-kafka ${BULLET_KAFKA_VERSION}..."
     download "http://jcenter.bintray.com/com/yahoo/bullet/bullet-kafka/${BULLET_KAFKA_VERSION}" "${BULLET_KAFKA}"
-    cp ${BULLET_DOWNLOADS}/${BULLET_KAFKA} ${PUBSUB}${BULLET_KAFKA}
-    export BULLET_KAFKA_JAR=${PUBSUB}${BULLET_KAFKA}
+    cp ${BULLET_DOWNLOADS}/${BULLET_KAFKA} ${BULLET_HOME}/pubsub/${BULLET_KAFKA}
 
     println "Done!"
 }
 
 launch_kafka() {
+    local KAFKA_DIR=${KAFKA_DIR}/${KAFKA_DISTRO}
     println "Launching Zookeeper..."
     $KAFKA_DIR/bin/zookeeper-server-start.sh $KAFKA_DIR/config/zookeeper.properties &
-    sleep 3
+    println "Sleeping for 10s to ensure Zookeeper is up..."
+    sleep 10
 
     println "Launching Kafka..."
     $KAFKA_DIR/bin/kafka-server-start.sh $KAFKA_DIR/config/server.properties &
-
-    sleep 3
+    println "Sleeping for 10s to ensure Kafka is up..."
+    sleep 10
     println "Done!"
 }
 
 create_topics() {
+    local KAFKA_DIR=${KAFKA_DIR}/${KAFKA_DISTRO}
     set +e
-    println "Creating kafka topics ${KAFKA_TOPIC_REQUESTS} and ${KAFKA_TOPIC_RESPONSES}..."
+    println "Creating Kafka topics ${KAFKA_TOPIC_REQUESTS} and ${KAFKA_TOPIC_RESPONSES}..."
     $KAFKA_DIR/bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic ${KAFKA_TOPIC_REQUESTS}
     $KAFKA_DIR/bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic ${KAFKA_TOPIC_RESPONSES}
     set -e
 
-    sleep 3
+    println "Sleeping for 10s to ensure Kafka topics are created..."
     println "Done!"
 }
 
@@ -145,61 +148,56 @@ launch_web_service() {
 
     println "Launching Bullet Web Service..."
     cd "${BULLET_SERVICE_HOME}"
-    java -Dloader.path=${BULLET_KAFKA_JAR} -jar ${BULLET_WS_JAR} \
+    java -Dloader.path=${BULLET_HOME}/pubsub/bullet-kafka-${BULLET_KAFKA_VERSION}-fat.jar -jar ${BULLET_WS_JAR} \
         --bullet.pubsub.config=${BULLET_SERVICE_HOME}/example_kafka_pubsub_config.yaml \
         --bullet.schema.file=${BULLET_SERVICE_HOME}/example_columns.json \
         --server.port=9999  \
-        --logging.path=. \
-        --logging.file=log.txt &> log.txt &
+        --logging.path=${BULLET_SERVICE_HOME} \
+        --logging.file=log.txt &> ${BULLET_SERVICE_HOME}/log.txt &
 
     println "Sleeping for 15 s to ensure Bullet Web Service is up..."
     sleep 15
 
-    println "Testing the Web Service: Getting column schema..."
+    println "Getting one random record from Bullet through the Web Service..."
+    println "curl -s -H 'Content-Type: text/plain' -X POST -d '{\"aggregation\": {\"size\": 1}}' http://localhost:9999/api/bullet/sse-query"
+    println ""
+    println "Getting column schema from the Web Service..."
     println ""
     curl -s http://localhost:9999/api/bullet/columns
-    println "Finished Bullet Web Service test"
+    println "Finished Bullet Web Service test!"
 }
 
 install_spark() {
-    local SPARK="spark-${SPARK_VERSION}-bin-hadoop2.7.tgz"
-
     println "Downloading Spark version ${SPARK_VERSION}..."
-    download "http://www-us.apache.org/dist/spark/spark-${SPARK_VERSION}" "${SPARK}"
-        
+    download "http://www-us.apache.org/dist/spark/spark-${SPARK_VERSION}" "${SPARK_DISTRO}.tgz"
+
     println "Installing Spark version ${SPARK_VERSION}..."
-    cp ${BULLET_DOWNLOADS}/${SPARK} ${BULLET_HOME}/backend/spark/
-
-    tar -xzf "${BULLET_HOME}/backend/spark/${SPARK}" -C "${BULLET_HOME}/backend/spark/"
-    export SPARK_DIR="${BULLET_HOME}/backend/spark/spark-${SPARK_VERSION}-bin-hadoop2.7"
-
+    cp ${BULLET_DOWNLOADS}/${SPARK_DISTRO}.tgz ${BULLET_SPARK}/
+    tar -xzf "${BULLET_SPARK}/${SPARK_DISTRO}.tgz" -C ${BULLET_SPARK}
     println "Done!"
 }
 
-install_bullet_spark() {
-    cp $BULLET_HOME/bullet-examples/backend/spark/* $BULLET_SPARK
-    # Remove this 88 - THIS STILL NEEDS to be implemented - download the thing (it's not available online yet because we haven't released this version yet):
-    # Something like this: curl -Lo bullet-spark.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-spark/0.1.1/bullet-spark-0.1.1-standalone.jar
-}
-
 launch_bullet_spark() {
+    local BULLET_KAFKA_JAR=bullet-kafka-${BULLET_KAFKA_VERSION}-fat.jar
+
+    println "Copying Bullet Spark configuration and artifacts..."
+    cp $BULLET_HOME/bullet-examples/backend/spark/* $BULLET_SPARK
     cd ${BULLET_SPARK}
-    println "Launching bullet-spark..."
+    println "Launching Bullet Spark..."
+    println "=============================================================================="
     ${SPARK_DIR}/bin/spark-submit \
         --master local[10]  \
         --class com.yahoo.bullet.spark.BulletSparkStreamingMain \
-        --driver-class-path $BULLET_SPARK/bullet-spark.jar:${BULLET_KAFKA_JAR}:$BULLET_SPARK/bullet-spark-example.jar \
+        --driver-class-path $BULLET_SPARK/bullet-spark.jar:${BULLET_HOME}/pubsub$/${BULLET_KAFKA_JAR}:$BULLET_SPARK/bullet-spark-example.jar \
         $BULLET_SPARK/bullet-spark.jar \
         --bullet-spark-conf=$BULLET_SPARK/bullet_spark_settings.yaml &> log.txt &
 
-    println "Sleeping for 15 s to ensure bullet-spark is up and running..."
+    println "Sleeping for 15 s to ensure Bullet Spark is up and running..."
+    println "=============================================================================="
     sleep 15
 
-    println "Done! You should now be able to query Bullet through the web service. Try this:"
-    println "curl -s -H 'Content-Type: text/plain' -X POST -d '{\"aggregation\": {\"size\": 1}}' http://localhost:9999/api/bullet/sse-query"
+    println "Done!"
 }
-
-
 
 install_node() {
     # NVM unset var bug
@@ -250,18 +248,19 @@ launch_bullet_ui() {
 }
 
 cleanup() {
+    local KAFKA_INSTALL_DIR=${KAFKA_DIR}/${KAFKA_DISTRO}
     set +e
 
     pkill -f "[e]xpress-server.js"
     pkill -f "[e]xample_kafka_pubsub_config.yaml"
     pkill -f "[b]ullet-spark"
-    ${KAFKA_DIR}/bin/kafka-server-stop.sh
-    ${KAFKA_DIR}/bin/zookeeper-server-stop.sh
+    ${KAFKA_INSTALL_DIR}/bin/kafka-server-stop.sh
+    ${KAFKA_INSTALL_DIR}/bin/zookeeper-server-stop.sh
 
     sleep 3
 
     rm -rf "${BULLET_EXAMPLES}" "${BULLET_HOME}/backend" "${BULLET_HOME}/service" \
-           "${BULLET_HOME}/ui" "${BULLET_HOME}/pubsub" /tmp/dev-storm-zookeeper
+           "${BULLET_HOME}/ui" "${BULLET_HOME}/pubsub"
 
     set -e
 }
@@ -275,10 +274,11 @@ teardown() {
 unset_all() {
     unset -f print_versions println download export_vars setup \
              install_bullet_examples \
-             install_storm launch_storm launch_bullet_storm \
-             launch_bullet_web_service \
+             install_kafka install_bullet_kafka launch_kafka create_topics \
+             install_spark launch_bullet_spark \
+             install_web_service launch_web_service \
              install_node launch_bullet_ui \
-             cleanup teardown unset_all launch
+             cleanup teardown unset_all launch clean
 }
 
 launch() {
@@ -288,42 +288,24 @@ launch() {
     teardown
 
     setup
-
-    # install_bullet_examples
-    # <------------- Remove this 88 - the above line needs to be uncommented and all the below stuff should be removed once this artifact actualy exists on the git cloud or whatever
-    cp ~/bullet/bullet-db.github.io/examples/examples_artifacts.tar.gz ${BULLET_DOWNLOADS}/
-    tar -xzf "${BULLET_DOWNLOADS}/examples_artifacts.tar.gz" -C "${BULLET_HOME}" # <------------ Remove this 88 - remove this line and the one above it once the artifact is actulaly on github
+    install_bullet_examples
 
     install_kafka
     install_bullet_kafka
     launch_kafka
     create_topics
 
+    install_spark
+    launch_bullet_spark
+
     install_web_service
     launch_web_service
 
-    install_spark
-    # install_bullet_spark
-    # <------------- Remove this 88 - the above line needs to be uncommented and all the below stuff should be removed once this artifact actualy exists on the git cloud or whatever
-    cp $BULLET_HOME/bullet-examples/backend/spark/* $BULLET_SPARK # <------------ Remove this 88
-    cp ~/bullet/bullet-spark/target/bullet-spark-0.1.1-SNAPSHOT-standalone.jar $BULLET_SPARK/bullet-spark.jar # <------------ Remove this 88
+    install_node
+    launch_bullet_ui
 
-    launch_bullet_spark
-
-    # Remove this 88 - deal with the following two lines:
-    # Now do the UI stuff once the new UI is ready
-    # ALSO - DON'T FORGET! The teardown stuff doesn't work unless you run the whole script (the "else" block at the bottom won't work) because the KAFKA_DIR isn't defined unless you run install_kafka function) - so fix that somehow
-
-
-
-
-
-
-    # install_node
-    # launch_bullet_ui
-
-    # println "All components launched! Visit http://localhost:8800 (default) for the UI"
-    # unset_all
+    println "All components launched! Visit http://localhost:8800 (default) for the UI"
+    unset_all
 }
 
 clean() {

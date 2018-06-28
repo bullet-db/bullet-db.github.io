@@ -53,11 +53,13 @@ public class RandomSpout extends BaseRichSpout {
     public static final String STRING = "uuid";
     public static final String LONG = "tuple_number";
     public static final String DOUBLE = "probability";
+    public static final String GAUSSIAN = "gaussian";
     public static final String BOOLEAN_MAP = "tags";
     public static final String STATS_MAP = "stats";
     public static final String LIST = "classifiers";
     public static final String DURATION = "duration";
     public static final String TYPE = "type";
+    public static final String SUBTYPES_MAP = "subtypes";
 
     public static final String RANDOM_MAP_KEY_A = "field_A";
     public static final String RANDOM_MAP_KEY_B = "field_B";
@@ -137,6 +139,13 @@ public class RandomSpout extends BaseRichSpout {
         }
     }
 
+    private Map<String, String> makeRandomMap() {
+        Map<String, String> randomMap = new HashMap<>(2);
+        randomMap.put(RANDOM_MAP_KEY_A, STRING_POOL[random.nextInt(STRING_POOL.length)]);
+        randomMap.put(RANDOM_MAP_KEY_B, STRING_POOL[random.nextInt(STRING_POOL.length)]);
+        return randomMap;
+    }
+
     private BulletRecord generateRecord() {
         BulletRecord record = new AvroBulletRecord();
         String uuid = UUID.randomUUID().toString();
@@ -144,8 +153,11 @@ public class RandomSpout extends BaseRichSpout {
         record.setString(STRING, uuid);
         record.setLong(LONG, (long) generatedThisPeriod);
         record.setDouble(DOUBLE, random.nextDouble());
+        record.setDouble(GAUSSIAN, random.nextGaussian());
         record.setString(TYPE, STRING_POOL[random.nextInt(STRING_POOL.length)]);
         record.setLong(DURATION, System.currentTimeMillis() % INTEGER_POOL[random.nextInt(INTEGER_POOL.length)]);
+
+        record.setStringMap(SUBTYPES_MAP, makeRandomMap());
 
         Map<String, Boolean> booleanMap = new HashMap<>(4);
         booleanMap.put(uuid.substring(0, 8), random.nextBoolean());
@@ -161,13 +173,7 @@ public class RandomSpout extends BaseRichSpout {
         statsMap.put(TIMESTAMP, System.currentTimeMillis());
         record.setLongMap(STATS_MAP, statsMap);
 
-        Map<String, String> randomMapA = new HashMap<>(2);
-        Map<String, String> randomMapB = new HashMap<>(2);
-        randomMapA.put(RANDOM_MAP_KEY_A, STRING_POOL[random.nextInt(STRING_POOL.length)]);
-        randomMapA.put(RANDOM_MAP_KEY_B, STRING_POOL[random.nextInt(STRING_POOL.length)]);
-        randomMapB.put(RANDOM_MAP_KEY_A, STRING_POOL[random.nextInt(STRING_POOL.length)]);
-        randomMapB.put(RANDOM_MAP_KEY_B, STRING_POOL[random.nextInt(STRING_POOL.length)]);
-        record.setListOfStringMap(LIST, asList(randomMapA, randomMapB));
+        record.setListOfStringMap(LIST, asList(makeRandomMap(), makeRandomMap()));
 
         return record;
     }

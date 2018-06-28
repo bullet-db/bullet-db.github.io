@@ -47,6 +47,8 @@ export_vars() {
     export BULLET_HOME="${PWD}/bullet-quickstart"
     export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
     export BULLET_DOWNLOADS=$BULLET_HOME/bullet-downloads
+    export STORM_DISTRO="apache-storm-${STORM_VERSION}"
+    export PATH="${BULLET_HOME}/backend/${STORM_DISTRO}/bin/:${PATH}"
     println "Done!"
 }
 
@@ -69,17 +71,11 @@ install_bullet_examples() {
 }
 
 install_storm() {
-    local STORM="apache-storm-${STORM_VERSION}"
-    local BACKEND="${BULLET_HOME}/backend/"
-
     println "Downloading Storm ${STORM_VERSION}..."
-    download "http://apache.org/dist/storm/${STORM}" "${STORM}.zip"
+    download "http://apache.org/dist/storm/${STORM_DISTRO}" "${STORM_DISTRO}.zip"
 
     println "Installing Storm ..."
-    unzip -qq "${BULLET_DOWNLOADS}/${STORM}.zip" -d "${BACKEND}"
-
-    println "Configuring Storm ..."
-    export PATH="${BACKEND}/${STORM}/bin/:${PATH}"
+    unzip -qq "${BULLET_DOWNLOADS}/${STORM_DISTRO}.zip" -d "${BULLET_HOME}/backend"
     println "Done!"
 }
 
@@ -135,8 +131,9 @@ launch_bullet_web_service() {
 
     println "Launching Bullet Web Service with the built-in REST PubSub enabled..."
     cd "${BULLET_SERVICE_HOME}"
-    java -jar ./bullet-service.jar \
-         --bullet.pubsub.config=example_rest_pubsub_config.yaml --bullet.schema.file=example_columns.json \
+    java -jar ${BULLET_SERVICE_HOME}/bullet-service.jar \
+         --bullet.pubsub.config=${BULLET_SERVICE_HOME}/example_rest_pubsub_config.yaml  \
+         --bullet.schema.file=${BULLET_SERVICE_HOME}/example_columns.json \
          --server.port=9999  --bullet.pubsub.builtin.rest.enabled=true --logging.path="${BULLET_SERVICE_HOME}" \
          --logging.file=log.txt &> "${BULLET_SERVICE_HOME}/log.txt" &
 
@@ -229,7 +226,7 @@ unset_all() {
              install_storm launch_storm launch_bullet_storm \
              launch_bullet_web_service \
              install_node launch_bullet_ui \
-             cleanup teardown unset_all launch
+             cleanup teardown unset_all launch clean
 }
 
 launch() {

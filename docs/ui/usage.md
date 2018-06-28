@@ -2,10 +2,10 @@
 
 The UI should (hopefully) be self-explanatory. Any particular section that requires additional information has the ![info](../img/info.png) icon next to it. Clicking this will display information relevant to that section.
 
-The interactions in this page are running on the topology that was set up in the [Quick Start on Storm](../quick-start/storm.md).  Recall that the example backend is configured to produce *20 data records every 101 ms.*.
+The interactions in this page are running on the topology that was set up in the [Quick Start on Storm](../quick-start/storm.md).  Recall that that example backend is configured to produce *20 data records every 101 ms.*.
 
 !!! note "NOTE: Some of these videos use an old version of the Bullet UI"
-    We are currently in progress adding new videos with windowing, etc.
+    We are currently in progress adding new videos with windowing and other new features from the latest UI version etc.
 
 ## Landing page
 
