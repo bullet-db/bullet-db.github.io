@@ -355,6 +355,21 @@
             
                     <li class="second-level">
                         <a href="#filtering-and-projecting-data">Filtering and projecting data</a>
+                        
+                    </li>
+            
+                    <li class="second-level">
+                        <a href="#stream-raw-events">Stream Raw Events</a>
+                        
+                    </li>
+            
+                    <li class="second-level">
+                        <a href="#tumbling-windows">Tumbling Windows</a>
+                        
+                    </li>
+            
+                    <li class="second-level">
+                        <a href="#additive-tumbling-windows">Additive Tumbling Windows</a>
                         <ul class="nav">
                         
                             <li class="third-level">
@@ -444,10 +459,11 @@
         <div class="col-md-9" role="main">
 
 <h1 id="navigating-the-ui">Navigating the UI</h1>
-<p>The UI should (hopefully) be self-explanatory. Any particular section that requires additional information has the <img alt="info" src="../../img/info.png" /> icon next to it. Clicking this will display information relevant to that section. The interactions in this page are running on the topology that was set up in the <a href="../../quick-start/storm/">Quick Start on Storm</a>.  Recall that the example backend is configured to produce <em>20 data records every 101 ms.</em>.</p>
+<p>The UI should (hopefully) be self-explanatory. Any particular section that requires additional information has the <img alt="info" src="../../img/info.png" /> icon next to it. Clicking this will display information relevant to that section.</p>
+<p>The interactions in this page are running on the topology that was set up in the <a href="../../quick-start/storm/">Quick Start on Storm</a>.  Recall that the example backend is configured to produce <em>20 data records every 101 ms.</em>.</p>
 <div class="admonition note">
-<p class="admonition-title">NOTE: This is an old version of the Bullet UI</p>
-<p>The version of Bullet this page shows does not support the newest functionality such as Windowing. We are working hard to get new documentation up as soon as possible. Use the <a href="../../quick-start/spark/">Spark Quick Start</a> to see all the latest features. The examples that show the various query types below were done on <a href="https://github.com/bullet-db/bullet-ui/releases/tag/v0.2.2">Bullet UI v0.2.2</a>.</p>
+<p class="admonition-title">NOTE: Some of these videos use an old version of the Bullet UI</p>
+<p>We are currently in progress adding new videos with windowing, etc.</p>
 </div>
 <h2 id="landing-page">Landing page</h2>
 <p>Loading the UI takes you to a page that shows all the queries and past results. You can edit, delete and copy your existing queries here. You can also view or clear your past results for the queries.</p>
@@ -475,10 +491,6 @@
   Your browser does not support the video tag.
 </video>
 
-<div class="admonition note">
-<p class="admonition-title">receive_timestamp</p>
-<p>This was enabled as part of the configuration for the example backend. This was the timestamp when Bullet first saw this record. If you have timestamps in your data (as this example does), you will be able to tell exactly when your data was received by Bullet. This coupled with the timestamps in the Result Metadata for when your query was submitted and terminated, you will be able to tell why or why not a particular record was or was not seen in Bullet.</p>
-</div>
 <h2 id="filtering-and-projecting-data">Filtering and projecting data</h2>
 <p>The Filters section in the UI features a querybuilder (a modified version of the <a href="http://querybuilder.js.org/">jQuery-QueryBuilder</a>) that you can use to add filters. These allow you to <a href="../../ws/api/#filters">pick at the slice of data</a> from your stream that is relevant to you.</p>
 <p>The Output Data section lets you aggregate or choose to see raw data records. You can either get all the data as <a href="#a-simple-first-query">above</a> or you can select a subset of fields (and optionally rename them) that you would like to see.</p>
@@ -492,6 +504,24 @@
 <p class="admonition-title">Default result display</p>
 <p>If you choose the Show All Fields selection in the Output Data option, the results will default to the JSON data view. Otherwise, it defaults to the table.</p>
 </div>
+<h2 id="stream-raw-events">Stream Raw Events</h2>
+<p><strong>Note:</strong> This query is only available in the Bullet UI version 0.5.0 and later.</p>
+<p>A very simple but useful query is a query with a filter and a <a href="../../ws/api/#sliding-reactive-windows">Sliding Window of size 1</a>. This query will run for the extent of your duration and stream back events that match your filters as they arrive:</p>
+<iframe width="900" height="508" src="https://www.youtube.com/embed/y2Gzs27OjSw?autoplay=1&loop=1&playlist=y2Gzs27OjSw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+<p><strong>Be careful</strong> when you use this query to ensure that your filter is sufficient to avoid returning TOO many results too fast. If this occurs Bullet will kill your query because of rate limiting (the default rate limit is 500 records per second).</p>
+<h2 id="tumbling-windows">Tumbling Windows</h2>
+<p><strong>Note:</strong> This query is only available in the Bullet UI version 0.5.0 and later.</p>
+<p><a href="../../ws/api/#time-based-tumbling-windows">Time-Based Tumbling Windows</a> will return results every X seconds:</p>
+<iframe width="900" height="508" src="https://www.youtube.com/embed/smy6jNfCVs4?autoplay=1&loop=1&playlist=smy6jNfCVs4" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+<p>This example groups-by "type" and computes a couple metrics for each 2 second window.</p>
+<h2 id="additive-tumbling-windows">Additive Tumbling Windows</h2>
+<p><strong>Note:</strong> This query is only available in the Bullet UI version 0.5.0 and later.</p>
+<p><a href="../../ws/api/#additive-tumbling-windows">Additive tumbling windows</a> will also return results every X seconds, but the results will contain all the data collected since the beginning of the query:</p>
+<iframe iframe width="900" height="508" src="https://www.youtube.com/embed/Lu7vSuv1NYA?autoplay=1&loop=1&playlist=Lu7vSuv1NYA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+<p>In this example we compute bucket'ed frequency for the "probability" field. You can see from the scale of the Y axis that these computations are accumulated over the life of the query.</p>
 <h3 id="complex-filtering">Complex Filtering</h3>
 <p>The querybuilder also lets you easily create nested filters. You can add basic relational filters or group a set of basic filters by connecting them with ANDs and ORs. You can also drag and drop filters and groups.</p>
 <p>The querybuilder is also type aware. The operations you can perform change based on the type. Numeric fields only allow numeric values. String fields allow you to apply regular expressions to them or specify multiple values at the same time using a <code>,</code>. Boolean fields only allow you to choose a radio button etc.</p>
