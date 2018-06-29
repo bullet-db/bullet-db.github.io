@@ -277,7 +277,7 @@ cleanup() {
 
     rm -rf "${BULLET_EXAMPLES}" "${BULLET_HOME}/backend" "${BULLET_HOME}/service" \
            "${BULLET_HOME}/ui" "${BULLET_HOME}/pubsub" \
-           /tmp/zookeeper /tmp/kafka-logs/ tmp/spark-checkpoint
+           /tmp/zookeeper /tmp/kafka-logs/ /tmp/spark-checkpoint
 
     set -e
 }
