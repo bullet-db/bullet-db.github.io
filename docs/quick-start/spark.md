@@ -207,14 +207,14 @@ curl -sLo- https://raw.githubusercontent.com/bullet-db/bullet-db.github.io/src/e
 
 If you were performing the steps yourself, you can also manually cleanup **all the components and all the downloads** using:
 
-|                |                                                                                |
-| -------------- | ------------------------------------------------------------------------------ |
-| UI             | ```pkill -f [e]xpress-server.js```                                             |
-| Web Service    | ```pkill -f [e]xample_kafka_pubsub_config.yaml```                              |
-| Spark          | ```pkill -f [b]ullet-spark```                                                  |
-| Kafka          | ```${KAFKA_DIR}/bin/kafka-server-stop.sh```                                    |
-| Zookeeper      | ```${KAFKA_DIR}/bin/zookeeper-server-stop.sh```                                |
-| File System    | ```rm -rf $BULLET_HOME /tmp/zookeeper /tmp/kafka-logs/ tmp/spark-checkpoint``` |
+|                |                                                                                 |
+| -------------- | ------------------------------------------------------------------------------- |
+| UI             | ```pkill -f [e]xpress-server.js```                                              |
+| Web Service    | ```pkill -f [e]xample_kafka_pubsub_config.yaml```                               |
+| Spark          | ```pkill -f [b]ullet-spark```                                                   |
+| Kafka          | ```${KAFKA_DIR}/bin/kafka-server-stop.sh```                                     |
+| Zookeeper      | ```${KAFKA_DIR}/bin/zookeeper-server-stop.sh```                                 |
+| File System    | ```rm -rf $BULLET_HOME /tmp/zookeeper /tmp/kafka-logs/ /tmp/spark-checkpoint``` |
 
 Note: This does *not* delete ```$HOME/.nvm```.
 
