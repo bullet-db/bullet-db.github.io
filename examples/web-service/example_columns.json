@@ -33,7 +33,11 @@
         "name": "subtypes",
         "type": "MAP",
         "subtype": "STRING",
-        "description": "Contains two keys: field_A and field_B whose values are randomly chosen from: foo, bar, baz, qux, quux, norf"
+        "description": "Contains two keys whose values are randomly chosen from: foo, bar, baz, qux, quux, norf",
+        "enumerations": [
+            {"name": "field_A", "description": "Value randomly chosen from: foo, bar, baz, qux, quux, norf"},
+            {"name": "field_B", "description": "Value randomly chosen from: foo, bar, baz, qux, quux, norf"}
+        ]
     },
     {
         "name": "tags",
