@@ -6,6 +6,7 @@ BULLET_EXAMPLES_VERSION=0.5.2
 BULLET_UI_VERSION=0.5.0
 BULLET_WS_VERSION=0.3.0
 BULLET_KAFKA_VERSION=0.3.0
+BULLET_SPARK_VERSION=0.1.2
 KAFKA_VERSION=0.11.0.1
 SPARK_VERSION=2.2.1
 NVM_VERSION=0.33.1
@@ -23,6 +24,7 @@ println() {
 print_versions() {
     println "Using the following artifacts..."
     println "Bullet Examples:    ${BULLET_EXAMPLES_VERSION}"
+    println "Bullet Spark:       ${BULLET_SPARK_VERSION}"
     println "Bullet Web Service: ${BULLET_WS_VERSION}"
     println "Bullet UI:          ${BULLET_UI_VERSION}"
     println "Bullet Kafka:       ${BULLET_KAFKA_VERSION}"
@@ -87,7 +89,7 @@ install_kafka() {
     download "https://archive.apache.org/dist/kafka/${KAFKA_VERSION}" "${KAFKA_DISTRO}.tgz"
 
     println "Installing Kafka to ${KAFKA_DIR}..."
-    tar -xzf ${BULLET_DOWNLOADS}/${KAFKA}.tgz -C ${KAFKA_DIR}
+    tar -xzf ${BULLET_DOWNLOADS}/${KAFKA_DISTRO}.tgz -C ${KAFKA_DIR}
 
     println "Done!"
 }
@@ -103,14 +105,14 @@ install_bullet_kafka() {
 }
 
 launch_kafka() {
-    local KAFKA_DIR=${KAFKA_DIR}/${KAFKA_DISTRO}
+    local KAFKA_INSTALL_DIR=${KAFKA_DIR}/${KAFKA_DISTRO}
     println "Launching Zookeeper..."
-    $KAFKA_DIR/bin/zookeeper-server-start.sh $KAFKA_DIR/config/zookeeper.properties &
+    $KAFKA_INSTALL_DIR/bin/zookeeper-server-start.sh $KAFKA_INSTALL_DIR/config/zookeeper.properties &> ${KAFKA_INSTALL_DIR}/zk.log &
     println "Sleeping for 10s to ensure Zookeeper is up..."
     sleep 10
 
     println "Launching Kafka..."
-    $KAFKA_DIR/bin/kafka-server-start.sh $KAFKA_DIR/config/server.properties &
+    $KAFKA_INSTALL_DIR/bin/kafka-server-start.sh $KAFKA_INSTALL_DIR/config/server.properties &> ${KAFKA_INSTALL_DIR}/kafka.log &
     println "Sleeping for 10s to ensure Kafka is up..."
     sleep 10
     println "Done!"
@@ -131,10 +133,10 @@ create_topics() {
 install_web_service() {
     local BULLET_WEB_SERVICE="bullet-service-${BULLET_WS_VERSION}-embedded.jar"
 
-    println "Downloading bullet web service version ${BULLET_WS_VERSION}..."
+    println "Downloading Bullet Web Service version ${BULLET_WS_VERSION}..."
     download "http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/${BULLET_WS_VERSION}" "${BULLET_WEB_SERVICE}"
 
-    println "Installing bullet web service..."
+    println "Installing Bullet Web Service..."
     cp ${BULLET_DOWNLOADS}/${BULLET_WEB_SERVICE} ${BULLET_HOME}/service/
     cp ${BULLET_EXAMPLES}/web-service/example_kafka_pubsub_config.yaml ${BULLET_HOME}/service/
     cp ${BULLET_EXAMPLES}/web-service/example_columns.json ${BULLET_HOME}/service/
@@ -159,7 +161,7 @@ launch_web_service() {
     sleep 15
 
     println "Getting one random record from Bullet through the Web Service..."
-    println "curl -s -H 'Content-Type: text/plain' -X POST -d '{\"aggregation\": {\"size\": 1}}' http://localhost:9999/api/bullet/sse-query"
+    curl -s -H 'Content-Type: text/plain' -X POST -d '{\"aggregation\": {\"size\": 1}}' http://localhost:9999/api/bullet/sse-query
     println ""
     println "Getting column schema from the Web Service..."
     println ""
@@ -177,8 +179,22 @@ install_spark() {
     println "Done!"
 }
 
+install_bullet_spark() {
+    local BULLET_SPARK_JAR="bullet-spark-${BULLET_SPARK_VERSION}-standalone.jar"
+
+    println "Downloading Bullet Spark version ${BULLET_SPARK_VERSION}..."
+    download "http://jcenter.bintray.com/com/yahoo/bullet/bullet-spark/${BULLET_SPARK_VERSION}" "${BULLET_SPARK_JAR}"
+
+    println "Installing Bullet Spark version ${BULLET_SPARK_VERSION}..."
+    cp ${BULLET_DOWNLOADS}/${BULLET_SPARK_JAR} ${BULLET_SPARK}/bullet-spark.jar
+    println "Done!"
+}
+
 launch_bullet_spark() {
-    local BULLET_KAFKA_JAR=bullet-kafka-${BULLET_KAFKA_VERSION}-fat.jar
+    local BULLET_KAFKA_JAR="${BULLET_HOME}/pubsub/bullet-kafka-${BULLET_KAFKA_VERSION}-fat.jar"
+    local BULLET_SPARK_JAR="${BULLET_SPARK}/bullet-spark.jar"
+    local BULLET_EXAMPLE_JAR="${BULLET_SPARK}/bullet-spark-example.jar"
+    local BULLET_EXAMPLE_SETTINGS="${BULLET_SPARK}/bullet_spark_kafka_settings.yaml"
 
     println "Copying Bullet Spark configuration and artifacts..."
     cp $BULLET_HOME/bullet-examples/backend/spark/* $BULLET_SPARK
@@ -188,9 +204,9 @@ launch_bullet_spark() {
     ${SPARK_DIR}/bin/spark-submit \
         --master local[10]  \
         --class com.yahoo.bullet.spark.BulletSparkStreamingMain \
-        --driver-class-path $BULLET_SPARK/bullet-spark.jar:${BULLET_HOME}/pubsub$/${BULLET_KAFKA_JAR}:$BULLET_SPARK/bullet-spark-example.jar \
-        $BULLET_SPARK/bullet-spark.jar \
-        --bullet-spark-conf=$BULLET_SPARK/bullet_spark_settings.yaml &> log.txt &
+        --driver-class-path $BULLET_SPARK_JAR:$BULLET_KAFKA_JAR:$BULLET_EXAMPLE_JAR \
+        $BULLET_SPARK_JAR \
+        --bullet-spark-conf=$BULLET_EXAMPLE_SETTINGS &> log.txt &
 
     println "Sleeping for 15 s to ensure Bullet Spark is up and running..."
     println "=============================================================================="
@@ -257,10 +273,11 @@ cleanup() {
     ${KAFKA_INSTALL_DIR}/bin/kafka-server-stop.sh
     ${KAFKA_INSTALL_DIR}/bin/zookeeper-server-stop.sh
 
-    sleep 3
+    sleep 5
 
     rm -rf "${BULLET_EXAMPLES}" "${BULLET_HOME}/backend" "${BULLET_HOME}/service" \
-           "${BULLET_HOME}/ui" "${BULLET_HOME}/pubsub"
+           "${BULLET_HOME}/ui" "${BULLET_HOME}/pubsub" \
+           /tmp/zookeeper /tmp/kafka-logs/ tmp/spark-checkpoint
 
     set -e
 }
@@ -275,7 +292,7 @@ unset_all() {
     unset -f print_versions println download export_vars setup \
              install_bullet_examples \
              install_kafka install_bullet_kafka launch_kafka create_topics \
-             install_spark launch_bullet_spark \
+             install_spark install_bullet_spark launch_bullet_spark \
              install_web_service launch_web_service \
              install_node launch_bullet_ui \
              cleanup teardown unset_all launch clean
@@ -296,6 +313,7 @@ launch() {
     create_topics
 
     install_spark
+    install_bullet_spark
     launch_bullet_spark
 
     install_web_service
