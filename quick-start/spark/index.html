@@ -71,7 +71,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v0.5.1</small></a>
+            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v0.5.2</small></a>
         </div>
 
         <!-- Expanded navigation -->
@@ -330,7 +330,12 @@
             <ul class="nav">
                 
                     <li class="second-level">
-                        <a href="#setup-kafka">Setup Kafka</a>
+                        <a href="#install-script">Install Script</a>
+                        
+                    </li>
+            
+                    <li class="second-level">
+                        <a href="#manual-installation">Manual Installation</a>
                         <ul class="nav">
                         
                             <li class="third-level">
@@ -339,93 +344,22 @@
                             </li>
                         
                             <li class="third-level">
-                                <a href="#step-2-download-and-install-kafka">Step 2: Download and Install Kafka</a>
+                                <a href="#setup-kafka">Setup Kafka</a>
                                 
                             </li>
                         
                             <li class="third-level">
-                                <a href="#step-3-start-zookeeper">Step 3: Start Zookeeper</a>
+                                <a href="#setup-bullet-backend-on-spark">Setup Bullet Backend on Spark</a>
                                 
                             </li>
                         
                             <li class="third-level">
-                                <a href="#step-4-start-kafka">Step 4: Start Kafka</a>
+                                <a href="#setup-web-service">Setup Web Service</a>
                                 
                             </li>
                         
                             <li class="third-level">
-                                <a href="#step-5-create-kafka-topics">Step 5: Create Kafka Topics</a>
-                                
-                            </li>
-                        
-                        </ul>
-                    </li>
-            
-                    <li class="second-level">
-                        <a href="#setup-web-service">Setup Web Service</a>
-                        <ul class="nav">
-                        
-                            <li class="third-level">
-                                <a href="#step-6-install-the-bullet-web-service">Step 6: Install the Bullet Web Service</a>
-                                
-                            </li>
-                        
-                            <li class="third-level">
-                                <a href="#step-7-launch-the-web-service">Step 7: Launch the Web Service</a>
-                                
-                            </li>
-                        
-                            <li class="third-level">
-                                <a href="#step-8-test-the-web-service-optional">Step 8: Test the Web Service (optional)</a>
-                                
-                            </li>
-                        
-                        </ul>
-                    </li>
-            
-                    <li class="second-level">
-                        <a href="#setup-bullet-backend-on-spark">Setup Bullet Backend on Spark</a>
-                        <ul class="nav">
-                        
-                            <li class="third-level">
-                                <a href="#step-9-install-spark-221">Step 9: Install Spark 2.2.1</a>
-                                
-                            </li>
-                        
-                            <li class="third-level">
-                                <a href="#step-10-setup-bullet-spark-and-example-data-producer">Step 10: Setup Bullet-Spark and Example Data Producer</a>
-                                
-                            </li>
-                        
-                            <li class="third-level">
-                                <a href="#step-11-launch-the-bullet-spark-backend">Step 11: Launch the Bullet Spark Backend</a>
-                                
-                            </li>
-                        
-                        </ul>
-                    </li>
-            
-                    <li class="second-level">
-                        <a href="#setting-up-the-bullet-ui">Setting up the Bullet UI</a>
-                        <ul class="nav">
-                        
-                            <li class="third-level">
-                                <a href="#step-12-install-node">Step 12: Install Node</a>
-                                
-                            </li>
-                        
-                            <li class="third-level">
-                                <a href="#step-13-install-the-bullet-ui">Step 13: Install the Bullet UI</a>
-                                
-                            </li>
-                        
-                            <li class="third-level">
-                                <a href="#step-14-launch-the-ui">Step 14: Launch the UI</a>
-                                
-                            </li>
-                        
-                            <li class="third-level">
-                                <a href="#playing-around-with-the-instance">Playing around with the instance:</a>
+                                <a href="#setting-up-the-bullet-ui">Setting up the Bullet UI</a>
                                 
                             </li>
                         
@@ -435,6 +369,33 @@
                     <li class="second-level">
                         <a href="#teardown">Teardown</a>
                         
+                    </li>
+            
+                    <li class="second-level">
+                        <a href="#what-did-we-do">What did we do?</a>
+                        <ul class="nav">
+                        
+                            <li class="third-level">
+                                <a href="#spark-streaming-job">Spark Streaming Job</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#pubsub">PubSub</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#web-service">Web Service</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#ui">UI</a>
+                                
+                            </li>
+                        
+                        </ul>
                     </li>
             
             </ul>
@@ -457,8 +418,17 @@
 <li>You will need to be on an Unix-based system (Mac OS X, Ubuntu ...) with <code>curl</code> installed</li>
 <li>You will need <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">JDK 8</a> installed</li>
 </ul>
-<h3 id="setup-kafka">Setup Kafka</h3>
-<p>For this instance of Bullet we will use the Kafka PubSub implementation found in <a href="https://github.com/bullet-db/bullet-spark">bullet-spark</a>. So we will first download and run Kafka, and setup a couple Kafka topics.</p>
+<h2 id="install-script">Install Script</h2>
+<p>Simply run:</p>
+<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/bullet-db/bullet-db.github.io/src/examples/install-all-spark.sh | bash
+</code></pre>
+
+<p>This will setup a local Spark and Kafka cluster, a Bullet running on it, the Bullet Web Service and a Bullet UI for you. Once everything has launched, you should be able to go to the Bullet UI running locally at <a href="http://localhost:8800">http://localhost:8800</a>. You can then <a href="#what-did-we-do"><strong>continue this guide from here</strong></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Want to DIY?</p>
+<p>If you want to manually run all the commands or if the script died while doing something above (might want to perform the <a href="#teardown">teardown</a> first), you can continue below.</p>
+</div>
+<h2 id="manual-installation">Manual Installation</h2>
 <h4 id="step-1-setup-directories-and-examples">Step 1: Setup directories and examples</h4>
 <pre><code class="bash">export BULLET_HOME=$(pwd)/bullet-quickstart
 mkdir -p $BULLET_HOME/backend/spark
@@ -466,11 +436,13 @@ mkdir -p $BULLET_HOME/pubsub
 mkdir -p $BULLET_HOME/service
 mkdir -p $BULLET_HOME/ui
 cd $BULLET_HOME
-curl -LO https://github.com/bullet-db/bullet-db.github.io/releases/download/v0.5.0/examples_artifacts.tar.gz
+curl -LO https://github.com/bullet-db/bullet-db.github.io/releases/download/v0.5.2/examples_artifacts.tar.gz
 tar -xzf examples_artifacts.tar.gz
 export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 </code></pre>
 
+<h3 id="setup-kafka">Setup Kafka</h3>
+<p>For this instance of Bullet we will use the Kafka PubSub implementation found in <a href="https://github.com/bullet-db/bullet-spark">bullet-spark</a>. So we will first download and run Kafka, and setup a couple Kafka topics.</p>
 <h4 id="step-2-download-and-install-kafka">Step 2: Download and Install Kafka</h4>
 <pre><code class="bash">cd $BULLET_HOME/pubsub
 curl -Lo bullet-kafka.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-kafka/0.3.0/bullet-kafka-0.3.0-fat.jar
@@ -494,45 +466,21 @@ export KAFKA_DIR=$BULLET_HOME/pubsub/kafka_2.12-0.11.0.1
 $KAFKA_DIR/bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic bullet.responses
 </code></pre>
 
-<h3 id="setup-web-service">Setup Web Service</h3>
-<h4 id="step-6-install-the-bullet-web-service">Step 6: Install the Bullet Web Service</h4>
-<pre><code class="bash">cd $BULLET_HOME/service
-curl -Lo bullet-service.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/0.2.1/bullet-service-0.2.1-embedded.jar
-cp $BULLET_EXAMPLES/web-service/example_kafka_pubsub_config.yaml $BULLET_HOME/service/
-cp $BULLET_EXAMPLES/web-service/example_columns.json $BULLET_HOME/service/
-</code></pre>
-
-<h4 id="step-7-launch-the-web-service">Step 7: Launch the Web Service</h4>
-<p>Run this multi-line command (new lines are escaped):</p>
-<pre><code class="bash">java -Dloader.path=$BULLET_HOME/pubsub/bullet-kafka.jar -jar bullet-service.jar \
-    --bullet.pubsub.config=$BULLET_HOME/service/example_kafka_pubsub_config.yaml \
-    --bullet.schema.file=$BULLET_HOME/service/example_columns.json \
-    --server.port=9999  \
-    --logging.path=. \
-    --logging.file=log.txt &amp;&gt; log.txt &amp;
-</code></pre>
-
-<h4 id="step-8-test-the-web-service-optional">Step 8: Test the Web Service (optional)</h4>
-<p>We can check that the Web Service is up and running by getting the example columns through the API:</p>
-<pre><code class="bash">curl -s http://localhost:9999/api/bullet/columns
-</code></pre>
-
-<p>You can also check the status of the Web Service by looking at the Web Service log: $BULLET_HOME/service/log.txt</p>
 <h3 id="setup-bullet-backend-on-spark">Setup Bullet Backend on Spark</h3>
 <p>We will run the bullet-spark backend using <a href="https://spark.apache.org/releases/spark-release-2-2-1.html">Spark 2.2.1</a>.</p>
-<h4 id="step-9-install-spark-221">Step 9: Install Spark 2.2.1</h4>
+<h4 id="step-6-install-spark-221">Step 6: Install Spark 2.2.1</h4>
 <pre><code class="bash">export BULLET_SPARK=$BULLET_HOME/backend/spark
 cd $BULLET_SPARK
 curl -O http://www-eu.apache.org/dist/spark/spark-2.2.1/spark-2.2.1-bin-hadoop2.7.tgz
 tar -xzf spark-2.2.1-bin-hadoop2.7.tgz
 </code></pre>
 
-<h4 id="step-10-setup-bullet-spark-and-example-data-producer">Step 10: Setup Bullet-Spark and Example Data Producer</h4>
+<h4 id="step-7-setup-bullet-spark-and-example-data-producer">Step 7: Setup Bullet-Spark and Example Data Producer</h4>
 <pre><code class="bash">cp $BULLET_HOME/bullet-examples/backend/spark/* $BULLET_SPARK
 curl -Lo bullet-spark.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-spark/0.1.2/bullet-spark-0.1.2-standalone.jar
 </code></pre>
 
-<h4 id="step-11-launch-the-bullet-spark-backend">Step 11: Launch the Bullet Spark Backend</h4>
+<h4 id="step-8-launch-the-bullet-spark-backend">Step 8: Launch the Bullet Spark Backend</h4>
 <p>Run this multi-line command (new lines are escaped):</p>
 <pre><code class="bash">$BULLET_SPARK/spark-2.2.1-bin-hadoop2.7/bin/spark-submit \
     --master local[10]  \
@@ -544,14 +492,38 @@ curl -Lo bullet-spark.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-spa
 </code></pre>
 
 <p>The Backend will usually be up and running usually within 5-10 seconds. Once it is running you can get information about the Spark job in the Spark UI, which can be seen in your browser at <a href="http://localhost:4040">http://localhost:4040</a> by default. The Web Service will now be hooked up through the Kafka PubSub to the Spark backend. To test it you can now run a Bullet query by hitting the Web Service directly:</p>
+<h3 id="setup-web-service">Setup Web Service</h3>
+<h4 id="step-9-install-the-bullet-web-service">Step 9: Install the Bullet Web Service</h4>
+<pre><code class="bash">cd $BULLET_HOME/service
+curl -Lo bullet-service.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/0.2.1/bullet-service-0.2.1-embedded.jar
+cp $BULLET_EXAMPLES/web-service/example_kafka_pubsub_config.yaml $BULLET_HOME/service/
+cp $BULLET_EXAMPLES/web-service/example_columns.json $BULLET_HOME/service/
+</code></pre>
+
+<h4 id="step-10-launch-the-web-service">Step 10: Launch the Web Service</h4>
+<p>Run this multi-line command (new lines are escaped):</p>
+<pre><code class="bash">java -Dloader.path=$BULLET_HOME/pubsub/bullet-kafka.jar -jar bullet-service.jar \
+    --bullet.pubsub.config=$BULLET_HOME/service/example_kafka_pubsub_config.yaml \
+    --bullet.schema.file=$BULLET_HOME/service/example_columns.json \
+    --server.port=9999  \
+    --logging.path=. \
+    --logging.file=log.txt &amp;&gt; log.txt &amp;
+</code></pre>
+
+<h4 id="step-11-test-the-web-service-optional">Step 11: Test the Web Service (optional)</h4>
+<p>We can check that the Web Service is up and running by getting the example columns through the API:</p>
+<pre><code class="bash">curl -s http://localhost:9999/api/bullet/columns
+</code></pre>
+
 <pre><code class="bash">curl -s -H 'Content-Type: text/plain' -X POST -d '{&quot;aggregation&quot;: {&quot;size&quot;: 1}}' http://localhost:9999/api/bullet/sse-query
 </code></pre>
 
 <p>This query will return a result JSON containing a "records" field containing a single record, and a "meta" field with some meta information.</p>
 <div class="admonition note">
 <p class="admonition-title">What is this data?</p>
-<p>This data is randomly generated by the <a href="https://github.com/bullet-db/bullet-db.github.io/blob/v0.5.0/examples/spark/src/main/scala/com/yahoo/bullet/spark/examples/receiver/RandomReceiver.scala">custom data producer</a> that generates toy data to demo Bullet. In practice, your producer would read from an actual data source such as Kafka.</p>
+<p>This data is randomly generated by the <a href="https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/spark/src/main/scala/com/yahoo/bullet/spark/examples/receiver/RandomReceiver.scala">custom Spark Streaming Receiver</a> that generates toy data to demo Bullet. In practice, your producer would read from an actual data source such as Kafka etc.</p>
 </div>
+<p>You can also check the status of the Web Service by looking at the Web Service log: $BULLET_HOME/service/log.txt</p>
 <h3 id="setting-up-the-bullet-ui">Setting up the Bullet UI</h3>
 <h4 id="step-12-install-node">Step 12: Install Node</h4>
 <pre><code class="bash">cd $BULLET_HOME/ui
@@ -579,7 +551,12 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
 <h4 id="playing-around-with-the-instance">Playing around with the instance:</h4>
 <p>Check out and follow along with the <a href="../../ui/usage/">UI Usage</a> page as it shows you some queries you can run using this UI.</p>
 <h2 id="teardown">Teardown</h2>
-<p>When you are done trying out Bullet, you can stop the processes and cleanup all the downloads using:</p>
+<p>When you are done trying out Bullet, you can stop the processes and cleanup using the instructions below.</p>
+<p>If you were using the <a href="#install-script">Install Script</a> or if you don't want to manually bring down everything, you can run:</p>
+<pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/bullet-db/bullet-db.github.io/src/examples/install-all-spark.sh | bash -s cleanup
+</code></pre>
+
+<p>If you were performing the steps yourself, you can also manually cleanup <strong>all the components and all the downloads</strong> using:</p>
 <table>
 <thead>
 <tr>
@@ -614,7 +591,232 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
 </tr>
 </tbody>
 </table>
-<p>Note: This does <em>not</em> delete <code>$HOME/.nvm</code>.</p></div>
+<p>Note: This does <em>not</em> delete <code>$HOME/.nvm</code>.</p>
+<h2 id="what-did-we-do">What did we do?</h2>
+<p>This section will go over the various custom pieces this example plugged into Bullet, so you can better understand what we did.</p>
+<h3 id="spark-streaming-job">Spark Streaming Job</h3>
+<p>The Spark Streaming application we ran was Bullet plugged in with a custom Receiver in our implementation of the Bullet Spark DataProducer trait. This Receiver and DataProducer are implemented in this <a href="https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/spark/">example project</a> and was already built for you when you <a href="#step-1-setup-directories-and-examples">downloaded the examples</a>. It does not read from any data source and just produces random, structured data. It also produces only up to a maximum number of records in a given period. Both this maximum and the length of a period are configured in the Receiver (at most 100 every 1 second).</p>
+<pre><code class="bash">$BULLET_SPARK/spark-2.2.1-bin-hadoop2.7/bin/spark-submit \
+    --master local[10]  \
+    --class com.yahoo.bullet.spark.BulletSparkStreamingMain \
+    --jars $BULLET_HOME/pubsub/bullet-kafka.jar,$BULLET_SPARK/bullet-spark-example.jar \
+    $BULLET_SPARK/bullet-spark.jar \
+    --bullet-spark-conf=$BULLET_SPARK/bullet_spark_kafka_settings.yaml &amp;&gt; log.txt &amp;
+
+</code></pre>
+
+<p>We launched the bullet-spark jar (an uber or "fat" jar) containing Bullet Spark and all its dependencies. We added our Pubsub (see below) implementation and our jar containing our custom Receiver to the Spark job's additional jars.</p>
+<p>The settings defined by <code>--bullet-spark-conf=$BULLET_SPARK/bullet_spark_kafka_settings.yaml</code> and the arguments here run all components in the Spark Streaming job.</p>
+<div class="admonition note">
+<p class="admonition-title">I thought you said hundreds of thousands of records...</p>
+<p>100 records per second is not Big Data by any stretch of the imagination but this Quick Start is running everything on one machine and is meant to introduce you to what Bullet does. In practice, you would scale and run your components with CPU and memory configurations to accommodate for your data volume and querying needs.</p>
+</div>
+<p>Let's look at the <a href="https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/spark/src/main/scala/com/yahoo/bullet/spark/examples/receiver/RandomReceiver.scala">custom Receiver code</a> that generates the data.</p>
+<pre><code class="scala">  private def receive(): Unit = {
+    nextIntervalStart = System.currentTimeMillis()
+    while (!isStopped) {
+      val timeNow = System.currentTimeMillis()
+      // Only emit if we are still in the interval and haven't gone over our per period max
+      if (timeNow &lt;= nextIntervalStart &amp;&amp; generatedThisPeriod &lt; maxPerPeriod) {
+        store(generateRecord())
+        generatedThisPeriod += 1
+      }
+      if (timeNow &gt; nextIntervalStart) {
+        logger.info(&quot;Generated {} tuples out of {}&quot;, generatedThisPeriod, maxPerPeriod)
+        nextIntervalStart = timeNow + period
+        generatedThisPeriod = 0
+        periodCount += 1
+      }
+      // It is courteous to sleep for a short time.
+      try {
+        Thread.sleep(1)
+      } catch {
+        case e: InterruptedException =&gt; logger.error(&quot;Error: &quot;, e)
+      }
+    }
+  }
+</code></pre>
+
+<p>This method above emits the data. This method is wrapped in a thread that is called by the Spark framework. This function only emits at most the given maximum tuples per period.</p>
+<pre><code class="scala">  private def makeRandomMap: Map[java.lang.String, java.lang.String] = {
+    val randomMap = new HashMap[java.lang.String, java.lang.String](2)
+    randomMap.put(RandomReceiver.RANDOM_MAP_KEY_A, RandomReceiver.STRING_POOL(Random.nextInt(RandomReceiver.STRING_POOL.length)))
+    randomMap.put(RandomReceiver.RANDOM_MAP_KEY_B, RandomReceiver.STRING_POOL(Random.nextInt(RandomReceiver.STRING_POOL.length)))
+    randomMap
+  }
+
+  private def generateRecord(): BulletRecord = {
+    val record = new SimpleBulletRecord()
+    val uuid = UUID.randomUUID().toString
+    record.setString(RandomReceiver.STRING, uuid)
+    record.setLong(RandomReceiver.LONG, generatedThisPeriod)
+    record.setDouble(RandomReceiver.DOUBLE, Random.nextDouble())
+    record.setDouble(RandomReceiver.GAUSSIAN, Random.nextGaussian())
+    record.setString(RandomReceiver.TYPE, RandomReceiver.STRING_POOL(Random.nextInt(RandomReceiver.STRING_POOL.length)))
+    record.setLong(RandomReceiver.DURATION, System.nanoTime() % RandomReceiver.INTEGER_POOL(Random.nextInt(RandomReceiver.INTEGER_POOL.length)))
+
+    // Don't use Scala Map and convert it by asJava when calling setxxxMap method in BulletRecord.
+    // It converts Scala Map to scala.collection.convert.Wrappers$MapWrapper which is not serializable in scala 2.11.x (https://issues.scala-lang.org/browse/SI-8911).
+
+    record.setStringMap(RandomReceiver.SUBTYPES_MAP, makeRandomMap);
+
+    val booleanMap = new HashMap[java.lang.String, java.lang.Boolean](4)
+    booleanMap.put(uuid.substring(0, 8), Random.nextBoolean())
+    booleanMap.put(uuid.substring(9, 13), Random.nextBoolean())
+    booleanMap.put(uuid.substring(14, 18), Random.nextBoolean())
+    booleanMap.put(uuid.substring(19, 23), Random.nextBoolean())
+    record.setBooleanMap(RandomReceiver.BOOLEAN_MAP, booleanMap)
+
+
+    val statsMap = new HashMap[java.lang.String, java.lang.Long](4)
+    statsMap.put(RandomReceiver.PERIOD_COUNT, periodCount)
+    statsMap.put(RandomReceiver.RECORD_NUMBER, periodCount * maxPerPeriod + generatedThisPeriod)
+    statsMap.put(RandomReceiver.NANO_TIME, System.nanoTime())
+    statsMap.put(RandomReceiver.TIMESTAMP, System.nanoTime())
+    record.setLongMap(RandomReceiver.STATS_MAP, statsMap)
+
+    record.setListOfStringMap(RandomReceiver.LIST, asList(makeRandomMap, makeRandomMap))
+    record
+  }
+</code></pre>
+
+<p>This <code>generateRecord</code> method generates some fields randomly and inserts them into a BulletRecord (simple). Note that the BulletRecord is typed and all data must be inserted with the proper types.</p>
+<p>This whole receiver is plugged into an implementation of the Spark DataProducer trait that Bullet Spark requires to plug in your data (as a Spark DStream) into it. You can find this class implemented <a href="https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/spark/src/main/scala/com/yahoo/bullet/spark/examples/RandomProducer.scala">here</a> and reproduced below.</p>
+<pre><code class="scala">package com.yahoo.bullet.spark.examples
+
+import com.yahoo.bullet.record.BulletRecord
+import com.yahoo.bullet.spark.DataProducer
+import com.yahoo.bullet.spark.examples.receiver.RandomReceiver
+import com.yahoo.bullet.spark.utils.BulletSparkConfig
+import org.apache.spark.streaming.StreamingContext
+import org.apache.spark.streaming.dstream.DStream
+
+class RandomProducer extends DataProducer {
+  override def getBulletRecordStream(ssc: StreamingContext, config: BulletSparkConfig): DStream[BulletRecord] = {
+    // Bullet record input stream.
+    val bulletReceiver = new RandomReceiver(config)
+    ssc.receiverStream(bulletReceiver).asInstanceOf[DStream[BulletRecord]]
+  }
+}
+</code></pre>
+
+<p>If you put Bullet on your data, you will need to write a DataProducer (or a full on Spark DAG if your reading is complex), that reads from your data source and emits a DStream of BulletRecords with the fields you wish to be query-able similar to this example.</p>
+<h3 id="pubsub">PubSub</h3>
+<p>We used the <a href="../../pubsub/kafka/">Kafka PubSub</a>. We configured the Backend to use this PubSub by adding these settings to the YAML file that we passed to our Spark Streaming job. Notice that we set the context to <code>QUERY_PROCESSING</code> since this is the Backend.</p>
+<pre><code class="yaml">bullet.pubsub.context.name: &quot;QUERY_PROCESSING&quot;
+bullet.pubsub.class.name: &quot;com.yahoo.bullet.kafka.KafkaPubSub&quot;
+bullet.pubsub.kafka.bootstrap.servers: &quot;localhost:9092&quot;
+bullet.pubsub.kafka.request.topic.name: &quot;bullet.requests&quot;
+bullet.pubsub.kafka.response.topic.name: &quot;bullet.responses&quot;
+</code></pre>
+
+<p>For the Web Service, we passed in a YAML file that pointed to the same Kafka topics. Notice that we set the context to <code>QUERY_SUBMISSION</code> since this is the Web Service.</p>
+<pre><code class="yaml">bullet.pubsub.context.name: &quot;QUERY_SUBMISSION&quot;
+bullet.pubsub.class.name: &quot;com.yahoo.bullet.kafka.KafkaPubSub&quot;
+bullet.pubsub.kafka.bootstrap.servers: &quot;localhost:9092&quot;
+bullet.pubsub.kafka.request.topic.name: &quot;bullet.requests&quot;
+bullet.pubsub.kafka.response.topic.name: &quot;bullet.responses&quot;
+</code></pre>
+
+<h3 id="web-service">Web Service</h3>
+<p>We launched the Web Service using two custom files - a PubSub configuration YAML file and JSON schema file.</p>
+<p>The JSON columns file contains the schema for our data specified in JSON. Since our schema is not going to change, we use the Web Service to serve it from a file. If your schema changes dynamically, you will need to provide your own endpoint to the UI.</p>
+<p>The following is a snippet from the <a href="https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/web-service/example_columns.json">JSON file</a>. Notice how the types of the fields are specified. Also, if you have generated BulletRecord with Map fields whose keys are known, you can specify them here using <code>enumerations</code>.</p>
+<pre><code class="javascript">[
+    {
+        &quot;name&quot;: &quot;probability&quot;,
+        &quot;type&quot;: &quot;DOUBLE&quot;,
+        &quot;description&quot;: &quot;Generated from Random#nextDouble&quot;
+    },
+    ...
+    {
+        &quot;name&quot;: &quot;stats&quot;,
+        &quot;type&quot;: &quot;MAP&quot;,
+        &quot;subtype&quot;: &quot;LONG&quot;,
+        &quot;description&quot;: &quot;This map contains some numeric information such as the current number of periods etc.&quot;,
+        &quot;enumerations&quot;: [
+            ...
+            {&quot;name&quot;: &quot;nano_time&quot;, &quot;description&quot;: &quot;The ns time when this record was generated&quot;}
+        ]
+    },
+    {
+        &quot;name&quot;: &quot;classifiers&quot;,
+        &quot;type&quot;: &quot;LIST&quot;,
+        &quot;subtype&quot;: &quot;MAP&quot;,
+        &quot;description&quot;: &quot;This contains two maps, each with: field_A and field_B whose values are randomly chosen from: foo, bar, baz, qux, quux, norf&quot;
+    }
+]
+</code></pre>
+
+<p>The contents of the <a href="https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/web-service/example_kafka_pubsub_config.yaml">PubSub configuration file</a> was discussed in the <a href="#pubsub">PubSub section above</a>.</p>
+<h3 id="ui">UI</h3>
+<p>Finally, we configured the UI with the custom environment specific settings file. We did not add any environments since we only had the one.</p>
+<pre><code class="javascript">{
+  &quot;default&quot;: {
+    &quot;queryHost&quot;: &quot;http://localhost:9999&quot;,
+    &quot;queryNamespace&quot;: &quot;api/bullet&quot;,
+    &quot;queryPath&quot;: &quot;ws-query&quot;,
+    &quot;queryStompRequestChannel&quot;: &quot;/server/request&quot;,
+    &quot;queryStompResponseChannel&quot;: &quot;/client/response&quot;,
+    &quot;schemaHost&quot;: &quot;http://localhost:9999&quot;,
+    &quot;schemaNamespace&quot;: &quot;api/bullet&quot;,
+    &quot;helpLinks&quot;: [
+      {
+        &quot;name&quot;: &quot;Tutorials&quot;,
+        &quot;link&quot;: &quot;https://bullet-db.github.io/ui/usage&quot;
+      }
+    ],
+    &quot;bugLink&quot;: &quot;https://github.com/bullet-db/bullet-ui/issues&quot;,
+    &quot;modelVersion&quot;: 3,
+    &quot;migrations&quot;: {
+      &quot;deletions&quot;: &quot;query&quot;
+    },
+    &quot;defaultValues&quot;: {
+      &quot;aggregationMaxSize&quot;: 1024,
+      &quot;rawMaxSize&quot;: 500,
+      &quot;durationMaxSecs&quot;: 86400,
+      &quot;distributionNumberOfPoints&quot;: 11,
+      &quot;distributionQuantilePoints&quot;: &quot;0, 0.25, 0.5, 0.75, 0.9, 1&quot;,
+      &quot;distributionQuantileStart&quot;: 0,
+      &quot;distributionQuantileEnd&quot;: 1,
+      &quot;distributionQuantileIncrement&quot;: 0.1,
+      &quot;windowEmitFrequencyMinSecs&quot;: 1,
+      &quot;everyForRecordBasedWindow&quot;: 1,
+      &quot;everyForTimeBasedWindow&quot;: 2,
+      &quot;sketches&quot;: {
+        &quot;countDistinctMaxEntries&quot;: 16384,
+        &quot;groupByMaxEntries&quot;: 512,
+        &quot;distributionMaxEntries&quot;: 1024,
+        &quot;distributionMaxNumberOfPoints&quot;: 200,
+        &quot;topKMaxEntries&quot;: 1024,
+        &quot;topKErrorType&quot;: &quot;No False Negatives&quot;
+      },
+      &quot;metadataKeyMapping&quot;: {
+        &quot;querySection&quot;: &quot;Query&quot;,
+        &quot;windowSection&quot;: &quot;Window&quot;,
+        &quot;sketchSection&quot;: &quot;Sketch&quot;,
+        &quot;theta&quot;: &quot;Theta&quot;,
+        &quot;uniquesEstimate&quot;: &quot;Uniques Estimate&quot;,
+        &quot;queryCreationTime&quot;: &quot;Receive Time&quot;,
+        &quot;queryTerminationTime&quot;: &quot;Finish Time&quot;,
+        &quot;estimatedResult&quot;: &quot;Was Estimated&quot;,
+        &quot;standardDeviations&quot;: &quot;Standard Deviations&quot;,
+        &quot;normalizedRankError&quot;: &quot;Normalized Rank Error&quot;,
+        &quot;maximumCountError&quot;: &quot;Maximum Count Error&quot;,
+        &quot;itemsSeen&quot;: &quot;Items Seen&quot;,
+        &quot;minimumValue&quot;: &quot;Minimum Value&quot;,
+        &quot;maximumValue&quot;: &quot;Maximum Value&quot;,
+        &quot;windowNumber&quot;: &quot;Number&quot;,
+        &quot;windowSize&quot;: &quot;Size&quot;,
+        &quot;windowEmitTime&quot;: &quot;Emit Time&quot;,
+        &quot;expectedEmitTime&quot;: &quot;Expected Emit Time&quot;
+      }
+    }
+  }
+}
+</code></pre>
+
+<p>Since we served our schema through the same Web Service as our queries, both these point to our Web Service. Note that there is no <code>schemaPath</code> because it must be the constant string <code>columns</code>. If you define a custom endpoint for your schema, you must ensure that it can be obtained by making a GET request to <code>schemaHost/schemaNamespace/columns</code>.</p></div>
         
     </div>
 
