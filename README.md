@@ -2,7 +2,7 @@
 
 This hosts the documentation source and examples for [Bullet](https://github.com/yahoo/bullet-storm).
 
-The built documentation can be accessed [here](https://yahoo.github.io/bullet-docs).
+The built documentation can be accessed [here](https://bullet-db.github.io).
 
 ## Building the documentation
 
