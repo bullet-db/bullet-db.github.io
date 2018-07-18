@@ -204,3 +204,22 @@ A PubSub implementation using Kafka as the backing PubSub. Can be used with any 
 | 2017-10-19   | [**0.2.0**](https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-0.2.0) | Refactors and re-releases. Pass-through settings to Kafka. Manual offset committing bug fix |
 | 2017-09-27   | [**0.1.2**](https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-0.1.2) | Fixes a bug with config loading |
 | 2017-09-22   | [**0.1.1**](https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-0.1.1) | First release using the PubSub interfaces |
+
+## Bullet BQL
+
+A library facilitating the conversion from Bullet BQL queries to Bullet JSON queries
+
+|                            |                 |
+| -------------------------- | --------------- |
+| **Repository**             | [https://github.com/bullet-db/bullet-bql](https://github.com/bullet-db/bullet-bql) |
+| **Issues**                 | [https://github.com/bullet-db/bullet-bql/issues](https://github.com/bullet-db/bullet-bql/issues) |
+| **Last Tag**               | [![Latest tag](https://img.shields.io/github/release/bullet-db/bullet-bql/all.svg)](https://github.com/bullet-db/bullet-bql/tags) |
+| **Latest Artifact**        | [![Download](https://api.bintray.com/packages/yahoo/maven/bullet-bql/images/download.svg)](https://bintray.com/yahoo/maven/bullet-bql/_latestVersion) |
+| **Package Manager Setup**  | [Setup for Maven, Gradle etc](https://bintray.com/bintray/jcenter?filterByPkgName=bullet-bql) |
+
+### Releases
+
+|    Date      |                                  Release                                             | Highlights |
+| ------------ | ------------------------------------------------------------------------------------ | ---------- |
+| 2018-07-17   | [**0.1.1**](https://github.com/bullet-db/bullet-bql/releases/tag/bullet-bql-0.1.1) | Stops publishing fat jar and marks slf4j dependency provided |
+| 2018-07-05   | [**0.1.0**](https://github.com/bullet-db/bullet-bql/releases/tag/bullet-bql-0.1.0) | First release |
