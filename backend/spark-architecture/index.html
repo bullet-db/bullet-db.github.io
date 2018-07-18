@@ -366,8 +366,10 @@
 <p>The components in the <a href="../..#architecture">Architecture</a> have direct counterparts here. The Query Receiver reading from the PubSub layer using plugged-in PubSub consumers and the Query Unioning make up the Request Processor. The Filter Streaming and your plugin for your source of data make up the Data Processor. The Join Streaming and the Result Emitter make up the Combiner.</p>
 <p>The red lines are the path for the queries that come in through the PubSub, the orange lines are the path for the signals and the blue lines are for the data from your data source. The shapes of the boxes denote the type of transformation/action being executed in the boxes.</p>
 <h3 id="data-processing">Data processing</h3>
-<p>Bullet can accept arbitrary sources of data as long as they can be ingested by Spark. They can be Kafka, Flume, Kinesis, and TCP sockets etc. In order to hook up your data to Bullet Spark, you just need to implement the <a href="https://github.com/bullet-db/bullet-spark/blob/master/src/main/scala/com/yahoo/bullet/spark/DataProducer.scala">Data Producer Trait</a>. In your implementation, you can either:
-* Use <a href="https://spark.apache.org/docs/latest/streaming-programming-guide.html#input-dstreams-and-receivers">Spark Streaming built-in sources</a> to receive data. Below is a quick example for a direct Kafka source in Scala. You can also write it in Java:</p>
+<p>Bullet can accept arbitrary sources of data as long as they can be ingested by Spark. They can be Kafka, Flume, Kinesis, and TCP sockets etc. In order to hook up your data to Bullet Spark, you just need to implement the <a href="https://github.com/bullet-db/bullet-spark/blob/master/src/main/scala/com/yahoo/bullet/spark/DataProducer.scala">Data Producer Trait</a>. In your implementation, you can either:</p>
+<ul>
+<li>Use <a href="https://spark.apache.org/docs/latest/streaming-programming-guide.html#input-dstreams-and-receivers">Spark Streaming built-in sources</a> to receive data. Below is a quick example for a direct Kafka source in Scala. You can also write it in Java:</li>
+</ul>
 <pre><code class="scala">import com.yahoo.bullet.spark.DataProducer
 import org.apache.spark.streaming.kafka010.{ConsumerStrategies, KafkaUtils, LocationStrategies}
 // import all other necessary packages
