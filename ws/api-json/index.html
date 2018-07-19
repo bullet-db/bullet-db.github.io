@@ -7,10 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="The full documentation for Bullet - A Real Time Data Query Engine"> 
     <meta name="author" content="Akshai Sarma"> 
-    <link rel="canonical" href="https://bullet-db.github.io/ws/api/"> 
+    <link rel="canonical" href="https://bullet-db.github.io/ws/api-json/"> 
     <link rel="shortcut icon" href="../../img/favicon.ico">
 
-    <title>API - Bullet Docs</title>
+    <title>JSON - Bullet Docs</title>
 
     <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
@@ -215,9 +215,24 @@
 
                         
                             
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">API</a>
+    <ul class="dropdown-menu">
+        
+            
 <li class="active">
-    <a href="./">API</a>
+    <a href="./">JSON</a>
 </li>
+
+        
+            
+<li >
+    <a href="../api-bql/">BQL</a>
+</li>
+
+        
+    </ul>
+  </li>
 
                         
                             
@@ -296,7 +311,7 @@
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="../examples/">
+                        <a rel="prev" href="../api-bql/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
@@ -326,7 +341,7 @@
     <ul class="nav bs-sidenav">
     
         <li class="active">
-            <a href="#api">API</a>
+            <a href="#bullet-json-api">Bullet JSON API</a>
             <ul class="nav">
                 
                     <li class="second-level">
@@ -402,13 +417,16 @@
 </div></div>
         <div class="col-md-9" role="main">
 
-<h1 id="api">API</h1>
-<p>This section gives a comprehensive overview of the Web Service API for launching Bullet queries.</p>
+<h1 id="bullet-json-api">Bullet JSON API</h1>
+<p>This section gives a comprehensive overview of the Web Service API for launching Bullet JSON queries.</p>
+<p>The JSON API is the actual Query format that is expected by the backend. <a href="../api-bql/">The BQL API</a> is a more
+user-friendly API which can also be used - the Web Service will automatically detect the BQL query and convert the
+query to this JSON format before submitting it to the backend.</p>
 <ul>
 <li>For info on how to use the UI, see the <a href="../../ui/usage/">UI Usage section</a></li>
 <li>For examples of specific queries see the <a href="../examples/">Examples</a> section</li>
 </ul>
-<p>The main constituents of a Bullet query are:</p>
+<p>The main constituents of a Bullet JSON query are:</p>
 <ul>
 <li><strong>filters</strong>, which determine which records will be consumed by your query</li>
 <li><strong>projection</strong>, which determines which fields will be projected in the resulting output from Bullet</li>

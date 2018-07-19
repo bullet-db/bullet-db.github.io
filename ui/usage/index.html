@@ -215,9 +215,24 @@
 
                         
                             
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">API</a>
+    <ul class="dropdown-menu">
+        
+            
 <li >
-    <a href="../../ws/api/">API</a>
+    <a href="../../ws/api-json/">JSON</a>
 </li>
+
+        
+            
+<li >
+    <a href="../../ws/api-bql/">BQL</a>
+</li>
+
+        
+    </ul>
+  </li>
 
                         
                             
@@ -492,7 +507,7 @@
 </video>
 
 <h2 id="filtering-and-projecting-data">Filtering and projecting data</h2>
-<p>The Filters section in the UI features a querybuilder (a modified version of the <a href="http://querybuilder.js.org/">jQuery-QueryBuilder</a>) that you can use to add filters. These allow you to <a href="../../ws/api/#filters">pick at the slice of data</a> from your stream that is relevant to you.</p>
+<p>The Filters section in the UI features a querybuilder (a modified version of the <a href="http://querybuilder.js.org/">jQuery-QueryBuilder</a>) that you can use to add filters. These allow you to <a href="../ws/api.md#filters">pick at the slice of data</a> from your stream that is relevant to you.</p>
 <p>The Output Data section lets you aggregate or choose to see raw data records. You can either get all the data as <a href="#a-simple-first-query">above</a> or you can select a subset of fields (and optionally rename them) that you would like to see.</p>
 <p><strong>Example: Finding and picking out fields from events that have probability &gt; 0.5</strong></p>
 <video controls autoplay loop>

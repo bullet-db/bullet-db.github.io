@@ -215,9 +215,24 @@
 
                         
                             
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">API</a>
+    <ul class="dropdown-menu">
+        
+            
 <li >
-    <a href="../../ws/api/">API</a>
+    <a href="../../ws/api-json/">JSON</a>
 </li>
+
+        
+            
+<li >
+    <a href="../../ws/api-bql/">BQL</a>
+</li>
+
+        
+    </ul>
+  </li>
 
                         
                             
@@ -480,7 +495,7 @@ express-server.js
 </tr>
 <tr>
 <td>defaultFilter</td>
-<td>Can either be a <a href="../../ws/api/#filters">API Filter</a> or a URL from which one could be fetched dynamically. The UI adds this to every newly created Query. You could use this as a way to have user specific (for example, cookie based) filters created for your users when they create a new query in the UI. Note that if you have are accessing a map subfield and your field value in the filter is set as <code>foo.bar</code> and you want <code>bar</code> to be the subfield in the UI query builder, you will need to add a key called <code>subfield</code> in the filter (not supported by the API) and set its value to <code>true</code></td>
+<td>Can either be a <a href="../ws/api.md#filters">API Filter</a> or a URL from which one could be fetched dynamically. The UI adds this to every newly created Query. You could use this as a way to have user specific (for example, cookie based) filters created for your users when they create a new query in the UI. Note that if you have are accessing a map subfield and your field value in the filter is set as <code>foo.bar</code> and you want <code>bar</code> to be the subfield in the UI query builder, you will need to add a key called <code>subfield</code> in the filter (not supported by the API) and set its value to <code>true</code></td>
 </tr>
 <tr>
 <td>bugLink</td>
