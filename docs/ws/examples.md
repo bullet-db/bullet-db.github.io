@@ -14,18 +14,18 @@ Rather than sourcing the examples from the Quick Start, these examples are real-
 
 The simplest query you can write would be:
 
-**Bullet Query**
+**BQL Query**
+
+```SQL
+SELECT * FROM STREAM(30000, TIME) LIMIT 1;
+```
+
+**JSON Query**
 
 ```javascript
 {}
 ```
 While not a very useful query - this will get any one event record (no filters means that any record would be matched, no projection gets the entire record, and the default aggregation is ```LIMIT```or ```RAW``` with size 1, default duration 30000 ms), this can be used to quickly test your connection to Bullet.
-
-**SQL**
-
-```SQL
-SELECT * FROM WINDOW(30000) LIMIT 1;
-```
 
 !!! note "WINDOW?"
 
@@ -33,7 +33,16 @@ SELECT * FROM WINDOW(30000) LIMIT 1;
 
 ### Simple Filtering
 
-**Bullet Query**
+**BQL Query**
+
+```SQL
+SELECT *
+FROM STREAM(30000, TIME)
+WHERE id = 'btsg8l9b234ha'
+LIMIT 1;
+```
+
+**JSON Query**
 
 ```javascript
 {
@@ -47,12 +56,6 @@ SELECT * FROM WINDOW(30000) LIMIT 1;
        }
     ]
 }
-```
-
-**SQL**
-
-```SQL
-SELECT * FROM WINDOW(30s) WHERE id = "btsg8l9b234ha" LIMIT 1;
 ```
 
 Because of the default constraints, this query would find at most 1 record with the id matching the value provided. The record would have all its fields.
@@ -93,7 +96,17 @@ A sample response could be (it has been edited to remove PII and other Yahoo dat
 
 ### Relational Filters and Projections
 
-**Bullet Query**
+**BQL Query**
+
+```SQL
+SELECT timestamp AS ts, device_timestamp AS device_ts, 
+       event AS event, page_domain AS domain, page_id AS id
+FROM STREAM(20000, TIME)
+WHERE id = 'btsg8l9b234ha' AND page_id IS NOT NULL
+LIMIT 10;
+```
+
+**JSON Query**
 
 ```javascript
 {
@@ -128,14 +141,6 @@ A sample response could be (it has been edited to remove PII and other Yahoo dat
     },
     "duration":20000
 }
-```
-**SQL**
-
-```SQL
-SELECT timestamp AS ts, device_timestamp AS device_ts, event AS event, page_domain AS domain, page_id AS id
-FROM WINDOW(20s)
-WHERE id = "btsg8l9b234ha" AND page_id IS NOT NULL
-LIMIT 10;
 ```
 
 The above query finds all events with id set to 'btsg8l9b234ha' and page_id is not null, projects out the fields listed above with their new names (timestamp becomes ts etc) and limits the results to at most 10 such records. ```RAW``` indicates that the complete raw record fields will be returned, and more complicated aggregations such as ```COUNT``` or ```SUM``` will not be performed. The duration would set the query to wait at most 20 seconds for records to show up.
@@ -178,7 +183,19 @@ The resulting response could look like (only 3 events were generated that matche
 
 ### Logical Filters and Projections
 
-**Bullet Query**
+**BQL Query**
+
+```SQL
+SELECT id AS id, experience AS experience, page_id AS pid,
+       link_id AS lid, tags AS tags, demographics.age AS age
+FROM STREAM(60000, TIME)
+WHERE (id = 'c14plm1begla7' AND ((experience = 'web' AND page_id IN ('18025', '47729'))
+                                  OR link_id LIKE ('2.*')))
+      OR (tags.player='true' AND demographics.age > '65')
+LIMIT 1;
+```
+
+**JSON Query**
 
 ```javascript
 {
@@ -254,19 +271,6 @@ The resulting response could look like (only 3 events were generated that matche
 }
 ```
 
-**SQL**
-
-```SQL
-SELECT id AS id, experience AS experience, page_id AS pid,
-       link_id AS lid, tags AS tags, demographics["age"] AS age
-FROM WINDOW(1min)
-WHERE (id = "c14plm1begla7" AND ((experience = "web" AND page_id IN ["18025", "47729"])
-                                 OR link_id MATCHES "2.*"))
-      OR
-      (tags["player"] AND demographics["age"] > "65")
-LIMIT 1;
-```
-
 !!! note "Typing"
 
     If demographics["age"] was of type Long, then Bullet will convert 85 to be an Long, but in this example, we are pretending that it is String.  So, no conversion is made. Similarly for link_id, id, experience and page_id. tags is a Map of String to Boolean so Bullet converts ```"true"``` to the Boolean ```true```.
@@ -300,7 +304,16 @@ A sample result could look like (it matched because of tags.player was true and 
 ### GROUP ALL COUNT Aggregation
 An example of a query performing a COUNT all records aggregation would look like:
 
-**Bullet Query**
+**BQL Query**
+
+```SQL
+SELECT COUNT(*) AS numSeniors
+FROM STREAM(20000, TIME)
+WHERE demographics.age > 65
+GROUP BY ();
+```
+
+**JSON Query**
 
 ```javascript
 {
@@ -328,14 +341,6 @@ An example of a query performing a COUNT all records aggregation would look like
 }
 ```
 
-**SQL**
-
-```SQL
-SELECT COUNT(*) AS numSeniors
-FROM WINDOW(20s)
-WHERE demographics["age"] > "65";
-```
-
 This query will count the number events for which demographics.age > 65. The aggregation type GROUP indicates that it is a group aggregation. To group by a key, the ```fields``` key needs to be set in the ```aggregation``` part of the query. If ```fields``` is empty or is omitted (as it is in the query above) and the ```type``` is ```GROUP```, it is as if all the records are collapsed into a single group - a ```GROUP ALL```. Adding a ```COUNT``` in the ```operations``` part of the ```attributes``` indicates that the number of records in this group will be counted, and the "newName" key denotes the name the resulting column "numSeniors" in the result. Setting the duration to 20000 counts matching records for
 this duration.
 
@@ -359,7 +364,17 @@ This result indicates that 363,201 records were counted with demographics.age > 
 
 COUNT is the only GROUP operation for which you can omit a "field".
 
-**Bullet Query**
+**BQL Query**
+
+```SQL
+SELECT COUNT(*) AS numCalifornians, AVG(demographics.age) AS avgAge, 
+       MIN(demographics.age) AS minAge, MAX(demographics.age) AS maxAge
+FROM STREAM(20000, TIME)
+WHERE demographics.state = 'california'
+GROUP BY ();
+```
+
+**JSON Query**
 
 ```javascript
 {
@@ -402,15 +417,6 @@ COUNT is the only GROUP operation for which you can omit a "field".
 }
 ```
 
-**SQL**
-
-```SQL
-SELECT COUNT(*) AS numCalifornians, AVG(demographics["age"]) AS avgAge,
-       MIN(demographics["age"]) AS minAge, MAX(demographics["age"]) AS maxAge,
-FROM WINDOW(20s)
-WHERE demographics["state"] = "california";
-```
-
 A sample result would look like:
 
 ```javascript
@@ -437,7 +443,14 @@ This result indicates that, among the records observed during the 20s this query
 
 ### Exact COUNT DISTINCT Aggregation
 
-**Bullet Query**
+**BQL Query**
+
+```SQL
+SELECT COUNT(DISTINCT browser_name, browser_version) AS "COUNT DISTINCT"
+FROM STREAM(10000, TIME);
+```
+
+**JSON Query**
 
 ```javascript
 {
@@ -449,15 +462,6 @@ This result indicates that, among the records observed during the 20s this query
       }
    }
 }
-```
-
-**SQL**
-
-```SQL
-SELECT COUNT(*) AS "COUNT DISTINCT"
-FROM (SELECT browser_name, browser_version
-      FROM WINDOW(30s)
-      GROUP BY browser_name, browser_version) tmp;
 ```
 
 This gets the count of the unique browser names and versions in the next 30s (default duration). Note that we do not specify values for the keys in fields. This is because they are not relevant
@@ -504,7 +508,14 @@ was estimated or not. The ```standard_deviations``` key denotes the confidence a
 
 ### Approximate COUNT DISTINCT
 
-**Bullet Query**
+**BQL Query**
+
+```SQL
+SELECT COUNT(DISTINCT ip_address) AS uniqueIPs"
+FROM STREAM(10000, TIME);
+```
+
+**JSON Query**
 
 ```javascript
 {
@@ -519,15 +530,6 @@ was estimated or not. The ```standard_deviations``` key denotes the confidence a
    },
    "duration":10000
 }
-```
-
-**SQL**
-
-```SQL
-SELECT COUNT(*) AS uniqueIPs
-FROM (SELECT ip_address
-      FROM WINDOW(10s)
-      GROUP BY ip_address) tmp;
 ```
 
 This query gets us the unique IP addresses in the next 10 s. It renames the result column from "COUNT DISTINCT" to "uniqueIPs".
@@ -574,7 +576,16 @@ Sketch size is 2.34% as defined [here](https://datasketches.github.io/docs/Theta
 
 ### DISTINCT Aggregation
 
-**Bullet Query**
+**BQL Query**
+
+```SQL
+SELECT browser_name AS browser
+FROM STREAM(30000, TIME)
+GROUP BY browser_name
+LIMIT 10;
+```
+
+**JSON Query**
 
 ```javascript
 {
@@ -586,15 +597,6 @@ Sketch size is 2.34% as defined [here](https://datasketches.github.io/docs/Theta
       }
    }
 }
-```
-
-**SQL**
-
-```SQL
-SELECT browser_name AS browser
-FROM WINDOW(30s)
-GROUP BY browser_name
-LIMIT 10;
 ```
 
 This query gets the distinct values for the browser_name field and limit the results to 10. It runs for 30 s.
@@ -668,7 +670,19 @@ DISTINCT is just an alias for GROUP. A GROUP by with no operations is exactly a 
 
 ### GROUP by Aggregation
 
-**Bullet Query**
+**BQL Query**
+
+```SQL
+SELECT demographics.country AS country, device AS device,
+       COUNT(*) AS count, AVG(demographics.age) AS averageAge,
+       AVG(timespent) AS averageTimespent
+FROM STREAM(20000, TIME)
+WHERE demographics IS NOT NULL
+GROUP BY demographics.country, device
+LIMIT 50;
+```
+
+**JSON Query**
 
 ```javascript
 {
@@ -709,18 +723,6 @@ DISTINCT is just an alias for GROUP. A GROUP by with no operations is exactly a 
    },
    "duration":20000
 }
-```
-
-**SQL**
-
-```SQL
-SELECT demographics["country"] AS country, device AS device,
-       COUNT(*) AS count, AVG(demographics["age"]) AS averageAge,
-       AVG(timespent) AS averageTimespent
-FROM WINDOW(20s)
-WHERE demographics IS NOT NULL
-GROUP BY demographics["country"], device
-LIMIT 50;
 ```
 
 This query groups by the country and the device and for each unique group gets the count, average age and time spent by the users for the next 20 seconds. It renames demographics.country to country and does not rename device. It limits the groups to 50. If there were more than
@@ -785,7 +787,15 @@ For readability, if you were just trying to get the unique values for a field or
 
 ### QUANTILE DISTRIBUTION
 
-**Bullet Query**
+**BQL Query**
+
+```SQL
+SELECT QUANTILE(duration, LINEAR, 11)
+FROM STREAM(5000, TIME)
+LIMIT 11;
+```
+
+**JSON Query**
 
 ```javascript
 {
@@ -802,24 +812,6 @@ For readability, if you were just trying to get the unique values for a field or
    },
    "duration": 5000
 }
-```
-
-**SQL**
-
-```SQL
-SELECT PERCENTILE_DISC(0) WITHIN GROUP (ORDER BY duration),
-       PERCENTILE_DISC(0.1) WITHIN GROUP (ORDER BY duration),
-       PERCENTILE_DISC(0.2) WITHIN GROUP (ORDER BY duration),
-       PERCENTILE_DISC(0.3) WITHIN GROUP (ORDER BY duration),
-       PERCENTILE_DISC(0.4) WITHIN GROUP (ORDER BY duration),
-       PERCENTILE_DISC(0.5) WITHIN GROUP (ORDER BY duration),
-       PERCENTILE_DISC(0.6) WITHIN GROUP (ORDER BY duration),
-       PERCENTILE_DISC(0.7) WITHIN GROUP (ORDER BY duration),
-       PERCENTILE_DISC(0.8) WITHIN GROUP (ORDER BY duration),
-       PERCENTILE_DISC(0.9) WITHIN GROUP (ORDER BY duration),
-       PERCENTILE_DISC(1) WITHIN GROUP (ORDER BY duration)
-FROM WINDOW(5s)
-LIMIT 11;
 ```
 
 This query creates 11 points from 0 to 1 (both inclusive) and finds the percentile values of the ```duration``` field (which contains an amount of time in ms) at ```0, 0.1, 0.2 ... 1.0``` or the 0th, 10th, 20th and 100th percentiles. It runs for 5 seconds and returns at most 11 points. As long as the ```size``` is set to higher than the number of points you generate, ```DISTRIBUTION``` queries will return all your values.
@@ -909,7 +901,15 @@ if the error was 1%).
 
 ### PMF DISTRIBUTION Aggregation
 
-**Bullet Query**
+**BQL Query**
+
+```SQL
+SELECT FREQ(duration, REGION, 2000, 20000, 500)
+FROM STREAM(5000, TIME)
+LIMIT 100;
+```
+
+**JSON Query**
 
 ```javascript
 {
@@ -928,23 +928,6 @@ if the error was 1%).
    },
    "duration":5000
 }
-```
-
-**SQL**
-
-```SQL
-SELECT interval, Count
-FROM (SELECT start,
-             CONCAT('[', start, ' to ', end, ')') AS interval,
-             COUNT(1) AS Count
-      FROM (SELECT FLOOR(duration / 500) * 500 AS start,
-                   FLOOR(duration / 500) * 500 + 500 AS end
-            FROM WINDOW(5s)
-            WHERE duration >= 2000 AND duration <= 20000) tmp
-      GROUP BY interval
-      ORDER BY start
-      LIMIT 100
-) tmp2
 ```
 
 This query creates 37 points from 2000 to 20000 in 500 increments to bucketize the duration field using these points as split locations and finds the count of duration values that fall into these intervals. It runs for 5s and returns at most 100 records (this means it will return the 38 records).
@@ -999,7 +982,15 @@ The result consists of 38 records, each denoting an interval in the domain we as
 
 ### CDF DISTRIBUTION Aggregation
 
-**Bullet Query**
+**BQL Query**
+
+```SQL
+SELECT CUMFREQ(duration, MANUAL, 20000, 2000, 15000, 45000)
+FROM STREAM(5000, TIME)
+LIMIT 100;
+```
+
+**JSON Query**
 
 ```javascript
 {
@@ -1016,31 +1007,6 @@ The result consists of 38 records, each denoting an interval in the domain we as
    },
    "duration": 5000
 }
-```
-
-**SQL**
-
-```SQL
-SELECT interval,
-       SUM(CASE WHEN interval_2000 != 0 THEN interval_2000
-                WHEN interval_15000 != 0 THEN interval_15000
-                WHEN interval_20000 != 0 THEN interval_20000
-                WHEN interval_45000 != 0 THEN interval_45000
-                ELSE 0 END) AS Count,
-FROM (SELECT CASE WHEN duration < 2000 THEN '(-∞ to 2000)'
-                  WHEN duration < 15000 THEN '(-∞ to 15000)'
-                  WHEN duration < 20000 THEN '(-∞ to 20000)'
-                  WHEN duration < 45000 THEN '(-∞ to 45000)'
-                  ELSE 'ignored' END AS interval,
-             CASE WHEN duration < 2000 THEN 0 ELSE 1 END AS interval_2000,
-             CASE WHEN duration < 15000 THEN 0 ELSE 1 END AS interval_15000,
-             CASE WHEN duration < 20000 THEN 0 ELSE 1 END AS interval_20000,
-             CASE WHEN duration < 45000 THEN 0 ELSE 1 END AS interval_45000
-      FROM WINDOW(5s)
-) tmp
-WHERE interval != 'ignored'
-GROUP by interval
-LIMIT 100;
 ```
 
 This query specifies a list of points manually using ```points``` property in ```attributes```. It runs for 5s and finds the
@@ -1101,7 +1067,29 @@ it is the cumulative frequency distribution.
 
 ### Exact TOP K Aggregation
 
-**Bullet Query**
+**BQL Query**
+
+There are two methods for executing a TOP K aggregation in BQL:
+
+```SQL
+SELECT TOP(500, 100, demographics.country, browser_name) AS numEvents
+FROM STREAM(10000, TIME)
+WHERE demographics.country IS NOT NULL AND browser_name IS NOT NULL;
+```
+
+OR:
+
+```SQL
+SELECT demographics.country, browser_name, COUNT(*) AS numEvents
+FROM STREAM(10000, TIME)
+WHERE demographics.country IS NOT NULL AND browser_name IS NOT NULL
+GROUP BY demographics.country, browser_name
+HAVING COUNT(*) >= 100
+ORDER BY COUNT(*) DESC
+LIMIT 500;
+```
+
+**JSON Query**
 
 ```javascript
 {
@@ -1131,18 +1119,6 @@ it is the cumulative frequency distribution.
    },
    "duration": 10000
 }
-```
-
-**SQL**
-
-```SQL
-SELECT demographics["country"] AS country, browser_name AS browser, COUNT(1) AS numEvents
-FROM WINDOW(10s)
-WHERE demographics["country"] IS NOT NULL AND browser_name IS NOT NULL
-GROUP BY demographics["country"], browser_name
-ORDER BY numEvents DESC
-LIMIT 500
-HAVING numEvents >= 100;
 ```
 
 This query gets the top 500 country, browser combinations where the count of records for each combination is at least 100. It runs for 10s.
@@ -1213,7 +1189,30 @@ In our data stream, we only had 18 unique combinations of countries and browser 
 
 ### Approximate TOP K Aggregation
 
-**Bullet Query**
+**BQL Query**
+
+There are two methods for executing a TOP K aggregation in BQL:
+
+```SQL
+SELECT TOP(10, 100, browser_name, browser_version, os_name, os_version, demographics.country, demographics.state) AS numEvents
+FROM STREAM(10000, TIME)
+WHERE os_name IS NOT NULL AND browser_name IS NOT NULL;
+```
+
+OR:
+
+```SQL
+SELECT browser_name, browser_version, os_name, os_version, demographics.country, demographics.state, COUNT(*) AS numEvents
+FROM STREAM(10000, TIME)
+WHERE os_name IS NOT NULL AND browser_name IS NOT NULL
+GROUP BY browser_name, browser_version, os_name, os_version, demographics.country, demographics.state
+HAVING COUNT(*) >= 100
+ORDER BY COUNT(*) DESC
+LIMIT 10;
+```
+
+
+**JSON Query**
 
 ```javascript
 {
@@ -1247,24 +1246,6 @@ In our data stream, we only had 18 unique combinations of countries and browser 
    },
    "duration": 30000
 }
-```
-
-**SQL**
-
-```SQL
-SELECT demographics["country"] AS country,
-       demographics["state"] AS state,
-       browser_name AS browser,
-       browser_version AS bversion,
-       os_name AS os,
-       os_version AS oversion,
-       COUNT(1) AS numEvents
-FROM WINDOW(30s)
-WHERE demographics["country"] IS NOT NULL AND browser_name IS NOT NULL
-GROUP BY demographics["country"], demographics["state"], browser_name, browser_version, os_name, os_version
-ORDER BY numEvents DESC
-LIMIT 10
-HAVING numEvents >= 100;
 ```
 
 In order to make the result approximate, this query adds more dimensions to the [Exact TOP K](#exact-top-k-aggregation) query. It runs for 30s and looks for the top *10* combinations for these events.
@@ -1390,7 +1371,19 @@ the second one and possibly be ranked higher. There is no such situation in this
 
 ### Window - Tumbling Group-By
 
-**Bullet Query**
+**BQL Query**
+
+```SQL
+SELECT demographics.country AS country, COUNT(*) AS count, AVG(demographics.age) AS averageAge,
+       AVG(timespent) AS averageTimespent
+FROM STREAM(20000, TIME)
+WHERE demographics IS NOT NULL
+GROUP BY demographics.country
+WINDOWING(TUMBLING, 5000, TIME)
+LIMIT 50;
+```
+
+**JSON Query**
 
 ```javascript
 {
@@ -1692,7 +1685,19 @@ the user will receive a total of 4 results. Since the aggregation size is set to
 
 ### Window - Additive Tumbling
 
-**Bullet Query**
+**BQL Query**
+
+```SQL
+SELECT COUNT(*) AS count, AVG(demographics.age) AS averageAge,
+       AVG(timespent) AS averageTimespent
+FROM STREAM(20000, TIME)
+WHERE demographics IS NOT NULL
+GROUP BY ()
+WINDOWING(EVERY, 5000, TIME, ALL)
+LIMIT 50;
+```
+
+**JSON Query**
 
 ```javascript
 {
@@ -1823,9 +1828,18 @@ The above query will run for 20 seconds and emit a result every 5 seconds. The r
 }
 ```
 
-### Sliding "Reactive" Window
+### Sliding "Reactive" Window with Max Duration
 
-**Bullet Query**
+**BQL Query**
+
+```SQL
+SELECT *
+FROM STREAM(MAX, TIME)
+WHERE bcookie='2siknmdd6kaqm'
+WINDOWING(EVERY, 1, RECORD, FIRST, 1, RECORD)
+```
+
+**JSON Query**
 
 ```javascript
 {  
@@ -1861,12 +1875,16 @@ The above query will run for 20 seconds and emit a result every 5 seconds. The r
          "demographics.country":"country"
       }
    },
-   "duration":20000
+   "duration":9223372036854775807
 }
 ```
 
 This is a query that will capture raw data, and has a sliding window of size 1. This query will return window results immedietly whenever a single record that matches the filters flows through the system. The filters in this example
-will only match records from a particular browser. The query will run for 20 seconds, and the results might look like this:
+will only match records from a particular browser.
+
+This query will run for the maxiumum amount of time that the backend is configured to allow.
+
+Results might look like this:
 
 ```javascript
 "records":[  
@@ -1912,5 +1930,5 @@ will only match records from a particular browser. The query will run for 20 sec
    }
 }
 
-... (one result returned for each record found for 20 seconds) ...
+... (one result returned for each record found for as long as the backend is configured to allow) ...
 ```

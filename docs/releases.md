@@ -127,6 +127,7 @@ The Web Service implementation that can serve a static schema from a file and ta
 
 |    Date      |                                      Release                                           | Highlights |
 | ------------ | -------------------------------------------------------------------------------------- | ---------- |
+| 2018-07-17   | [**0.4.0**](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.4.0) | Enhanced Web Service to support BQL queries |
 | 2018-06-25   | [**0.3.0**](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.3.0) | Upgrades to Netty-less Bullet Core for the RESTPubsub |
 | 2018-06-14   | [**0.2.2**](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.2.2) | Adding settings to configure Websocket |
 | 2018-04-02   | [**0.2.1**](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.2.1) | Moved and renamed settings |
