@@ -27,7 +27,9 @@ pages:
   - Storm DRPC: pubsub/storm-drpc.md
 - Web Service:
   - Setup: ws/setup.md
-  - API: ws/api.md
+  - API:
+    - JSON: ws/api-json.md
+    - BQL: ws/api-bql.md
   - Query Examples: ws/examples.md
 - UI:
   - Setup: ui/setup.md

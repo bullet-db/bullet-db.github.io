@@ -1,11 +1,15 @@
-# API
+# Bullet JSON API
 
-This section gives a comprehensive overview of the Web Service API for launching Bullet queries.
+This section gives a comprehensive overview of the Web Service API for launching Bullet JSON queries.
+
+The JSON API is the actual Query format that is expected by the backend. [The BQL API](api-bql.md) is a more
+user-friendly API which can also be used - the Web Service will automatically detect the BQL query and convert the
+query to this JSON format before submitting it to the backend.
 
 * For info on how to use the UI, see the [UI Usage section](../ui/usage.md)
 * For examples of specific queries see the [Examples](examples.md) section
 
-The main constituents of a Bullet query are:
+The main constituents of a Bullet JSON query are:
 
 * __filters__, which determine which records will be consumed by your query
 * __projection__, which determines which fields will be projected in the resulting output from Bullet
