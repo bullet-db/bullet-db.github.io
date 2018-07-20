@@ -530,7 +530,7 @@ LIMIT 1;
 
 <h3 id="relational-filters-and-projections">Relational Filters and Projections</h3>
 <p><strong>BQL Query</strong></p>
-<pre><code class="SQL">SELECT timestamp AS ts, device_timestamp AS device_ts, 
+<pre><code class="SQL">SELECT timestamp AS ts, device_timestamp AS device_ts,
        event AS event, page_domain AS domain, page_id AS id
 FROM STREAM(20000, TIME)
 WHERE id = 'btsg8l9b234ha' AND page_id IS NOT NULL
@@ -727,6 +727,7 @@ WHERE demographics.age &gt; 65
 GROUP BY ();
 </code></pre>
 
+<p>Note that the <code>GROUP BY ()</code> is optional.</p>
 <p><strong>JSON Query</strong></p>
 <pre><code class="javascript">{
    &quot;filters&quot;:[
@@ -770,13 +771,14 @@ this duration.</p>
 <h3 id="group-all-multiple-aggregations">GROUP ALL Multiple Aggregations</h3>
 <p>COUNT is the only GROUP operation for which you can omit a "field".</p>
 <p><strong>BQL Query</strong></p>
-<pre><code class="SQL">SELECT COUNT(*) AS numCalifornians, AVG(demographics.age) AS avgAge, 
+<pre><code class="SQL">SELECT COUNT(*) AS numCalifornians, AVG(demographics.age) AS avgAge,
        MIN(demographics.age) AS minAge, MAX(demographics.age) AS maxAge
 FROM STREAM(20000, TIME)
 WHERE demographics.state = 'california'
 GROUP BY ();
 </code></pre>
 
+<p>Note that the <code>GROUP BY ()</code> is optional.</p>
 <p><strong>JSON Query</strong></p>
 <pre><code class="javascript">{
    &quot;filters&quot;:[
@@ -896,7 +898,7 @@ FROM STREAM(10000, TIME);
 was estimated or not. The <code>standard_deviations</code> key denotes the confidence at various sigmas: 1 (1 sigma = ~68% confidence, 2 sigma = ~95% confidence, 3 sigma = ~99% confidence). Since this result was not estimated, the result is the same as the upper and lower bounds for the result.</p>
 <h3 id="approximate-count-distinct">Approximate COUNT DISTINCT</h3>
 <p><strong>BQL Query</strong></p>
-<pre><code class="SQL">SELECT COUNT(DISTINCT ip_address) AS uniqueIPs&quot;
+<pre><code class="SQL">SELECT COUNT(DISTINCT ip_address) AS uniqueIPs
 FROM STREAM(10000, TIME);
 </code></pre>
 

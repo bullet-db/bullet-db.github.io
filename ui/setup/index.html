@@ -494,8 +494,8 @@ express-server.js
 <td>Is a list of objects, where each object is a help link. These links populate the "Help" drop-down on the UI's top navbar. You can add links to explain your data for example</td>
 </tr>
 <tr>
-<td>defaultFilter</td>
-<td>Can either be a <a href="../ws/api.md#filters">API Filter</a> or a URL from which one could be fetched dynamically. The UI adds this to every newly created Query. You could use this as a way to have user specific (for example, cookie based) filters created for your users when they create a new query in the UI. Note that if you have are accessing a map subfield and your field value in the filter is set as <code>foo.bar</code> and you want <code>bar</code> to be the subfield in the UI query builder, you will need to add a key called <code>subfield</code> in the filter (not supported by the API) and set its value to <code>true</code></td>
+<td>defaultQuery</td>
+<td>Can either be a <a href="../../ws/api-json/">API Query</a> or a URL from which one could be fetched dynamically. The UI makes this the query created on every newly created Query. You could use this as a way to have user specific (for example, cookie based) filters created for your users or customize an aggregation when they create a new query in the UI. Note that if you have are accessing a map subfield and your field value in the filter is set as <code>foo.bar</code> and you want <code>bar</code> to be the subfield in the UI query builder, you will need to add a key called <code>subfield</code> in the filter (not supported by the API) and set its value to <code>true</code></td>
 </tr>
 <tr>
 <td>bugLink</td>
@@ -708,7 +708,7 @@ express-server.js
 </table>
 <p>You can specify values for each property above in the <code>env-settings.json</code> file. These will be used when running a custom instance of the UI (see <a href="#Running">above</a>).</p>
 <p>The <code>default</code> property in the <code>env-settings.json</code> that loads default settings for the UI that can be selectively overridden based on which environment you are running on. All settings explained above have default values
-that are the same as the <a href="https://github.com/bullet-db/bullet-storm/blob/master/src/main/resources/bullet_defaults.yaml">default backend settings</a>. However, the defaults do not add the <code>defaultFilter</code> setting explained above.</p>
+that are the same as the <a href="https://github.com/bullet-db/bullet-storm/blob/master/src/main/resources/bullet_defaults.yaml">default backend settings</a>. However, the defaults do not add the <code>defaultQuery</code> setting explained above.</p>
 <pre><code class="json">{
   &quot;default&quot;: {
     &quot;queryHost&quot;: &quot;http://localhost:5555&quot;,
@@ -784,7 +784,7 @@ that are the same as the <a href="https://github.com/bullet-db/bullet-storm/blob
                 &quot;distributionMaxNumberOfPoints&quot;: 50
             }
         },
-        &quot;defaultFilter&quot;: &quot;http://bullet-ws.dev.domain.com:4080/custom-endpoint/api/defaultQuery&quot;
+        &quot;defaultQuery&quot;: &quot;http://bullet-ws.dev.domain.com:4080/custom-endpoint/api/defaultQuery&quot;
     }
 }
 </code></pre>
@@ -797,7 +797,7 @@ that are the same as the <a href="https://github.com/bullet-db/bullet-storm/blob
 <li>Allow queries to run as long as 300 seconds</li>
 <li>Use 32768 in the help menu for the max number of unique elements that can be counted exactly</li>
 <li>Allow only 50 points to be generated for Distribution queries</li>
-<li>GET and cache a defaultFilter from <code>http://bullet-ws.dev.domain.com:4080/custom-endpoint/api/defaultQuery</code></li>
+<li>GET and cache a defaultQuery from <code>http://bullet-ws.dev.domain.com:4080/custom-endpoint/api/defaultQuery</code></li>
 </ul>
 <p>You would make express use these settings by running</p>
 <pre><code class="bash">NODE_ENV=ci PORT=8800 node express-server.js
