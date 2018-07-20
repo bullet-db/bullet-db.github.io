@@ -83,7 +83,7 @@ The configuration for the UI lets you have different instances of Bullet for dif
 | modelVersion              | This is used an indicator to apply changes to the stored queries, results etc. It is monotonically increasing. On startup, changes specified in ```migrations``` will be applied if the old modelVersion is not present or is < than this number |
 | migrations                | is an object that currently supports one key: ```deletions``` of type string. The value can be set to either ```result``` or ```query```. The former wipes all existing results. The latter wipes everything. See ```modelVersion``` above. |
 | helpLinks                 | Is a list of objects, where each object is a help link. These links populate the "Help" drop-down on the UI's top navbar. You can add links to explain your data for example |
-| defaultFilter             | Can either be a [API Filter](../ws/api.md#filters) or a URL from which one could be fetched dynamically. The UI adds this to every newly created Query. You could use this as a way to have user specific (for example, cookie based) filters created for your users when they create a new query in the UI. Note that if you have are accessing a map subfield and your field value in the filter is set as ```foo.bar``` and you want ```bar``` to be the subfield in the UI query builder, you will need to add a key called ```subfield``` in the filter (not supported by the API) and set its value to ```true``` |
+| defaultQuery              | Can either be a [API Query](../ws/api-json.md) or a URL from which one could be fetched dynamically. The UI makes this the query created on every newly created Query. You could use this as a way to have user specific (for example, cookie based) filters created for your users or customize an aggregation when they create a new query in the UI. Note that if you have are accessing a map subfield and your field value in the filter is set as ```foo.bar``` and you want ```bar``` to be the subfield in the UI query builder, you will need to add a key called ```subfield``` in the filter (not supported by the API) and set its value to ```true``` |
 | bugLink                   | Is a URL that by default points to the issues page for the UI GitHub repository. You can change it to point to your own custom JIRA queue or something else |
 | defaultValues             | Is an object that lets you configures defaults for various query parameters and lets you tie your custom backend settings to the UI |
 
@@ -126,7 +126,7 @@ These are the properties in the ```defaultValues``` object. The Validated column
 You can specify values for each property above in the ```env-settings.json``` file. These will be used when running a custom instance of the UI (see [above](#Running)).
 
 The ```default``` property in the ```env-settings.json``` that loads default settings for the UI that can be selectively overridden based on which environment you are running on. All settings explained above have default values
-that are the same as the [default backend settings](https://github.com/bullet-db/bullet-storm/blob/master/src/main/resources/bullet_defaults.yaml). However, the defaults do not add the ```defaultFilter``` setting explained above.
+that are the same as the [default backend settings](https://github.com/bullet-db/bullet-storm/blob/master/src/main/resources/bullet_defaults.yaml). However, the defaults do not add the ```defaultQuery``` setting explained above.
 
 ```json
 {
@@ -208,7 +208,7 @@ To cement all this, if you wanted an instance of the UI in your CI environment, 
                 "distributionMaxNumberOfPoints": 50
             }
         },
-        "defaultFilter": "http://bullet-ws.dev.domain.com:4080/custom-endpoint/api/defaultQuery"
+        "defaultQuery": "http://bullet-ws.dev.domain.com:4080/custom-endpoint/api/defaultQuery"
     }
 }
 ```
@@ -221,7 +221,7 @@ Your UI on your CI environment will:
   * Allow queries to run as long as 300 seconds
   * Use 32768 in the help menu for the max number of unique elements that can be counted exactly
   * Allow only 50 points to be generated for Distribution queries
-  * GET and cache a defaultFilter from ```http://bullet-ws.dev.domain.com:4080/custom-endpoint/api/defaultQuery```
+  * GET and cache a defaultQuery from ```http://bullet-ws.dev.domain.com:4080/custom-endpoint/api/defaultQuery```
 
 You would make express use these settings by running
 

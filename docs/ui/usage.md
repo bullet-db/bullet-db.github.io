@@ -47,7 +47,7 @@ You can also download the results in JSON, CSV or flattened CSV (fields inside m
 
 ## Filtering and projecting data
 
-The Filters section in the UI features a querybuilder (a modified version of the [jQuery-QueryBuilder](http://querybuilder.js.org/)) that you can use to add filters. These allow you to [pick at the slice of data](../ws/api.md#filters) from your stream that is relevant to you.
+The Filters section in the UI features a querybuilder (a modified version of the [jQuery-QueryBuilder](http://querybuilder.js.org/)) that you can use to add filters. These allow you to [pick at the slice of data](../ws/api-json.md#filters) from your stream that is relevant to you.
 
 The Output Data section lets you aggregate or choose to see raw data records. You can either get all the data as [above](#a-simple-first-query) or you can select a subset of fields (and optionally rename them) that you would like to see.
 

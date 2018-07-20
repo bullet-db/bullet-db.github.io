@@ -154,6 +154,7 @@ The Bullet UI that lets you build, run, save and visualize results from Bullet.
 
 |    Date      |                                      Release                                           | Highlights |
 | ------------ | -------------------------------------------------------------------------------------- | ---------- |
+| 2018-07-20   | [**0.6.0**](https://github.com/bullet-db/bullet-ui/releases/tag/v0.6.0) | Supports adding a full default starting query |
 | 2018-06-18   | [**0.5.0**](https://github.com/bullet-db/bullet-ui/releases/tag/v0.5.0) | Supports windowing, uses IndexedDB and Ember 3! |
 | 2017-08-22   | [**0.4.0**](https://github.com/bullet-db/bullet-ui/releases/tag/v0.4.0) | Query sharing, collapsible Raw view, and unsaved/error indicators. Settings rename and other bug fixes|
 | 2017-05-22   | [**0.3.2**](https://github.com/bullet-db/bullet-ui/releases/tag/v0.3.2) | Exporting to TSV in Pivot table. Fixes unselectability bug in Raw view |

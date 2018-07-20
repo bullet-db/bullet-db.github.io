@@ -99,7 +99,7 @@ A sample response could be (it has been edited to remove PII and other Yahoo dat
 **BQL Query**
 
 ```SQL
-SELECT timestamp AS ts, device_timestamp AS device_ts, 
+SELECT timestamp AS ts, device_timestamp AS device_ts,
        event AS event, page_domain AS domain, page_id AS id
 FROM STREAM(20000, TIME)
 WHERE id = 'btsg8l9b234ha' AND page_id IS NOT NULL
@@ -313,6 +313,8 @@ WHERE demographics.age > 65
 GROUP BY ();
 ```
 
+Note that the ```GROUP BY ()``` is optional.
+
 **JSON Query**
 
 ```javascript
@@ -367,12 +369,13 @@ COUNT is the only GROUP operation for which you can omit a "field".
 **BQL Query**
 
 ```SQL
-SELECT COUNT(*) AS numCalifornians, AVG(demographics.age) AS avgAge, 
+SELECT COUNT(*) AS numCalifornians, AVG(demographics.age) AS avgAge,
        MIN(demographics.age) AS minAge, MAX(demographics.age) AS maxAge
 FROM STREAM(20000, TIME)
 WHERE demographics.state = 'california'
 GROUP BY ();
 ```
+Note that the ```GROUP BY ()``` is optional.
 
 **JSON Query**
 
@@ -511,7 +514,7 @@ was estimated or not. The ```standard_deviations``` key denotes the confidence a
 **BQL Query**
 
 ```SQL
-SELECT COUNT(DISTINCT ip_address) AS uniqueIPs"
+SELECT COUNT(DISTINCT ip_address) AS uniqueIPs
 FROM STREAM(10000, TIME);
 ```
 

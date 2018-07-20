@@ -63,7 +63,7 @@ Bullet queries allow you to filter, project and aggregate data. You can also spe
 
 * See the [UI Usage section](ui/usage.md) for using the UI to build Bullet queries. This is the same UI you will build in the Quick Starts.
 
-* See the [API section](ws/api.md) for building Bullet API queries
+* See the API section ([JSON](ws/api-json.md), [BQL](ws/api-bql.md)) for building Bullet API queries
 
 * For examples using the API, see [Examples](ws/examples.md). These are actual albeit cleansed queries sourced from the instance at Yahoo.
 
@@ -119,7 +119,7 @@ For example, you could launch a query for 2 minutes, and have Bullet return a CO
 
 ![Time-Based Tumbling Windows](../img/time-based-tumbling.png)
 
-See documentation on [the Web Service API](ws/api.md) for more info.
+See documentation on the Web Service API for more info.
 
 # Results
 
@@ -177,7 +177,7 @@ The rest of the pieces are just the standard other two pieces in a full-stack ap
   * A Web Service that talks to the backend using the PubSub layer
   * A UI that talks to this Web Service
 
-The [Bullet Web Service](ws/api.md) is built using [Spring Boot](https://projects.spring.io/spring-boot/) in Java and the [UI](ui/usage.md) is built in [Ember](emberjs.com).
+The [Bullet Web Service](ws/examples.md) is built using [Spring Boot](https://projects.spring.io/spring-boot/) in Java and the [UI](ui/usage.md) is built in [Ember](emberjs.com).
 
 The Web Service can be deployed as a standalone Java application (a JAR file) or easily rebuilt as a WAR to deploy your favorite servlet container like [Jetty](http://www.eclipse.org/jetty/). The UI is a client-side application that can be served using [Node.js](http://nodejs.org/)
 

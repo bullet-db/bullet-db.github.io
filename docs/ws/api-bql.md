@@ -8,9 +8,90 @@ BQL queries that are received by the Web Service will be detenced and automatica
 [the JSON format](api-json.md) before being sent to the backend (which requires the basic JSON format). This converstion
 is done in the web service using [the bullet-bql library](../releases/#bullet-bql).
 
-# Overview
+## Overview
 
-Bullet-BQL provides users with a friendly SQL-like API to submit queries to the Web Service.
+Bullet-BQL provides users with a friendly SQL-like API to submit queries to the Web Service instead of using the more
+cumbersome [JSON API](api-json.md).
+
+## Statement Syntax
+
+    SELECT DISTINCT? select_clause
+    FROM from_clause
+    ( WHERE where_clause )?
+    ( GROUP BY groupBy_clause )?
+    ( HAVING having_clause )?
+    ( ORDER BY orderBy_clause )?
+    ( WINDOWING windowing_clause )?
+    ( LIMIT limit_clause )?;
+
+where `select_clause` is one of
+
+    *
+    COUNT( DISTINCT reference_expr ( , reference_expr )? )
+    group_function ( AS? ColumnReference )? ( , group_function ( AS? ColumnReference )? )? ( , reference_expr ( AS? ColumnReference )? )?
+    reference_expr ( AS? ColumnReference )? ( , reference_expr ( AS? ColumnReference )? )?
+    distribution_type( reference_expr, input_mode ) ( AS? ColumnReference )?
+    TOP ( ( Integer | Long ) ( , Integer | Long ) )? , reference_expr ( , reference_expr )? ) ( AS? ColumnReference )?
+
+
+`group_function` is one of `SUM(reference_expr)`, `MIN(reference_expr)`, `MAX(reference_expr)`, `AVG(reference_expr)` and `COUNT(*)`. `reference_expr` is one of ColumnReference and Dereference. `distribution_type` is one of `QUANTILE`, `FREQ` and `CUMFREQ`. The 1st number in `TOP` is K, and the 2nd number is an optional threshold.  The `input_mode` is one of
+
+    LINEAR, ( Integer | Long )                                              evenly spaced
+    REGION, ( Integer | Long ), ( Integer | Long ), ( Integer | Long )      evenly spaced in a region
+    MANUAL, ( Integer | Long ) (, ( Integer | Long ) )*                     defined points
+
+and `from_clause` is one of
+
+    STREAM()                                                          default time duration will be set from BQLConfig
+    STREAM( ( Long | MAX ), TIME )                                    time based duration control.
+    STREAM( ( Long | MAX ), TIME, ( Long | MAX ), RECORD )            time and record based duration control.
+
+`RECORD` will be supported in the future.
+
+and `where_clause` is one of
+
+    NOT where_clause
+    where_clause AND where_clause
+    where_clause OR where_clause
+    reference_expr IS NOT? NULL
+    reference_expr IS NOT? EMPTY
+    reference_expr IS NOT? DISTINCT FROM value_expr
+    reference_expr NOT? BETWEEN value_expr AND value_expr
+    reference_expr NOT? IN ( value_expr ( , value_expr )* )
+    reference_expr NOT? LIKE ( value_expr ( , value_expr )* )
+    reference_expr ( = | <> | != | < | > | <= | >= ) value_expr
+
+`value_expr` is one of Null, Boolean, Integer, Long, Double, Decimal and String.
+
+and `groupBy_clause` is one of
+
+    ()                                                                group all
+    reference_expr ( , reference_expr )*                              group by
+    ( reference_expr ( , reference_expr )* )                          group by
+
+and `HAVING` and `ORDER BY` are only supported for TopK. In which case, `having_clause` is
+
+    COUNT(*) >= Integer
+
+and `orderBy_clause` is
+
+    COUNT(*)
+
+and `windowing_clause` is one of
+
+    ( EVERY, ( Integer | Long ), ( TIME | RECORD ), include )
+    ( TUMBLING, ( Integer | Long ), ( TIME | RECORD ) )
+
+`include` is one of
+
+    ALL
+    FIRST, ( Integer | Long ), ( TIME | RECORD )
+    LAST, ( Integer | Long ), ( TIME | RECORD )                       will be supported
+
+and `limit_clause` is one of
+
+    Integer | Long
+    ALL                                                               will be supported
 
 ## Data Types
 
@@ -109,83 +190,3 @@ Reserved keywords must be double quoted in order to be used as ColumnReference o
 | `WHEN`                |     reserved    |   reserved    |
 | `WHERE`               |     reserved    |   reserved    |
 | `WITH`                |     reserved    |   reserved    |
-
-## Statement Syntax
-
-    SELECT DISTINCT? select_clause
-    FROM from_clause
-    ( WHERE where_clause )?
-    ( GROUP BY groupBy_clause )?
-    ( HAVING having_clause )?
-    ( ORDER BY orderBy_clause )?
-    ( WINDOWING windowing_clause )?
-    ( LIMIT limit_clause )?;
-    
-where `select_clause` is one of
-    
-    *
-    COUNT( DISTINCT reference_expr ( , reference_expr )? )
-    group_function ( AS? ColumnReference )? ( , group_function ( AS? ColumnReference )? )? ( , reference_expr ( AS? ColumnReference )? )?
-    reference_expr ( AS? ColumnReference )? ( , reference_expr ( AS? ColumnReference )? )?
-    distribution_type( reference_expr, input_mode ) ( AS? ColumnReference )?
-    TOP ( ( Integer | Long ) ( , Integer | Long ) )? , reference_expr ( , reference_expr )? ) ( AS? ColumnReference )?
-    
-    
-`group_function` is one of `SUM(reference_expr)`, `MIN(reference_expr)`, `MAX(reference_expr)`, `AVG(reference_expr)` and `COUNT(*)`. `reference_expr` is one of ColumnReference and Dereference. `distribution_type` is one of `QUANTILE`, `FREQ` and `CUMFREQ`. The 1st number in `TOP` is K, and the 2nd number is an optional threshold.  The `input_mode` is one of 
-
-    LINEAR, ( Integer | Long )                                              evenly spaced
-    REGION, ( Integer | Long ), ( Integer | Long ), ( Integer | Long )      evenly spaced in a region
-    MANUAL, ( Integer | Long ) (, ( Integer | Long ) )*                     defined points
-    
-and `from_clause` is one of
-
-    STREAM()                                                          default time duration will be set from BQLConfig
-    STREAM( ( Long | MAX ), TIME )                                    time based duration control. 
-    STREAM( ( Long | MAX ), TIME, ( Long | MAX ), RECORD )            time and record based duration control. 
-
-`RECORD` will be supported in the future.
-
-and `where_clause` is one of
-
-    NOT where_clause
-    where_clause AND where_clause
-    where_clause OR where_clause
-    reference_expr IS NOT? NULL
-    reference_expr IS NOT? EMPTY
-    reference_expr IS NOT? DISTINCT FROM value_expr
-    reference_expr NOT? BETWEEN value_expr AND value_expr
-    reference_expr NOT? IN ( value_expr ( , value_expr )* )
-    reference_expr NOT? LIKE ( value_expr ( , value_expr )* )
-    reference_expr ( = | <> | != | < | > | <= | >= ) value_expr
-  
-`value_expr` is one of Null, Boolean, Integer, Long, Double, Decimal and String. 
-
-and `groupBy_clause` is one of
-
-    ()                                                                group all
-    reference_expr ( , reference_expr )*                              group by
-    ( reference_expr ( , reference_expr )* )                          group by
-    
-and `HAVING` and `ORDER BY` are only supported for TopK. In which case, `having_clause` is 
-
-    COUNT(*) >= Integer
-    
-and `orderBy_clause` is
-
-    COUNT(*)
-
-and `windowing_clause` is one of 
-
-    ( EVERY, ( Integer | Long ), ( TIME | RECORD ), include )
-    ( TUMBLING, ( Integer | Long ), ( TIME | RECORD ) )
-
-`include` is one of 
-
-    ALL
-    FIRST, ( Integer | Long ), ( TIME | RECORD )
-    LAST, ( Integer | Long ), ( TIME | RECORD )                       will be supported
-
-and `limit_clause` is one of
-
-    Integer | Long 
-    ALL                                                               will be supported
