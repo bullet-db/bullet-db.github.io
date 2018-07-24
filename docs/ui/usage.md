@@ -1,80 +1,42 @@
 # Navigating the UI
 
-The UI should (hopefully) be self-explanatory. Any particular section that requires additional information has the ![info](../img/info.png) icon next to it. Clicking this will display information relevant to that section.
+All videos in this page are running on the topology set up in the [Quick Start on Storm](../quick-start/storm.md) (producing *200 data records every second.*).
 
-The interactions in this page are running on the topology that was set up in the [Quick Start on Storm](../quick-start/storm.md).  Recall that that example backend is configured to produce *20 data records every 101 ms.*.
-
-!!! note "NOTE: Some of these videos use an old version of the Bullet UI"
-    We are currently in progress adding new videos with windowing and other new features from the latest UI version etc.
-
-## Landing page
-
-Loading the UI takes you to a page that shows all the queries and past results. You can edit, delete and copy your existing queries here. You can also view or clear your past results for the queries.
-
-The help links you [configure  for the UI](setup.md#configuration) are shown in the Help menu.
-
-### Schema
-
-The schema you [plug into the UI](setup.md#configuration) is shown here so the users can better understand what the columns mean. Enumerated map fails can be expanded and their nested fields are also described.
-
-**Example: The landing and schema pages**
-
-<video controls autoplay loop>
-  <source src="../../video/schema-2.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-
-!!! note "About tables"
-
-    All tables in the UI, the table for the existing queries, the existing results, the schema or for a query result are all infinite-scroll type tables - they only show a fixed amount but if you scroll to the end, they automatically load more. The tables can all be sorted by clicking on the column name.
+Clicking the ![info](../img/info.png) icon will display useful information.
 
 ## A simple first query
 
-If you create a new query, it defaults to getting a raw data record. This query returns immediately even though the maximum duration is set to 20s because the [Quick Start topology](../quick-start/storm.md#storm-topology) produces about 200 records/s and we are looking for one record with no filters.
+The default new query will get a raw record with max result count 1.
+
+The query will return when a single record is found.
 
 ### Results
 
-Since the entire record was asked to be returned instead of particular fields, the result defaults to a JSON view of the data. You can click the Show as Table button to switch the mode. In this mode, you can click on each cell to get a popover showing the data formatted.
-
-You can also download the results in JSON, CSV or flattened CSV (fields inside maps and lists are exploded). Any metadata returned for the query is collapsed by default. Any relevant metadata for the query [as configured](../quick-start/storm.md#setting-up-the-example-bullet-topology) is shown here. As always the help icons display help messages for each section.
+Since there is no projection in this query, the results are shown as a JSON. You can click the Show as Table button to switch the mode.
 
 **Example: Picking a random record from the stream**
 
-<video controls autoplay loop>
-  <source src="../../video/first-query-2.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+<iframe width="900" height="508" src="https://www.youtube.com/embed/HHwf5wurJ-c?autoplay=1&loop=1&playlist=HHwf5wurJ-c" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 ## Filtering and projecting data
 
-The Filters section in the UI features a querybuilder (a modified version of the [jQuery-QueryBuilder](http://querybuilder.js.org/)) that you can use to add filters. These allow you to [pick at the slice of data](../ws/api-json.md#filters) from your stream that is relevant to you.
+The Filters section allows you to [pick a slice of data](../ws/api-json.md#filters) from the data stream.
 
-The Output Data section lets you aggregate or choose to see raw data records. You can either get all the data as [above](#a-simple-first-query) or you can select a subset of fields (and optionally rename them) that you would like to see.
+The Output Data section allows you to retrieve a subset of fields, and optionally rename them. You can also aggregate data, or choose to see raw data records.
 
 **Example: Finding and picking out fields from events that have probability > 0.5**
 
-<video controls autoplay loop>
-  <source src="../../video/filter-project-2.mp4" type="video/mp4">
-  Your browser does not support the video tag
-</video>
-
-!!! note "Default result display"
-
-    If you choose the Show All Fields selection in the Output Data option, the results will default to the JSON data view. Otherwise, it defaults to the table.
+<iframe width="900" height="508" src="https://www.youtube.com/embed/TvDjwOMRbX0?autoplay=1&loop=1&playlist=TvDjwOMRbX0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 ## Stream Raw Events
 
-**Note:** This query is only available in the Bullet UI version 0.5.0 and later.
-
-A very simple but useful query is a query with a filter and a [Sliding Window of size 1](../ws/api/#sliding-reactive-windows). This query will run for the extent of your duration and stream back events that match your filters as they arrive:
+A simple but useful query is a query with a filter and a [Sliding Window of size 1](../ws/api/#sliding-reactive-windows). This query will run for the extent of your duration and stream back events that match your filters as they arrive:
 
 <iframe width="900" height="508" src="https://www.youtube.com/embed/y2Gzs27OjSw?autoplay=1&loop=1&playlist=y2Gzs27OjSw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 **Be careful** when you use this query to ensure that your filter is sufficient to avoid returning TOO many results too fast. If this occurs Bullet will kill your query because of rate limiting (the default rate limit is 500 records per second).
 
 ## Tumbling Windows
-
-**Note:** This query is only available in the Bullet UI version 0.5.0 and later.
 
 [Time-Based Tumbling Windows](../ws/api/#time-based-tumbling-windows) will return results every X seconds:
 
@@ -84,26 +46,21 @@ This example groups-by "type" and computes a couple metrics for each 2 second wi
 
 ## Additive Tumbling Windows
 
-**Note:** This query is only available in the Bullet UI version 0.5.0 and later.
-
 [Additive tumbling windows](../ws/api/#additive-tumbling-windows) will also return results every X seconds, but the results will contain all the data collected since the beginning of the query:
 
-<iframe iframe width="900" height="508" src="https://www.youtube.com/embed/Lu7vSuv1NYA?autoplay=1&loop=1&playlist=Lu7vSuv1NYA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<iframe width="900" height="508" src="https://www.youtube.com/embed/goqUSJocN9c?autoplay=1&loop=1&playlist=goqUSJocN9c" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
-In this example we compute bucket'ed frequency for the "probability" field. You can see from the scale of the Y axis that these computations are accumulated over the life of the query.
+In this example we compute bucket'ed frequency for the "gaussian" field. As the query runs you can see the gaussian curve form.
 
 ### Complex Filtering
 
-The querybuilder also lets you easily create nested filters. You can add basic relational filters or group a set of basic filters by connecting them with ANDs and ORs. You can also drag and drop filters and groups.
+The querybuilder allows you create nested filters (basic relational filters, ANDs and ORs).
 
-The querybuilder is also type aware. The operations you can perform change based on the type. Numeric fields only allow numeric values. String fields allow you to apply regular expressions to them or specify multiple values at the same time using a ```,```. Boolean fields only allow you to choose a radio button etc.
+The querybuilder is also type aware: Numeric fields only allow numeric values, String fields only allow String operation, etc.
 
 **Example: Finding and picking out the first and second events in each period that also have probability > 0.5**
 
-<video controls autoplay loop>
-  <source src="../../video/query-building-2.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+<iframe width="900" height="508" src="https://www.youtube.com/embed/08NLVbmk1ww?autoplay=1&loop=1&playlist=08NLVbmk1ww" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 !!! note "What's the .* next to a field?"
 
@@ -296,3 +253,25 @@ If the regular chart option is insufficient for your result (for instance, you h
   <source src="../../video/pivoting.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
+
+## Landing page
+
+Loading the UI takes you to a page that shows all the queries and past results. You can edit, delete and copy your existing queries here. You can also view or clear your past results for the queries.
+
+The help links you [configure  for the UI](setup.md#configuration) are shown in the Help menu.
+
+### Schema
+
+The schema you [plug into the UI](setup.md#configuration) is shown here so the users can better understand what the columns mean. Enumerated map fails can be expanded and their nested fields are also described.
+
+**Example: The landing and schema pages**
+
+<video controls autoplay loop>
+  <source src="../../video/schema-2.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+!!! note "About tables"
+
+    All tables in the UI, the table for the existing queries, the existing results, the schema or for a query result are all infinite-scroll type tables - they only show a fixed amount but if you scroll to the end, they automatically load more. The tables can all be sorted by clicking on the column name.
+
