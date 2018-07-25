@@ -26,13 +26,13 @@ The Output Data section allows you to retrieve a subset of fields, and optionall
 
 **Example: Finding and picking out fields from events that have probability > 0.5**
 
-<iframe width="900" height="508" src="https://www.youtube.com/embed/TvDjwOMRbX0?autoplay=1&loop=1&playlist=TvDjwOMRbX0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<iframe width="900" height="508" src="https://www.youtube.com/embed/TvDjwOMRbX0?autoplay=0&loop=0&playlist=TvDjwOMRbX0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 ## Stream Raw Events
 
 A simple but useful query is a query with a filter and a [Sliding Window of size 1](../ws/api/#sliding-reactive-windows). This query will run for the extent of your duration and stream back events that match your filters as they arrive:
 
-<iframe width="900" height="508" src="https://www.youtube.com/embed/y2Gzs27OjSw?autoplay=1&loop=1&playlist=y2Gzs27OjSw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<iframe width="900" height="508" src="https://www.youtube.com/embed/y2Gzs27OjSw?autoplay=0&loop=0&playlist=y2Gzs27OjSw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 **Be careful** when you use this query to ensure that your filter is sufficient to avoid returning TOO many results too fast. If this occurs Bullet will kill your query because of rate limiting (the default rate limit is 500 records per second).
 
@@ -40,7 +40,7 @@ A simple but useful query is a query with a filter and a [Sliding Window of size
 
 [Time-Based Tumbling Windows](../ws/api/#time-based-tumbling-windows) will return results every X seconds:
 
-<iframe width="900" height="508" src="https://www.youtube.com/embed/smy6jNfCVs4?autoplay=1&loop=1&playlist=smy6jNfCVs4" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<iframe width="900" height="508" src="https://www.youtube.com/embed/smy6jNfCVs4?autoplay=0&loop=0&playlist=smy6jNfCVs4" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 This example groups-by "type" and computes a couple metrics for each 2 second window.
 
@@ -48,11 +48,11 @@ This example groups-by "type" and computes a couple metrics for each 2 second wi
 
 [Additive tumbling windows](../ws/api/#additive-tumbling-windows) will also return results every X seconds, but the results will contain all the data collected since the beginning of the query:
 
-<iframe width="900" height="508" src="https://www.youtube.com/embed/goqUSJocN9c?autoplay=1&loop=1&playlist=goqUSJocN9c" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<iframe width="900" height="508" src="https://www.youtube.com/embed/goqUSJocN9c?autoplay=0&loop=0&playlist=goqUSJocN9c" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 In this example we compute bucket'ed frequency for the "gaussian" field. As the query runs you can see the gaussian curve form.
 
-### Complex Filtering
+## Complex Filtering
 
 The querybuilder allows you create nested filters (basic relational filters, ANDs and ORs).
 
@@ -60,7 +60,7 @@ The querybuilder is also type aware: Numeric fields only allow numeric values, S
 
 **Example: Finding and picking out the first and second events in each period that also have probability > 0.5**
 
-<iframe width="900" height="508" src="https://www.youtube.com/embed/08NLVbmk1ww?autoplay=1&loop=1&playlist=08NLVbmk1ww" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<iframe width="900" height="508" src="https://www.youtube.com/embed/08NLVbmk1ww?autoplay=0&loop=0&playlist=08NLVbmk1ww" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 !!! note "What's the .* next to a field?"
 
@@ -68,62 +68,25 @@ The querybuilder is also type aware: Numeric fields only allow numeric values, S
 
 ## Count Distinct
 
-### Exact
+Count Distinct will count the number of distinct elements in a field exactly up to a threshold (16,384 in the example below), after which it will approximate the count.
 
-The settings you had [configured when launching](../quick-start/storm.md#step-5-setup-the-storm-example) the backend determines the number of unique values that Bullet can [count exactly](../index.md#approximate-computation). The example UI shown here used the default configuration value of ```16384``` that the example provided, so for all Count Distinct queries where the cardinality of the field combination is less than this number, the result is exact. The metadata also reflects this.
+As this example demonstrates, information about the precision of the count can be found in the Metadata:
 
-You can also optionally rename the result.
+<iframe width="900" height="508" src="https://www.youtube.com/embed/gEVg9a89j24?autoplay=0&loop=0&playlist=gEVg9a89j24" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
-**Example: Counting unique UUIDs for 20s**
+!!! note "How Can Bullet Count Distinct Elements So Fast??"
 
-<video controls autoplay loop>
-  <source src="../../video/exact-count-distinct-3.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-
-!!! note "Shouldn't the count be slightly more in the last example?"
-
-    **Short answer:** Yes and it's because of the synthetic nature of the data generation.
-
-    **Long answer:** We should have had ```20000 ms / 101 ms``` or ```198``` periods or ```198 periods * 20 tuples/period``` or ```3960``` tuples with unique values for the```uuid``` field. The example spout generates data in bursts of 20 at the start of every period (101 ms). However, the delay isn't exactly 101 ms between periods; it's a bit more depending on when Storm decided to run the emission code. As a result, every period will slowly add a delay of a few ms. Eventually, this can lead us to missing an entire period. This increases the longer the query runs. Even a delay of 1 ms every period (a very likely scenario) can add up to 101 ms or 1 period in as short a time as a 101 periods or ```101 periods * 101 ms/period``` or ```~10 s```. A good rule of thumb is that for every 10 s your query runs, you are missing 20 tuples. You might also miss another 20 tuples at the beginning or the end of the window since the spout is bursty.
-
-    In most real streaming scenarios, data should be constantly flowing and there shouldn't delays building like this. Even so, for a distributed, streaming system like Bullet, you should always remember that data can be missed at either end of your query window due to inherent skews and timing issues.
-
-!!! note "Why did the Maximum Records input disappear?"
-
-    Maximum Records as a query stopping criteria only makes sense when you are picking out raw records. While the API still supports using it as a limiting mechanism on the number of records that are returned to you, the UI eschews this and sets it to a value that you can [configure](setup.md#configuration). It is also particularly confusing to see a Maximum Records when you are doing a Count Distinct operation, while it makes sense when you are Grouping data. You should ideally set this to the same value as your maximum aggregation size that you configure when launching your backend.
-
-### Approximate
-
-When the result is approximate, it is shown as a decimal value. The Result Metadata section will reflect that the result was estimated and provide you standard deviations for the true value. The errors are derived from [DataSketches here](https://datasketches.github.io/docs/Theta/ThetaErrorTable.html). Note the line for ```16384```, which was what we configured for the maximum unique values for the Count Distinct operation. In the example below, this means if we want 99.73% confidence for the result, the ```3``` standard deviation entry says that the true count could vary from ```38194``` to ```39590```.
-
-**Example: Counting unique UUIDs for 200s**
-
-<video controls autoplay loop>
-  <source src="../../video/approx-count-distinct-3.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-
-!!! note "So why is the approximate count what it is?"
-
-    The backend should have produced ```20 * 200000/101``` or ```39603``` tuples with unique uuids. Due to the synthetic nature of the data generation and the building delays mentioned above, we estimated that we should subtract about 20 tuples for every 10 s the query runs. Since this query ran for ```200 s```, this makes the actual uuids generated to be at best ```39603 - (200/10) * 20``` or ```39203```. The result from Bullet was ```39069```, which is an error of ```~0.3 %```. The real error is probably less than that because we assumed the delay between periods to be 1 ms to get the ```39203``` number. It's probably slightly larger making the actual uuids generated lower and closer to our estimate.
+    Bullet uses [Data Sketches](https://datasketches.github.io/) to preform the Count Distinct operation extremely quickly and using a configurable amount of memory. The size and precision of the Sketches used is configurable when the backend is launched. Data Sketches provide an estimate of computationally difficult measurements with provable error bounds. Information about the precision of the estimate (such as the Standard Deviations) is available in the Metadata.
 
 ##  Group all
 
-When choosing the Grouped Data option, you can choose to add fields to group by. If you do not and you add metrics, they will apply to all the data that matches your filters (or the whole data set if you don't have any).
+Choosing the Grouped Data option with no fields will result in the metrics being applied to all the data that matches your filters (or the whole set if you have no filters).
 
 **Example: Counting, summing and averaging on the whole dataset**
 
 The metrics you apply on fields are all numeric presently. If you apply a metric on a non-numeric field, Bullet will try to **type-cast** your field into number and if it's not possible, the result will be ```null```. The result will also be ```null``` if the field was not present or no data matched your filters.
 
-<video controls autoplay loop>
-  <source src="../../video/group-all-error-2.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-
-!!! note "Errors when building queries"
-
-    Errors that can be readily displayed are shown immediately. Some errors like the ones in the example above are only shown when you try to run or save the query.
+<iframe width="900" height="508" src="https://www.youtube.com/embed/JOBpNneToWs?autoplay=0&loop=0&playlist=JOBpNneToWs" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 !!! note "Are Grouped Data metrics approximate?"
 
@@ -131,20 +94,15 @@ The metrics you apply on fields are all numeric presently. If you apply a metric
 
 ##  Group by
 
-You can also choose Group fields and perform metrics per group. If you do not add any Metric fields, you will be **performing a distinct operation** on your group fields.
+You can also choose Group fields and perform metrics per group.
 
 **Example: Grouping by tuple_number**
 
-In this example, we group by ```tuple_number```. Recall that this is the number assigned to a tuple within a period. They range from 0 to 19. If we group by this, we expect to have 20 unique groups. In 5s, we have ```5000/101``` or ```49``` periods. Each period has one of each ```tuple_number```. We expect ```49``` as the count for each group, and this what we see. The building delays mentioned [in the note above](#exact) has not really started affecting the data yet. Note that the average is also roughly ```0.50``` since the ```probability``` field is a uniformly distributed value between 0 and 1.
-
-<video controls autoplay loop>
-  <source src="../../video/group-by-with-cancel-2.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+<iframe width="900" height="508" src="https://www.youtube.com/embed/xawvHq9-WYY?autoplay=0&loop=0&playlist=xawvHq9-WYY" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 !!! note "What happens if I group by uuid?"
 
-    Try it out! Nothing bad should happen. If the number of unique group values exceeds the [maximum configured](../quick-start/storm.md#setting-up-the-example-bullet-topology) (we used 1024 for this example), you will receive a *uniform sample* across your unique group values. The results for your metrics however, are **not sampled**. It is the groups that are sampled on. This means that is **no** guarantee of order if you were expecting the *most popular* groups or similar. You should use the Top K query in that scenario.
+    Try it out! If the number of unique group values exceeds the [maximum configured](../quick-start/storm.md#setting-up-the-example-bullet-topology) (we used 1024 for this example), you will receive a *uniform sample* across your unique group values. The results for your metrics however, are **not sampled**. It is the groups that are sampled on. This means that is **no** guarantee of order if you were expecting the *most popular* groups or similar. You should use the Top K query in that scenario.
 
 !!! note "Why no Count Distinct after Grouping"
 
