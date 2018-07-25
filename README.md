@@ -15,8 +15,8 @@ source mkdocs/bin/activate
 pip install mkdocs==0.16.3 
 pip install mkdocs-cinder
 pip install git+git://github.com/twardoch/clinker-mktheme.git@master --upgrade
-git clone git@github.com:yahoo/bullet-docs.git
-cd bullet-docs
+git clone git@github.com:bullet-db/bullet-db.github.io.git
+cd bullet-db.github.io
 mkdocs serve
 ```
 
