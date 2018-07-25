@@ -20,6 +20,7 @@ pages:
   - Spark:
     - Architecture: backend/spark-architecture.md
     - Setup: backend/spark-setup.md
+    - Performance: backend/spark-performance.md
 - PubSub:
   - Architecture: pubsub/architecture.md
   - Kafka: pubsub/kafka.md
@@ -50,4 +51,4 @@ extra:
 extra_css:
   - css/extra.css
 
-copyright: "Bullet is licensed under the <a href='https://github.com/bullet-db/bullet-core/blob/master/LICENSE'>Apache 2 license"
+copyright: "Bullet is licensed under the <a href='https://github.com/bullet-db/bullet-core/blob/master/LICENSE'>Apache 2 license</a>."
