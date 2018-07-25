@@ -116,11 +116,16 @@ You can also choose Group fields and perform metrics per group.
 
 ## Distributions
 
-In this example, we find distributions of the ```duration```  field. This field is generated randomly from 0 to 10,049, with a tendency to have values that are closer to 0 than 10,049. Let's see if this is true. Note that since this field has random values, the results you see per query are the values generated during that query's duration.
+In this example, we find distributions of the ```duration```  field. This field is generated randomly from 0 to 10,049, with a tendency to have values that are closer to 0. We should be able to see this using Bullet.
 
-The distribution type of output data requires you to pick a type of distribution: ```Quantiles```, ```Frequencies``` or ```Cumulative Frequencies```. ```Quantiles``` lets you get various percentiles (e.g. 25th, 99th) of your numeric field. ```Frequencies``` lets you break up the range of values of your field into intervals and get a count of how many values fell into each interval. ```Cumulative Frequencies``` does the same as ```Frequencies``` but each interval includes the counts of all the intervals prior to it. Both ```Frequencies``` and ```Cumulative Frequencies``` also give you a probability of how likely a value is to fall into the interval.
+The "distribution" option allows you to pick a type of distribution:
 
-All the distributions require you to specify some numeric points. For ```Quantiles```, these points are between 0 and 1 and the value denotes the percentile you are looking for. (0.25 for 25th percentile, 0.99 for 99th etc). For ```Frequencies``` and ```Cumulative Frequencies```, the points are between the minimum and maximum value of your field and every 2 contiguous points create an interval. However, the first interval always starts from *-&infin;* to the first point and the last interval always starts from your last point to *+&infin;*.
+* ```Quantiles``` lets you get various percentiles (e.g. 25th, 99th) of your numeric field
+* ```Frequencies``` lets you break up the range of values of your field into intervals and get a count of how many values fell into each interval.
+* ```Cumulative Frequencies``` does the same as ```Frequencies``` but each interval includes the counts of all the intervals prior to it.
+
+Both ```Frequencies``` and ```Cumulative Frequencies``` also give you a probability of how likely a value is to fall into the interval.
+
 
 You can read much more about this in the UI help by clicking the ```Need more help?``` link.
 
@@ -128,36 +133,21 @@ You can read much more about this in the UI help by clicking the ```Need more he
 
 **Example: Finding the various percentiles of duration**
 
-This example shows all 3 values of specifying points and shows *exact* distribution results for the ```duration``` field.
-
-<video controls autoplay loop>
-  <source src="../../video/quantiles-all-point-formats.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+<iframe width="900" height="508" src="https://www.youtube.com/embed/JB0HlEO3Cfs?autoplay=0&loop=0&playlist=JB0HlEO3Cfs" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 ---
 
 **Example: Finding some frequency counts of duration values in an interval**
 
-The last example showed that the 90th percentile of ```duration``` was around 4000. This example gets some frequencies in various intervals.
+<iframe width="900" height="508" src="https://www.youtube.com/embed/-_I7rp4Vj20?autoplay=0&loop=0&playlist=-_I7rp4Vj20" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
-<video controls autoplay loop>
-  <source src="../../video/frequency-distribution.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-
-Try out and see what ```Cumulative Frequencies``` does yourself!
+Try it out youtself and see what ```Cumulative Frequencies``` does!
 
 ### Approximate
 
-This next example shows how an approximate distribution result looks.
-
 **Example: Approximate quantile distribution**
 
-<video controls autoplay loop>
-  <source src="../../video/approx-quantile.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+<iframe width="900" height="508" src="https://www.youtube.com/embed/JDXnFEpU6iY?autoplay=0&loop=0&playlist=JDXnFEpU6iY" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 !!! note "Normalized Rank Error"
 
