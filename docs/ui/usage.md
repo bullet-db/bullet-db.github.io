@@ -28,7 +28,7 @@ The **Output Data** section allows you to retrieve a subset of fields, and optio
 
 ## Stream Raw Events
 
-A simple but useful query is a query with a filter and a [Sliding Window of size 1](../ws/api/#sliding-reactive-windows). This query will run for the extent of your duration and stream back events that match your filters as they arrive:
+A simple but useful query is a query with a filter and a [Sliding Window of size 1](../ws/api-json/#sliding-reactive-windows). This query will run for the extent of your duration and stream back events that match your filters as they arrive:
 
 <iframe width="900" height="508" src="https://www.youtube.com/embed/y2Gzs27OjSw?autoplay=0&loop=0&playlist=y2Gzs27OjSw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
@@ -36,7 +36,7 @@ A simple but useful query is a query with a filter and a [Sliding Window of size
 
 ## Tumbling Windows
 
-[Time-Based Tumbling Windows](../ws/api/#time-based-tumbling-windows) will return results every X seconds:
+[Time-Based Tumbling Windows](../ws/api-json/#time-based-tumbling-windows) will return results every X seconds:
 
 <iframe width="900" height="508" src="https://www.youtube.com/embed/smy6jNfCVs4?autoplay=0&loop=0&playlist=smy6jNfCVs4" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
@@ -44,7 +44,7 @@ This example groups-by "type" and computes a couple metrics for each 2 second wi
 
 ## Additive Tumbling Windows
 
-[Additive tumbling windows](../ws/api/#additive-tumbling-windows) will also return results every X seconds, but the results will contain all the data collected since the beginning of the query:
+[Additive tumbling windows](../ws/api-json/#additive-tumbling-windows) will also return results every X seconds, but the results will contain all the data collected since the beginning of the query:
 
 <iframe width="900" height="508" src="https://www.youtube.com/embed/goqUSJocN9c?autoplay=0&loop=0&playlist=goqUSJocN9c" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
