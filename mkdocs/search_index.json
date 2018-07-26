@@ -766,6 +766,151 @@
             "title": "Launch"
         }, 
         {
+            "location": "/backend/spark-performance/", 
+            "text": "Performance of Bullet on Spark\n\n\nThis section describes how we tune the performance of Bullet on Spark. This is not meant to be a rigorous benchmark.\n\n\nPrerequisites\n\n\nYou should be familiar with \nSpark Streaming\n, \nKafka\n and the \nBullet on Spark architecture\n.\n\n\nHow was this tested?\n\n\nAll tests run here were using \nBullet-Spark 0.1.2\n.\n\n\nTools used\n\n\n\n\njq\n - a nice tool to parse Bullet JSON responses\n\n\ncurl, bash and python - for running and analyzing Bullet queries\n\n\nApache JMeter\n - a load testing tool to send queries to the server simultaneously\n\n\n\n\nCluster\n\n\n\n\nHadoop YARN cluster with Apache Spark 2.1.2.12 installed\n\n\nThe spec for the machines we were running on:\n\n\n2 x Intel E5530(4 cores, 8 Threads)\n\n\n24 GB RAM\n\n\n3 TB SATA Disk\n\n\n10 G Network Interface\n\n\n\n\n\n\n\n\nData\n\n\n\n\nOur data was read from a Kafka cluster. Kafka version is 0.10.2.1\n\n\nThe Kafka cluster was located within the same datacenter as the Hadoop YARN cluster - close network proximity gives us some measure of confidence that large data transmission delays aren't a factor.\n\n\nOur data schema contained \n92\n fields with \n62\n Strings, \n4\n Longs, \n23\n Maps and \n3\n Lists of Maps. Most of the data is generally present in the Maps and Lists of Maps.\n\n\nWe tested 2 set of data:\n\n\nThe smaller data was about 36,000 records/s and 43 MB/s\n\n\nThe larger data was about 124,700 records/s and 150 MB/s\n\n\n\n\n\n\n\n\nConfiguration\n\n\nHere are the configurations we used to launch instances of Bullet Spark.\n\n\n\n\nFor the smaller data:\n\n\n\n\nSettings:\n\n\nbullet.spark.batch.duration.ms: 2000\nbullet.spark.receiver.query.block.size: 1\nbullet.result.metadata.enable: true\nbullet.spark.metrics.enabled: true\nbullet.spark.filter.parallel.enabled: true\nbullet.spark.filter.parallelism: 16\nbullet.spark.filter.parallel.query.min.size: 10\nbullet.spark.query.union.checkpoint.duration.multiplier: 20\nbullet.spark.join.checkpoint.duration.multiplier: 20\n\n\n\n\nCommand line:\n\n\n./spark-submit \\\n  --master yarn \\\n  --deploy-mode cluster \\\n  --queue default \\\n  --executor-memory 12g \\\n  --executor-cores 2 \\\n  --num-executors 100 \\\n  --driver-cores 2 \\\n  --driver-memory 12g \\\n  --conf spark.streaming.backpressure.enabled=true \\\n  --conf spark.driver.extraJavaOptions=\n-XX:+UseG1GC\n \\\n  --conf spark.executor.extraJavaOptions=\n-XX:+UseG1GC\n \\\n  --conf spark.shuffle.consolidateFiles=true \\\n  --conf spark.dynamicAllocation.enabled=false \\\n  --conf spark.storage.memoryFraction=0.1 \\\n  --conf spark.shuffle.memoryFraction=0.8 \\\n  --conf spark.default.parallelism=20 \\\n  ...\n\n\n\n\n\n\nFor larger Data:\n\n\n\n\nSettings:\n\n\nbullet.spark.batch.duration.ms: 5000\nbullet.spark.receiver.query.block.size: 1\nbullet.result.metadata.enable: true\nbullet.spark.metrics.enabled: true\nbullet.spark.filter.parallel.enabled: true\nbullet.spark.filter.parallelism: 64\nbullet.spark.filter.parallel.query.min.size: 10\nbullet.spark.query.union.checkpoint.duration.multiplier: 20\nbullet.spark.join.checkpoint.duration.multiplier: 20\n\n\n\n\nCommand line:\n\n\n./spark-submit \\\n  --master yarn \\\n  --deploy-mode cluster \\\n  --queue default \\\n  --executor-memory 12g \\\n  --executor-cores 2 \\\n  --num-executors 400 \\\n  --driver-cores 2 \\\n  --driver-memory 12g \\\n  --conf spark.streaming.backpressure.enabled=true \\\n  --conf spark.driver.extraJavaOptions=\n-XX:+UseG1GC\n \\\n  --conf spark.executor.extraJavaOptions=\n-XX:+UseG1GC\n \\\n  --conf spark.shuffle.consolidateFiles=true \\\n  --conf spark.dynamicAllocation.enabled=false \\\n  --conf spark.storage.memoryFraction=0.1 \\\n  --conf spark.shuffle.memoryFraction=0.8 \\\n  --conf spark.default.parallelism=50 \\\n  ...\n\n\n\n\nTest 1: Latency of Bullet Spark\n\n\nThis test was done on the smaller data. We used a \nRAW query without any filtering\n to measure the latency added by Bullet Spark. This is not the end-to-end latency for a query. It is the latency from receiving the query to finishing the query, not includes the time spent in Kafka. We ran this query 100 times.\n\n\nResult\n\n\nThis graph shows the latency of each attempts:\n\n\n\n\nConclusion\n\n\nThe average latency was 1173 ms. This result shows that this is the fastest Bullet Spark can be. It cannot return data any faster than this for meaningful queries.\n\n\nTest 2: Scalability for smaller data\n\n\nThis test was done on the smaller data. We want to measure how many of queries we can have running simultaneously on Bullet Spark. We ran 400, 800, 1500 and 1100 queries each for 10 minutes.\n\n\nResult\n\n\nFigure 1. Spark Streaming UI\n\n\n\n\nFigure 2. Queries running\n\n\n\n\nFigure 3. CPU time\n\n\n\n\nFigure 4. Heap usage\n\n\n\n\nFigure 5. Garbage collection time\n\n\n\n\nFigure 6. Garbage collection count\n\n\n\n\nFigure 1\n shows the Spark Streaming UI when running the test.\n\n\nFigure 2\n shows the simultaneous queries we ran.\n\n\nFigure 3\n shows the milliseconds of CPU time used per minute. For example, a value of \n300K ms\n ms for a line (worker) means that the worker used \n300K ms/min\n  or \n300s/60s\n or \n5\n CPU cores (virtual) in that minute.\n\n\nFigure 4\n shows raw numbers for Heap utilizations in bytes.\n\n\nFigure 5\n shows the time in milliseconds spent for garbage collection per minute.\n\n\nFigure 6\n shows the count of garbage collection events per minute.\n\n\nConclusion\n\n\nThe average processing time for each batch was 1 second 143 ms which was below the batch duration 2 seconds. For average, 1 CPU core and 3GB memory were used in this experiment. CPU and memory usages go slowly up while queries number goes up but they are still within resource limits. We can easily run up to 1500 RAW queries simultaneously in this test.\n\n\nTest 3: Scalability for larger data\n\n\nThis test was done on the larger data. We ran 100, 400, 800 and 600 queries each for 10 minutes.\n\n\nResult\n\n\nFigure 7. Spark stream UI\n\n\n\n\nFigure 8. Queries running\n\n\n\n\nFigure 9. CPU time\n\n\n\n\nFigure 10. Heap usage\n\n\n\n\nFigure 11. Garbage collection time\n\n\n\n\nFigure 12. Garbage collection count\n\n\n\n\nConclusion\n\n\nThe average processing time for each batch was 3 second 97 ms which was below the batch duration 5 seconds. For average, 1.2 CPU core and average 5GB memory were used in this experiment. But with queries number goes up, some of the executors memory usage were up to 8-10GB which is close to our resource limits. With more queries running, OOM may happen. So in this experiment, we can only afford up to 800 queries simultaneously.", 
+            "title": "Performance"
+        }, 
+        {
+            "location": "/backend/spark-performance/#performance-of-bullet-on-spark", 
+            "text": "This section describes how we tune the performance of Bullet on Spark. This is not meant to be a rigorous benchmark.", 
+            "title": "Performance of Bullet on Spark"
+        }, 
+        {
+            "location": "/backend/spark-performance/#prerequisites", 
+            "text": "You should be familiar with  Spark Streaming ,  Kafka  and the  Bullet on Spark architecture .", 
+            "title": "Prerequisites"
+        }, 
+        {
+            "location": "/backend/spark-performance/#how-was-this-tested", 
+            "text": "All tests run here were using  Bullet-Spark 0.1.2 .", 
+            "title": "How was this tested?"
+        }, 
+        {
+            "location": "/backend/spark-performance/#tools-used", 
+            "text": "jq  - a nice tool to parse Bullet JSON responses  curl, bash and python - for running and analyzing Bullet queries  Apache JMeter  - a load testing tool to send queries to the server simultaneously", 
+            "title": "Tools used"
+        }, 
+        {
+            "location": "/backend/spark-performance/#cluster", 
+            "text": "Hadoop YARN cluster with Apache Spark 2.1.2.12 installed  The spec for the machines we were running on:  2 x Intel E5530(4 cores, 8 Threads)  24 GB RAM  3 TB SATA Disk  10 G Network Interface", 
+            "title": "Cluster"
+        }, 
+        {
+            "location": "/backend/spark-performance/#data", 
+            "text": "Our data was read from a Kafka cluster. Kafka version is 0.10.2.1  The Kafka cluster was located within the same datacenter as the Hadoop YARN cluster - close network proximity gives us some measure of confidence that large data transmission delays aren't a factor.  Our data schema contained  92  fields with  62  Strings,  4  Longs,  23  Maps and  3  Lists of Maps. Most of the data is generally present in the Maps and Lists of Maps.  We tested 2 set of data:  The smaller data was about 36,000 records/s and 43 MB/s  The larger data was about 124,700 records/s and 150 MB/s", 
+            "title": "Data"
+        }, 
+        {
+            "location": "/backend/spark-performance/#configuration", 
+            "text": "Here are the configurations we used to launch instances of Bullet Spark.   For the smaller data:   Settings:  bullet.spark.batch.duration.ms: 2000\nbullet.spark.receiver.query.block.size: 1\nbullet.result.metadata.enable: true\nbullet.spark.metrics.enabled: true\nbullet.spark.filter.parallel.enabled: true\nbullet.spark.filter.parallelism: 16\nbullet.spark.filter.parallel.query.min.size: 10\nbullet.spark.query.union.checkpoint.duration.multiplier: 20\nbullet.spark.join.checkpoint.duration.multiplier: 20  Command line:  ./spark-submit \\\n  --master yarn \\\n  --deploy-mode cluster \\\n  --queue default \\\n  --executor-memory 12g \\\n  --executor-cores 2 \\\n  --num-executors 100 \\\n  --driver-cores 2 \\\n  --driver-memory 12g \\\n  --conf spark.streaming.backpressure.enabled=true \\\n  --conf spark.driver.extraJavaOptions= -XX:+UseG1GC  \\\n  --conf spark.executor.extraJavaOptions= -XX:+UseG1GC  \\\n  --conf spark.shuffle.consolidateFiles=true \\\n  --conf spark.dynamicAllocation.enabled=false \\\n  --conf spark.storage.memoryFraction=0.1 \\\n  --conf spark.shuffle.memoryFraction=0.8 \\\n  --conf spark.default.parallelism=20 \\\n  ...   For larger Data:   Settings:  bullet.spark.batch.duration.ms: 5000\nbullet.spark.receiver.query.block.size: 1\nbullet.result.metadata.enable: true\nbullet.spark.metrics.enabled: true\nbullet.spark.filter.parallel.enabled: true\nbullet.spark.filter.parallelism: 64\nbullet.spark.filter.parallel.query.min.size: 10\nbullet.spark.query.union.checkpoint.duration.multiplier: 20\nbullet.spark.join.checkpoint.duration.multiplier: 20  Command line:  ./spark-submit \\\n  --master yarn \\\n  --deploy-mode cluster \\\n  --queue default \\\n  --executor-memory 12g \\\n  --executor-cores 2 \\\n  --num-executors 400 \\\n  --driver-cores 2 \\\n  --driver-memory 12g \\\n  --conf spark.streaming.backpressure.enabled=true \\\n  --conf spark.driver.extraJavaOptions= -XX:+UseG1GC  \\\n  --conf spark.executor.extraJavaOptions= -XX:+UseG1GC  \\\n  --conf spark.shuffle.consolidateFiles=true \\\n  --conf spark.dynamicAllocation.enabled=false \\\n  --conf spark.storage.memoryFraction=0.1 \\\n  --conf spark.shuffle.memoryFraction=0.8 \\\n  --conf spark.default.parallelism=50 \\\n  ...", 
+            "title": "Configuration"
+        }, 
+        {
+            "location": "/backend/spark-performance/#test-1-latency-of-bullet-spark", 
+            "text": "This test was done on the smaller data. We used a  RAW query without any filtering  to measure the latency added by Bullet Spark. This is not the end-to-end latency for a query. It is the latency from receiving the query to finishing the query, not includes the time spent in Kafka. We ran this query 100 times.", 
+            "title": "Test 1: Latency of Bullet Spark"
+        }, 
+        {
+            "location": "/backend/spark-performance/#result", 
+            "text": "This graph shows the latency of each attempts:", 
+            "title": "Result"
+        }, 
+        {
+            "location": "/backend/spark-performance/#conclusion", 
+            "text": "The average latency was 1173 ms. This result shows that this is the fastest Bullet Spark can be. It cannot return data any faster than this for meaningful queries.", 
+            "title": "Conclusion"
+        }, 
+        {
+            "location": "/backend/spark-performance/#test-2-scalability-for-smaller-data", 
+            "text": "This test was done on the smaller data. We want to measure how many of queries we can have running simultaneously on Bullet Spark. We ran 400, 800, 1500 and 1100 queries each for 10 minutes.", 
+            "title": "Test 2: Scalability for smaller data"
+        }, 
+        {
+            "location": "/backend/spark-performance/#result_1", 
+            "text": "", 
+            "title": "Result"
+        }, 
+        {
+            "location": "/backend/spark-performance/#figure-1-spark-streaming-ui", 
+            "text": "", 
+            "title": "Figure 1. Spark Streaming UI"
+        }, 
+        {
+            "location": "/backend/spark-performance/#figure-2-queries-running", 
+            "text": "", 
+            "title": "Figure 2. Queries running"
+        }, 
+        {
+            "location": "/backend/spark-performance/#figure-3-cpu-time", 
+            "text": "", 
+            "title": "Figure 3. CPU time"
+        }, 
+        {
+            "location": "/backend/spark-performance/#figure-4-heap-usage", 
+            "text": "", 
+            "title": "Figure 4. Heap usage"
+        }, 
+        {
+            "location": "/backend/spark-performance/#figure-5-garbage-collection-time", 
+            "text": "", 
+            "title": "Figure 5. Garbage collection time"
+        }, 
+        {
+            "location": "/backend/spark-performance/#figure-6-garbage-collection-count", 
+            "text": "Figure 1  shows the Spark Streaming UI when running the test.  Figure 2  shows the simultaneous queries we ran.  Figure 3  shows the milliseconds of CPU time used per minute. For example, a value of  300K ms  ms for a line (worker) means that the worker used  300K ms/min   or  300s/60s  or  5  CPU cores (virtual) in that minute.  Figure 4  shows raw numbers for Heap utilizations in bytes.  Figure 5  shows the time in milliseconds spent for garbage collection per minute.  Figure 6  shows the count of garbage collection events per minute.", 
+            "title": "Figure 6. Garbage collection count"
+        }, 
+        {
+            "location": "/backend/spark-performance/#conclusion_1", 
+            "text": "The average processing time for each batch was 1 second 143 ms which was below the batch duration 2 seconds. For average, 1 CPU core and 3GB memory were used in this experiment. CPU and memory usages go slowly up while queries number goes up but they are still within resource limits. We can easily run up to 1500 RAW queries simultaneously in this test.", 
+            "title": "Conclusion"
+        }, 
+        {
+            "location": "/backend/spark-performance/#test-3-scalability-for-larger-data", 
+            "text": "This test was done on the larger data. We ran 100, 400, 800 and 600 queries each for 10 minutes.", 
+            "title": "Test 3: Scalability for larger data"
+        }, 
+        {
+            "location": "/backend/spark-performance/#result_2", 
+            "text": "", 
+            "title": "Result"
+        }, 
+        {
+            "location": "/backend/spark-performance/#figure-7-spark-stream-ui", 
+            "text": "", 
+            "title": "Figure 7. Spark stream UI"
+        }, 
+        {
+            "location": "/backend/spark-performance/#figure-8-queries-running", 
+            "text": "", 
+            "title": "Figure 8. Queries running"
+        }, 
+        {
+            "location": "/backend/spark-performance/#figure-9-cpu-time", 
+            "text": "", 
+            "title": "Figure 9. CPU time"
+        }, 
+        {
+            "location": "/backend/spark-performance/#figure-10-heap-usage", 
+            "text": "", 
+            "title": "Figure 10. Heap usage"
+        }, 
+        {
+            "location": "/backend/spark-performance/#figure-11-garbage-collection-time", 
+            "text": "", 
+            "title": "Figure 11. Garbage collection time"
+        }, 
+        {
+            "location": "/backend/spark-performance/#figure-12-garbage-collection-count", 
+            "text": "", 
+            "title": "Figure 12. Garbage collection count"
+        }, 
+        {
+            "location": "/backend/spark-performance/#conclusion_2", 
+            "text": "The average processing time for each batch was 3 second 97 ms which was below the batch duration 5 seconds. For average, 1.2 CPU core and average 5GB memory were used in this experiment. But with queries number goes up, some of the executors memory usage were up to 8-10GB which is close to our resource limits. With more queries running, OOM may happen. So in this experiment, we can only afford up to 800 queries simultaneously.", 
+            "title": "Conclusion"
+        }, 
+        {
             "location": "/pubsub/architecture/", 
             "text": "PubSub Architecture\n\n\nThis section describes how the Publish-Subscribe or \nPubSub layer\n works in Bullet.\n\n\nWhy a PubSub?\n\n\nWhen we initially created Bullet, it was built on \nApache Storm\n and leveraged a feature in it called Storm DRPC to deliver queries to and extract results from the Bullet Backend. Storm DRPC is supported by a set of clusters that are physically part of the Storm cluster and is a shared resource for the cluster. While many other stream processors support some form of RPC and we could support multiple versions of the Web Service for those, it quickly became clear that abstracting the transport layer from the Web Service to the Backend was needed. This was particularly highlighted when we wanted to switch Bullet queries from operating in a request-response model (one response at the end of the query) to a streaming model. Streaming responses back to the user for a query through DRPC would be cumbersome and require a lot of logic to handle. A PubSub system was a natural solution to this. Since DRPC was a shared resource per cluster, we also were \ntying the Backend's scalability\n to a resource that we didn't control.\n\n\nHowever, we didn't want to pick a particular PubSub like Kafka and restrict a user's choice. So, we added a PubSub layer that was generic and entirely pluggable into both the Backend and the Web Service. We would support a select few like \nKafka\n or \nStorm DRPC\n. See \nbelow\n for how to create your own.\n\n\nWith the transport mechanism abstracted out, it opens up a lot of possibilities like implementing Bullet on other stream processors, allowing for the development of \nBullet on Spark\n along with other possible implementations in the future.\n\n\nWhat does it do?\n\n\nA PubSub operates in two contexts:\n\n\n\n\nSubmitting queries and reading results. This is the \nQUERY_SUBMISSION\n context and this is PubSub mode for the Web Service\n\n\nReading queries and submitting results. This is the \nQUERY_PROCESSING\n context and this is PubSub mode for the Backend\n\n\n\n\nA PubSub provides Publisher and Subscriber instances that, depending on which context it is in, do the right thing. Publishers in \nQUERY_SUBMISSION\n write queries to your PubSub whereas in \nQUERY_PROCESSING\n, they write results. Similarly, the Subscribers in \nQUERY_SUBMISSION\n read results but read queries in \nQUERY_PROCESSING\n. A Publisher and Subscriber in a particular context make up read and write halves of the \npipes\n for stream of queries and stream of results.\n\n\nMessages\n\n\nThe PubSub layer does not deal with queries and results and just works on instances of messages of type \ncom.yahoo.bullet.pubsub.PubSubMessage\n. These \nPubSubMessages\n are keyed (\nid\n and \nsequence\n), store content and metadata. This is a light wrapper around the payload and is tailored to work with multiple results per query and support communicating additional information and signals to and from the PubSub in addition to just queries and results.\n\n\nChoosing a PubSub implementation\n\n\nIf you want to use an implementation already built, we currently support:\n\n\n\n\nKafka\n for any Backend\n\n\nREST\n for any Backend\n\n\nStorm DRPC\n if you're using Bullet on Storm as your Backend\n\n\n\n\nImplementing your own PubSub\n\n\nThe core of the PubSub interfaces are defined in the \ncore Bullet library\n that you can \ndepend on\n.\n\n\nTo create a PubSub, you should extend the abstract class \ncom.yahoo.bullet.pubsub.PubSub\n and implement the abstract methods for getting instances of Publishers (\ncom.yahoo.bullet.pubsub.Publisher\n) and Subscribers (\ncom.yahoo.bullet.pubsub.Subscriber\n). Depending on how you have configured the Web Service and the Backend, they will call the required methods to get the required number of Publishers or Subscribers to parallelize the reading or the writing. You should ensure that they are thread-safe. They will most likely be tied to your units of parallelisms for the underlying PubSub you are invoking.\n\n\nIf you are running sharded instances of your Web Service, you should ensure that your Publishers writing queries add Metadata to the messages to help the Publishers writing results to send the results back to the right Web Service instance that is waiting for them.\n\n\nReliability\n\n\nYou can choose to make your Publishers and Subscribers as reliable as you want. Both the Web Service and the Backend will call the appropriate reliability methods (\ncommit\n and \nfail\n) but your implementations can choose to be no-ops if you do not want to be reliability. Alternatively, if you want make your Subscribers reliable, you could use an in-memory reliable implementation of one by extending \ncom.yahoo.bullet.pubsub.BufferingSubscriber\n for a simple implementation. This keeps track of uncommitted messages in memory up to a configured threshold (does not read more messages if there are this many uncommitted messages left) and re-emits messages on failures using it.\n\n\nCanonical example\n\n\nFor an example of a PubSub implementation, see the \nBullet Kafka PubSub project\n. This is implemented in Java and is a simple implementation that wraps the Kafka client APIs. It supports reliability through the use of the \nBufferingSubscriber\n mentioned above. It allows you to specify one or two Kafka topics for queries and results. It can be sharded across multiple Web Service machines using Kafka topic partitions. See the \nconfiguration\n for details.", 
             "title": "Architecture"
