@@ -14,7 +14,7 @@ Since there is no projection in this query, the results are shown as a JSON. You
 
 **Example: Picking a random record from the stream**
 
-<iframe width="900" height="508" src="https://www.youtube.com/embed/HHwf5wurJ-c?autoplay=1&loop=1&playlist=HHwf5wurJ-c" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<iframe width="900" height="508" src="https://www.youtube.com/embed/HHwf5wurJ-c?autoplay=0&loop=1&playlist=HHwf5wurJ-c" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 ## Filtering and projecting data
 
@@ -33,22 +33,6 @@ A simple but useful query is a query with a filter and a [Sliding Window of size
 <iframe width="900" height="508" src="https://www.youtube.com/embed/y2Gzs27OjSw?autoplay=0&loop=0&playlist=y2Gzs27OjSw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 **Be careful** when you use this query to ensure that your filter is sufficient to avoid returning TOO many results too fast. If this occurs Bullet will kill your query because of rate limiting (the default rate limit is 500 records per second).
-
-## Tumbling Windows
-
-[Time-Based Tumbling Windows](../ws/api-json/#time-based-tumbling-windows) will return results every X seconds:
-
-<iframe width="900" height="508" src="https://www.youtube.com/embed/smy6jNfCVs4?autoplay=0&loop=0&playlist=smy6jNfCVs4" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-
-This example groups-by "type" and computes a couple metrics for each 2 second window.
-
-## Additive Tumbling Windows
-
-[Additive tumbling windows](../ws/api-json/#additive-tumbling-windows) will also return results every X seconds, but the results will contain all the data collected since the beginning of the query:
-
-<iframe width="900" height="508" src="https://www.youtube.com/embed/goqUSJocN9c?autoplay=0&loop=0&playlist=goqUSJocN9c" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-
-In this example we compute bucket'ed frequency for the "gaussian" field. As the query runs you can see the gaussian curve form.
 
 ## Complex Filtering
 
@@ -178,6 +162,22 @@ This example shows how to get a basic chart in Bullet. The charting and pivoting
 The charting example below shows how to get a quick chart of a ```Group``` query with 3 metrics.
 
 <iframe width="900" height="508" src="https://www.youtube.com/embed/vGlIylyUqyc?autoplay=0&loop=0&playlist=vGlIylyUqyc" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+## Tumbling Windows
+
+[Time-Based Tumbling Windows](../ws/api-json/#time-based-tumbling-windows) will return results every X seconds:
+
+<iframe width="900" height="508" src="https://www.youtube.com/embed/smy6jNfCVs4?autoplay=0&loop=0&playlist=smy6jNfCVs4" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+This example groups-by "type" and computes a couple metrics for each 2 second window.
+
+## Additive Tumbling Windows
+
+[Additive tumbling windows](../ws/api-json/#additive-tumbling-windows) will also return results every X seconds, but the results will contain all the data collected since the beginning of the query:
+
+<iframe width="900" height="508" src="https://www.youtube.com/embed/goqUSJocN9c?autoplay=0&loop=0&playlist=goqUSJocN9c" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+In this example we compute bucket'ed frequency for the "gaussian" field. As the query runs you can see the gaussian curve form.
 
 ## Pivoting
 
