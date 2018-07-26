@@ -6,9 +6,7 @@ Clicking the ![info](../img/info.png) icon will display useful information.
 
 ## A simple first query
 
-The default new query will get a raw record with max result count 1.
-
-The query will return when a single record is found.
+The default new query will get a raw record with max result count 1 - it will return when a single record is found.
 
 ### Results
 
@@ -20,9 +18,9 @@ Since there is no projection in this query, the results are shown as a JSON. You
 
 ## Filtering and projecting data
 
-The Filters section allows you to [pick a slice of data](../ws/api-json.md#filters) from the data stream.
+The **Filters** section allows you to [pick a slice of data](../ws/api-json.md#filters) from the data stream.
 
-The Output Data section allows you to retrieve a subset of fields, and optionally rename them. You can also aggregate data, or choose to see raw data records.
+The **Output Data** section allows you to retrieve a subset of fields, and optionally rename them. You can also aggregate data, or choose to see raw data records.
 
 **Example: Finding and picking out fields from events that have probability > 0.5**
 
@@ -68,9 +66,9 @@ The querybuilder is also type aware: Numeric fields only allow numeric values, S
 
 ## Count Distinct
 
-Count Distinct will count the number of distinct elements in a field exactly up to a threshold (16,384 in the example below), after which it will approximate the count.
+Count Distinct will count the number of distinct elements in a field exactly up to a threshold that is established when the backend is launched (16,384 in the example below).
 
-As this example demonstrates, information about the precision of the count can be found in the Metadata:
+After this threshold the count will be approximate. As this example demonstrates, information about the precision of the count can be found in the Metadata:
 
 <iframe width="900" height="508" src="https://www.youtube.com/embed/gEVg9a89j24?autoplay=0&loop=0&playlist=gEVg9a89j24" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
@@ -161,65 +159,37 @@ Top K lets you get the most *frequent items* or the *heavy hitters* for the valu
 
 This example gets the Top 3 most popular ```type``` values (there are only 6 but this illustrates the idea).
 
-<video controls autoplay loop>
-  <source src="../../video/exact-top-k.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+<iframe width="900" height="508" src="https://www.youtube.com/embed/Heav0e5jE8g?autoplay=0&loop=0&playlist=Heav0e5jE8g" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 ### Approximate
 
-By adding ```duration``` into the fields, the number of unique values for ```(type, duration)``` is increased. However, because ```duration``` has a tendency to have low values, we will have some *frequent items*. The counts are now estimated. We ask for the top 300 results but we also say that they should have a count of at least 20. This restricts the overall number of results to 12.
+By adding ```duration``` into the fields, the number of unique values for ```(type, duration)``` is increased. However, because ```duration``` has a tendency to have low values, we will have some *frequent items*. The counts are now estimated. 
 
-<video controls autoplay loop>
-  <source src="../../video/approx-top-k.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+<iframe width="900" height="508" src="https://www.youtube.com/embed/hCHWy229Yhw?autoplay=0&loop=0&playlist=hCHWy229Yhw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 !!! note "Maximum Count Error"
 
-    The ```maximum_count_error``` value for the query above was ```3```. This means that the difference between the upper bound and the lower bound of each count estimate is ```3```. Bullet returns the upper bound as the estimate so subtracting ```3``` from each count gives you the lower bound of the count. Note that some counts are closer to each other than the count error. For instance, ```(quux, 1)``` and ```(baz, 0)``` have counts ```67``` and ```66``` but their true counts could be from ```64 to 67``` and ```63 to 66``` respectively. This means that ```(baz, 0)``` could well be the most frequent item for this query.
+    The ```maximum_count_error``` value for this query was ```3```. This means that the difference between the upper bound and the lower bound of each count estimate is ```3```. Bullet returns the upper bound as the estimate so subtracting ```3``` from each count gives you the lower bound of the count. Note that some counts are closer to each other than the count error. For instance, ```(quux, 1)``` and ```(bar, 1)``` have counts ```79``` and ```78``` but their true counts could be from ```76 to 79``` and ```75 to 78``` respectively. This means that ```(bar, 1)``` could well be the most frequent item for this query.
 
 ## Charting
 
-[Bullet UI v0.3.0 and above](https://github.com/bullet-db/bullet-ui/releases/tag/v0.3.0) added support for charting and pivoting. This example shows how to get a basic chart on [Bullet UI v0.3.1](https://github.com/bullet-db/bullet-ui/releases/tag/v0.3.1). If you are following the [Quick Start on Storm](../quick-start/storm.md), then this should be in your UI. The charting and pivoting modes are only enabled for queries that are *not* Count Distinct or Group without Group Fields. This is because these results only have a single row and it does not make sense to graph them. They are enabled for all other queries.
+This example shows how to get a basic chart in Bullet. The charting and pivoting modes are only enabled for queries that are *not* Count Distinct or Group without Group Fields. This is because these results only have a single row and it does not make sense to graph them. They are enabled for all other queries.
 
 The charting example below shows how to get a quick chart of a ```Group``` query with 3 metrics.
 
-<video controls autoplay loop>
-  <source src="../../video/charting.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+<iframe width="900" height="508" src="https://www.youtube.com/embed/vGlIylyUqyc?autoplay=0&loop=0&playlist=vGlIylyUqyc" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 ## Pivoting
 
-If the regular chart option is insufficient for your result (for instance, you have too many groups and metrics or you want to post-aggregate your results or remove outliers etc), then there is a advanced Pivot mode available when you are in the Chart option. The Pivot option provides a drag-and-drop interface to drag fields to breakdown and aggregate by their values. Operations such as finding standard deviations, variance, average, median, sum over sums etc are available as well as easily viewing them as tables and charts. The following example shows a ```Group``` query with multiple groups and metrics and some interactions with the Pivot table.
+If the regular chart option is insufficient for your result (for instance, you have too many groups and metrics or you want to post-aggregate your results or remove outliers etc), then there is a advanced Pivot mode available when you are in the Chart option.
 
-!!! note "Raw data does not seem to have a regular chart mode option"
+The Pivot option provides a drag-and-drop interface to drag fields to breakdown and aggregate by their values. Operations such as finding standard deviations, variance, etc are available as well as easily viewing them as tables and charts. 
 
-    This is deliberate since the Chart option tries to infer your independent and dependent columns. When you fetch raw data, this is prone to errors so only the Pivot option is allowed. You can always graph within the Pivot option if you need to.
-<video controls autoplay loop>
-  <source src="../../video/pivoting.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+The following example shows a ```Group``` query with multiple groups and metrics and some interactions with the Pivot table.
 
-## Landing page
+<iframe width="900" height="508" src="https://www.youtube.com/embed/Y4qPvS65Ik0?autoplay=0&loop=0&playlist=Y4qPvS65Ik0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
-Loading the UI takes you to a page that shows all the queries and past results. You can edit, delete and copy your existing queries here. You can also view or clear your past results for the queries.
+!!! note "Raw data does have a regular chart mode option"
 
-The help links you [configure  for the UI](setup.md#configuration) are shown in the Help menu.
-
-### Schema
-
-The schema you [plug into the UI](setup.md#configuration) is shown here so the users can better understand what the columns mean. Enumerated map fails can be expanded and their nested fields are also described.
-
-**Example: The landing and schema pages**
-
-<video controls autoplay loop>
-  <source src="../../video/schema-2.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-
-!!! note "About tables"
-
-    All tables in the UI, the table for the existing queries, the existing results, the schema or for a query result are all infinite-scroll type tables - they only show a fixed amount but if you scroll to the end, they automatically load more. The tables can all be sorted by clicking on the column name.
+    This is deliberate since the Chart option tries to infer your independent and dependent columns. When you fetch raw data, this is prone to errors so only the Pivot option is allowed.
 
