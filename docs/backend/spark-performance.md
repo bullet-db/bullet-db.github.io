@@ -14,7 +14,7 @@ All tests run here were using [Bullet-Spark 0.1.2](https://github.com/bullet-db/
 
   * [jq](https://stedolan.github.io/jq/) - a nice tool to parse Bullet JSON responses
   * curl, bash and python - for running and analyzing Bullet queries
-  * [Apache JMeter](https://jmeter.apache.org/) - a load testing tool to send queries to the server simultaneously
+  * [Apache JMeter](https://jmeter.apache.org/) - a load testing tool to send multiple queries to the server simultaneously
 
 ### Cluster
 
@@ -112,11 +112,11 @@ Command line:
 
 ## Test 1: Latency of Bullet Spark
 
-This test was done on the smaller data. We used a [RAW query without any filtering](../ws/examples/#simplest-query) to measure the latency added by Bullet Spark. This is not the end-to-end latency for a query. It is the latency from receiving the query to finishing the query, not includes the time spent in Kafka. We ran this query 100 times.
+This test was done on the smaller data. We used a [RAW query without any filtering](../ws/examples/#simplest-query) to measure the latency added by Bullet Spark. This is not the end-to-end latency for a query. It is the latency from receiving the query to finishing the query, not including the time spent in Kafka. We ran this query 100 times.
 
 ### Result
 
-This graph shows the latency of each attempts:
+This graph shows the latency of each attempt:
 
 ![Bullet Spark Latency](../img/spark-perf-latency.png)
 
@@ -126,7 +126,7 @@ The average latency was 1173 ms. This result shows that this is the fastest Bull
 
 ## Test 2: Scalability for smaller data
 
-This test was done on the smaller data. We want to measure how many of queries we can have running simultaneously on Bullet Spark. We ran 400, 800, 1500 and 1100 queries each for 10 minutes.
+This test was done on the smaller data. We want to measure how many queries we can have running simultaneously on Bullet Spark. We ran 400, 800, 1500 and 1100 queries each for 10 minutes.
 
 ### Result
 
@@ -168,7 +168,7 @@ This test was done on the smaller data. We want to measure how many of queries w
 
 ### Conclusion
 
-The average processing time for each batch was 1 second 143 ms which was below the batch duration 2 seconds. For average, 1 CPU core and 3GB memory were used in this experiment. CPU and memory usages go slowly up while queries number goes up but they are still within resource limits. We can easily run up to 1500 RAW queries simultaneously in this test.
+The average processing time for each batch was 1 second 143 ms which was below the batch duration 2 seconds. On average, 1 CPU core and 3GB memory were used in this experiment. CPU and memory usages go slowly up while queries number goes up but they are still within resource limits. We can easily run up to 1500 RAW queries simultaneously in this test.
 
 ## Test 3: Scalability for larger data
 
@@ -202,4 +202,4 @@ This test was done on the larger data. We ran 100, 400, 800 and 600 queries each
 
 ### Conclusion
 
-The average processing time for each batch was 3 second 97 ms which was below the batch duration 5 seconds. For average, 1.2 CPU core and average 5GB memory were used in this experiment. But with queries number goes up, some of the executors memory usage were up to 8-10GB which is close to our resource limits. With more queries running, OOM may happen. So in this experiment, we can only afford up to 800 queries simultaneously.
+The average processing time for each batch was 3 seconds 97 ms which was below the batch duration 5 seconds. On average, 1.2 CPU core and average 5GB memory were used in this experiment. But with queries number goes up, some of the executors memory usage were up to 8-10GB which is close to our resource limits. With more queries running, OOM may happen. So in this experiment, we can only afford up to 800 queries simultaneously.
