@@ -351,18 +351,6 @@
             <ul class="nav">
                 
                     <li class="second-level">
-                        <a href="#landing-page">Landing page</a>
-                        <ul class="nav">
-                        
-                            <li class="third-level">
-                                <a href="#schema">Schema</a>
-                                
-                            </li>
-                        
-                        </ul>
-                    </li>
-            
-                    <li class="second-level">
                         <a href="#a-simple-first-query">A simple first query</a>
                         <ul class="nav">
                         
@@ -385,37 +373,13 @@
                     </li>
             
                     <li class="second-level">
-                        <a href="#tumbling-windows">Tumbling Windows</a>
+                        <a href="#complex-filtering">Complex Filtering</a>
                         
-                    </li>
-            
-                    <li class="second-level">
-                        <a href="#additive-tumbling-windows">Additive Tumbling Windows</a>
-                        <ul class="nav">
-                        
-                            <li class="third-level">
-                                <a href="#complex-filtering">Complex Filtering</a>
-                                
-                            </li>
-                        
-                        </ul>
                     </li>
             
                     <li class="second-level">
                         <a href="#count-distinct">Count Distinct</a>
-                        <ul class="nav">
                         
-                            <li class="third-level">
-                                <a href="#exact">Exact</a>
-                                
-                            </li>
-                        
-                            <li class="third-level">
-                                <a href="#approximate">Approximate</a>
-                                
-                            </li>
-                        
-                        </ul>
                     </li>
             
                     <li class="second-level">
@@ -433,6 +397,23 @@
                         <ul class="nav">
                         
                             <li class="third-level">
+                                <a href="#exact">Exact</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#approximate">Approximate</a>
+                                
+                            </li>
+                        
+                        </ul>
+                    </li>
+            
+                    <li class="second-level">
+                        <a href="#top-k">Top K</a>
+                        <ul class="nav">
+                        
+                            <li class="third-level">
                                 <a href="#exact_1">Exact</a>
                                 
                             </li>
@@ -446,24 +427,17 @@
                     </li>
             
                     <li class="second-level">
-                        <a href="#top-k">Top K</a>
-                        <ul class="nav">
+                        <a href="#charting">Charting</a>
                         
-                            <li class="third-level">
-                                <a href="#exact_2">Exact</a>
-                                
-                            </li>
-                        
-                            <li class="third-level">
-                                <a href="#approximate_2">Approximate</a>
-                                
-                            </li>
-                        
-                        </ul>
                     </li>
             
                     <li class="second-level">
-                        <a href="#charting">Charting</a>
+                        <a href="#tumbling-windows">Tumbling Windows</a>
+                        
+                    </li>
+            
+                    <li class="second-level">
+                        <a href="#additive-tumbling-windows">Additive Tumbling Windows</a>
                         
                     </li>
             
@@ -480,143 +454,63 @@
         <div class="col-md-9" role="main">
 
 <h1 id="navigating-the-ui">Navigating the UI</h1>
-<p>The UI should (hopefully) be self-explanatory. Any particular section that requires additional information has the <img alt="info" src="../../img/info.png" /> icon next to it. Clicking this will display information relevant to that section.</p>
-<p>The interactions in this page are running on the topology that was set up in the <a href="../../quick-start/storm/">Quick Start on Storm</a>.  Recall that that example backend is configured to produce <em>20 data records every 101 ms.</em>.</p>
-<div class="admonition note">
-<p class="admonition-title">NOTE: Some of these videos use an old version of the Bullet UI</p>
-<p>We are currently in progress adding new videos with windowing and other new features from the latest UI version etc.</p>
-</div>
-<h2 id="landing-page">Landing page</h2>
-<p>Loading the UI takes you to a page that shows all the queries and past results. You can edit, delete and copy your existing queries here. You can also view or clear your past results for the queries.</p>
-<p>The help links you <a href="../setup/#configuration">configure  for the UI</a> are shown in the Help menu.</p>
-<h3 id="schema">Schema</h3>
-<p>The schema you <a href="../setup/#configuration">plug into the UI</a> is shown here so the users can better understand what the columns mean. Enumerated map fails can be expanded and their nested fields are also described.</p>
-<p><strong>Example: The landing and schema pages</strong></p>
-<video controls autoplay loop>
-  <source src="../../video/schema-2.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-
-<div class="admonition note">
-<p class="admonition-title">About tables</p>
-<p>All tables in the UI, the table for the existing queries, the existing results, the schema or for a query result are all infinite-scroll type tables - they only show a fixed amount but if you scroll to the end, they automatically load more. The tables can all be sorted by clicking on the column name.</p>
-</div>
+<p>All videos in this page are running on the topology set up in the <a href="../../quick-start/storm/">Quick Start on Storm</a> (producing <em>200 data records every second.</em>).</p>
+<p>Clicking the <img alt="info" src="../../img/info.png" /> icon will display useful information.</p>
 <h2 id="a-simple-first-query">A simple first query</h2>
-<p>If you create a new query, it defaults to getting a raw data record. This query returns immediately even though the maximum duration is set to 20s because the <a href="../../quick-start/storm/#storm-topology">Quick Start topology</a> produces about 200 records/s and we are looking for one record with no filters.</p>
+<p>The default new query will get a raw record with max result count 1 - it will return when a single record is found.</p>
 <h3 id="results">Results</h3>
-<p>Since the entire record was asked to be returned instead of particular fields, the result defaults to a JSON view of the data. You can click the Show as Table button to switch the mode. In this mode, you can click on each cell to get a popover showing the data formatted.</p>
-<p>You can also download the results in JSON, CSV or flattened CSV (fields inside maps and lists are exploded). Any metadata returned for the query is collapsed by default. Any relevant metadata for the query <a href="../../quick-start/storm/#setting-up-the-example-bullet-topology">as configured</a> is shown here. As always the help icons display help messages for each section.</p>
+<p>Since there is no projection in this query, the results are shown as a JSON. You can click the Show as Table button to switch the mode.</p>
 <p><strong>Example: Picking a random record from the stream</strong></p>
-<video controls autoplay loop>
-  <source src="../../video/first-query-2.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+<iframe width="900" height="508" src="https://www.youtube.com/embed/HHwf5wurJ-c?autoplay=0&loop=1&playlist=HHwf5wurJ-c" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 <h2 id="filtering-and-projecting-data">Filtering and projecting data</h2>
-<p>The Filters section in the UI features a querybuilder (a modified version of the <a href="http://querybuilder.js.org/">jQuery-QueryBuilder</a>) that you can use to add filters. These allow you to <a href="../../ws/api-json/#filters">pick at the slice of data</a> from your stream that is relevant to you.</p>
-<p>The Output Data section lets you aggregate or choose to see raw data records. You can either get all the data as <a href="#a-simple-first-query">above</a> or you can select a subset of fields (and optionally rename them) that you would like to see.</p>
+<p>The <strong>Filters</strong> section allows you to <a href="../../ws/api-json/#filters">pick a slice of data</a> from the data stream.</p>
+<p>The <strong>Output Data</strong> section allows you to retrieve a subset of fields, and optionally rename them. You can also aggregate data, or choose to see raw data records.</p>
 <p><strong>Example: Finding and picking out fields from events that have probability &gt; 0.5</strong></p>
-<video controls autoplay loop>
-  <source src="../../video/filter-project-2.mp4" type="video/mp4">
-  Your browser does not support the video tag
-</video>
+<iframe width="900" height="508" src="https://www.youtube.com/embed/TvDjwOMRbX0?autoplay=0&loop=0&playlist=TvDjwOMRbX0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
-<div class="admonition note">
-<p class="admonition-title">Default result display</p>
-<p>If you choose the Show All Fields selection in the Output Data option, the results will default to the JSON data view. Otherwise, it defaults to the table.</p>
-</div>
 <h2 id="stream-raw-events">Stream Raw Events</h2>
-<p><strong>Note:</strong> This query is only available in the Bullet UI version 0.5.0 and later.</p>
-<p>A very simple but useful query is a query with a filter and a <a href="../../ws/api/#sliding-reactive-windows">Sliding Window of size 1</a>. This query will run for the extent of your duration and stream back events that match your filters as they arrive:</p>
-<iframe width="900" height="508" src="https://www.youtube.com/embed/y2Gzs27OjSw?autoplay=1&loop=1&playlist=y2Gzs27OjSw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<p>A simple but useful query is a query with a filter and a <a href="../../ws/api-json/#sliding-reactive-windows">Sliding Window of size 1</a>. This query will run for the extent of your duration and stream back events that match your filters as they arrive:</p>
+<iframe width="900" height="508" src="https://www.youtube.com/embed/y2Gzs27OjSw?autoplay=0&loop=0&playlist=y2Gzs27OjSw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 <p><strong>Be careful</strong> when you use this query to ensure that your filter is sufficient to avoid returning TOO many results too fast. If this occurs Bullet will kill your query because of rate limiting (the default rate limit is 500 records per second).</p>
-<h2 id="tumbling-windows">Tumbling Windows</h2>
-<p><strong>Note:</strong> This query is only available in the Bullet UI version 0.5.0 and later.</p>
-<p><a href="../../ws/api/#time-based-tumbling-windows">Time-Based Tumbling Windows</a> will return results every X seconds:</p>
-<iframe width="900" height="508" src="https://www.youtube.com/embed/smy6jNfCVs4?autoplay=1&loop=1&playlist=smy6jNfCVs4" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-
-<p>This example groups-by "type" and computes a couple metrics for each 2 second window.</p>
-<h2 id="additive-tumbling-windows">Additive Tumbling Windows</h2>
-<p><strong>Note:</strong> This query is only available in the Bullet UI version 0.5.0 and later.</p>
-<p><a href="../../ws/api/#additive-tumbling-windows">Additive tumbling windows</a> will also return results every X seconds, but the results will contain all the data collected since the beginning of the query:</p>
-<iframe iframe width="900" height="508" src="https://www.youtube.com/embed/Lu7vSuv1NYA?autoplay=1&loop=1&playlist=Lu7vSuv1NYA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-
-<p>In this example we compute bucket'ed frequency for the "probability" field. You can see from the scale of the Y axis that these computations are accumulated over the life of the query.</p>
-<h3 id="complex-filtering">Complex Filtering</h3>
-<p>The querybuilder also lets you easily create nested filters. You can add basic relational filters or group a set of basic filters by connecting them with ANDs and ORs. You can also drag and drop filters and groups.</p>
-<p>The querybuilder is also type aware. The operations you can perform change based on the type. Numeric fields only allow numeric values. String fields allow you to apply regular expressions to them or specify multiple values at the same time using a <code>,</code>. Boolean fields only allow you to choose a radio button etc.</p>
+<h2 id="complex-filtering">Complex Filtering</h2>
+<p>The querybuilder allows you create nested filters (basic relational filters, ANDs and ORs).</p>
+<p>The querybuilder is also type aware: Numeric fields only allow numeric values, String fields only allow String operation, etc.</p>
 <p><strong>Example: Finding and picking out the first and second events in each period that also have probability &gt; 0.5</strong></p>
-<video controls autoplay loop>
-  <source src="../../video/query-building-2.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+<iframe width="900" height="508" src="https://www.youtube.com/embed/08NLVbmk1ww?autoplay=0&loop=0&playlist=08NLVbmk1ww" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 <div class="admonition note">
 <p class="admonition-title">What's the .* next to a field?</p>
 <p>If you have a map that is not enumerated (the keys are not known upfront), there will be <em>two</em> selections for the field in the dropdowns. If you want to apply operations to the nested keys, you can choose the field with the <code>.*</code>. This will display a free-form subfield selection input where you can specify the key. If you want to apply operations on the entire map, you will need to choose the field without the <code>.*</code></p>
 </div>
 <h2 id="count-distinct">Count Distinct</h2>
-<h3 id="exact">Exact</h3>
-<p>The settings you had <a href="../../quick-start/storm/#step-5-setup-the-storm-example">configured when launching</a> the backend determines the number of unique values that Bullet can <a href="../..#approximate-computation">count exactly</a>. The example UI shown here used the default configuration value of <code>16384</code> that the example provided, so for all Count Distinct queries where the cardinality of the field combination is less than this number, the result is exact. The metadata also reflects this.</p>
-<p>You can also optionally rename the result.</p>
-<p><strong>Example: Counting unique UUIDs for 20s</strong></p>
-<video controls autoplay loop>
-  <source src="../../video/exact-count-distinct-3.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+<p>Count Distinct will count the number of distinct elements in a field exactly up to a threshold that is established when the backend is launched (16,384 in the example below).</p>
+<p>After this threshold the count will be approximate. As this example demonstrates, information about the precision of the count can be found in the Metadata:</p>
+<iframe width="900" height="508" src="https://www.youtube.com/embed/gEVg9a89j24?autoplay=0&loop=0&playlist=gEVg9a89j24" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 <div class="admonition note">
-<p class="admonition-title">Shouldn't the count be slightly more in the last example?</p>
-<p><strong>Short answer:</strong> Yes and it's because of the synthetic nature of the data generation.</p>
-<p><strong>Long answer:</strong> We should have had <code>20000 ms / 101 ms</code> or <code>198</code> periods or <code>198 periods * 20 tuples/period</code> or <code>3960</code> tuples with unique values for the<code>uuid</code> field. The example spout generates data in bursts of 20 at the start of every period (101 ms). However, the delay isn't exactly 101 ms between periods; it's a bit more depending on when Storm decided to run the emission code. As a result, every period will slowly add a delay of a few ms. Eventually, this can lead us to missing an entire period. This increases the longer the query runs. Even a delay of 1 ms every period (a very likely scenario) can add up to 101 ms or 1 period in as short a time as a 101 periods or <code>101 periods * 101 ms/period</code> or <code>~10 s</code>. A good rule of thumb is that for every 10 s your query runs, you are missing 20 tuples. You might also miss another 20 tuples at the beginning or the end of the window since the spout is bursty.</p>
-<p>In most real streaming scenarios, data should be constantly flowing and there shouldn't delays building like this. Even so, for a distributed, streaming system like Bullet, you should always remember that data can be missed at either end of your query window due to inherent skews and timing issues.</p>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Why did the Maximum Records input disappear?</p>
-<p>Maximum Records as a query stopping criteria only makes sense when you are picking out raw records. While the API still supports using it as a limiting mechanism on the number of records that are returned to you, the UI eschews this and sets it to a value that you can <a href="../setup/#configuration">configure</a>. It is also particularly confusing to see a Maximum Records when you are doing a Count Distinct operation, while it makes sense when you are Grouping data. You should ideally set this to the same value as your maximum aggregation size that you configure when launching your backend.</p>
-</div>
-<h3 id="approximate">Approximate</h3>
-<p>When the result is approximate, it is shown as a decimal value. The Result Metadata section will reflect that the result was estimated and provide you standard deviations for the true value. The errors are derived from <a href="https://datasketches.github.io/docs/Theta/ThetaErrorTable.html">DataSketches here</a>. Note the line for <code>16384</code>, which was what we configured for the maximum unique values for the Count Distinct operation. In the example below, this means if we want 99.73% confidence for the result, the <code>3</code> standard deviation entry says that the true count could vary from <code>38194</code> to <code>39590</code>.</p>
-<p><strong>Example: Counting unique UUIDs for 200s</strong></p>
-<video controls autoplay loop>
-  <source src="../../video/approx-count-distinct-3.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-
-<div class="admonition note">
-<p class="admonition-title">So why is the approximate count what it is?</p>
-<p>The backend should have produced <code>20 * 200000/101</code> or <code>39603</code> tuples with unique uuids. Due to the synthetic nature of the data generation and the building delays mentioned above, we estimated that we should subtract about 20 tuples for every 10 s the query runs. Since this query ran for <code>200 s</code>, this makes the actual uuids generated to be at best <code>39603 - (200/10) * 20</code> or <code>39203</code>. The result from Bullet was <code>39069</code>, which is an error of <code>~0.3 %</code>. The real error is probably less than that because we assumed the delay between periods to be 1 ms to get the <code>39203</code> number. It's probably slightly larger making the actual uuids generated lower and closer to our estimate.</p>
+<p class="admonition-title">How Can Bullet Count Distinct Elements So Fast??</p>
+<p>Bullet uses <a href="https://datasketches.github.io/">Data Sketches</a> to preform the Count Distinct operation extremely quickly and using a configurable amount of memory. The size and precision of the Sketches used is configurable when the backend is launched. Data Sketches provide an estimate of computationally difficult measurements with provable error bounds. Information about the precision of the estimate (such as the Standard Deviations) is available in the Metadata.</p>
 </div>
 <h2 id="group-all">Group all</h2>
-<p>When choosing the Grouped Data option, you can choose to add fields to group by. If you do not and you add metrics, they will apply to all the data that matches your filters (or the whole data set if you don't have any).</p>
+<p>Choosing the Grouped Data option with no fields will result in the metrics being applied to all the data that matches your filters (or the whole set if you have no filters).</p>
 <p><strong>Example: Counting, summing and averaging on the whole dataset</strong></p>
 <p>The metrics you apply on fields are all numeric presently. If you apply a metric on a non-numeric field, Bullet will try to <strong>type-cast</strong> your field into number and if it's not possible, the result will be <code>null</code>. The result will also be <code>null</code> if the field was not present or no data matched your filters.</p>
-<video controls autoplay loop>
-  <source src="../../video/group-all-error-2.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+<iframe width="900" height="508" src="https://www.youtube.com/embed/JOBpNneToWs?autoplay=0&loop=0&playlist=JOBpNneToWs" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
-<div class="admonition note">
-<p class="admonition-title">Errors when building queries</p>
-<p>Errors that can be readily displayed are shown immediately. Some errors like the ones in the example above are only shown when you try to run or save the query.</p>
-</div>
 <div class="admonition note">
 <p class="admonition-title">Are Grouped Data metrics approximate?</p>
 <p>No, the results are all exact. See below to see what is approximated when you have too many unique group combinations.</p>
 </div>
 <h2 id="group-by">Group by</h2>
-<p>You can also choose Group fields and perform metrics per group. If you do not add any Metric fields, you will be <strong>performing a distinct operation</strong> on your group fields.</p>
+<p>You can also choose Group fields and perform metrics per group.</p>
 <p><strong>Example: Grouping by tuple_number</strong></p>
-<p>In this example, we group by <code>tuple_number</code>. Recall that this is the number assigned to a tuple within a period. They range from 0 to 19. If we group by this, we expect to have 20 unique groups. In 5s, we have <code>5000/101</code> or <code>49</code> periods. Each period has one of each <code>tuple_number</code>. We expect <code>49</code> as the count for each group, and this what we see. The building delays mentioned <a href="#exact">in the note above</a> has not really started affecting the data yet. Note that the average is also roughly <code>0.50</code> since the <code>probability</code> field is a uniformly distributed value between 0 and 1.</p>
-<video controls autoplay loop>
-  <source src="../../video/group-by-with-cancel-2.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+<iframe width="900" height="508" src="https://www.youtube.com/embed/xawvHq9-WYY?autoplay=0&loop=0&playlist=xawvHq9-WYY" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 <div class="admonition note">
 <p class="admonition-title">What happens if I group by uuid?</p>
-<p>Try it out! Nothing bad should happen. If the number of unique group values exceeds the <a href="../../quick-start/storm/#setting-up-the-example-bullet-topology">maximum configured</a> (we used 1024 for this example), you will receive a <em>uniform sample</em> across your unique group values. The results for your metrics however, are <strong>not sampled</strong>. It is the groups that are sampled on. This means that is <strong>no</strong> guarantee of order if you were expecting the <em>most popular</em> groups or similar. You should use the Top K query in that scenario.</p>
+<p>Try it out! If the number of unique group values exceeds the <a href="../../quick-start/storm/#setting-up-the-example-bullet-topology">maximum configured</a> (we used 1024 for this example), you will receive a <em>uniform sample</em> across your unique group values. The results for your metrics however, are <strong>not sampled</strong>. It is the groups that are sampled on. This means that is <strong>no</strong> guarantee of order if you were expecting the <em>most popular</em> groups or similar. You should use the Top K query in that scenario.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Why no Count Distinct after Grouping</p>
@@ -628,34 +522,27 @@
 <p>However, this also means that you can actually group by any field - including non primitives such as maps and lists! The field will be converted to a string and that string will be used as the field's representation for uniqueness and grouping purposes.</p>
 </div>
 <h2 id="distributions">Distributions</h2>
-<p>In this example, we find distributions of the <code>duration</code>  field. This field is generated randomly from 0 to 10,049, with a tendency to have values that are closer to 0 than 10,049. Let's see if this is true. Note that since this field has random values, the results you see per query are the values generated during that query's duration.</p>
-<p>The distribution type of output data requires you to pick a type of distribution: <code>Quantiles</code>, <code>Frequencies</code> or <code>Cumulative Frequencies</code>. <code>Quantiles</code> lets you get various percentiles (e.g. 25th, 99th) of your numeric field. <code>Frequencies</code> lets you break up the range of values of your field into intervals and get a count of how many values fell into each interval. <code>Cumulative Frequencies</code> does the same as <code>Frequencies</code> but each interval includes the counts of all the intervals prior to it. Both <code>Frequencies</code> and <code>Cumulative Frequencies</code> also give you a probability of how likely a value is to fall into the interval.</p>
-<p>All the distributions require you to specify some numeric points. For <code>Quantiles</code>, these points are between 0 and 1 and the value denotes the percentile you are looking for. (0.25 for 25th percentile, 0.99 for 99th etc). For <code>Frequencies</code> and <code>Cumulative Frequencies</code>, the points are between the minimum and maximum value of your field and every 2 contiguous points create an interval. However, the first interval always starts from <em>-&infin;</em> to the first point and the last interval always starts from your last point to <em>+&infin;</em>.</p>
+<p>In this example, we find distributions of the <code>duration</code>  field. This field is generated randomly from 0 to 10,049, with a tendency to have values that are closer to 0. We should be able to see this using Bullet.</p>
+<p>The "distribution" option allows you to pick a type of distribution:</p>
+<ul>
+<li><code>Quantiles</code> lets you get various percentiles (e.g. 25th, 99th) of your numeric field</li>
+<li><code>Frequencies</code> lets you break up the range of values of your field into intervals and get a count of how many values fell into each interval.</li>
+<li><code>Cumulative Frequencies</code> does the same as <code>Frequencies</code> but each interval includes the counts of all the intervals prior to it.</li>
+</ul>
+<p>Both <code>Frequencies</code> and <code>Cumulative Frequencies</code> also give you a probability of how likely a value is to fall into the interval.</p>
 <p>You can read much more about this in the UI help by clicking the <code>Need more help?</code> link.</p>
-<h3 id="exact_1">Exact</h3>
+<h3 id="exact">Exact</h3>
 <p><strong>Example: Finding the various percentiles of duration</strong></p>
-<p>This example shows all 3 values of specifying points and shows <em>exact</em> distribution results for the <code>duration</code> field.</p>
-<video controls autoplay loop>
-  <source src="../../video/quantiles-all-point-formats.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+<iframe width="900" height="508" src="https://www.youtube.com/embed/JB0HlEO3Cfs?autoplay=0&loop=0&playlist=JB0HlEO3Cfs" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 <hr />
 <p><strong>Example: Finding some frequency counts of duration values in an interval</strong></p>
-<p>The last example showed that the 90th percentile of <code>duration</code> was around 4000. This example gets some frequencies in various intervals.</p>
-<video controls autoplay loop>
-  <source src="../../video/frequency-distribution.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+<iframe width="900" height="508" src="https://www.youtube.com/embed/-_I7rp4Vj20?autoplay=0&loop=0&playlist=-_I7rp4Vj20" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
-<p>Try out and see what <code>Cumulative Frequencies</code> does yourself!</p>
-<h3 id="approximate_1">Approximate</h3>
-<p>This next example shows how an approximate distribution result looks.</p>
+<p>Try it out youtself and see what <code>Cumulative Frequencies</code> does!</p>
+<h3 id="approximate">Approximate</h3>
 <p><strong>Example: Approximate quantile distribution</strong></p>
-<video controls autoplay loop>
-  <source src="../../video/approx-quantile.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+<iframe width="900" height="508" src="https://www.youtube.com/embed/JDXnFEpU6iY?autoplay=0&loop=0&playlist=JDXnFEpU6iY" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 <div class="admonition note">
 <p class="admonition-title">Normalized Rank Error</p>
@@ -663,42 +550,43 @@
 </div>
 <h2 id="top-k">Top K</h2>
 <p>Top K lets you get the most <em>frequent items</em> or the <em>heavy hitters</em> for the values in a set of a fields.</p>
-<h3 id="exact_2">Exact</h3>
+<h3 id="exact_1">Exact</h3>
 <p>This example gets the Top 3 most popular <code>type</code> values (there are only 6 but this illustrates the idea).</p>
-<video controls autoplay loop>
-  <source src="../../video/exact-top-k.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+<iframe width="900" height="508" src="https://www.youtube.com/embed/Heav0e5jE8g?autoplay=0&loop=0&playlist=Heav0e5jE8g" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
-<h3 id="approximate_2">Approximate</h3>
-<p>By adding <code>duration</code> into the fields, the number of unique values for <code>(type, duration)</code> is increased. However, because <code>duration</code> has a tendency to have low values, we will have some <em>frequent items</em>. The counts are now estimated. We ask for the top 300 results but we also say that they should have a count of at least 20. This restricts the overall number of results to 12.</p>
-<video controls autoplay loop>
-  <source src="../../video/approx-top-k.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+<h3 id="approximate_1">Approximate</h3>
+<p>By adding <code>duration</code> into the fields, the number of unique values for <code>(type, duration)</code> is increased. However, because <code>duration</code> has a tendency to have low values, we will have some <em>frequent items</em>. The counts are now estimated. </p>
+<iframe width="900" height="508" src="https://www.youtube.com/embed/hCHWy229Yhw?autoplay=0&loop=0&playlist=hCHWy229Yhw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 <div class="admonition note">
 <p class="admonition-title">Maximum Count Error</p>
-<p>The <code>maximum_count_error</code> value for the query above was <code>3</code>. This means that the difference between the upper bound and the lower bound of each count estimate is <code>3</code>. Bullet returns the upper bound as the estimate so subtracting <code>3</code> from each count gives you the lower bound of the count. Note that some counts are closer to each other than the count error. For instance, <code>(quux, 1)</code> and <code>(baz, 0)</code> have counts <code>67</code> and <code>66</code> but their true counts could be from <code>64 to 67</code> and <code>63 to 66</code> respectively. This means that <code>(baz, 0)</code> could well be the most frequent item for this query.</p>
+<p>The <code>maximum_count_error</code> value for this query was <code>3</code>. This means that the difference between the upper bound and the lower bound of each count estimate is <code>3</code>. Bullet returns the upper bound as the estimate so subtracting <code>3</code> from each count gives you the lower bound of the count. Note that some counts are closer to each other than the count error. For instance, <code>(quux, 1)</code> and <code>(bar, 1)</code> have counts <code>79</code> and <code>78</code> but their true counts could be from <code>76 to 79</code> and <code>75 to 78</code> respectively. This means that <code>(bar, 1)</code> could well be the most frequent item for this query.</p>
 </div>
 <h2 id="charting">Charting</h2>
-<p><a href="https://github.com/bullet-db/bullet-ui/releases/tag/v0.3.0">Bullet UI v0.3.0 and above</a> added support for charting and pivoting. This example shows how to get a basic chart on <a href="https://github.com/bullet-db/bullet-ui/releases/tag/v0.3.1">Bullet UI v0.3.1</a>. If you are following the <a href="../../quick-start/storm/">Quick Start on Storm</a>, then this should be in your UI. The charting and pivoting modes are only enabled for queries that are <em>not</em> Count Distinct or Group without Group Fields. This is because these results only have a single row and it does not make sense to graph them. They are enabled for all other queries.</p>
+<p>This example shows how to get a basic chart in Bullet. The charting and pivoting modes are only enabled for queries that are <em>not</em> Count Distinct or Group without Group Fields. This is because these results only have a single row and it does not make sense to graph them. They are enabled for all other queries.</p>
 <p>The charting example below shows how to get a quick chart of a <code>Group</code> query with 3 metrics.</p>
-<video controls autoplay loop>
-  <source src="../../video/charting.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+<iframe width="900" height="508" src="https://www.youtube.com/embed/vGlIylyUqyc?autoplay=0&loop=0&playlist=vGlIylyUqyc" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
+<h2 id="tumbling-windows">Tumbling Windows</h2>
+<p><a href="../../ws/api-json/#time-based-tumbling-windows">Time-Based Tumbling Windows</a> will return results every X seconds:</p>
+<iframe width="900" height="508" src="https://www.youtube.com/embed/smy6jNfCVs4?autoplay=0&loop=0&playlist=smy6jNfCVs4" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+<p>This example groups-by "type" and computes a couple metrics for each 2 second window.</p>
+<h2 id="additive-tumbling-windows">Additive Tumbling Windows</h2>
+<p><a href="../../ws/api-json/#additive-tumbling-windows">Additive tumbling windows</a> will also return results every X seconds, but the results will contain all the data collected since the beginning of the query:</p>
+<iframe width="900" height="508" src="https://www.youtube.com/embed/goqUSJocN9c?autoplay=0&loop=0&playlist=goqUSJocN9c" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+<p>In this example we compute bucket'ed frequency for the "gaussian" field. As the query runs you can see the gaussian curve form.</p>
 <h2 id="pivoting">Pivoting</h2>
-<p>If the regular chart option is insufficient for your result (for instance, you have too many groups and metrics or you want to post-aggregate your results or remove outliers etc), then there is a advanced Pivot mode available when you are in the Chart option. The Pivot option provides a drag-and-drop interface to drag fields to breakdown and aggregate by their values. Operations such as finding standard deviations, variance, average, median, sum over sums etc are available as well as easily viewing them as tables and charts. The following example shows a <code>Group</code> query with multiple groups and metrics and some interactions with the Pivot table.</p>
+<p>If the regular chart option is insufficient for your result (for instance, you have too many groups and metrics or you want to post-aggregate your results or remove outliers etc), then there is a advanced Pivot mode available when you are in the Chart option.</p>
+<p>The Pivot option provides a drag-and-drop interface to drag fields to breakdown and aggregate by their values. Operations such as finding standard deviations, variance, etc are available as well as easily viewing them as tables and charts. </p>
+<p>The following example shows a <code>Group</code> query with multiple groups and metrics and some interactions with the Pivot table.</p>
+<iframe width="900" height="508" src="https://www.youtube.com/embed/Y4qPvS65Ik0?autoplay=0&loop=0&playlist=Y4qPvS65Ik0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
 <div class="admonition note">
-<p class="admonition-title">Raw data does not seem to have a regular chart mode option</p>
-<p>This is deliberate since the Chart option tries to infer your independent and dependent columns. When you fetch raw data, this is prone to errors so only the Pivot option is allowed. You can always graph within the Pivot option if you need to.</p>
-</div>
-<p><video controls autoplay loop>
-  <source src="../../video/pivoting.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video></p></div>
+<p class="admonition-title">Raw data does have a regular chart mode option</p>
+<p>This is deliberate since the Chart option tries to infer your independent and dependent columns. When you fetch raw data, this is prone to errors so only the Pivot option is allowed.</p>
+</div></div>
         
     </div>
 
