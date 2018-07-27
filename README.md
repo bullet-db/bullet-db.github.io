@@ -4,9 +4,11 @@ This hosts the documentation source and examples for [Bullet](https://github.com
 
 The built documentation can be accessed [here](https://bullet-db.github.io).
 
-## Building the documentation
+## Installing mkdocs
 
 You will need Python installed.
+
+You can install the required tool "mkdocs" like this (a "mkdocs" directory will be created wherever you execute these commands):
 
 ```bash
 sudo pip install virtualenv
@@ -15,14 +17,21 @@ source mkdocs/bin/activate
 pip install mkdocs==0.16.3 
 pip install mkdocs-cinder
 pip install git+git://github.com/twardoch/clinker-mktheme.git@master --upgrade
-git clone git@github.com:bullet-db/bullet-db.github.io.git
-cd bullet-db.github.io
-mkdocs serve
 ```
 
 The above commands will install [mkdocs](http://www.mkdocs.org/#installation) along with the mkdocs theme : [Cinder](http://sourcefoundry.org/cinder/).
 
 Since Cinder has not been upgraded in a while, it uses the changes in this [PR](https://github.com/chrissimpkins/cinder/pull/26) of Cinder found here: [twardoch/clinker-mktheme](https://github.com/twardoch/clinker-mktheme/tree/master).
+
+## Building the Documentation
+
+Once mkdocs is available:
+
+`make build` will build the documentation.
+
+`make serve` will serve the documentation so it can be viewed from a local browser.
+
+`make release` will build a release and commit it to your local "master" branch. This command assumes you have a clean git environment ("git diff" prints nothing). It will build the documentation and commit it to your local master branch. **YOU must push the changes** in your master branch to the remote repo if you want to publish the changes after the command completes successfully.
 
 ## Building the examples
 
