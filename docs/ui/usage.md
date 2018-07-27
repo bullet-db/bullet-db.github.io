@@ -147,7 +147,7 @@ This example gets the Top 3 most popular ```type``` values (there are only 6 but
 
 ### Approximate
 
-By adding ```duration``` into the fields, the number of unique values for ```(type, duration)``` is increased. However, because ```duration``` has a tendency to have low values, we will have some *frequent items*. The counts are now estimated. 
+By adding ```duration``` into the fields, the number of unique values for ```(type, duration)``` is increased. However, because ```duration``` has a tendency to have low values, we will have some *frequent items*. The counts are now estimated.
 
 <iframe width="900" height="508" src="https://www.youtube.com/embed/hCHWy229Yhw?autoplay=0&loop=0&playlist=hCHWy229Yhw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
@@ -183,7 +183,7 @@ In this example we compute bucket'ed frequency for the "gaussian" field. As the 
 
 If the regular chart option is insufficient for your result (for instance, you have too many groups and metrics or you want to post-aggregate your results or remove outliers etc), then there is a advanced Pivot mode available when you are in the Chart option.
 
-The Pivot option provides a drag-and-drop interface to drag fields to breakdown and aggregate by their values. Operations such as finding standard deviations, variance, etc are available as well as easily viewing them as tables and charts. 
+The Pivot option provides a drag-and-drop interface to drag fields to breakdown and aggregate by their values. Operations such as finding standard deviations, variance, etc are available as well as easily viewing them as tables and charts.
 
 The following example shows a ```Group``` query with multiple groups and metrics and some interactions with the Pivot table.
 
@@ -192,4 +192,3 @@ The following example shows a ```Group``` query with multiple groups and metrics
 !!! note "Raw data does have a regular chart mode option"
 
     This is deliberate since the Chart option tries to infer your independent and dependent columns. When you fetch raw data, this is prone to errors so only the Pivot option is allowed.
-
