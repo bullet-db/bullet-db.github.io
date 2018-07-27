@@ -380,24 +380,20 @@
         <div class="col-md-9" role="main">
 
 <h1 id="rest-pubsub">REST PubSub</h1>
-<p>The REST PubSub implementation is included in bullet-core, and can be launched along with the Web Service. If it is enabled the Web Service will expose two additional REST endpoints, one for reading/writing Bullet queries, and one
-for reading/writing results.</p>
+<p>The REST PubSub implementation is included in bullet-core, and can be launched along with the Web Service. If it is enabled the Web Service will expose two additional REST endpoints, one for reading/writing Bullet queries, and one for reading/writing results.</p>
 <h2 id="how-does-it-work">How does it work?</h2>
-<p>When the Web Service receives a query from a user, it will create a PubSubMessage and write the message to the "query" RESTPubSub endpoint. This PubSubMessage will contain not only the query, but also some metadata, including the
-appropriate host/port to which the response should be sent (this is done to allow for multiple Web Services running simultaneously). The query is then stored in memory until the backend does a GET from this endpoint, at which
-time the query will be served to the backend, and dropped from the queue in memory.</p>
-<p>Once the backed has generated the results of the query, it will wrap those results in PubSubMessage. The backend extracts the URL to send the results to from the metadata and writes the results PubSubMessage to the
-"results" REST endpoint with a POST. This result will then be stored in memory until the Web Service does a GET to that endpoint, at which time the Web Service will have the results of the query to send back to the user.</p>
+<p>When the Web Service receives a query from a user, it will create a PubSubMessage and write the message to the "query" RESTPubSub endpoint. This PubSubMessage will contain not only the query, but also some metadata, including the appropriate host/port to which the response should be sent (this is done to allow for multiple Web Services running simultaneously). The query is then stored in memory until the backend does a GET from this endpoint, at which time the query will be served to the backend, and dropped from the queue in memory.</p>
+<p>Once the backed has generated the results of the query, it will wrap those results in PubSubMessage. The backend extracts the URL to send the results to from the metadata and writes the results PubSubMessage to the "results" REST endpoint with a POST. This result will then be stored in memory until the Web Service does a GET to that endpoint, at which time the Web Service will have the results of the query to send back to the user.</p>
 <h2 id="setup">Setup</h2>
 <p>To enable the RESTPubSub and expose the two additional necessary REST endpoints, you must enable the setting:</p>
 <pre><code class="yaml">bullet.pubsub.builtin.rest.enabled: true
 </code></pre>
 
-<p>...in the Web Service Application.yaml file. This can also be done from the command line when launching the Web Service jar file by adding the command-line option:</p>
+<p>...in the Web Service <code>application.yaml</code> configuration file. This can also be done from the command line when launching the Web Service jar file by adding the command-line option:</p>
 <pre><code class="bash">--bullet.pubsub.builtin.rest.enabled=true
 </code></pre>
 
-<p>This will enable the two necessary REST endpoints, the paths for which can be configured in the Application.yaml file with the settings:</p>
+<p>This will enable the two necessary REST endpoints, the paths for which can be configured in the <code>application.yaml</code> file with the settings:</p>
 <pre><code class="yaml">bullet.pubsub.builtin.rest.query.path: /pubsub/query
 bullet.pubsub.builtin.rest.result.path: /pubsub/result
 </code></pre>
@@ -405,48 +401,114 @@ bullet.pubsub.builtin.rest.result.path: /pubsub/result
 <h3 id="plug-into-the-backend">Plug into the Backend</h3>
 <p>Configure the backend to use the REST PubSub:</p>
 <pre><code class="yaml">bullet.pubsub.context.name: &quot;QUERY_PROCESSING&quot;
-bullet.pubsub.class.name: &quot;com.yahoo.bullet.kafka.KafkaPubSub&quot;
-
+bullet.pubsub.class.name: &quot;com.yahoo.bullet.pubsub.rest.RESTPubSub&quot;
 bullet.pubsub.rest.connect.timeout.ms: 5000
 bullet.pubsub.rest.subscriber.max.uncommitted.messages: 100
-bullet.pubsub.rest.result.subscriber.min.wait.ms: 10
 bullet.pubsub.rest.query.subscriber.min.wait.ms: 10
 bullet.pubsub.rest.query.urls:
-    - &quot;http://webServiceHostNameA:9901/api/bullet/pubsub/query&quot;
-    - &quot;http://webServiceHostNameB:9902/api/bullet/pubsub/query&quot;
+    - &quot;http://&lt;API_HOST_A&gt;:9901/api/bullet/pubsub/query&quot;
+    - &quot;http://&lt;API_HOST_B&gt;:9901/api/bullet/pubsub/query&quot;
 </code></pre>
 
-<ul>
-<li><strong>bullet.pubsub.context.name: "QUERY_PROCESSING"</strong> - tells the PubSub that it is running in the backend</li>
-<li><strong>bullet.pubsub.class.name: "com.yahoo.bullet.kafka.KafkaPubSub"</strong> - tells Bullet to use this class for it's PubSub</li>
-<li><strong>bullet.pubsub.rest.connect.timeout.ms: 5000</strong> - sets the HTTP connect timeout to a half second</li>
-<li><strong>bullet.pubsub.rest.subscriber.max.uncommitted.messages: 100</strong> - this is the maxiumum number of uncommitted messages allowed before blocking</li>
-<li><strong>bullet.pubsub.rest.query.subscriber.min.wait.ms: 10</strong> - this setting is used to avoid making an http request too rapidly and overloading the http endpoint. It will force the backend to poll the query endpoint at most once every 10ms.</li>
-<li><strong>bullet.pubsub.rest.query.urls</strong> - this should be a list of all the query rest enpoint URLs. If you are only running one Web Service this will only contain one url (the url of your Web Service followed by the full path of the query endpoint).</li>
-</ul>
+<table>
+<thead>
+<tr>
+<th>Setting Name</th>
+<th>Default Value</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bullet.pubsub.context.name</td>
+<td>QUERY_PROCESSING</td>
+<td>Tells the PubSub that it is running in the backend</td>
+</tr>
+<tr>
+<td>bullet.pubsub.class.name</td>
+<td>com.yahoo.bullet.pubsub.rest.RESTPubSub</td>
+<td>Tells Bullet to use this class for its PubSub</td>
+</tr>
+<tr>
+<td>bullet.pubsub.rest.connect.timeout.ms</td>
+<td>5000</td>
+<td>Sets the HTTP connect timeout to 5 s</td>
+</tr>
+<tr>
+<td>bullet.pubsub.rest.subscriber.max.uncommitted.messages</td>
+<td>100</td>
+<td>This is the maximum number of uncommitted messages allowed to be read by the subscriber before blocking</td>
+</tr>
+<tr>
+<td>bullet.pubsub.rest.query.subscriber.min.wait.ms</td>
+<td>10</td>
+<td>This is used to avoid making an HTTP request too rapidly and overloading the HTTP endpoint. It will force the backend to poll the query endpoint at most once every 10ms</td>
+</tr>
+<tr>
+<td>bullet.pubsub.rest.query.urls</td>
+<td><EXAMPLE DEFAULTS></td>
+<td>This should be a list of all the query REST endpoint URLs. If you are only running one Web Service this will only contain one URL (the URL of your Web Service followed by the full path of the query endpoint)</td>
+</tr>
+</tbody>
+</table>
 <h3 id="plug-into-the-web-service">Plug into the Web Service</h3>
 <p>Configure the Web Service to use the REST PubSub:</p>
 <pre><code class="yaml">bullet.pubsub.context.name: &quot;QUERY_SUBMISSION&quot;
-bullet.pubsub.class.name: &quot;com.yahoo.bullet.kafka.KafkaPubSub&quot;
-
+bullet.pubsub.class.name: &quot;com.yahoo.bullet.pubsub.rest.RESTPubSub&quot;
 bullet.pubsub.rest.connect.timeout.ms: 5000
 bullet.pubsub.rest.subscriber.max.uncommitted.messages: 100
 bullet.pubsub.rest.result.subscriber.min.wait.ms: 10
-bullet.pubsub.rest.query.subscriber.min.wait.ms: 10
 bullet.pubsub.rest.result.url: &quot;http://localhost:9901/api/bullet/pubsub/result&quot;
 bullet.pubsub.rest.query.urls:
     - &quot;http://localhost:9901/api/bullet/pubsub/query&quot;
 </code></pre>
 
-<ul>
-<li><strong>bullet.pubsub.context.name: "QUERY_SUBMISSION"</strong> - tells the PubSub that it is running in the Web Service</li>
-<li><strong>bullet.pubsub.class.name: "com.yahoo.bullet.kafka.KafkaPubSub"</strong> - tells Bullet to use this class for it's PubSub</li>
-<li><strong>bullet.pubsub.rest.connect.timeout.ms: 5000</strong> - sets the HTTP connect timeout to a half second</li>
-<li><strong>bullet.pubsub.rest.subscriber.max.uncommitted.messages: 100</strong> - this is the maxiumum number of uncommitted messages allowed before blocking</li>
-<li><strong>bullet.pubsub.rest.query.subscriber.min.wait.ms: 10</strong> - this setting is used to avoid making an http request too rapidly and overloading the http endpoint. It will force the backend to poll the query endpoint at most once every 10ms.</li>
-<li><strong>bullet.pubsub.rest.result.url: "http://localhost:9901/api/bullet/pubsub/result"</strong> - this is the endpoint from which the WebService should read results - it should generally be the hostname of that machine the Web Service is running on (or "localhost").</li>
-<li><strong>bullet.pubsub.rest.query.urls</strong> - in the Web Service this setting should contain <strong>exactly one</strong> url - the url to which queries should be written  - it should generally be the hostname of that machine the Web Service is running on (or "localhost").</li>
-</ul></div>
+<table>
+<thead>
+<tr>
+<th>Setting Name</th>
+<th>Default Value</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bullet.pubsub.context.name</td>
+<td>QUERY_SUBMISSION</td>
+<td>Tells the PubSub that it is running in the Web Service</td>
+</tr>
+<tr>
+<td>bullet.pubsub.class.name</td>
+<td>com.yahoo.bullet.pubsub.rest.RESTPubSub</td>
+<td>Tells Bullet to use this class for its PubSub</td>
+</tr>
+<tr>
+<td>bullet.pubsub.rest.connect.timeout.ms</td>
+<td>5000</td>
+<td>Sets the HTTP connect timeout to 5 s</td>
+</tr>
+<tr>
+<td>bullet.pubsub.rest.subscriber.max.uncommitted.messages</td>
+<td>100</td>
+<td>This is the maximum number of uncommitted messages allowed to be read by the subscriber before blocking</td>
+</tr>
+<tr>
+<td>bullet.pubsub.rest.result.subscriber.min.wait.ms</td>
+<td>10</td>
+<td>This is used to avoid making an HTTP request too rapidly and overloading the HTTP endpoint. It will force the Web Service to poll the query endpoint at most once every 10ms</td>
+</tr>
+<tr>
+<td>bullet.pubsub.rest.result.url</td>
+<td>http://localhost:9901/api/bullet/pubsub/result</td>
+<td>This is the endpoint from which the Web Service should read results. This is the hostname of that machine the Web Service is running on (or <code>localhost</code>)</td>
+</tr>
+<tr>
+<td>bullet.pubsub.rest.query.urls</td>
+<td>http://localhost:9901/api/bullet/pubsub/query</td>
+<td>In the Web Service, this should contain <em>exactly one</em> URL (the URL to which queries should be written). This is the hostname of that machine the Web Service is running on (or <code>localhost</code>)</td>
+</tr>
+</tbody>
+</table></div>
         
     </div>
 
