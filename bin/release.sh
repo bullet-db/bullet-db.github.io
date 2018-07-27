@@ -16,16 +16,18 @@ if [ $? -ne 0 ]; then
     exit 1;
 fi
 set -e
-mkdir -p tmp-folder-for-site
-mv site/ ./tmp-folder-for-site/
+rm -rf /tmp/tmp-folder-for-bullet-docs/
+mkdir -p /tmp/tmp-folder-for-bullet-docs/
+mv site/ /tmp/tmp-folder-for-bullet-docs/
 echo Checking out master...
 git checkout master
 git pull
-# Delete everything except "tmp-folder-for-site", "." and files/folders beginning with "."
-find . | grep -v "tmp-folder-for-site" | grep -v "^\./\." | grep -v "^\.$" | xargs rm -rf
-cp -r ./tmp-folder-for-site/site/ ./
-rm -rf ./tmp-folder-for-site/
+# Carefully delete everything in this folder
+rm -rf ../bullet-db.github.io/*
+cp -r /tmp/tmp-folder-for-bullet-docs/site/ ./
+rm -rf /tmp/tmp-folder-for-bullet-docs/
 git add -A
 git commit -m "Build at ${COMMIT}"
 git push
 git checkout src
+

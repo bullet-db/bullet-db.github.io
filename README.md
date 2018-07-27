@@ -8,12 +8,12 @@ The built documentation can be accessed [here](https://bullet-db.github.io).
 
 You will need Python installed.
 
-You can install the required tool "mkdocs" like this:
+You can install the required tool "mkdocs" like this (a "mkdocs" directory will be created wherever you execute these commands):
 
 ```bash
 sudo pip install virtualenv
-virtualenv ../mkdocs
-source ../mkdocs/bin/activate
+virtualenv mkdocs
+source mkdocs/bin/activate
 pip install mkdocs==0.16.3 
 pip install mkdocs-cinder
 pip install git+git://github.com/twardoch/clinker-mktheme.git@master --upgrade
