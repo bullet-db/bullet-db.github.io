@@ -31,7 +31,7 @@ Once mkdocs is available:
 
 `make serve` will serve the documentation so it can be viewed from a local browser.
 
-`make release` will release the documentation. This command assumes you are in the "src" branch with a clean git environment. It will build the documentation, check it into the master branch, and push it to the remote repo.
+`make release` will build a release and commit it to your local "master" branch. This command assumes you have a clean git environment ("git diff" prints nothing). It will build the documentation and commit it to your local master branch. **YOU must push the changes** in your master branch to the remote repo if you want to publish the changes after the command completes successfully.
 
 ## Building the examples
 

@@ -28,6 +28,8 @@ cp -r /tmp/tmp-folder-for-bullet-docs/site/ ./
 rm -rf /tmp/tmp-folder-for-bullet-docs/
 git add -A
 git commit -m "Build at ${COMMIT}"
-git push
-git checkout src
-
+echo ---------------- SUCCESS --------------------
+echo The documentation has been built locally
+echo You are on the **master** branch
+echo DO "git push" TO PUSH CHANGES TO REMOTE REPO
+echo ---------------------------------------------
