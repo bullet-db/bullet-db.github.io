@@ -23,7 +23,7 @@ echo Checking out master...
 git checkout master
 git pull
 # Carefully delete everything in this folder
-rm -rf ../bullet-db.github.io/*
+rm -rf ./*
 cp -r /tmp/tmp-folder-for-bullet-docs/site/ ./
 rm -rf /tmp/tmp-folder-for-bullet-docs/
 git add -A
