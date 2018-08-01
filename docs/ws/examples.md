@@ -1838,7 +1838,7 @@ The above query will run for 20 seconds and emit a result every 5 seconds. The r
 ```SQL
 SELECT *
 FROM STREAM(MAX, TIME)
-WHERE bcookie='2siknmdd6kaqm'
+WHERE browser-id='2siknmdd6kaqm'
 WINDOWING(EVERY, 1, RECORD, FIRST, 1, RECORD)
 ```
 
