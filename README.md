@@ -23,9 +23,29 @@ The above commands will install [mkdocs](http://www.mkdocs.org/#installation) al
 
 Since Cinder has not been upgraded in a while, it uses the changes in this [PR](https://github.com/chrissimpkins/cinder/pull/26) of Cinder found here: [twardoch/clinker-mktheme](https://github.com/twardoch/clinker-mktheme/tree/master).
 
+## JavaDocs are Added When Releasing
+
+**Note:** If you build and serve the site locally you will not be able to see the JavaDocs, you will only see simple place-holder pages (these are required or mkdocs will complain). The JavaDocs are added during the release process.
+
+Running `make release` will save the docs currently in the master branch, and then replace the place-holder pages with the docs currently on master.
+
+**To add new JavaDocs:**
+* In src branch:
+    * Create new folder for the docs. e.g. `mkdir -p docs/java-docs/bullet-core/0.4.3/`
+    * Create a place-holder file. e.g. `cp docs/java-docs/bullet-core/0.4.2/index.html docs/java-docs/bullet-core/0.4.3/`
+    * Update mkdocs.yml - add a new line for the new sub-folder - see "JavaDocs" section of mkdocs.yml
+    * Commit these changes to the src branch. e.g. `git add -A && git commit -m "Added new JavaDocs"`
+    * Push src branch to remote
+* Build a release: `make release` - this will leave you in the master branch with a new build ready NOT including the new docs you want to add
+* In master branch after doing "make release" BEFORE pushing to remote:
+    * Create new folder for the docs. e.g.: `mkdir -p java-docs/bullet-core/0.4.3`
+    * Copy the contents of the new JavaDocs into the new folder. e.g. `cp -r ~/PATH-TO-NEW-DOCS/bullet-core/target/site/apidocs/* java-docs/bullet-core/0.4.3/`
+    * Commit these changes to the master branch. e.g. `git add -A && git commit -m "Build at abc123 with new JavaDocs"`
+    * Push master branch to remote
+
 ## Building the Documentation
 
-Once mkdocs is available:
+While mkdocs is available:
 
 `make build` will build the documentation.
 
