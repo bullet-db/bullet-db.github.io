@@ -1,9 +1,9 @@
 #!/bin/sh
 
 # This script will build the documentation from the current "src" branch. "mkdocs" must be available, and
-# you must be in a clean git environment ("git diff" should print nothing). The java-docs folder in the
-# master branch will not be replaced with the corresponding folder build from the src branch, which is just
-# a placeholder.
+# you must be in a clean git environment ("git diff" should print nothing). The java-docs folder currently 
+# in the master branch will be saved in a tmp folder and then put back to replace the corresponding folder
+# built from the src branch, which is just a placeholder.
 
 git checkout src
 git pull
