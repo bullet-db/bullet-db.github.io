@@ -33,7 +33,7 @@ Running `make release` will save the docs currently in the master branch, and th
 * In src branch:
     * Create new folder for the docs. e.g. `mkdir -p docs/java-docs/bullet-core/0.4.3/`
     * Create a place-holder file. e.g. `cp docs/java-docs/bullet-core/0.4.2/index.html docs/java-docs/bullet-core/0.4.3/`
-    * Add the appropriate link in docs/releases.md (or wherever you want the link)
+    * Add the appropriate link in docs/releases.md (or wherever you want the link). e.g. `[JavaDocs](java-docs/bullet-core/0.4.3/index.html)`
     * Commit these changes to the src branch. e.g. `git add -A && git commit -m "Added new JavaDocs"`
     * Push src branch to remote
 * Build a release: `make release` - this will leave you in the master branch with a new build ready NOT including the new docs you want to add
