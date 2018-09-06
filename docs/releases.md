@@ -24,9 +24,9 @@ The core Bullet logic (a library) that can be used to implement Bullet on differ
 
 ### Releases
 
-|    Date      |                                        Release                                        | Highlights | |
-| ------------ | ------------------------------------------------------------------------------------- | ---------- | |
-| 2018-06-26   | [**0.4.2**](https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.4.2)  | Fixes a bug with unclosed connections in the RESTPubSub | [JavaDocs](java-docs/bullet-core/0.4.2/index.html) |
+|    Date      |                                        Release                                        | Highlights | APIDocs |
+| ------------ | ------------------------------------------------------------------------------------- | ---------- | ------- |
+| 2018-06-26   | [**0.4.2**](https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.4.2)  | Fixes a bug with unclosed connections in the RESTPubSub | [JavaDocs](apidocs/bullet-core/0.4.2/index.html) |
 | 2018-06-22   | [**0.4.1**](https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.4.1)  | Added RESTPublisher HTTP Timeout Setting | |
 | 2018-06-18   | [**0.4.0**](https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.4.0)  | Added support for Integer and Float data types, and configurable BulletRecordProvider class used to instantiate BulletRecords in bullet-core | |
 | 2018-04-11   | [**0.3.4**](https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.3.4)  | Pre-Start delaying and Buffering changes - queries are now buffered at the start of a query instead of start of each window | |
@@ -66,9 +66,9 @@ The implementation of Bullet on Storm. Due to major API changes between Storm <=
 
 ### Releases
 
-|    Date      |                               Storm 1.0                                            |                                      Storm 0.10                                         | Highlights | |
-| ------------ | ---------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ---------- | |
-| 2018-06-18   | [**0.8.3**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.8.3) | [**0.8.3**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.8.3) | Using new bullet-record and bullet-core supporting Integer and Float data types | [JavaDocs](java-docs/bullet-storm/0.8.3/index.html) |
+|    Date      |                               Storm 1.0                                            |                                      Storm 0.10                                         | Highlights | APIDocs |
+| ------------ | ---------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ---------- | ------- |
+| 2018-06-18   | [**0.8.3**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.8.3) | [**0.8.3**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.8.3) | Using new bullet-record and bullet-core supporting Integer and Float data types | [JavaDocs](apidocs/bullet-storm/0.8.3/index.html) |
 | 2018-04-12   | [**0.8.2**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.8.2) | [**0.8.2**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.8.2) | Delaying query start in Join Bolt | |
 | 2018-04-04   | [**0.8.1**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.8.1) | [**0.8.1**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.8.1) | Fixed bug in JoinBolt | |
 | 2018-03-30   | [**0.8.0**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.8.0) | [**0.8.0**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.8.0) | Supports windowing / incremental updates | |
@@ -101,9 +101,9 @@ The implementation of Bullet on Spark Streaming.
 
 ### Releases
 
-|    Date      |                                      Release                                      | Highlights | |
-| ------------ | --------------------------------------------------------------------------------- | ---------- | |
-| 2018-06-18   | [**0.1.2**](https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-0.1.2)  | Uses SimpleBulletRecord to avoid some Spark serialization issues with Avro | [SparkDocs](java-docs/bullet-spark/0.1.2/index.html) |
+|    Date      |                                      Release                                      | Highlights | APIDocs |
+| ------------ | --------------------------------------------------------------------------------- | ---------- | ------- |
+| 2018-06-18   | [**0.1.2**](https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-0.1.2)  | Uses SimpleBulletRecord to avoid some Spark serialization issues with Avro | [SparkDocs](apidocs/bullet-spark/0.1.2/index.html) |
 | 2018-06-08   | [**0.1.1**](https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-0.1.1)  | Adds a command flag to pass custom setting file | |
 | 2018-05-25   | [**0.1.0**](https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-0.1.0)  | The first release | |
 
@@ -125,9 +125,9 @@ The Web Service implementation that can serve a static schema from a file and ta
 
 ### Releases
 
-|    Date      |                                      Release                                           | Highlights | |
-| ------------ | -------------------------------------------------------------------------------------- | ---------- | |
-| 2018-07-17   | [**0.4.0**](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.4.0) | Enhanced Web Service to support BQL queries | [JavaDocs](java-docs/bullet-service/0.4.0/index.html) |
+|    Date      |                                      Release                                           | Highlights | APIDocs |
+| ------------ | -------------------------------------------------------------------------------------- | ---------- | ------- |
+| 2018-07-17   | [**0.4.0**](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.4.0) | Enhanced Web Service to support BQL queries | [JavaDocs](apidocs/bullet-service/0.4.0/index.html) |
 | 2018-06-25   | [**0.3.0**](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.3.0) | Upgrades to Netty-less Bullet Core for the RESTPubsub | |
 | 2018-06-14   | [**0.2.2**](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.2.2) | Adding settings to configure Websocket | |
 | 2018-04-02   | [**0.2.1**](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.2.1) | Moved and renamed settings | |
@@ -179,9 +179,9 @@ The AVRO container that you need to convert your data into to be consumed by Bul
 
 ### Releases
 
-|    Date      |                                  Release                                             | Highlights | |
-| ------------ | ------------------------------------------------------------------------------------ | ---------- | |
-| 2018-06-14   | [**0.2.0**](https://github.com/bullet-db/bullet-record/releases/tag/bullet-record-0.2.0) | Makes BulletRecord pluggable, adds simple record and avro record implementations | [JavaDocs](java-docs/bullet-record/0.2.0/index.html) |
+|    Date      |                                  Release                                             | Highlights | APIDocs |
+| ------------ | ------------------------------------------------------------------------------------ | ---------- | ------- |
+| 2018-06-14   | [**0.2.0**](https://github.com/bullet-db/bullet-record/releases/tag/bullet-record-0.2.0) | Makes BulletRecord pluggable, adds simple record and avro record implementations | [JavaDocs](apidocs/bullet-record/0.2.0/index.html) |
 | 2017-05-19   | [**0.1.2**](https://github.com/bullet-db/bullet-record/releases/tag/bullet-record-0.1.2) | Reduces the memory footprint needed to serialize itself by a factor of 128 for small records | |
 | 2017-04-17   | [**0.1.1**](https://github.com/bullet-db/bullet-record/releases/tag/bullet-record-0.1.1) | Helper methods to remove, rename, check presence and count fields in the Record | |
 | 2017-02-09   | [**0.1.0**](https://github.com/bullet-db/bullet-record/releases/tag/bullet-record-0.1.0) | Map constructor | |
@@ -200,9 +200,9 @@ A PubSub implementation using Kafka as the backing PubSub. Can be used with any 
 
 ### Releases
 
-|    Date      |                                  Release                                             | Highlights | |
-| ------------ | ------------------------------------------------------------------------------------ | ---------- | |
-| 2018-02-27   | [**0.3.0**](https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-0.3.0) | Uses bullet-core-0.3.0 - windows / incremental updates | [JavaDocs](java-docs/bullet-kafka/0.3.3/index.html) |
+|    Date      |                                  Release                                             | Highlights | APIDocs |
+| ------------ | ------------------------------------------------------------------------------------ | ---------- | ------- |
+| 2018-02-27   | [**0.3.0**](https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-0.3.0) | Uses bullet-core-0.3.0 - windows / incremental updates | [JavaDocs](apidocs/bullet-kafka/0.3.0/index.html) |
 | 2017-10-19   | [**0.2.0**](https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-0.2.0) | Refactors and re-releases. Pass-through settings to Kafka. Manual offset committing bug fix | |
 | 2017-09-27   | [**0.1.2**](https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-0.1.2) | Fixes a bug with config loading | |
 | 2017-09-22   | [**0.1.1**](https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-0.1.1) | First release using the PubSub interfaces | |
@@ -221,7 +221,7 @@ A library facilitating the conversion from Bullet BQL queries to Bullet JSON que
 
 ### Releases
 
-|    Date      |                                  Release                                             | Highlights | |
-| ------------ | ------------------------------------------------------------------------------------ | ---------- | |
-| 2018-07-17   | [**0.1.1**](https://github.com/bullet-db/bullet-bql/releases/tag/bullet-bql-0.1.1) | Stops publishing fat jar and marks slf4j dependency provided | [JavaDocs](java-docs/bullet-bql/0.1.1/index.html) |
+|    Date      |                                  Release                                             | Highlights | APIDocs |
+| ------------ | ------------------------------------------------------------------------------------ | ---------- | ------- |
+| 2018-07-17   | [**0.1.1**](https://github.com/bullet-db/bullet-bql/releases/tag/bullet-bql-0.1.1) | Stops publishing fat jar and marks slf4j dependency provided | [JavaDocs](apidocs/bullet-bql/0.1.1/index.html) |
 | 2018-07-05   | [**0.1.0**](https://github.com/bullet-db/bullet-bql/releases/tag/bullet-bql-0.1.0) | First release | |

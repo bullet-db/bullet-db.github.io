@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # This script will build the documentation from the current "src" branch. "mkdocs" must be available, and
-# you must be in a clean git environment ("git diff" should print nothing). The java-docs folder currently 
+# you must be in a clean git environment ("git diff" should print nothing). The apidocs folder currently
 # in the master branch will be saved in a tmp folder and then put back to replace the corresponding folder
 # built from the src branch, which is just a placeholder.
 
@@ -24,13 +24,13 @@ mv site/ /tmp/tmp-folder-for-bullet-docs/
 echo Checking out master...
 git checkout master
 git pull
-# Save the JavaDocs currently in master branch
-mv java-docs/ /tmp/tmp-folder-for-bullet-docs/
+# Save the apidocs currently in master branch
+mv apidocs/ /tmp/tmp-folder-for-bullet-docs/
 rm -rf ./*
 cp -r /tmp/tmp-folder-for-bullet-docs/site/ ./
-# Delete fake java-docs and replace with saved ones
-rm -rf ./java-docs/
-mv /tmp/tmp-folder-for-bullet-docs/java-docs/ ./
+# Delete fake apidocs and replace with saved ones
+rm -rf ./apidocs/
+mv /tmp/tmp-folder-for-bullet-docs/apidocs/ ./
 rm -rf /tmp/tmp-folder-for-bullet-docs/
 git add -A
 git commit -m "Build at ${COMMIT}"
