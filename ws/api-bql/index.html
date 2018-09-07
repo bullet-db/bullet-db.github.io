@@ -380,12 +380,9 @@
 <h1 id="bullet-bql-api">Bullet BQL API</h1>
 <p>This section gives a comprehensive overview of the Web Service API for launching Bullet BQL queries.</p>
 <p>For examples of BQL queries, see the <a href="../examples/">examples page</a>.</p>
-<p>BQL queries that are received by the Web Service will be detenced and automatically converted to
-<a href="../api-json/">the JSON format</a> before being sent to the backend (which requires the basic JSON format). This converstion
-is done in the web service using <a href="../../releases/#bullet-bql">the bullet-bql library</a>.</p>
+<p>BQL queries that are received by the Web Service will be detenced and automatically converted to <a href="../api-json/">the JSON format</a> before being sent to the backend (which requires the basic JSON format). This conversion is done in the web service using <a href="../../releases/#bullet-bql">the bullet-bql library</a>.</p>
 <h2 id="overview">Overview</h2>
-<p>Bullet-BQL provides users with a friendly SQL-like API to submit queries to the Web Service instead of using the more
-cumbersome <a href="../api-json/">JSON API</a>.</p>
+<p>Bullet-BQL provides users with a friendly SQL-like API to submit queries to the Web Service instead of using the more cumbersome <a href="../api-json/">JSON API</a>.</p>
 <h2 id="statement-syntax">Statement Syntax</h2>
 <pre><code>SELECT DISTINCT? select_clause
 FROM from_clause
@@ -404,7 +401,8 @@ reference_expr ( AS? ColumnReference )? ( , reference_expr ( AS? ColumnReference
 distribution_type( reference_expr, input_mode ) ( AS? ColumnReference )?
 TOP ( ( Integer | Long ) ( , Integer | Long ) )? , reference_expr ( , reference_expr )? ) ( AS? ColumnReference )?
 </code></pre>
-<p><code>group_function</code> is one of <code>SUM(reference_expr)</code>, <code>MIN(reference_expr)</code>, <code>MAX(reference_expr)</code>, <code>AVG(reference_expr)</code> and <code>COUNT(*)</code>. <code>reference_expr</code> is one of ColumnReference and Dereference. <code>distribution_type</code> is one of <code>QUANTILE</code>, <code>FREQ</code> and <code>CUMFREQ</code>. The 1st number in <code>TOP</code> is K, and the 2nd number is an optional threshold.  The <code>input_mode</code> is one of</p>
+<p><code>reference_expr</code> is one of <code>ColumnReference</code> or <code>Dereference</code>.</p>
+<p>and <code>group_function</code> is one of <code>SUM(reference_expr)</code>, <code>MIN(reference_expr)</code>, <code>MAX(reference_expr)</code>, <code>AVG(reference_expr)</code> and <code>COUNT(*)</code>. <code>reference_expr</code> is one of ColumnReference and Dereference. <code>distribution_type</code> is one of <code>QUANTILE</code>, <code>FREQ</code> and <code>CUMFREQ</code>. The 1st number in <code>TOP</code> is K, and the 2nd number is an optional threshold.  The <code>input_mode</code> is one of</p>
 <pre><code>LINEAR, ( Integer | Long )                                              evenly spaced
 REGION, ( Integer | Long ), ( Integer | Long ), ( Integer | Long )      evenly spaced in a region
 MANUAL, ( Integer | Long ) (, ( Integer | Long ) )*                     defined points
@@ -425,9 +423,14 @@ reference_expr IS NOT? DISTINCT FROM value_expr
 reference_expr NOT? BETWEEN value_expr AND value_expr
 reference_expr NOT? IN ( value_expr ( , value_expr )* )
 reference_expr NOT? LIKE ( value_expr ( , value_expr )* )
+reference_expr NOT? CONTAINSKEY ( value_expr ( , value_expr )* )
+reference_expr NOT? CONTAINSVALUE ( value_expr ( , value_expr )* )
 reference_expr ( = | &lt;&gt; | != | &lt; | &gt; | &lt;= | &gt;= ) value_expr
+SIZEOF(reference_expr) ( = | &lt;&gt; | != ) value_expr
+SIZEOF(reference_expr) NOT? IN ( value_expr ( , value_expr )* )
+SIZEOF(reference_expr) NOT? DISTINCT FROM value_expr
 </code></pre>
-<p><code>value_expr</code> is one of Null, Boolean, Integer, Long, Double, Decimal and String.</p>
+<p><code>value_expr</code> is one of Null, Boolean, Integer, Long, Double, Decimal, String or <code>reference_expr</code>.</p>
 <p>and <code>groupBy_clause</code> is one of</p>
 <pre><code>()                                                                group all
 reference_expr ( , reference_expr )*                              group by
@@ -476,7 +479,7 @@ ALL                                                               will be suppor
 <p><strong>String</strong>: character string which can have escapes. Example: <code>'this is a string'</code>, <code>'this is ''another'' string'</code>.</p>
 </li>
 <li>
-<p><strong>ColumnReference</strong>: representation of a single column. Unquoted ColumnReference must start with a letter or <code>_</code>. Quoted ColumnReference can have escape. Example: <code>column_name</code>, <code>"#column""with""escape"</code>.</p>
+<p><strong>ColumnReference</strong>: representation of a single column. Unquoted ColumnReference must start with a letter or <code>_</code>. Example: <code>column_name</code>.</p>
 </li>
 <li>
 <p><strong>Dereference</strong>: representation of a column field. Example: <code>column_name.field_name</code>.</p>
@@ -486,7 +489,6 @@ ALL                                                               will be suppor
 </li>
 </ul>
 <h2 id="reserved-keywords">Reserved Keywords</h2>
-<p>Reserved keywords must be double quoted in order to be used as ColumnReference or Dereference.</p>
 <table>
 <thead>
 <tr>

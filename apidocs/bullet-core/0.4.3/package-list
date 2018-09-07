@@ -1,0 +1,11 @@
+com.yahoo.bullet.aggregations
+com.yahoo.bullet.aggregations.grouping
+com.yahoo.bullet.aggregations.sketches
+com.yahoo.bullet.common
+com.yahoo.bullet.parsing
+com.yahoo.bullet.pubsub
+com.yahoo.bullet.pubsub.rest
+com.yahoo.bullet.querying
+com.yahoo.bullet.result
+com.yahoo.bullet.typesystem
+com.yahoo.bullet.windowing

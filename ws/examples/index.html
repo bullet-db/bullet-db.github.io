@@ -366,6 +366,33 @@
                     </li>
             
                     <li class="second-level">
+                        <a href="#relational-filters-using-the-extended-value-notation-for-static-values">Relational Filters using the extended value notation for static values</a>
+                        <ul class="nav">
+                        
+                            <li class="third-level">
+                                <a href="#sizeis-filter">SIZEIS Filter</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#containskey-filter">CONTAINSKEY Filter</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#containsvalue-filter">CONTAINSVALUE Filter</a>
+                                
+                            </li>
+                        
+                        </ul>
+                    </li>
+            
+                    <li class="second-level">
+                        <a href="#relational-filter-comparing-to-other-fields">Relational Filter comparing to other fields</a>
+                        
+                    </li>
+            
+                    <li class="second-level">
                         <a href="#logical-filters-and-projections">Logical Filters and Projections</a>
                         
                     </li>
@@ -443,7 +470,7 @@
                     </li>
             
                     <li class="second-level">
-                        <a href="#sliding-reactive-window-with-max-duration">Sliding "Reactive" Window with Max Duration</a>
+                        <a href="#sliding-window-of-size-1-with-max-duration">Sliding Window of Size 1 with Max Duration</a>
                         
                     </li>
             
@@ -461,8 +488,8 @@
 <p>The actual data shown here has been edited and is not how actual Yahoo user events look.</p>
 </div>
 <div class="admonition note">
-<p class="admonition-title">SQL translation</p>
-<p>For each query, we will also rewrite it to a SQL like syntax for readability. Eventually, we plan the API to support this format as input so you could just write this in place of the JSON syntax.</p>
+<p class="admonition-title">BQL translation</p>
+<p>For each query, we will also rewrite it to BQL - a SQL like querying API if you do not want to use JSON.</p>
 </div>
 <h3 id="simplest-query">Simplest Query</h3>
 <p>The simplest query you can write would be:</p>
@@ -613,6 +640,157 @@ LIMIT 10;
 }
 </code></pre>
 
+<h3 id="relational-filters-using-the-extended-value-notation-for-static-values">Relational Filters using the extended value notation for static values</h3>
+<p>For the following examples, we will simply show and explain the queries. They also use the extended syntax for specify values in a filter using the <code>kind</code> field.</p>
+<h4 id="sizeis-filter">SIZEIS Filter</h4>
+<p>This query checks to see if the size of the <code>data_map</code> is equal to 4 and returns all records that do satisfy this.</p>
+<p><strong>BQL Query</strong></p>
+<pre><code class="SQL">SELECT *
+FROM STREAM(30000, TIME)
+WHERE SIZEOF(data_map) = 4
+LIMIT 1;
+</code></pre>
+
+<p><strong>JSON Query</strong></p>
+<pre><code class="javascript">{
+    &quot;filters&quot;: [
+        {
+            &quot;field&quot;:&quot;data_map&quot;,
+            &quot;values&quot;:[
+                {
+                    &quot;kind&quot;:&quot;VALUE&quot;,
+                    &quot;value&quot;:&quot;4&quot;
+                }
+            ],
+            &quot;operation&quot;:&quot;SIZEIS&quot;
+        }
+    ],
+    &quot;aggregation&quot;:{
+        &quot;type&quot;:&quot;RAW&quot;,
+        &quot;size&quot;:1
+    },
+    &quot;duration&quot;:30000
+}
+</code></pre>
+
+<h4 id="containskey-filter">CONTAINSKEY Filter</h4>
+<p>This query checks to see if the <code>data_map</code> contains the key <code>id</code> and returns all records for which this is true.</p>
+<p><strong>BQL Query</strong></p>
+<pre><code class="SQL">SELECT *
+FROM STREAM(30000, TIME)
+WHERE data_map CONTAINSKEY (&quot;id&quot;)
+LIMIT 1;
+</code></pre>
+
+<p><strong>JSON Query</strong></p>
+<pre><code class="javascript">{
+    &quot;filters&quot;:[
+        {
+            &quot;field&quot;:&quot;data_map&quot;,
+            &quot;values&quot;:[
+                {
+                    &quot;kind&quot;:&quot;VALUE&quot;,
+                    &quot;value&quot;:&quot;id&quot;
+                }
+            ],
+            &quot;operation&quot;:&quot;CONTAINSKEY&quot;
+        }
+    ],
+    &quot;aggregation&quot;:{
+        &quot;type&quot;:&quot;RAW&quot;,
+        &quot;size&quot;:1
+    },
+    &quot;duration&quot;:30000
+}
+</code></pre>
+
+<h4 id="containsvalue-filter">CONTAINSVALUE Filter</h4>
+<p>This query checks to see if the <code>data_map</code> does not contain the value <code>btsg8l9b234ha</code> and returns all records for which this is true. If this was applied on a list field or list of maps field, the inner maps would be checked instead.</p>
+<p><strong>BQL Query</strong></p>
+<pre><code class="SQL">SELECT *
+FROM STREAM(30000, TIME)
+WHERE data_map NOT CONTAINSVALUE (&quot;btsg8l9b234ha&quot;)
+LIMIT 1;
+</code></pre>
+
+<p><strong>JSON Query</strong></p>
+<pre><code class="javascript">{
+    &quot;filters&quot;:[
+        {
+            &quot;clauses&quot;:[
+                {
+                    &quot;field&quot;:&quot;data_map&quot;,
+                    &quot;values&quot;:[
+                        {
+                            &quot;kind&quot;:&quot;VALUE&quot;,
+                            &quot;value&quot;:&quot;btsg8l9b234ha&quot;
+                        }
+                    ],
+                    &quot;operation&quot;:&quot;CONTAINSVALUE&quot;
+                }
+            ],
+            &quot;operation&quot;: &quot;NOT&quot;
+        }
+    ],
+    &quot;aggregation&quot;:{
+        &quot;type&quot;:&quot;RAW&quot;,
+        &quot;size&quot;:1
+    },
+    &quot;duration&quot;:30000
+}
+</code></pre>
+
+<h3 id="relational-filter-comparing-to-other-fields">Relational Filter comparing to other fields</h3>
+<p>Instead of comparing to static, constant values, you may use the extended values notation and set <code>kind</code> to <code>FIELD</code> to  compare to other fields within the same record. The following query returns the first record for which the <code>id</code> field is set to the <code>uid</code> field.</p>
+<p><strong>BQL Query</strong></p>
+<pre><code class="SQL">SELECT *
+FROM STREAM(30000, TIME)
+WHERE id = uid
+LIMIT 1;
+</code></pre>
+
+<p><strong>JSON Query</strong></p>
+<pre><code class="javascript">{
+    &quot;filters&quot;:[
+        {
+            &quot;field&quot;:&quot;id&quot;,
+            &quot;values&quot;:[
+                {
+                    &quot;kind&quot;:&quot;FIELD&quot;,
+                    &quot;value&quot;:&quot;uid&quot;
+                }
+            ],
+            &quot;operation&quot;:&quot;==&quot;
+        }
+    ],
+    &quot;aggregation&quot;:{
+        &quot;type&quot;:&quot;RAW&quot;,
+        &quot;size&quot;:1
+    },
+    &quot;duration&quot;:30000
+}
+</code></pre>
+
+<p>A sample result could look like:</p>
+<pre><code class="javascript">{
+    &quot;records&quot;: [
+        {
+            &quot;uid&quot;:&quot;0qcgofdbfqs9s&quot;,
+            &quot;experience&quot;:&quot;web&quot;,
+            &quot;lid&quot;:&quot;978500434&quot;,
+            &quot;id&quot;:&quot;0qcgofdbfqs9s&quot;,
+            &quot;other fields&quot;: &quot;&lt;EDITED OUT&gt;&quot;
+        }
+    ],
+    &quot;meta&quot;: {
+        &quot;query_id&quot;: &quot;c4a336e0-3bb5-452a-8503-40d8751b92d9&quot;,
+        &quot;query_body&quot;: &quot;&lt;EDITED OUT&gt;&quot;,
+        &quot;query_finish_time&quot;: 1536192342505,
+        &quot;query_receive_time&quot;: 1536192342507
+    }
+}
+</code></pre>
+
 <h3 id="logical-filters-and-projections">Logical Filters and Projections</h3>
 <p><strong>BQL Query</strong></p>
 <pre><code class="SQL">SELECT id AS id, experience AS experience, page_id AS pid,
@@ -700,9 +878,9 @@ LIMIT 1;
 
 <div class="admonition note">
 <p class="admonition-title">Typing</p>
-<p>If demographics["age"] was of type Long, then Bullet will convert 85 to be an Long, but in this example, we are pretending that it is String.  So, no conversion is made. Similarly for link_id, id, experience and page_id. tags is a Map of String to Boolean so Bullet converts <code>"true"</code> to the Boolean <code>true</code>.</p>
+<p>If demographics["age"] was of type Long, then Bullet will convert 85 to be an Long, but in this example, we are pretending that it is String.  So, no conversion is made. Similarly for link_id, id, experience and page_id. tags is a Map of String to Boolean so Bullet converts <code>"true"</code> to the Boolean <code>true</code>. Till we support casting (<a href="https://github.com/bullet-db/bullet-core/issues/37">#37</a>), this will be the behavior automatically enforced by Bullet.</p>
 </div>
-<p>This query is looking for a single event with a specific id and either the page_id is in two specific pages on the "web" experience or with a link_id that starts with 2, or a player event where the age is greater than "65". In other words, it is looking for senior citizens who generate video player events or a particular person's (based on id) events on two specific pages or a group of pages that have link that have ids that start with 2. It then projects out only these fields with different names.</p>
+<p>This query is looking for a single event with a specific id and either the page_id is in two specific pages on the "web" experience or with a link_id that starts with 2, or a player event where the age is greater than "65". In other words, it is looking for senior citizens who generate video player events or the events of a particular person (based on id) events on two specific pages or a group of pages that have link that have ids that start with 2. It then projects out only these fields with different names.</p>
 <p>A sample result could look like (it matched because of tags.player was true and demographics.age was &gt; 65):</p>
 <pre><code class="javascript">{
     &quot;records&quot;: [
@@ -1777,7 +1955,7 @@ the user will receive a total of 4 results. Since the aggregation size is set to
     &quot;Query&quot;:{
         &quot;ID&quot;:&quot;448d228a-1eed-471f-8777-c800cc866535&quot;,
         &quot;Receive Time&quot;:1529458398023,
-        &quot;Body&quot;:&quot;...(query body)...},
+        &quot;Body&quot;:&quot;...(query body)...}&quot;,
         &quot;Sketch&quot;:{
             &quot;Was Estimated&quot;:false,
             &quot;Uniques Estimate&quot;:100.0,
@@ -2127,7 +2305,7 @@ LIMIT 50;
 }
 </code></pre>
 
-<h3 id="sliding-reactive-window-with-max-duration">Sliding "Reactive" Window with Max Duration</h3>
+<h3 id="sliding-window-of-size-1-with-max-duration">Sliding Window of Size 1 with Max Duration</h3>
 <p><strong>BQL Query</strong></p>
 <pre><code class="SQL">SELECT *
 FROM STREAM(MAX, TIME)
@@ -2173,9 +2351,8 @@ WINDOWING(EVERY, 1, RECORD, FIRST, 1, RECORD)
 }
 </code></pre>
 
-<p>This is a query that will capture raw data, and has a sliding window of size 1. This query will return window results immedietly whenever a single record that matches the filters flows through the system. The filters in this example
-will only match records from a particular browser.</p>
-<p>This query will run for the maxiumum amount of time that the backend is configured to allow.</p>
+<p>This is a query that will capture raw data, and has a sliding window of size 1. This query will return window results immediately whenever a single record that matches the filters flows through the system. The filters in this example will only match records from a particular browser.</p>
+<p>This query will run for the maximum amount of time that the backend is configured to allow.</p>
 <p>Results might look like this:</p>
 <pre><code class="javascript">&quot;records&quot;:[  
    {  

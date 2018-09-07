@@ -1,0 +1,6 @@
+com.yahoo.bullet.bql
+com.yahoo.bullet.bql.classifier
+com.yahoo.bullet.bql.extractor
+com.yahoo.bullet.bql.parser
+com.yahoo.bullet.bql.tree
+com.yahoo.bullet.bql.util
