@@ -6,9 +6,9 @@ Rather than sourcing the examples from the Quick Start, these examples are real-
 
     The actual data shown here has been edited and is not how actual Yahoo user events look.
 
-!!! note "SQL translation"
+!!! note "BQL translation"
 
-    For each query, we will also rewrite it to a SQL like syntax for readability. Eventually, we plan the API to support this format as input so you could just write this in place of the JSON syntax.
+    For each query, we will also rewrite it to BQL - a SQL like querying API if you do not want to use JSON.
 
 ### Simplest Query
 
@@ -181,6 +181,185 @@ The resulting response could look like (only 3 events were generated that matche
 }
 ```
 
+### Relational Filters using the extended value notation for static values
+
+For the following examples, we will simply show and explain the queries. They also use the extended syntax for specify values in a filter using the ```kind``` field.
+
+#### SIZEIS Filter
+
+This query checks to see if the size of the ```data_map``` is equal to 4 and returns all records that do satisfy this.
+
+**BQL Query**
+
+```SQL
+SELECT *
+FROM STREAM(30000, TIME)
+WHERE SIZEOF(data_map) = 4
+LIMIT 1;
+```
+
+**JSON Query**
+
+```javascript
+{
+    "filters": [
+        {
+            "field":"data_map",
+            "values":[
+                {
+                    "kind":"VALUE",
+                    "value":"4"
+                }
+            ],
+            "operation":"SIZEIS"
+        }
+    ],
+    "aggregation":{
+        "type":"RAW",
+        "size":1
+    },
+    "duration":30000
+}
+```
+
+#### CONTAINSKEY Filter
+
+This query checks to see if the ```data_map``` contains the key ```id``` and returns all records for which this is true.
+
+**BQL Query**
+
+```SQL
+SELECT *
+FROM STREAM(30000, TIME)
+WHERE data_map CONTAINSKEY ("id")
+LIMIT 1;
+```
+
+**JSON Query**
+
+```javascript
+{
+    "filters":[
+        {
+            "field":"data_map",
+            "values":[
+                {
+                    "kind":"VALUE",
+                    "value":"id"
+                }
+            ],
+            "operation":"CONTAINSKEY"
+        }
+    ],
+    "aggregation":{
+        "type":"RAW",
+        "size":1
+    },
+    "duration":30000
+}
+```
+
+#### CONTAINSVALUE Filter
+
+This query checks to see if the ```data_map``` does not contain the value ```btsg8l9b234ha``` and returns all records for which this is true. If this was applied on a list field or list of maps field, the inner maps would be checked instead.
+
+**BQL Query**
+
+```SQL
+SELECT *
+FROM STREAM(30000, TIME)
+WHERE data_map NOT CONTAINSVALUE ("btsg8l9b234ha")
+LIMIT 1;
+```
+
+**JSON Query**
+
+```javascript
+{
+    "filters":[
+        {
+            "clauses":[
+                {
+                    "field":"data_map",
+                    "values":[
+                        {
+                            "kind":"VALUE",
+                            "value":"btsg8l9b234ha"
+                        }
+                    ],
+                    "operation":"CONTAINSVALUE"
+                }
+            ],
+            "operation": "NOT"
+        }
+    ],
+    "aggregation":{
+        "type":"RAW",
+        "size":1
+    },
+    "duration":30000
+}
+```
+
+### Relational Filter comparing to other fields
+
+Instead of comparing to static, constant values, you may use the extended values notation and set ```kind``` to ```FIELD``` to  compare to other fields within the same record. The following query returns the first record for which the ```id``` field is set to the ```uid``` field.
+
+**BQL Query**
+
+```SQL
+SELECT *
+FROM STREAM(30000, TIME)
+WHERE id = uid
+LIMIT 1;
+```
+
+**JSON Query**
+
+```javascript
+{
+    "filters":[
+        {
+            "field":"id",
+            "values":[
+                {
+                    "kind":"FIELD",
+                    "value":"uid"
+                }
+            ],
+            "operation":"=="
+        }
+    ],
+    "aggregation":{
+        "type":"RAW",
+        "size":1
+    },
+    "duration":30000
+}
+```
+
+A sample result could look like:
+
+```javascript
+{
+    "records": [
+        {
+            "uid":"0qcgofdbfqs9s",
+            "experience":"web",
+            "lid":"978500434",
+            "id":"0qcgofdbfqs9s",
+            "other fields": "<EDITED OUT>"
+        }
+    ],
+    "meta": {
+        "query_id": "c4a336e0-3bb5-452a-8503-40d8751b92d9",
+        "query_body": "<EDITED OUT>",
+        "query_finish_time": 1536192342505,
+        "query_receive_time": 1536192342507
+    }
+}
+```
+
 ### Logical Filters and Projections
 
 **BQL Query**
@@ -273,9 +452,9 @@ LIMIT 1;
 
 !!! note "Typing"
 
-    If demographics["age"] was of type Long, then Bullet will convert 85 to be an Long, but in this example, we are pretending that it is String.  So, no conversion is made. Similarly for link_id, id, experience and page_id. tags is a Map of String to Boolean so Bullet converts ```"true"``` to the Boolean ```true```.
+    If demographics["age"] was of type Long, then Bullet will convert 85 to be an Long, but in this example, we are pretending that it is String.  So, no conversion is made. Similarly for link_id, id, experience and page_id. tags is a Map of String to Boolean so Bullet converts ```"true"``` to the Boolean ```true```. Till we support casting ([#37](https://github.com/bullet-db/bullet-core/issues/37)), this will be the behavior automatically enforced by Bullet.
 
-This query is looking for a single event with a specific id and either the page_id is in two specific pages on the "web" experience or with a link_id that starts with 2, or a player event where the age is greater than "65". In other words, it is looking for senior citizens who generate video player events or a particular person's (based on id) events on two specific pages or a group of pages that have link that have ids that start with 2. It then projects out only these fields with different names.
+This query is looking for a single event with a specific id and either the page_id is in two specific pages on the "web" experience or with a link_id that starts with 2, or a player event where the age is greater than "65". In other words, it is looking for senior citizens who generate video player events or the events of a particular person (based on id) events on two specific pages or a group of pages that have link that have ids that start with 2. It then projects out only these fields with different names.
 
 A sample result could look like (it matched because of tags.player was true and demographics.age was > 65):
 
@@ -1474,7 +1653,7 @@ the user will receive a total of 4 results. Since the aggregation size is set to
     "Query":{
         "ID":"448d228a-1eed-471f-8777-c800cc866535",
         "Receive Time":1529458398023,
-        "Body":"...(query body)...},
+        "Body":"...(query body)...}",
         "Sketch":{
             "Was Estimated":false,
             "Uniques Estimate":100.0,
@@ -1831,7 +2010,7 @@ The above query will run for 20 seconds and emit a result every 5 seconds. The r
 }
 ```
 
-### Sliding "Reactive" Window with Max Duration
+### Sliding Window of Size 1 with Max Duration
 
 **BQL Query**
 
@@ -1882,10 +2061,9 @@ WINDOWING(EVERY, 1, RECORD, FIRST, 1, RECORD)
 }
 ```
 
-This is a query that will capture raw data, and has a sliding window of size 1. This query will return window results immedietly whenever a single record that matches the filters flows through the system. The filters in this example
-will only match records from a particular browser.
+This is a query that will capture raw data, and has a sliding window of size 1. This query will return window results immediately whenever a single record that matches the filters flows through the system. The filters in this example will only match records from a particular browser.
 
-This query will run for the maxiumum amount of time that the backend is configured to allow.
+This query will run for the maximum amount of time that the backend is configured to allow.
 
 Results might look like this:
 

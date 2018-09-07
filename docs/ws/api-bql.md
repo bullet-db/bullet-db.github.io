@@ -4,14 +4,11 @@ This section gives a comprehensive overview of the Web Service API for launching
 
 For examples of BQL queries, see the [examples page](examples.md).
 
-BQL queries that are received by the Web Service will be detenced and automatically converted to
-[the JSON format](api-json.md) before being sent to the backend (which requires the basic JSON format). This converstion
-is done in the web service using [the bullet-bql library](../releases/#bullet-bql).
+BQL queries that are received by the Web Service will be detenced and automatically converted to [the JSON format](api-json.md) before being sent to the backend (which requires the basic JSON format). This conversion is done in the web service using [the bullet-bql library](../releases/#bullet-bql).
 
 ## Overview
 
-Bullet-BQL provides users with a friendly SQL-like API to submit queries to the Web Service instead of using the more
-cumbersome [JSON API](api-json.md).
+Bullet-BQL provides users with a friendly SQL-like API to submit queries to the Web Service instead of using the more cumbersome [JSON API](api-json.md).
 
 ## Statement Syntax
 
@@ -34,7 +31,9 @@ where `select_clause` is one of
     TOP ( ( Integer | Long ) ( , Integer | Long ) )? , reference_expr ( , reference_expr )? ) ( AS? ColumnReference )?
 
 
-`group_function` is one of `SUM(reference_expr)`, `MIN(reference_expr)`, `MAX(reference_expr)`, `AVG(reference_expr)` and `COUNT(*)`. `reference_expr` is one of ColumnReference and Dereference. `distribution_type` is one of `QUANTILE`, `FREQ` and `CUMFREQ`. The 1st number in `TOP` is K, and the 2nd number is an optional threshold.  The `input_mode` is one of
+`reference_expr` is one of `ColumnReference` or `Dereference`.
+
+and `group_function` is one of `SUM(reference_expr)`, `MIN(reference_expr)`, `MAX(reference_expr)`, `AVG(reference_expr)` and `COUNT(*)`. `reference_expr` is one of ColumnReference and Dereference. `distribution_type` is one of `QUANTILE`, `FREQ` and `CUMFREQ`. The 1st number in `TOP` is K, and the 2nd number is an optional threshold.  The `input_mode` is one of
 
     LINEAR, ( Integer | Long )                                              evenly spaced
     REGION, ( Integer | Long ), ( Integer | Long ), ( Integer | Long )      evenly spaced in a region
@@ -59,9 +58,14 @@ and `where_clause` is one of
     reference_expr NOT? BETWEEN value_expr AND value_expr
     reference_expr NOT? IN ( value_expr ( , value_expr )* )
     reference_expr NOT? LIKE ( value_expr ( , value_expr )* )
+    reference_expr NOT? CONTAINSKEY ( value_expr ( , value_expr )* )
+    reference_expr NOT? CONTAINSVALUE ( value_expr ( , value_expr )* )
     reference_expr ( = | <> | != | < | > | <= | >= ) value_expr
+    SIZEOF(reference_expr) ( = | <> | != ) value_expr
+    SIZEOF(reference_expr) NOT? IN ( value_expr ( , value_expr )* )
+    SIZEOF(reference_expr) NOT? DISTINCT FROM value_expr
 
-`value_expr` is one of Null, Boolean, Integer, Long, Double, Decimal and String.
+`value_expr` is one of Null, Boolean, Integer, Long, Double, Decimal, String or `reference_expr`.
 
 and `groupBy_clause` is one of
 
@@ -109,15 +113,13 @@ and `limit_clause` is one of
 
 * **String**: character string which can have escapes. Example: `'this is a string'`, `'this is ''another'' string'`.
 
-* **ColumnReference**: representation of a single column. Unquoted ColumnReference must start with a letter or `_`. Quoted ColumnReference can have escape. Example: `column_name`, `"#column""with""escape"`.
+* **ColumnReference**: representation of a single column. Unquoted ColumnReference must start with a letter or `_`. Example: `column_name`.
 
 * **Dereference**: representation of a column field. Example: `column_name.field_name`.
 
 * **All**: representation of all columns. Example: `*`. `column_name.*` is interpreted as `column_name`.
 
 ## Reserved Keywords
-
-Reserved keywords must be double quoted in order to be used as ColumnReference or Dereference.
 
 |      Keyword          |    SQL:2016     |   SQL-92      |
 | --------------------- | :-------------: | :-----------: |

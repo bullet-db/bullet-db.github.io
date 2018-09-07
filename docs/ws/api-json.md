@@ -21,7 +21,7 @@ Fields inside maps can be accessed using the '.' notation in queries. For exampl
 
 `myMap.key`
 
-will access the "key" field inside the "myMap" map. There is no support for accessing fields inside Lists or inside nested Maps as of yet. Only the entire object can be operated on for now.
+will access the "key" field inside the "myMap" map. There is no support for accessing fields inside Lists yet. Only the entire object can be operated on for now.
 
 The main constituents of a Bullet query listed above create the top level fields of the Bullet query:
 ```javascript
@@ -75,19 +75,22 @@ Note that the "filter" field in the query is a __list__ of as many filters as yo
 
 ### Relational Filters
 
-Relational filters allow you to specify conditions on a field, using a comparison operator and a list of values.
+Relational filters allow you to specify conditions on a field, using a comparison operator and a list of constant values or other fields.
 
 The current comparisons allowed in filters are:
 
-| Comparison | Meaning |
-| ---------- | ------- |
-| ==         | Equal to any value in values |
-| !=         | Not equal to any value in values |
-| <=         | Less than or equal to any value in values |
-| >=         | Greater than or equal to any value in values |
-| <          | Less than any value in values |
-| >          | Greater than any value in values |
-| RLIKE      | Matches using [Java Regex notation](http://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html), any Regex value in values |
+| Comparison    | Meaning |
+| ------------- | ------- |
+| ==            | Equal to any value in values |
+| !=            | Not equal to any value in values |
+| <=            | Less than or equal to any value in values |
+| >=            | Greater than or equal to any value in values |
+| <             | Less than any value in values |
+| >             | Greater than any value in values |
+| RLIKE         | Matches using [Java Regex notation](http://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html), any Regex value in values |
+| SIZEIS        | If a map, list, or string has a given size |
+| CONTAINSKEY   | If a map field contains the given key. This map field can be a top level map field or a map field inside a list of maps |
+| CONTAINSVALUE | If a map field or a list field contains the given value. If the list contains maps instead of primitives, the values in the maps are used |
 
 Note: These operators are all typed based on the type of the __left hand side__ from the Bullet record. If the elements on the right hand side cannot be
 casted to the types on the LHS, those items will be ignored for the comparison.
@@ -96,7 +99,20 @@ The format for a Relational filter is:
 
 ```javascript
 {
-    "operation": "== | != | <= | >= | < | > | RLIKE"
+    "operation": "== | != | <= | >= | < | > | RLIKE | SIZEIS | CONTAINSKEY | CONTAINSVALUE"
+    "field": "record_field_name | map_field.subfield",
+    "values": [
+        { "kind": "VALUE", "value": "foo"},
+        { "kind": "FIELD", "value": "another_record_field_name"}
+    ]
+}
+```
+
+Note that you may specify ```VALUE``` or ```KIND``` currently for the ```kind``` key in the entries in the ```values``` field above, denoting the type of value this is. As a shortcut, you can also specify the following format for ```VALUE``` kind.
+
+```javascript
+{
+    "operation": "== | != | <= | >= | < | > | RLIKE | SIZEIS | CONTAINSKEY | CONTAINSVALUE"
     "field": "record_field_name | map_field.subfield",
     "values": [
         "string values",
@@ -107,6 +123,9 @@ The format for a Relational filter is:
     ]
 }
 ```
+
+You may __not__ mix and match both styles in the same filter.
+
 *Multiple top level relational filters behave as if they are ANDed together.* This is supported as a convenience to do a bunch of ```AND```ed relational filters without having to nest them in a logical clause.
 
 ## Projections
@@ -286,7 +305,7 @@ Note that the ```K``` in ```TOP K``` is specified using the ```size``` field in 
 
 ## Window
 
-The "window" field is **optional** and allows you to instruct Bullet to return incremental results. For example you might want to return the COUNT of a field and return that count every 2 seconds. 
+The "window" field is **optional** and allows you to instruct Bullet to return incremental results. For example you might want to return the COUNT of a field and return that count every 2 seconds.
 
 If "window" is omitted Bullet will emit only a single result at the very end of the query.
 
@@ -351,15 +370,13 @@ The above example would be specified with the window:
 
 In this example the first window would include 3 records, the second would include 7 records, the third would include 10 records and the fourth would include 12 records.
 
-#### **Sliding "Reactive" Windows**
+#### **Sliding Windows**
 
-Sliding windows emit based on the arrival of an event, rather than after a certain period of time. In general sliding windows often do some aggregation on the previous X records, or on all records that arrived in the last X seconds.
-Bullet will support this functionality in the future, at this time Bullet only supports **Sliding Windows of size 1**, often referred to as "reactive" windows. It does not support sliding windows with an aggregation at this time.
-Effectively this query will simply return every event that matches the filters instantly to the user.
+Sliding windows emit based on the arrival of an event, rather than after a certain period of time. In general sliding windows often do some aggregation on the previous X records, or on all records that arrived in the last X seconds. At this time, Bullet only supports sliding windows on the previous X records. It does not support sliding windows with any aggregation but ```RAW``` at this time. If you set X to 1, the query will effectively return each record as they arrive to the user.
 
 ![Reactive Windows](../img/reactive.png)
 
-The above example would be specified with the window:
+The above example would be specified with the window (you may replace every and last with higher values):
 
 ```javascript
 "window": { "emit": { "type": "RECORD", "every": 1 },
