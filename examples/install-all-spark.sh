@@ -171,7 +171,7 @@ launch_web_service() {
 
 install_spark() {
     println "Downloading Spark version ${SPARK_VERSION}..."
-    download "http://www-us.apache.org/dist/spark/spark-${SPARK_VERSION}" "${SPARK_DISTRO}.tgz"
+    download "https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}" "${SPARK_DISTRO}.tgz"
 
     println "Installing Spark version ${SPARK_VERSION}..."
     cp ${BULLET_DOWNLOADS}/${SPARK_DISTRO}.tgz ${BULLET_SPARK}/
