@@ -144,7 +144,7 @@ The Web Service implementation that can serve a static schema from a file and ta
 
 |    Date      |                                      Release                                           | Highlights | APIDocs |
 | ------------ | -------------------------------------------------------------------------------------- | ---------- | ------- |
-| 2018-11-28   | [**0.4.4**](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.4.3) | Updates bullet-bql to 0.2.1 | [JavaDocs](apidocs/bullet-service/0.4.3/index.html) |
+| 2018-11-28   | [**0.4.3**](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.4.3) | Updates bullet-bql to 0.2.1 | [JavaDocs](apidocs/bullet-service/0.4.3/index.html) |
 | 2018-11-26   | [**0.4.2**](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.4.2) | BQL to JSON endpoint, dead backend reaper, new types in Schema, bullet-core 0.6.4 | [JavaDocs](apidocs/bullet-service/0.4.2/index.html) |
 | 2018-09-06   | [**0.4.1**](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.4.1) | Max Queries limit and bullet-bql 0.1.2 | [JavaDocs](apidocs/bullet-service/0.4.1/index.html) |
 | 2018-07-17   | [**0.4.0**](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.4.0) | Enhanced Web Service to support BQL queries | [JavaDocs](apidocs/bullet-service/0.4.0/index.html) |
