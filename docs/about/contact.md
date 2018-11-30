@@ -6,14 +6,14 @@ If you have any issues with any of the particular Bullet sub-components, feel fr
 
 |               |        |
 | ------------- | ------ |
-| Storm         | [https://github.com/bullet-db/bullet-storm/issues](https://github.com/bullet-db/bullet-storm/issues)     |
-| Spark         | [https://github.com/bullet-db/bullet-spark/issues](https://github.com/bullet-db/bullet-spark/issues)     |
-| Web Service   | [https://github.com/bullet-db/bullet-service/issues](https://github.com/bullet-db/bullet-service/issues) |
-| UI            | [https://github.com/bullet-db/bullet-ui/issues](https://github.com/bullet-db/bullet-ui/issues)           |
-| Record        | [https://github.com/bullet-db/bullet-record/issues](https://github.com/bullet-db/bullet-record/issues)   |
-| Core          | [https://github.com/bullet-db/bullet-core/issues](https://github.com/bullet-db/bullet-core/issues)     |
-| Kafka PubSub  | [https://github.com/bullet-db/bullet-kafka/issues](https://github.com/bullet-db/bullet-kafka/issues)     |
-| Documentation | [https://github.com/bullet-db/bullet-docs/issues](https://github.com/bullet-db/bullet-docs/issues)       |
+| Storm         | [https://github.com/bullet-db/bullet-storm/issues](https://github.com/bullet-db/bullet-storm/issues)               |
+| Spark         | [https://github.com/bullet-db/bullet-spark/issues](https://github.com/bullet-db/bullet-spark/issues)               |
+| Web Service   | [https://github.com/bullet-db/bullet-service/issues](https://github.com/bullet-db/bullet-service/issues)           |
+| UI            | [https://github.com/bullet-db/bullet-ui/issues](https://github.com/bullet-db/bullet-ui/issues)                     |
+| Record        | [https://github.com/bullet-db/bullet-record/issues](https://github.com/bullet-db/bullet-record/issues)             |
+| Core          | [https://github.com/bullet-db/bullet-core/issues](https://github.com/bullet-db/bullet-core/issues)                 |
+| Kafka PubSub  | [https://github.com/bullet-db/bullet-kafka/issues](https://github.com/bullet-db/bullet-kafka/issues)               |
+| Documentation | [https://github.com/bullet-db/bullet-db.github.io/issues](https://github.com/bullet-db/bullet-db.github.io/issues) |
 
 ## Mailing Lists
 
