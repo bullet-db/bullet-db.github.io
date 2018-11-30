@@ -479,10 +479,7 @@ ALL                                                               will be suppor
 <p><strong>String</strong>: character string which can have escapes. Example: <code>'this is a string'</code>, <code>'this is ''another'' string'</code>.</p>
 </li>
 <li>
-<p><strong>ColumnReference</strong>: representation of a single column. Unquoted ColumnReference must start with a letter or <code>_</code>. Example: <code>column_name</code>.</p>
-</li>
-<li>
-<p><strong>Dereference</strong>: representation of a column field. Example: <code>column_name.field_name</code>.</p>
+<p><strong>ColumnReference</strong>: representation of a column field. Unquoted ColumnReference must start with a letter or <code>_</code>. Example: <code>column_name</code> or <code>column_name.foo</code>  or <code>column_name.foo.bar</code> or <code>column_name.0.bar</code>.</p>
 </li>
 <li>
 <p><strong>All</strong>: representation of all columns. Example: <code>*</code>. <code>column_name.*</code> is interpreted as <code>column_name</code>.</p>

@@ -457,7 +457,7 @@ mkdir -p $BULLET_HOME/pubsub
 mkdir -p $BULLET_HOME/service
 mkdir -p $BULLET_HOME/ui
 cd $BULLET_HOME
-curl -LO https://github.com/bullet-db/bullet-db.github.io/releases/download/v0.5.2/examples_artifacts.tar.gz
+curl -LO https://github.com/bullet-db/bullet-db.github.io/releases/download/v0.6.0/examples_artifacts.tar.gz
 tar -xzf examples_artifacts.tar.gz
 export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 </code></pre>
@@ -466,7 +466,7 @@ export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 <p>For this instance of Bullet we will use the Kafka PubSub implementation found in <a href="https://github.com/bullet-db/bullet-spark">bullet-spark</a>. So we will first download and run Kafka, and setup a couple Kafka topics.</p>
 <h4 id="step-2-download-and-install-kafka">Step 2: Download and Install Kafka</h4>
 <pre><code class="bash">cd $BULLET_HOME/pubsub
-curl -Lo bullet-kafka.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-kafka/0.3.0/bullet-kafka-0.3.0-fat.jar
+curl -Lo bullet-kafka.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-kafka/0.3.2/bullet-kafka-0.3.2-fat.jar
 curl -LO https://archive.apache.org/dist/kafka/0.11.0.1/kafka_2.12-0.11.0.1.tgz
 tar -xzf kafka_2.12-0.11.0.1.tgz
 export KAFKA_DIR=$BULLET_HOME/pubsub/kafka_2.12-0.11.0.1
@@ -498,7 +498,7 @@ tar -xzf spark-2.2.1-bin-hadoop2.7.tgz
 
 <h4 id="step-7-setup-bullet-spark-and-example-data-producer">Step 7: Setup Bullet-Spark and Example Data Producer</h4>
 <pre><code class="bash">cp $BULLET_HOME/bullet-examples/backend/spark/* $BULLET_SPARK
-curl -Lo bullet-spark.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-spark/0.1.2/bullet-spark-0.1.2-standalone.jar
+curl -Lo bullet-spark.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-spark/0.2.1/bullet-spark-0.2.1-standalone.jar
 </code></pre>
 
 <h4 id="step-8-launch-the-bullet-spark-backend">Step 8: Launch the Bullet Spark Backend</h4>
@@ -516,7 +516,7 @@ curl -Lo bullet-spark.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-spa
 <h3 id="setup-web-service">Setup Web Service</h3>
 <h4 id="step-9-install-the-bullet-web-service">Step 9: Install the Bullet Web Service</h4>
 <pre><code class="bash">cd $BULLET_HOME/service
-curl -Lo bullet-service.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/0.2.1/bullet-service-0.2.1-embedded.jar
+curl -Lo bullet-service.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/0.4.3/bullet-service-0.4.3-embedded.jar
 cp $BULLET_EXAMPLES/web-service/example_kafka_pubsub_config.yaml $BULLET_HOME/service/
 cp $BULLET_EXAMPLES/web-service/example_columns.json $BULLET_HOME/service/
 </code></pre>
@@ -555,8 +555,8 @@ nvm use v6.9.4
 </code></pre>
 
 <h4 id="step-13-install-the-bullet-ui">Step 13: Install the Bullet UI</h4>
-<pre><code class="bash">curl -LO https://github.com/bullet-db/bullet-ui/releases/download/v0.5.0/bullet-ui-v0.5.0.tar.gz
-tar -xzf bullet-ui-v0.5.0.tar.gz
+<pre><code class="bash">curl -LO https://github.com/bullet-db/bullet-ui/releases/download/v0.6.1/bullet-ui-v0.6.1.tar.gz
+tar -xzf bullet-ui-v0.6.1.tar.gz
 cp $BULLET_EXAMPLES/ui/env-settings.json config/
 </code></pre>
 

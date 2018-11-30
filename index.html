@@ -510,7 +510,7 @@
 <p>See the <a href="ui/usage/">UI Usage section</a> for using the UI to build Bullet queries. This is the same UI you will build in the Quick Starts.</p>
 </li>
 <li>
-<p>See the API section (<a href="ws/api-json/">JSON</a>, <a href="ws/api-bql/">BQL</a>) for building Bullet API queries</p>
+<p>See the API section (<a href="ws/api-bql/">BQL</a>, or the more verbose, underlying query format - <a href="ws/api-json/">JSON</a>) for building Bullet API queries</p>
 </li>
 <li>
 <p>For examples using the API, see <a href="ws/examples/">Examples</a>. These are actual albeit cleansed queries sourced from the instance at Yahoo.</p>
@@ -519,7 +519,7 @@
 <h2 id="termination-conditions">Termination conditions</h2>
 <p>A Bullet query terminates and returns whatever has been collected so far when:</p>
 <ol>
-<li>A maximum duration is reached. In other words, a query runs for a defined time window.</li>
+<li>A maximum duration is reached. In other words, a query runs for a defined time window (which can be infinite).</li>
 <li>A maximum number of records is reached (only applicable for queries that are fetching raw data records and not aggregating).</li>
 </ol>
 <h2 id="filters">Filters</h2>
@@ -716,5 +716,5 @@ We currently support three different PubSub implementations:</p>
 
 <!--
 MkDocs version : 0.16.3
-Build Date UTC : 2018-11-30 02:47:36
+Build Date UTC : 2018-11-30 03:23:22
 -->
