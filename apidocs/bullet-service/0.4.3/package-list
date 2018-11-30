@@ -1,0 +1,7 @@
+com.yahoo.bullet.rest
+com.yahoo.bullet.rest.controller
+com.yahoo.bullet.rest.model
+com.yahoo.bullet.rest.pubsub
+com.yahoo.bullet.rest.query
+com.yahoo.bullet.rest.schema
+com.yahoo.bullet.rest.service
