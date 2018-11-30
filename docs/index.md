@@ -63,7 +63,7 @@ Bullet queries allow you to filter, project and aggregate data. You can also spe
 
 * See the [UI Usage section](ui/usage.md) for using the UI to build Bullet queries. This is the same UI you will build in the Quick Starts.
 
-* See the API section ([JSON](ws/api-json.md), [BQL](ws/api-bql.md)) for building Bullet API queries
+* See the API section ([BQL](ws/api-bql.md), or the more verbose, underlying query format - [JSON](ws/api-json.md)) for building Bullet API queries
 
 * For examples using the API, see [Examples](ws/examples.md). These are actual albeit cleansed queries sourced from the instance at Yahoo.
 
@@ -71,7 +71,7 @@ Bullet queries allow you to filter, project and aggregate data. You can also spe
 
 A Bullet query terminates and returns whatever has been collected so far when:
 
-1. A maximum duration is reached. In other words, a query runs for a defined time window.
+1. A maximum duration is reached. In other words, a query runs for a defined time window (which can be infinite).
 2. A maximum number of records is reached (only applicable for queries that are fetching raw data records and not aggregating).
 
 ## Filters
