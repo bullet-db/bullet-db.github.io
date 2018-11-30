@@ -14,7 +14,7 @@ You can install the required tool "mkdocs" like this (a "mkdocs" directory will 
 sudo pip install virtualenv
 virtualenv mkdocs
 source mkdocs/bin/activate
-pip install mkdocs==0.16.3 
+pip install mkdocs==0.16.3
 pip install mkdocs-cinder
 pip install git+git://github.com/twardoch/clinker-mktheme.git@master --upgrade
 ```
@@ -31,16 +31,16 @@ Running `make release` will save the docs currently in the master branch, and th
 
 **To add new JavaDocs:**
 * In src branch:
-    * Create new folder for the docs. e.g. `mkdir -p docs/java-docs/bullet-core/0.4.3/`
-    * Create a place-holder file. e.g. `cp docs/java-docs/bullet-core/0.4.2/index.html docs/java-docs/bullet-core/0.4.3/`
-    * Add the appropriate link in docs/releases.md (or wherever you want the link). e.g. `[JavaDocs](java-docs/bullet-core/0.4.3/index.html)`
+    * Create new folder for the docs. e.g. `mkdir -p docs/apidocs/bullet-core/0.4.3/`
+    * Create a place-holder file. e.g. `cp docs/apidocs/bullet-core/0.4.2/index.html docs/apidocs/bullet-core/0.4.3/`
+    * Add the appropriate link in docs/releases.md (or wherever you want the link). e.g. `[JavaDocs](apidocs/bullet-core/0.4.3/index.html)`
     * Commit these changes to the src branch. e.g. `git add -A && git commit -m "Added new JavaDocs"`
     * Push src branch to remote
 * Build a release: `make release` - this will leave you in the master branch with a new build ready NOT including the new docs you want to add
 * In master branch after doing "make release" BEFORE pushing to remote:
-    * Create new folder for the docs. e.g.: `mkdir -p java-docs/bullet-core/0.4.3`
-    * Copy the contents of the new JavaDocs into the new folder. e.g. `cp -r ~/PATH-TO-NEW-DOCS/bullet-core/target/site/apidocs/* java-docs/bullet-core/0.4.3/`
-    * Commit these changes to the master branch. e.g. `git add -A && git commit -m "Build at abc123 with new JavaDocs"`
+    * Create new folder for the docs. e.g.: `mkdir -p apidocs/bullet-core/0.4.3`
+    * Copy the contents of the new JavaDocs into the new folder. e.g. `cp -r ~/PATH-TO-NEW-DOCS/bullet-core/target/site/apidocs/* apidocs/bullet-core/0.4.3/`
+    * Commit these changes and amend the last commit (the regular build without your docs) to the master branch. e.g. `git add -A && git commit --amend`
     * Push master branch to remote
 
 ## Building the Documentation
