@@ -113,9 +113,7 @@ and `limit_clause` is one of
 
 * **String**: character string which can have escapes. Example: `'this is a string'`, `'this is ''another'' string'`.
 
-* **ColumnReference**: representation of a single column. Unquoted ColumnReference must start with a letter or `_`. Example: `column_name`.
-
-* **Dereference**: representation of a column field. Example: `column_name.field_name`.
+* **ColumnReference**: representation of a column field. Unquoted ColumnReference must start with a letter or `_`. Example: `column_name` or `column_name.foo`  or `column_name.foo.bar` or `column_name.0.bar`.
 
 * **All**: representation of all columns. Example: `*`. `column_name.*` is interpreted as `column_name`.
 
