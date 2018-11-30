@@ -161,7 +161,7 @@ launch_web_service() {
     sleep 15
 
     println "Getting one random record from Bullet through the Web Service..."
-    curl -s -H 'Content-Type: text/plain' -X POST -d '{\"aggregation\": {\"size\": 1}}' http://localhost:9999/api/bullet/sse-query
+    curl -s -H 'Content-Type: text/plain' -X POST -d '{"aggregation": {"size": 1}}' http://localhost:9999/api/bullet/sse-query
     println ""
     println "Getting column schema from the Web Service..."
     println ""
