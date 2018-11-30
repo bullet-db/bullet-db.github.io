@@ -88,7 +88,7 @@ We will run the bullet-spark backend using [Spark 2.2.1](https://spark.apache.or
 ```bash
 export BULLET_SPARK=$BULLET_HOME/backend/spark
 cd $BULLET_SPARK
-curl -O http://www-eu.apache.org/dist/spark/spark-2.2.1/spark-2.2.1-bin-hadoop2.7.tgz
+curl -O https://archive.apache.org/dist/spark/spark-2.2.1/spark-2.2.1-bin-hadoop2.7.tgz
 tar -xzf spark-2.2.1-bin-hadoop2.7.tgz
 ```
 
