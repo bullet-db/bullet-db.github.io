@@ -4,10 +4,10 @@ This section gets you running a mock instance of Bullet to play around with. The
 
 At the end of this section, you will have:
 
-  * Setup the Bullet topology using a custom spout on [bullet-storm-0.8.3](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.8.3)
-  * Setup the [Web Service](../ws/setup.md) talking to the topology and serving a schema for your UI using [bullet-service-0.3.0](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.3.0)
-  * Setup the [REST PubSub](../pubsub/rest.md) talking to the topology and Web Service using [bullet-core-0.4.2](https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.4.2).
-  * Setup the [UI](../ui/setup.md) talking to the Web Service using [bullet-ui-0.5.0](https://github.com/bullet-db/bullet-ui/releases/tag/v0.5.0)
+  * Setup the Bullet topology using a custom spout on [bullet-storm-0.8.5](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.8.5)
+  * Setup the [Web Service](../ws/setup.md) talking to the topology and serving a schema for your UI using [bullet-service-0.4.3](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.4.3)
+  * Setup the [REST PubSub](../pubsub/rest.md) talking to the topology and Web Service using [bullet-core-0.6.4](https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.6.4).
+  * Setup the [UI](../ui/setup.md) talking to the Web Service using [bullet-ui-0.6.1](https://github.com/bullet-db/bullet-ui/releases/tag/v0.6.1)
 
 **Prerequisites**
 
@@ -43,7 +43,7 @@ mkdir -p $BULLET_HOME/backend/storm
 mkdir -p $BULLET_HOME/service
 mkdir -p $BULLET_HOME/ui
 cd $BULLET_HOME
-curl -LO https://github.com/bullet-db/bullet-db.github.io/releases/download/v0.5.2/examples_artifacts.tar.gz
+curl -LO https://github.com/bullet-db/bullet-db.github.io/releases/download/v0.6.0/examples_artifacts.tar.gz
 tar -xzf examples_artifacts.tar.gz
 export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 ```
@@ -133,7 +133,7 @@ Visit the UI and see if the topology is up. You should see the ```DataSource``` 
 
 ```bash
 cd $BULLET_HOME/service
-curl -Lo bullet-service.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/0.3.0/bullet-service-0.3.0-embedded.jar
+curl -Lo bullet-service.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/0.4.3/bullet-service-0.4.3-embedded.jar
 cp $BULLET_EXAMPLES/web-service/example* $BULLET_HOME/service/
 ```
 
@@ -168,8 +168,8 @@ nvm use v6.9.4
 
 ```bash
 cd $BULLET_HOME/ui
-curl -LO https://github.com/bullet-db/bullet-ui/releases/download/src/bullet-ui-v0.5.0.tar.gz
-tar -xzf bullet-ui-v0.5.0.tar.gz
+curl -LO https://github.com/bullet-db/bullet-ui/releases/download/src/bullet-ui-v0.6.1.tar.gz
+tar -xzf bullet-ui-v0.6.1.tar.gz
 cp $BULLET_EXAMPLES/ui/env-settings.json config/
 ```
 
