@@ -363,7 +363,7 @@
         {
             "location": "/backend/ingestion/", 
             "text": "Data Ingestion\n\n\nBullet operates on a generic data container that it understands. In order to get Bullet to operate on your data, you need to convert your data records into this format. This conversion is usually done when you plug in your data source into Bullet. Bullet does not make any assumptions on where you get this data from. It could be \nKafka\n, \nRabbitMQ\n, or something else.\n\n\n\n\nIf you are trying to set up Bullet...\n\n\nThe rest of this page gives more information about the Record container and how to depend on it in code directly. If you are setting up Bullet, the Record is already included by default with the Bullet artifact. You can head on over to \nsetting up the Storm topology\n to build the piece that gets your data into the Record container.\n\n\n\n\nBullet Record\n\n\nThe Bullet backend processes data that must be stored in a \nBullet Record\n which is an abstract Java class that can\nbe implemented as to be optimized for different backends or use-cases.\n\n\nThere are currently two concrete implementations of BulletRecord:\n\n\n\n\nSimpleBulletRecord\n which is based on a simple Java HashMap\n\n\nAvroBulletRecord\n which uses \nAvro\n for serialization\n\n\n\n\nTypes\n\n\nData placed into a Bullet Record is strongly typed. We support these types currently:\n\n\nPrimitives\n\n\n\n\nBoolean\n\n\nInteger\n\n\nLong\n\n\nFloat\n\n\nDouble\n\n\nString\n\n\n\n\nComplex\n\n\n\n\nMap of Strings to any of the \nPrimitives\n\n\nMap of Strings to any Map in 1\n\n\nList of any Map in 1\n\n\n\n\nWith these types, it is unlikely you would have data that cannot be represented as Bullet Record but if you do, please let us know and we are more than willing to accommodate.\n\n\nInstalling the Record directly\n\n\nGenerally, you depend on the Bullet Core artifact for your Stream Processor when you plug in the piece that gets your data into the Stream processor. The Bullet Core artifact already brings in the Bullet Record containers as well. See the usage for the \nStorm\n for an example.\n\n\nHowever, if you need it, the artifacts are available through JCenter to depend on them in code directly. You will need to add the repository. Below is a Maven example:\n\n\nrepositories\n\n    \nrepository\n\n        \nsnapshots\n\n            \nenabled\nfalse\n/enabled\n\n        \n/snapshots\n\n        \nid\ncentral\n/id\n\n        \nname\nbintray\n/name\n\n        \nurl\nhttp://jcenter.bintray.com\n/url\n\n    \n/repository\n\n\n/repositories\n\n\n\n\n\ndependency\n\n  \ngroupId\ncom.yahoo.bullet\n/groupId\n\n  \nartifactId\nbullet-record\n/artifactId\n\n  \nversion\n${bullet.version}\n/version\n\n\n/dependency\n\n\n\n\n\nIf you just need the jar artifact, you can download it directly from \nJCenter\n.\n\n\nYou can also add \nclassifier\nsources\n/classifier\n  or \nclassifier\njavadoc\n/classifier\n if you want the sources or the javadoc.", 
-            "title": "Getting your data into Bullet"
+            "title": "Record Container"
         }, 
         {
             "location": "/backend/ingestion/#data-ingestion", 
@@ -394,6 +394,16 @@
             "location": "/backend/ingestion/#installing-the-record-directly", 
             "text": "Generally, you depend on the Bullet Core artifact for your Stream Processor when you plug in the piece that gets your data into the Stream processor. The Bullet Core artifact already brings in the Bullet Record containers as well. See the usage for the  Storm  for an example.  However, if you need it, the artifacts are available through JCenter to depend on them in code directly. You will need to add the repository. Below is a Maven example:  repositories \n     repository \n         snapshots \n             enabled false /enabled \n         /snapshots \n         id central /id \n         name bintray /name \n         url http://jcenter.bintray.com /url \n     /repository  /repositories   dependency \n   groupId com.yahoo.bullet /groupId \n   artifactId bullet-record /artifactId \n   version ${bullet.version} /version  /dependency   If you just need the jar artifact, you can download it directly from  JCenter .  You can also add  classifier sources /classifier   or  classifier javadoc /classifier  if you want the sources or the javadoc.", 
             "title": "Installing the Record directly"
+        }, 
+        {
+            "location": "/backend/dsl/", 
+            "text": "Coming soon!", 
+            "title": "DSL"
+        }, 
+        {
+            "location": "/backend/dsl/#coming-soon", 
+            "text": "", 
+            "title": "Coming soon!"
         }, 
         {
             "location": "/backend/storm-architecture/", 
@@ -1034,6 +1044,16 @@
             "location": "/pubsub/rest/#plug-into-the-web-service", 
             "text": "Configure the Web Service to use the REST PubSub:  bullet.pubsub.context.name:  QUERY_SUBMISSION \nbullet.pubsub.class.name:  com.yahoo.bullet.pubsub.rest.RESTPubSub \nbullet.pubsub.rest.connect.timeout.ms: 5000\nbullet.pubsub.rest.subscriber.max.uncommitted.messages: 100\nbullet.pubsub.rest.result.subscriber.min.wait.ms: 10\nbullet.pubsub.rest.result.url:  http://localhost:9901/api/bullet/pubsub/result \nbullet.pubsub.rest.query.urls:\n    -  http://localhost:9901/api/bullet/pubsub/query      Setting Name  Default Value  Meaning      bullet.pubsub.context.name  QUERY_SUBMISSION  Tells the PubSub that it is running in the Web Service    bullet.pubsub.class.name  com.yahoo.bullet.pubsub.rest.RESTPubSub  Tells Bullet to use this class for its PubSub    bullet.pubsub.rest.connect.timeout.ms  5000  Sets the HTTP connect timeout to 5 s    bullet.pubsub.rest.subscriber.max.uncommitted.messages  100  This is the maximum number of uncommitted messages allowed to be read by the subscriber before blocking    bullet.pubsub.rest.result.subscriber.min.wait.ms  10  This is used to avoid making an HTTP request too rapidly and overloading the HTTP endpoint. It will force the Web Service to poll the query endpoint at most once every 10ms    bullet.pubsub.rest.result.url  http://localhost:9901/api/bullet/pubsub/result  This is the endpoint from which the Web Service should read results. This is the hostname of that machine the Web Service is running on (or  localhost )    bullet.pubsub.rest.query.urls  http://localhost:9901/api/bullet/pubsub/query  In the Web Service, this should contain  exactly one  URL (the URL to which queries should be written). This is the hostname of that machine the Web Service is running on (or  localhost )", 
             "title": "Plug into the Web Service"
+        }, 
+        {
+            "location": "/pubsub/pulsar/", 
+            "text": "Coming soon!", 
+            "title": "Pulsar"
+        }, 
+        {
+            "location": "/pubsub/pulsar/#coming-soon", 
+            "text": "", 
+            "title": "Coming soon!"
         }, 
         {
             "location": "/pubsub/storm-drpc/", 
