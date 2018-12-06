@@ -12,7 +12,9 @@ pages:
   - Spark: quick-start/spark.md
   - Storm: quick-start/storm.md
 - Backend:
-  - Getting your data into Bullet: backend/ingestion.md
+  - Data Ingestion:
+    - Record Container: backend/ingestion.md
+    - DSL: backend/dsl.md
   - Storm:
     - Architecture: backend/storm-architecture.md
     - Setup: backend/storm-setup.md
@@ -25,6 +27,7 @@ pages:
   - Architecture: pubsub/architecture.md
   - Kafka: pubsub/kafka.md
   - REST: pubsub/rest.md
+  - Pulsar: pubsub/pulsar.md
   - Storm DRPC: pubsub/storm-drpc.md
 - Web Service:
   - Setup: ws/setup.md
