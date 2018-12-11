@@ -1,4 +1,4 @@
-  ![Bullet](../img/bullet-logo.png)
+    ![Bullet](img/bullet-logo.png)
 
 * A real-time query engine for very large data streams
 
@@ -45,7 +45,7 @@ See [Quick Start](quick-start/spark.md) to set up Bullet locally using Spark Str
 To set up Bullet on a real data stream, you need:
 
 1. To setup the Bullet Backend on a stream processing framework. Currently, we support [Bullet on Storm](backend/storm-setup.md) and [Bullet on Spark](backend/spark-setup.md).
-    1. Plug in your source of data. See [Getting your data into Bullet](backend/ingestion.md) for details
+    1. Plug in your source of data. See [Data Ingestion](backend/ingestion.md) or the [DSL](backend/dsl.md) for details
     2. Consume your data stream
 2. The [Web Service](ws/setup.md) set up to convey queries and return results back from the backend
 3. To choose a [PubSub implementation](pubsub/architecture.md) that connects the Web Service and the Backend. We currently support [Kafka](pubsub/kafka.md) and a [REST PubSub](pubsub/rest.md) on any Backend and [Storm DRPC](pubsub/storm-drpc.md) for the Storm Backend.
@@ -111,6 +111,17 @@ Currently we support ```GROUP``` aggregations with the following operations:
 | MAX            | Returns the maximum of the non-null values in the provided field for all the elements in the group |
 | AVG            | Computes the average of the non-null values in the provided field for all the elements in the group |
 
+If you ```GROUP``` with no operation, you are performing a ```DISTINCT``` on the field(s). If you ```GROUP``` with no field(s), you are performing the operation(s) across all your data.
+
+## Post Aggregations
+
+Post Aggregations let you perform some operation before finalizing and returning the results to you. This is applied every time a result is returned to you (see below). The current operations supported are:
+
+| Post Aggregation | Meaning |
+| ---------------- | ------- |
+| ORDER BY         | Orders your result by your specified fields in ascending or descending order |
+| COMPUTATION      | Specify an expression (can be nested expressions) [here](ws/api-json.md#expressions) to do math with or cast fields in your result |
+
 ## Windows
 
 Windows in a Bullet query allow you to specify how often you'd like Bullet to return results.
@@ -162,10 +173,11 @@ Implementations of [Bullet on Storm](backend/storm-architecture.md) and [Bullet 
 ## PubSub
 
 The PubSub is responsible for transmitting queries from the API to the Backend and returning results back from the Backend to the clients. It decouples whatever particular Backend you are using with the API.
-We currently support three different PubSub implementations:
+We currently support four different PubSub implementations:
 
 * [Kafka](pubsub/kafka.md)
 * [REST](pubsub/rest.md)
+* [Pulsar](pubsub/pulsar.md)
 * [Storm DRPC](pubsub/storm-drpc.md) (only for non-windowed queries)
 
 You can also very easily [implement your own](pubsub/architecture.md#implementing-your-own-pubsub) by defining a few interfaces that we provide.

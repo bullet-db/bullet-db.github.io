@@ -2,39 +2,48 @@
 
 This section gives a comprehensive overview of the Web Service API for launching Bullet JSON queries.
 
-The JSON API is the actual Query format that is expected by the backend. [The BQL API](api-bql.md) is a more
-user-friendly API which can also be used - the Web Service will automatically detect the BQL query and convert the
-query to this JSON format before submitting it to the backend.
+The JSON API is the actual Query format that is expected by the backend. [The BQL API](api-bql.md) is a more user-friendly API which can also be used - the Web Service will automatically detect the BQL query and convert the query to this JSON format before submitting it to the backend. With the addition of Post Aggregations and Expressions,
+it is a lot easier to use BQL rather than construct the JSON. The Bullet Web Service also provides [an API](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.4.2) to convert BQL to JSON if you so desire.
 
 * For info on how to use the UI, see the [UI Usage section](../ui/usage.md)
 * For examples of specific queries see the [Examples](examples.md) section
+
+## Constituents of a Bullet Query
 
 The main constituents of a Bullet JSON query are:
 
 * __filters__, which determine which records will be consumed by your query
 * __projection__, which determines which fields will be projected in the resulting output from Bullet
-* __aggregation__, which allows users to aggregate data and perform aggregation operations
+* __aggregation__, which allows you to aggregate data and perform aggregation operations
+* __postAggregations__, which allows you to perform post aggregations before the result is returned
 * __window__, which can be used to return incremental results on "windowed" data
 * __duration__, which determines the maximum duration of the query in milliseconds
 
-Fields inside maps can be accessed using the '.' notation in queries. For example,
-
-`myMap.key`
-
-will access the "key" field inside the "myMap" map. There is no support for accessing fields inside Lists yet. Only the entire object can be operated on for now.
 
 The main constituents of a Bullet query listed above create the top level fields of the Bullet query:
 ```javascript
 {
     "filters": [{}, {}, ...],
     "projection": {},
-    "aggregation": {}.
+    "aggregation": {},
+    "postAggregations": [{}, {}, ...],
     "window": {},
     "duration": 20000
 }
 ```
 
-We will describe how to specify each of these top-level fields below:
+### Accessing Complex Fields
+
+Fields inside maps and lists can be accessed using the '.' notation in queries.
+
+| Complex Field Type       | Example                |
+| ------------------------ | ---------------------- |
+| Map of Primitive         | `myMap.key`            |
+| Map of Map of Primitive  | `myMap.myInnerMap.key` |
+| List of Map/Primitive    | `myList.0`             |
+| List of Map of Primitive | `myListOfMaps.4.key`   |
+
+We will now describe how to specify each of these top-level fields below:
 
 ## Filters
 
@@ -102,13 +111,15 @@ The format for a Relational filter is:
     "operation": "== | != | <= | >= | < | > | RLIKE | SIZEIS | CONTAINSKEY | CONTAINSVALUE"
     "field": "record_field_name | map_field.subfield",
     "values": [
-        { "kind": "VALUE", "value": "foo"},
-        { "kind": "FIELD", "value": "another_record_field_name"}
+        { "kind": "VALUE", "type": "BOOLEAN | INTEGER | LONG | FLOAT | DOUBLE | STRING | MAP | LIST", "value": "foo"},
+        { "kind": "FIELD", "type": "BOOLEAN | INTEGER | LONG | FLOAT | DOUBLE | STRING | MAP | LIST", "value": "another_record_field_name"}
     ]
 }
 ```
 
-Note that you may specify ```VALUE``` or ```KIND``` currently for the ```kind``` key in the entries in the ```values``` field above, denoting the type of value this is. As a shortcut, you can also specify the following format for ```VALUE``` kind.
+Note that you may specify ```VALUE``` or ```KIND``` currently for the ```kind``` key in the entries in the ```values``` field above, denoting the type of value this is. The ```type``` field is a *optional* and is provided to change the type of the provided ```kind``` (value or field) to the provided type. If you do not provide this type, the value or field provided here will be *casted* to the type of the field (the LHS of the filter).
+
+As a shortcut, you can also specify the following format for ```VALUE``` kind.
 
 ```javascript
 {
@@ -302,6 +313,122 @@ The following attributes are supported for ```TOP K```:
 ```
 
 Note that the ```K``` in ```TOP K``` is specified using the ```size``` field in the ```aggregation``` object.
+
+## Post Aggregations
+
+Post Aggregations allow you to perform some final operations on the aggregated data before it is returned, as the name suggests. It is **optional** and it is performed for each window. For example, you can cast your result field into another type or perform some math.
+
+| Post Aggregation | Meaning |
+| ---------------- | ------- |
+| ORDER BY         | Orders your result by your specified fields in ascending or descending order |
+| COMPUTATION      | Specify an expression (can be nested expressions) to do math with or cast fields in your result |
+
+The ```"postAggregations"``` field takes a list of these Post Aggregation entries. The __order__ of the various post aggregations in this list determines how they are evaluated. Post aggregations can refer to previous results of post aggregations in the list to chain them.
+
+### ORDER BY
+
+This orders result records based on given fields (in ascending order by default). To sort the records in descending order, use the ```DESC``` ```direction```. You can specify any fields in each record or from previous post aggregations. Note that the ordering is fully typed, so the types of the fields will be used. If multiple fields are specified, ties will be broken from the list of fields from left to right.
+
+```javascript
+{
+  "type": "ORDERBY",
+  "fields": ["A", "B"],
+  "direction": "DESC"
+}
+```
+
+### COMPUTATION
+
+This lets you perform arithmetic on the results in a fully nested way. We currently support ```+```, ```-```, ```*``` and ```/``` as operations. The format for this is:
+
+```javascript
+{
+  "type": "COMPUTATION",
+  "expression": {}
+}
+```
+
+#### Expressions
+
+For future extensibility, the ```expression``` in the post aggregation is free form. Currently, we support binary arithmetic operations that can be nested (implying parentheses). This forms a tree of expressions. The leaves of this tree resolve atomic values such as fields or constants. So, there are two kinds of expressions.
+
+##### Binary Expressions
+
+```javascript
+{
+  "operation": "+",
+  "left": {},
+  "right": {},
+  "type": "INTEGER | FLOAT | BOOLEAN | DOUBLE | LONG | STRING"
+}
+```
+, where ```left``` and ```right``` are themselves expressions and ```type``` is used for force cast the result to the given type.
+
+##### Unary Expressions
+
+```javascript
+{
+  "value": {
+    "kind": "FIELD | VALUE",
+    "value": "foo.bar",
+    "type": "INTEGER | FLOAT | BOOLEAN | DOUBLE | LONG | STRING"
+  }
+}
+```
+
+These is the same definition value used for filtering mentioned above and can be used to extract fields from the record as your chosen type or use constants as your chosen type.
+
+If casting __fails__ in any of the expressions, the expression is ignored.
+
+Putting all these together, here is a complete example of post aggregation. This first force computes a new field C, which is the result of doing ```(CAST(foo.bar, LONG) + CAST((CAST(1.2, DOUBLE)/CAST(1, INTEGER)), FLOAT)``` or (C: foo.bar + (1.2/1) for each record in the result window and then orders the result by foo.baz first then by the new the field C.
+
+##### Post Aggregation Example
+
+```javascript
+{
+   "postAggregations":[
+      {
+         "type":"COMPUTATION",
+         "expression":{
+            "operation":"+",
+            "left":{
+               "value":{
+                  "kind":"FIELD",
+                  "value":"foo.bar",
+                  "type":"LONG"
+               }
+            },
+            "right":{
+               "operation":"/",
+               "left":{
+                  "value":{
+                     "kind":"VALUE",
+                     "value":"1.2",
+                     "type":"DOUBLE",
+                  }
+               },
+               "right":{
+                  "value":{
+                     "kind":"VALUE",
+                     "value":"1",
+                     "type":"INTEGER"
+                  }
+               },
+               "type":"FLOAT"
+            },
+            "newName":"C"
+         }
+      },
+      {
+         "type":"ORDERBY",
+         " fields":[
+            "foo.baz", "C"
+         ],
+         "direction":"ASC"
+      }
+   ]
+}
+```
 
 ## Window
 
