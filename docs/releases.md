@@ -233,6 +233,24 @@ A PubSub implementation using Kafka as the backing PubSub. Can be used with any 
 | 2017-09-27   | [**0.1.2**](https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-0.1.2) | Fixes a bug with config loading | |
 | 2017-09-22   | [**0.1.1**](https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-0.1.1) | First release using the PubSub interfaces | |
 
+## Bullet Pulsar
+
+A PubSub implementation using Pulsar as the backing PubSub. Can be used with any Bullet Backend.
+
+|                            |                 |
+| -------------------------- | --------------- |
+| **Repository**             | [https://github.com/bullet-db/bullet-pulsar](https://github.com/bullet-db/bullet-pulsar) |
+| **Issues**                 | [https://github.com/bullet-db/bullet-pulsar/issues](https://github.com/bullet-db/bullet-pulsar/issues) |
+| **Last Tag**               | [![Latest tag](https://img.shields.io/github/release/bullet-db/bullet-pulsar/all.svg)](https://github.com/bullet-db/bullet-pulsar/tags) |
+| **Latest Artifact**        | [![Download](https://api.bintray.com/packages/yahoo/maven/bullet-pulsar/images/download.svg)](https://bintray.com/yahoo/maven/bullet-pulsar/_latestVersion) |
+| **Package Manager Setup**  | [Setup for Maven, Gradle etc](https://bintray.com/bintray/jcenter?filterByPkgName=bullet-pulsar) |
+
+### Releases
+
+|    Date      |                                  Release                                                 | Highlights | APIDocs |
+| ------------ | ---------------------------------------------------------------------------------------- | ---------- | ------- |
+| 2018-12-10   | [**0.1.0**](https://github.com/bullet-db/bullet-pulsar/releases/tag/bullet-pulsar-0.1.0) | First release using the PubSub interfaces | [JavaDocs](apidocs/bullet-pulsar/0.1.0/index.html) |
+
 ## Bullet BQL
 
 A library facilitating the conversion from Bullet BQL queries to Bullet JSON queries
