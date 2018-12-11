@@ -414,6 +414,11 @@
                     </li>
             
                     <li class="second-level">
+                        <a href="#post-aggregations">Post Aggregations</a>
+                        
+                    </li>
+            
+                    <li class="second-level">
                         <a href="#windows">Windows</a>
                         
                     </li>
@@ -511,7 +516,7 @@
 <p>To set up Bullet on a real data stream, you need:</p>
 <ol>
 <li>To setup the Bullet Backend on a stream processing framework. Currently, we support <a href="backend/storm-setup/">Bullet on Storm</a> and <a href="backend/spark-setup/">Bullet on Spark</a>.<ol>
-<li>Plug in your source of data. See <a href="backend/ingestion/">Getting your data into Bullet</a> for details</li>
+<li>Plug in your source of data. See <a href="backend/ingestion/">Data Ingestion</a> or the <a href="backend/dsl/">DSL</a> for details</li>
 <li>Consume your data stream</li>
 </ol>
 </li>
@@ -629,6 +634,27 @@
 </tr>
 </tbody>
 </table>
+<p>If you <code>GROUP</code> with no operation, you are performing a <code>DISTINCT</code> on the field(s). If you <code>GROUP</code> with no field(s), you are performing the operation(s) across all your data.</p>
+<h2 id="post-aggregations">Post Aggregations</h2>
+<p>Post Aggregations let you perform some operation before finalizing and returning the results to you. This is applied every time a result is returned to you (see below). The current operations supported are:</p>
+<table>
+<thead>
+<tr>
+<th>Post Aggregation</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ORDER BY</td>
+<td>Orders your result by your specified fields in ascending or descending order</td>
+</tr>
+<tr>
+<td>COMPUTATION</td>
+<td>Specify an expression (can be nested expressions) <a href="ws/api-json/#expressions">here</a> to do math with or cast fields in your result</td>
+</tr>
+</tbody>
+</table>
 <h2 id="windows">Windows</h2>
 <p>Windows in a Bullet query allow you to specify how often you'd like Bullet to return results.</p>
 <p>For example, you could launch a query for 2 minutes, and have Bullet return a COUNT DISTINCT on a particular field every 3 seconds:</p>
@@ -658,10 +684,11 @@
 <p>Implementations of <a href="backend/storm-architecture/">Bullet on Storm</a> and <a href="backend/spark-architecture/">Bullet on Spark</a> are currently supported.</p>
 <h2 id="pubsub">PubSub</h2>
 <p>The PubSub is responsible for transmitting queries from the API to the Backend and returning results back from the Backend to the clients. It decouples whatever particular Backend you are using with the API.
-We currently support three different PubSub implementations:</p>
+We currently support four different PubSub implementations:</p>
 <ul>
 <li><a href="pubsub/kafka/">Kafka</a></li>
 <li><a href="pubsub/rest/">REST</a></li>
+<li><a href="pubsub/pulsar/">Pulsar</a></li>
 <li><a href="pubsub/storm-drpc/">Storm DRPC</a> (only for non-windowed queries)</li>
 </ul>
 <p>You can also very easily <a href="pubsub/architecture/#implementing-your-own-pubsub">implement your own</a> by defining a few interfaces that we provide.</p>
@@ -737,5 +764,5 @@ We currently support three different PubSub implementations:</p>
 
 <!--
 MkDocs version : 0.16.3
-Build Date UTC : 2018-12-06 21:48:15
+Build Date UTC : 2018-12-11 01:40:04
 -->

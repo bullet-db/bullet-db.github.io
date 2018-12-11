@@ -372,6 +372,18 @@
             <ul class="nav">
                 
                     <li class="second-level">
+                        <a href="#constituents-of-a-bullet-query">Constituents of a Bullet Query</a>
+                        <ul class="nav">
+                        
+                            <li class="third-level">
+                                <a href="#accessing-complex-fields">Accessing Complex Fields</a>
+                                
+                            </li>
+                        
+                        </ul>
+                    </li>
+            
+                    <li class="second-level">
                         <a href="#filters">Filters</a>
                         <ul class="nav">
                         
@@ -399,6 +411,23 @@
                         
                             <li class="third-level">
                                 <a href="#attributes">Attributes</a>
+                                
+                            </li>
+                        
+                        </ul>
+                    </li>
+            
+                    <li class="second-level">
+                        <a href="#post-aggregations">Post Aggregations</a>
+                        <ul class="nav">
+                        
+                            <li class="third-level">
+                                <a href="#order-by">ORDER BY</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#computation">COMPUTATION</a>
                                 
                             </li>
                         
@@ -446,35 +475,62 @@
 
 <h1 id="bullet-json-api">Bullet JSON API</h1>
 <p>This section gives a comprehensive overview of the Web Service API for launching Bullet JSON queries.</p>
-<p>The JSON API is the actual Query format that is expected by the backend. <a href="../api-bql/">The BQL API</a> is a more
-user-friendly API which can also be used - the Web Service will automatically detect the BQL query and convert the
-query to this JSON format before submitting it to the backend.</p>
+<p>The JSON API is the actual Query format that is expected by the backend. <a href="../api-bql/">The BQL API</a> is a more user-friendly API which can also be used - the Web Service will automatically detect the BQL query and convert the query to this JSON format before submitting it to the backend. With the addition of Post Aggregations and Expressions,
+it is a lot easier to use BQL rather than construct the JSON. The Bullet Web Service also provides <a href="https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.4.2">an API</a> to convert BQL to JSON if you so desire.</p>
 <ul>
 <li>For info on how to use the UI, see the <a href="../../ui/usage/">UI Usage section</a></li>
 <li>For examples of specific queries see the <a href="../examples/">Examples</a> section</li>
 </ul>
+<h2 id="constituents-of-a-bullet-query">Constituents of a Bullet Query</h2>
 <p>The main constituents of a Bullet JSON query are:</p>
 <ul>
 <li><strong>filters</strong>, which determine which records will be consumed by your query</li>
 <li><strong>projection</strong>, which determines which fields will be projected in the resulting output from Bullet</li>
-<li><strong>aggregation</strong>, which allows users to aggregate data and perform aggregation operations</li>
+<li><strong>aggregation</strong>, which allows you to aggregate data and perform aggregation operations</li>
+<li><strong>postAggregations</strong>, which allows you to perform post aggregations before the result is returned</li>
 <li><strong>window</strong>, which can be used to return incremental results on "windowed" data</li>
 <li><strong>duration</strong>, which determines the maximum duration of the query in milliseconds</li>
 </ul>
-<p>Fields inside maps can be accessed using the '.' notation in queries. For example,</p>
-<p><code>myMap.key</code></p>
-<p>will access the "key" field inside the "myMap" map. There is no support for accessing fields inside Lists yet. Only the entire object can be operated on for now.</p>
 <p>The main constituents of a Bullet query listed above create the top level fields of the Bullet query:</p>
 <pre><code class="javascript">{
     &quot;filters&quot;: [{}, {}, ...],
     &quot;projection&quot;: {},
-    &quot;aggregation&quot;: {}.
+    &quot;aggregation&quot;: {},
+    &quot;postAggregations&quot;: [{}, {}, ...],
     &quot;window&quot;: {},
     &quot;duration&quot;: 20000
 }
 </code></pre>
 
-<p>We will describe how to specify each of these top-level fields below:</p>
+<h3 id="accessing-complex-fields">Accessing Complex Fields</h3>
+<p>Fields inside maps and lists can be accessed using the '.' notation in queries.</p>
+<table>
+<thead>
+<tr>
+<th>Complex Field Type</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Map of Primitive</td>
+<td><code>myMap.key</code></td>
+</tr>
+<tr>
+<td>Map of Map of Primitive</td>
+<td><code>myMap.myInnerMap.key</code></td>
+</tr>
+<tr>
+<td>List of Map/Primitive</td>
+<td><code>myList.0</code></td>
+</tr>
+<tr>
+<td>List of Map of Primitive</td>
+<td><code>myListOfMaps.4.key</code></td>
+</tr>
+</tbody>
+</table>
+<p>We will now describe how to specify each of these top-level fields below:</p>
 <h2 id="filters">Filters</h2>
 <p>Bullet supports two kinds of filters:</p>
 <ol>
@@ -580,13 +636,14 @@ casted to the types on the LHS, those items will be ignored for the comparison.<
     &quot;operation&quot;: &quot;== | != | &lt;= | &gt;= | &lt; | &gt; | RLIKE | SIZEIS | CONTAINSKEY | CONTAINSVALUE&quot;
     &quot;field&quot;: &quot;record_field_name | map_field.subfield&quot;,
     &quot;values&quot;: [
-        { &quot;kind&quot;: &quot;VALUE&quot;, &quot;value&quot;: &quot;foo&quot;},
-        { &quot;kind&quot;: &quot;FIELD&quot;, &quot;value&quot;: &quot;another_record_field_name&quot;}
+        { &quot;kind&quot;: &quot;VALUE&quot;, &quot;type&quot;: &quot;BOOLEAN | INTEGER | LONG | FLOAT | DOUBLE | STRING | MAP | LIST&quot;, &quot;value&quot;: &quot;foo&quot;},
+        { &quot;kind&quot;: &quot;FIELD&quot;, &quot;type&quot;: &quot;BOOLEAN | INTEGER | LONG | FLOAT | DOUBLE | STRING | MAP | LIST&quot;, &quot;value&quot;: &quot;another_record_field_name&quot;}
     ]
 }
 </code></pre>
 
-<p>Note that you may specify <code>VALUE</code> or <code>KIND</code> currently for the <code>kind</code> key in the entries in the <code>values</code> field above, denoting the type of value this is. As a shortcut, you can also specify the following format for <code>VALUE</code> kind.</p>
+<p>Note that you may specify <code>VALUE</code> or <code>KIND</code> currently for the <code>kind</code> key in the entries in the <code>values</code> field above, denoting the type of value this is. The <code>type</code> field is a <em>optional</em> and is provided to change the type of the provided <code>kind</code> (value or field) to the provided type. If you do not provide this type, the value or field provided here will be <em>casted</em> to the type of the field (the LHS of the filter).</p>
+<p>As a shortcut, you can also specify the following format for <code>VALUE</code> kind.</p>
 <pre><code class="javascript">{
     &quot;operation&quot;: &quot;== | != | &lt;= | &gt;= | &lt; | &gt; | RLIKE | SIZEIS | CONTAINSKEY | CONTAINSVALUE&quot;
     &quot;field&quot;: &quot;record_field_name | map_field.subfield&quot;,
@@ -817,6 +874,115 @@ perform the average across the numeric values for a field only.</p>
 </code></pre>
 
 <p>Note that the <code>K</code> in <code>TOP K</code> is specified using the <code>size</code> field in the <code>aggregation</code> object.</p>
+<h2 id="post-aggregations">Post Aggregations</h2>
+<p>Post Aggregations allow you to perform some final operations on the aggregated data before it is returned, as the name suggests. It is <strong>optional</strong> and it is performed for each window. For example, you can cast your result field into another type or perform some math.</p>
+<table>
+<thead>
+<tr>
+<th>Post Aggregation</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ORDER BY</td>
+<td>Orders your result by your specified fields in ascending or descending order</td>
+</tr>
+<tr>
+<td>COMPUTATION</td>
+<td>Specify an expression (can be nested expressions) to do math with or cast fields in your result</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>"postAggregations"</code> field takes a list of these Post Aggregation entries. The <strong>order</strong> of the various post aggregations in this list determines how they are evaluated. Post aggregations can refer to previous results of post aggregations in the list to chain them.</p>
+<h3 id="order-by">ORDER BY</h3>
+<p>This orders result records based on given fields (in ascending order by default). To sort the records in descending order, use the <code>DESC</code> <code>direction</code>. You can specify any fields in each record or from previous post aggregations. Note that the ordering is fully typed, so the types of the fields will be used. If multiple fields are specified, ties will be broken from the list of fields from left to right.</p>
+<pre><code class="javascript">{
+  &quot;type&quot;: &quot;ORDERBY&quot;,
+  &quot;fields&quot;: [&quot;A&quot;, &quot;B&quot;],
+  &quot;direction&quot;: &quot;DESC&quot;
+}
+</code></pre>
+
+<h3 id="computation">COMPUTATION</h3>
+<p>This lets you perform arithmetic on the results in a fully nested way. We currently support <code>+</code>, <code>-</code>, <code>*</code> and <code>/</code> as operations. The format for this is:</p>
+<pre><code class="javascript">{
+  &quot;type&quot;: &quot;COMPUTATION&quot;,
+  &quot;expression&quot;: {}
+}
+</code></pre>
+
+<h4 id="expressions">Expressions</h4>
+<p>For future extensibility, the <code>expression</code> in the post aggregation is free form. Currently, we support binary arithmetic operations that can be nested (implying parentheses). This forms a tree of expressions. The leaves of this tree resolve atomic values such as fields or constants. So, there are two kinds of expressions.</p>
+<h5 id="binary-expressions">Binary Expressions</h5>
+<pre><code class="javascript">{
+  &quot;operation&quot;: &quot;+&quot;,
+  &quot;left&quot;: {},
+  &quot;right&quot;: {},
+  &quot;type&quot;: &quot;INTEGER | FLOAT | BOOLEAN | DOUBLE | LONG | STRING&quot;
+}
+</code></pre>
+
+<p>, where <code>left</code> and <code>right</code> are themselves expressions and <code>type</code> is used for force cast the result to the given type.</p>
+<h5 id="unary-expressions">Unary Expressions</h5>
+<pre><code class="javascript">{
+  &quot;value&quot;: {
+    &quot;kind&quot;: &quot;FIELD | VALUE&quot;,
+    &quot;value&quot;: &quot;foo.bar&quot;,
+    &quot;type&quot;: &quot;INTEGER | FLOAT | BOOLEAN | DOUBLE | LONG | STRING&quot;
+  }
+}
+</code></pre>
+
+<p>These is the same definition value used for filtering mentioned above and can be used to extract fields from the record as your chosen type or use constants as your chosen type.</p>
+<p>If casting <strong>fails</strong> in any of the expressions, the expression is ignored.</p>
+<p>Putting all these together, here is a complete example of post aggregation. This first force computes a new field C, which is the result of doing <code>(CAST(foo.bar, LONG) + CAST((CAST(1.2, DOUBLE)/CAST(1, INTEGER)), FLOAT)</code> or (C: foo.bar + (1.2/1) for each record in the result window and then orders the result by foo.baz first then by the new the field C.</p>
+<h5 id="post-aggregation-example">Post Aggregation Example</h5>
+<pre><code class="javascript">{
+   &quot;postAggregations&quot;:[
+      {
+         &quot;type&quot;:&quot;COMPUTATION&quot;,
+         &quot;expression&quot;:{
+            &quot;operation&quot;:&quot;+&quot;,
+            &quot;left&quot;:{
+               &quot;value&quot;:{
+                  &quot;kind&quot;:&quot;FIELD&quot;,
+                  &quot;value&quot;:&quot;foo.bar&quot;,
+                  &quot;type&quot;:&quot;LONG&quot;
+               }
+            },
+            &quot;right&quot;:{
+               &quot;operation&quot;:&quot;/&quot;,
+               &quot;left&quot;:{
+                  &quot;value&quot;:{
+                     &quot;kind&quot;:&quot;VALUE&quot;,
+                     &quot;value&quot;:&quot;1.2&quot;,
+                     &quot;type&quot;:&quot;DOUBLE&quot;,
+                  }
+               },
+               &quot;right&quot;:{
+                  &quot;value&quot;:{
+                     &quot;kind&quot;:&quot;VALUE&quot;,
+                     &quot;value&quot;:&quot;1&quot;,
+                     &quot;type&quot;:&quot;INTEGER&quot;
+                  }
+               },
+               &quot;type&quot;:&quot;FLOAT&quot;
+            },
+            &quot;newName&quot;:&quot;C&quot;
+         }
+      },
+      {
+         &quot;type&quot;:&quot;ORDERBY&quot;,
+         &quot; fields&quot;:[
+            &quot;foo.baz&quot;, &quot;C&quot;
+         ],
+         &quot;direction&quot;:&quot;ASC&quot;
+      }
+   ]
+}
+</code></pre>
+
 <h2 id="window">Window</h2>
 <p>The "window" field is <strong>optional</strong> and allows you to instruct Bullet to return incremental results. For example you might want to return the COUNT of a field and return that count every 2 seconds.</p>
 <p>If "window" is omitted Bullet will emit only a single result at the very end of the query.</p>
