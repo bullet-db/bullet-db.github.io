@@ -1,4 +1,4 @@
-![Bullet](img/bullet-logo.png)
+    ![Bullet](../img/bullet-logo.png)
 
 * A real-time query engine for very large data streams
 
