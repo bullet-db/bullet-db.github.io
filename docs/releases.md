@@ -210,6 +210,24 @@ The AVRO container that you need to convert your data into to be consumed by Bul
 | 2017-04-17   | [**0.1.1**](https://github.com/bullet-db/bullet-record/releases/tag/bullet-record-0.1.1) | Helper methods to remove, rename, check presence and count fields in the Record | |
 | 2017-02-09   | [**0.1.0**](https://github.com/bullet-db/bullet-record/releases/tag/bullet-record-0.1.0) | Map constructor | |
 
+## Bullet DSL
+
+A DSL to plug data sources into the Bullet Backend and Web Service. 
+
+|                            |                 |
+| -------------------------- | --------------- |
+| **Repository**             | [https://github.com/bullet-db/bullet-dsl](https://github.com/bullet-db/bullet-dsl) |
+| **Issues**                 | [https://github.com/bullet-db/bullet-dsl/issues](https://github.com/bullet-db/bullet-dsl/issues) |
+| **Last Tag**               | [![Latest tag](https://img.shields.io/github/release/bullet-db/bullet-dsl/all.svg)](https://github.com/bullet-db/bullet-dsl/tags) |
+| **Latest Artifact**        | [![Download](https://api.bintray.com/packages/yahoo/maven/bullet-dsl/images/download.svg)](https://bintray.com/yahoo/maven/bullet-dsl/_latestVersion) |
+| **Package Manager Setup**  | [Setup for Maven, Gradle etc](https://bintray.com/bintray/jcenter?filterByPkgName=bullet-dsl) |
+
+### Releases
+
+|    Date      |                                  Release                                                 | Highlights | APIDocs |
+| ------------ | ---------------------------------------------------------------------------------------- | ---------- | ------- |
+| 2019-01-08   | [**0.0.1**](https://github.com/bullet-db/bullet-dsl/releases/tag/bullet-dsl-0.0.1) | First release | [JavaDocs](apidocs/bullet-dsl/0.0.1/index.html) |
+
 ## Bullet Kafka
 
 A PubSub implementation using Kafka as the backing PubSub. Can be used with any Bullet Backend.
