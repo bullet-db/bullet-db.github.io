@@ -86,24 +86,3 @@ bullet.pubsub.pulsar.client.useTls: true
 bullet.pubsub.pulsar.client.tlsAllowInsecureConnection: false
 bullet.pubsub.pulsar.client.tlsTrustCertsFilePath: "/path/to/cacert.pem"
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,208 +1,313 @@
 # Bullet DSL
 
-A DSL for users to plug in their data source into the Bullet Backend and Web Service.
 
-# What is it?
 
-To help with data ingestion, Bullet DSL provides BulletConnector which reads data from a pluggable datasource and BulletRecordConverter which converts the data into BulletRecords. 
 
-Currently, we have BulletConnectors implemented for [Apache Kafka](https://kafka.apache.org) and [Apache Pulsar](https://pulsar.apache.org) and BulletRecordConverters implemented for converting POJOs, Maps, and Avro records. 
-It is also possible to implement your own custom BulletConnectors and BulletRecordConverters.
 
-## Why use it?
 
-The Bullet Storm and Spark Backends each provide a reading component that uses Bullet DSL, and Bullet DSL can be configured to use any BulletConnector and BulletRecordConverter. 
+Bullet DSL is a configuration-based DSL that allows users to plug their data into the Bullet Backend. What this means is that users do not have to write code to ingest data but can instead provide
+YAML configuration. 
 
-This means that users can plug in their data sources to the Backend through configuration, whereas previously, they had to write their own reading components that would read and convert their data into BulletRecords. 
 
-## How do you use it?
 
-WIP
+Bullet DSL is a configuration-based DSL that allows users to plug their data into the Bullet Backend.
 
-First, configure BulletDSL to use the appropriate BulletConnector and BulletRecordConverter. 
+Originally, users had to write their own code to ingest data, but now users only have to provide YAML configuration.
 
-Second, configure your BulletConnector for your data source.
 
-Third, configure your BulletRecordConverter for your data. You may want to provide a schema. 
 
-Fourth, in storm, enable the DSLSpout. Note, connectors and converters are configured on the storm launcher and not on the workers.
+This is really great for users because unlike before, where users had to write their own code to ingest data, now, users only have to provide the appropriate YAML configuration.
 
-## Setup
+This is really great for users because it allows them to get around writing code to ingest data.
 
-While the Bullet Storm Backend does use Bullet DSL, it does include a fat jar and is therefore missing dependencies. 
-If you plan on using KafkaConnector, you will have to include the [kafka-clients](https://bintray.com/bintray/jcenter/org.apache.kafka%3Akafka-clients/) jar in the classpath. 
-If you plan on using PulsarConnector, you will need the [pulsar-client](https://bintray.com/bintray/jcenter/org.apache.pulsar%3Apulsar-client) jar instead. 
+
+
+
+Bullet DSL provides two major components. The first is for reading data from a pluggable data source, and the second is for converting data into [BulletRecords](ingestion.md)
+
+Bullet DSL can be enabled in the Bullet Backends, and by configuring Bullet DSL accordingly, the backend will read from the configured data source and convert any read-in data into BulletRecords.
+
+
+
+
+There are three main things to configure: the BulletConnector (Bullet DSL's reading component), the BulletRecordConverter (Bullet DSL's converting component), and the Backend.
+
+!!!note
+
+    For the Backend, please refer to the DSL-specific Bullet Storm setup [here](). (Currently, only Bullet Storm supports Bullet DSL.)
+
+
 
 ## BulletConnector
 
-BulletConnector reads data from a pluggable data source. It is an abstract Java class that can be implemented to support different data sources.  
+BulletConnector is an abstract Java class that can be implemented to read data from different pluggable data sources. 
 
-Currently, we support two implementations of BulletConnector:
+Currently, we support two BulletConnector implementations:
 
-1. [KafkaConnector](https://github.com/bullet-db/bullet-dsl/blob/master/src/main/java/com/yahoo/bullet/dsl/connector/KafkaConnector.java)
-2. [PulsarConnector](https://github.com/bullet-db/bullet-dsl/blob/master/src/main/java/com/yahoo/bullet/dsl/connector/PulsarConnector.java)
+1. [KafkaConnector](https://github.com/bullet-db/bullet-dsl/blob/master/src/main/java/com/yahoo/bullet/dsl/connector/KafkaConnector.java) for [Apache Kafka]
+2. [PulsarConnector](https://github.com/bullet-db/bullet-dsl/blob/master/src/main/java/com/yahoo/bullet/dsl/connector/PulsarConnector.java) for [Apache Pulsar]
 
-In the configuration, you should specify the appropriate implementation for Bullet DSL to use.
+
+For Bullet DSL, you will need to specify the BulletConnector to use. For example, to use KafkaConnector, you would add the following to your configuration file:
 
 ```yaml
-# The classpath to the BulletConnector to use
+# The classpath to the BulletConnector to use (need this for Bullet DSL!)
 bullet.dsl.connector.class.name: "com.yahoo.bullet.dsl.connector.KafkaConnector"
-# The read timeout duration in ms
+
+# The read timeout duration in ms (defaults to 0)
 bullet.dsl.connector.read.timeout.ms: 0
-# Whether or not to asynchronously commit messages
+
+# Whether or not to asynchronously commit messages (defaults to true)
 bullet.dsl.connector.async.commit.enable: true
 ```
 
-Each implementation also has its own specific configuration, and they can be found in the [default configuration file]().
+All configuration can be found in the [default configuration file](https://github.com/bullet-db/bullet-dsl/blob/master/src/main/resources/bullet_dsl_defaults.yaml) along with specific configuration for each implementation.
 
-### KafkaConnector Configuration
+!!!note "Title of box"
 
-The KafkaConnector configuration only requires a few settings that are necessary to read from Kafka.
+    If you have a different kind of data source, """you will have to implement your own BulletConnector""". We will be implementing more connectors in the future. If you write your own connector, you can also help contribute! Instructions/class file
+
+
+### KafkaConnector
+
+The KafkaConnector configuration requires a few settings that are necessary to read from Kafka.
+
+Specifically, the Kafka Consumer requires the bootstrap servers, group id, and key/value deserializers, and the connector requires the topics to subscribe to. 
 
 ```yaml
 # The list of Kafka topics to subscribe to (required)
 bullet.dsl.connector.kafka.topics:
 - ""
-# Whether or not the KafkaConsumer should seek to the end of its subscribed topics at initialization
+
+# Whether or not the KafkaConsumer should seek to the end of its subscribed topics at initialization (defaults to false)
 bullet.dsl.connector.kafka.start.at.end.enable: false
 
-# Kafka properties (prefixed by "bullet.dsl.connector.kafka.") are passed to KafkaConsumer during construction with the
-# prefix removed. The properties below are required.
-# Properties found at: https://kafka.apache.org/20/javadoc/org/apache/kafka/clients/consumer/ConsumerConfig.html
+# Required consumer properties
 bullet.dsl.connector.kafka.bootstrap.servers: "localhost:9092"
 bullet.dsl.connector.kafka.group.id:
 bullet.dsl.connector.kafka.key.deserializer: "org.apache.kafka.common.serialization.StringDeserializer"
 bullet.dsl.connector.kafka.value.deserializer:
 ```
 
-Note that you can pass additional Kafka properties to the KafkaConnector by prefixing them with ```bullet.dsl.connector.kafka.```.
+You can also pass additional Kafka properties to the KafkaConnector by prefixing them with ```bullet.dsl.connector.kafka.``` For a complete list of properties, see the [Kafka Consumer configs](https://kafka.apache.org/0102/documentation.html#newconsumerconfigs).
 
-For a list of properties that you can configure, see the [Consumer](https://kafka.apache.org/0102/documentation.html#newconsumerconfigs) configs in Kafka.
+### PulsarConnector
 
+[need to revise]
 
-### PulsarConnector Configuration
+The PulsarConnector configuration requires a few settings that are necessary to read from Pulsar, and it also provides the option to enable authentication.
 
-The PulsarConnector configuration requires a few settings that are necessary to read from Pulsar and also provides the option for enabling Pulsar Client Authentication.
+The client requires the service url, and the consumer requires the subscription name and subscription type. 
+
+The connector requires the topics to subscribe to. 
+
+The connector requires the schema type for Pulsar. (It can be BYTES, STRING, JSON, AVRO, PROTOBUF, or CUSTOM)
+
+If it's JSON, AVRO, or PROTOBUF, it also requires the POJO class to wrap.
+
+If it's CUSTOM, it requires the custom schema class. 
 
 ```yaml
 # The list of Pulsar topics to subscribe to (required)
 bullet.dsl.connector.pulsar.topics:
 - ""
-# The classpath to the Pulsar Schema to use (required)
+
+# The Pulsar Schema to use (required)
+bullet.dsl.connector.pulsar.schema.type: "BYTES"
+
+# The classpath to the Pulsar Schema to use (required only if using JSON, AVRO, PROTOBUF, or CUSTOM schema)
 bullet.dsl.connector.pulsar.schema.class.name:
 
-# PulsarClient properties (prefixed by "bullet.dsl.connector.pulsar.client.") are passed to PulsarClient during construction
-# with the prefix removed. Note, serviceUrl is required.
-# Properties found at: https://github.com/apache/pulsar/blob/master/pulsar-client/src/main/java/org/apache/pulsar/client/impl/conf/ClientConfigurationData.java
+# Required client property
 bullet.dsl.connector.pulsar.client.serviceUrl: "pulsar://localhost:6650"
 
-# PulsarClient authentication properties (disabled by default)
+# Authentication properties (disabled by default)
 bullet.dsl.connector.pulsar.auth.enable: false
 bullet.dsl.connector.pulsar.auth.plugin.class.name:
 bullet.dsl.connector.pulsar.auth.plugin.params.string:
 
-# Pulsar Consumer properties (prefixed by "bullet.dsl.connector.pulsar.consumer.") are passed to Consumer during construction
-# with the prefix removed. Note, subscriptionName is required.
-# Properties found at: https://github.com/apache/pulsar/blob/master/pulsar-client/src/main/java/org/apache/pulsar/client/impl/conf/ConsumerConfigurationData.java
+# Required consumer properties
 bullet.dsl.connector.pulsar.consumer.subscriptionName: ""
-# PulsarConnector overrides the default subscriptionType -- "Exclusive" -- and uses "Shared" if it's not explicitly set
 bullet.dsl.connector.pulsar.consumer.subscriptionType: "Shared"
 ```
 
-Note that you can pass additional Pulsar Client and Consumer properties to the PulsarConnector by prefixing them with ```bullet.dsl.connector.pulsar.```.
-
-For a list of properties that you can configure, see the Pulsar [Client](https://github.com/apache/pulsar/blob/master/pulsar-client/src/main/java/org/apache/pulsar/client/impl/conf/ClientConfigurationData.java) and [Consumer](https://github.com/apache/pulsar/blob/master/pulsar-client/src/main/java/org/apache/pulsar/client/impl/conf/ConsumerConfigurationData.java) config classes.
+You can also pass additional Pulsar Client and Consumer properties to the PulsarConnector by prefixing them with ```bullet.dsl.connector.pulsar.client``` and ```bullet.dsl.connector.pulsar.consumer``` For the lists of properties, see Pulsar [ClientConfigurationData](https://github.com/apache/pulsar/blob/master/pulsar-client/src/main/java/org/apache/pulsar/client/impl/conf/ClientConfigurationData.java) and [ConsumerConfigurationData](https://github.com/apache/pulsar/blob/master/pulsar-client/src/main/java/org/apache/pulsar/client/impl/conf/ConsumerConfigurationData.java).
 
 ## BulletRecordConverter
 
-The BulletRecordConverter is used to read data from a pluggable data source. It is an abstract Java class that can be implemented to support different data sources. 
+BulletRecordConverter is an abstract Java class that can be implemented to convert different types of data into BulletRecords.
 
-Currently, we support three implementations of BulletRecordConverter:
+Currently, we support three BulletRecordConverter implementations:
 
-1. POJOBulletRecordConverter
-2. MapBulletRecordConverter
-3. AvroBulletRecordConverter
+1. [POJOBulletRecordConverter](https://github.com/bullet-db/bullet-dsl/blob/master/src/main/java/com/yahoo/bullet/dsl/converter/POJOBulletRecordConverter.java) (POJOs)
+2. [MapBulletRecordConverter](https://github.com/bullet-db/bullet-dsl/blob/master/src/main/java/com/yahoo/bullet/dsl/converter/MapBulletRecordConverter.java) (Java Maps)
+3. [AvroBulletRecordConverter](https://github.com/bullet-db/bullet-dsl/blob/master/src/main/java/com/yahoo/bullet/dsl/converter/AvroBulletRecordConverter.java) (Apache Avro Records)
 
-These converters support converting POJOs, Maps, and Avro records to BulletRecords.
+These converters support converting [POJOs](https://en.wikipedia.org/wiki/Plain_old_Java_object), Java Maps, and [Apache Avro](https://avro.apache.org/) records to BulletRecords.
 
-In the configuration, you should specify the appropriate implementation for Bullet DSL to use and, optionally, a schema as well.
+For Bullet DSL, you will need to specify the BulletRecordConverter to use. For example, to use AvroBulletRecordConverter, you would add the following to your configuration file:
 
 ```yaml
 # The classpath to the BulletRecordConverter to use
 bullet.dsl.converter.class.name: "com.yahoo.bullet.dsl.converter.AvroBulletRecordConverter"
+
 # The path to the schema file to use
 bullet.dsl.converter.schema.file: "your-schema-file.json"
 ```
 
-While a schema is not required, BulletRecordConverter is a lot less flexible without it and also will not type-check. 
+Note, while a schema is not required, there are some [benefits]() to using one. 
 
-### BulletRecordSchema
+!!!note
 
-The BulletRecordSchema consists of a list of BulletRecordFields each containing a name, reference, type, and subtype. 
-As a JSON object, the schema holds an array of field objects, each with a name, reference, type, and subtype.
+    Unfortunately, we don't have other converters, but this should cover most use cases. If you do need a specific converter though, you can write your own. Instructions/class file. You can also help contribute.
 
-The schema specifies the names of the fields projected into the BulletRecords and the values they reference from the objects to be converted. 
-If a reference is null, the named of the field will be used instead.
+### POJOBulletRecordConverter
 
-Possible types are: BOOLEAN, INTEGER, LONG, FLOAT, DOUBLE, STRING, LIST, LISTOFMAP, MAP, MAPOFMAP, and RECORD.
+POJOBulletRecordConverter uses Java Reflection to convert POJOs into BulletRecords.
 
-Possible subtypes are: BOOLEAN, INTEGER, LONG, FLOAT, DOUBLE, AND STRING.
+To clarify, you need to specify the POJO class you want to convert, and on construction, the converter will use Reflection to map out the POJO.
 
-Note, if type is MAP, MAPOFMAP, LIST, or LISTOFMAP, then a subtype is required (otherwise subtype must be null). If type is RECORD, then name should be left empty.
+Without a schema, the converter will look through all fields but not methods and take only the fields that have valid types.
 
-The RECORD field is unnamed because only its children are inserted into the top-level of the BulletRecord. 
-Typically, the RECORD field will reference a Map, but AvroBulletRecordConverter also supports referencing Avro records. 
-
-Example schema and fields:
-
-    {
-      "fields": [
-        {
-          "name": "myBool",
-          "type": "BOOLEAN"
-        },
-        {
-          "name": "myBoolMap",
-          "type": "MAP",
-          "subtype": "BOOLEAN"
-        },
-        {
-          "name": "myLongMapMap",
-          "type": "MAPOFMAP",
-          "subtype": "LONG"
-        },
-        {
-          "name": "myIntFromSomeMap",
-          "reference": "someMap.myInt",
-          "type": "INTEGER"
-        },
-        {
-          "name": "myIntFromSomeIntList",
-          "reference": "someIntList.0",
-          "type": "INTEGER"
-        },
-        {
-          "name": "myIntFromSomeNestedMapsAndLists",
-          "reference": "someMap.nestedMap.nestedList.0",
-          "type": "INTEGER"
-        },
-        {
-          "reference" : "someMap",
-          "type": "RECORD"
-        }
-      ]
-    }
-    
-### Extra notes
-
-For POJOBulletRecordConverter, additional configuration is needed to specify the targeted POJO class. 
+If using a schema, the converter will only look for the fields referenced. It will also look for getter methods. And it is recommended to specify getters as references where possible.
 
 ```yaml
 bullet.dsl.converter.pojo.class.name: "com.your.package.YourPOJO"
 ```
 
-Also, it is recommended to reference getters instead of fields for better performance.
+It is also possible (and recommended) to specify getter methods as references. 
 
-## Extra: Serialization/Deserialization
+### MapBulletRecordConverter
 
-WIP
+MapBulletRecordConverter is for converting Java maps into BulletRecords.
+
+It doesn't do anything special.
+
+Without a schema, it will simply insert every key-value pair into a BulletRecord without type-checking.
+
+With the schema, you can do a bit more. 
+
+### AvroBulletRecordConverter
+
+AvroBulletRecordConverter is for converting Avro records into BulletRecords. 
+
+the converter expects GenericRecords.
+
+Without a schema, it just inserts every field into a BulletRecord without typechecking.
+
+With a schema, if you specify a RECORD type, the converter will accept avro records in addition to java maps. 
+
+### Schema
+
+The schema consists of a list of fields that each contain a name, reference, type, and subtype. 
+
+The name of the field in the schema will be the name of the field in the BulletRecord.
+The reference of the field in the schema is the field/value to be extracted from an object when it is converted to a BulletRecord.
+If the reference is null, it is assumed that the name and the reference are the same.
+The type and subtype must be specified and will be used for type-checking. They must also be a valid pair. 
+
+Types:
+1. BOOLEAN
+2. INTEGER
+3. LONG
+4. FLOAT
+5. DOUBLE
+6. STRING
+7. LIST
+8. LISTOFMAP
+9. MAP
+10. MAPOFMAP
+11. RECORD
+
+Subtypes:
+1. BOOLEAN
+2. INTEGER
+3. LONG
+4. FLOAT
+5. DOUBLE
+6. STRING
+
+If type is LIST, LISTOFMAP, MAP, or MAPOFMAP, then a subtype is required (otherwise, subtype must be null). 
+
+For RECORD type, you should typically reference a map. For each key-value pair in the map, a field will be inserted into the BulletRecord. Hence, the name in a RECORD field is left empty. 
+
+Example schema and fields:
+
+```json
+{
+  "fields": [
+    {
+      "name": "myBool",
+      "type": "BOOLEAN"
+    },
+    {
+      "name": "myBoolMap",
+      "type": "MAP",
+      "subtype": "BOOLEAN"
+    },
+    {
+      "name": "myLongMapMap",
+      "type": "MAPOFMAP",
+      "subtype": "LONG"
+    },
+    {
+      "name": "myIntFromSomeMap",
+      "reference": "someMap.myInt",
+      "type": "INTEGER"
+    },
+    {
+      "name": "myIntFromSomeIntList",
+      "reference": "someIntList.0",
+      "type": "INTEGER"
+    },
+    {
+      "name": "myIntFromSomeNestedMapsAndLists",
+      "reference": "someMap.nestedMap.nestedList.0",
+      "type": "INTEGER"
+    },
+    {
+      "reference" : "someMap",
+      "type": "RECORD"
+    }
+  ]
+}
+```
+
+## BulletDeserializer
+
+BulletDeserializer is an abstract Java class that can be implemented to deserialize/transform output from BulletConnector to input for BulletRecordConverter.
+
+BulletDeserializer is an optional component of Bullet DSL depending on the output of your data sources. 
+
+If, for example, your KafkaConnector outputs Java-serialized maps (byte arrays), and you're using a MapBulletRecordConverter, you would use the JavaDeserializer, which would
+deserialize the byte array into a java map for the converter. 
+
+Currently, we support two BulletDeserializer implementations:
+
+1. [JavaDeserializer](https://github.com/bullet-db/bullet-dsl/blob/master/src/main/java/com/yahoo/bullet/dsl/deserializer/JavaDeserializer.java)
+2. [AvroDeserializer](https://github.com/bullet-db/bullet-dsl/blob/master/src/main/java/com/yahoo/bullet/dsl/deserializer/AvroDeserializer.java)
+
+```yaml
+# The classpath to the BulletRecordConverter to use
+bullet.dsl.converter.class.name: "com.yahoo.bullet.dsl.converter.AvroBulletRecordConverter"
+```
+
+### JavaDeserializer
+
+This uses Java Serialization to deserialize (java-serialized) byte arrays into objects. 
+
+### AvroDeserializer
+
+This uses Avro to deserialize (avro-serialized) byte arrays into avro GenericRecords.
+
+It must be given the Avro schema for the avro record to deserialize.
+
+This can be given either by providing the Avro schema file or the Avro class itself (the class must be in classpath)
+
+```yaml
+# The path to the Avro schema file to use prefixed by "file://"
+bullet.dsl.deserializer.avro.schema.file: "file://example.avsc"
+
+# The class name of the Avro record class to deserialize
+bullet.dsl.deserializer.avro.class.name: "com.your.package.YourAvro"
+```
