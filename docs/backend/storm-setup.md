@@ -106,15 +106,19 @@ If you have implemented your own main class (option 2 above), you just pass your
 storm jar your-fat-jar-with-dependencies.jar \
           com.yahoo.bullet.Topology \
           --bullet-conf path/to/the/bullet_settings.yaml \
-          --bullet-spout full.package.prefix.to.your.spout.implementation \
-          --bullet-spout-parallelism 64 \
-          --bullet-spout-cpu-load 200.0 \
-          --bullet-spout-on-heap-memory-load 512.0 \
-          --bullet-spout-off-heap-memory-load 256.0 \
-          --bullet-spout-arg arg-to-your-spout-class-for-ex-a-path-to-a-config-file \
-          --bullet-spout-arg another-arg-to-your-spout-class \
           -c topology.acker.executors=64 \
           -c topology.max.spout.pending=10000
+```
+
+And in your bullet_settings.yaml, you would have, for example:
+
+```yaml
+bullet.topology.bullet.spout.class.name: "full.package.prefix.to.your.spout.implementation"
+bullet.topology.bullet.spout.args: ["arg-to-your-spout-class-for-example-a-path-to-a-config-file", "another-arg-to-your-spout-class"]
+bullet.topology.bullet.spout.parallelism: 64
+bullet.topology.bullet.spout.cpu.load: 200.0
+bullet.topology.bullet.spout.memory.on.heap.load: 512.0
+bullet.topology.bullet.spout.memory.off.heap.load: 256.0
 ```
 
 You can pass other arguments to Storm using the -c argument. The example above uses 64 ackers, for example and uses Storm's [reliable message processing mechanisms](http://storm.apache.org/releases/1.1.0/Guaranteeing-message-processing.html). Certain components in the Bullet Storm topology cannot be reliable due to how Bullet operates currently. Hundreds of millions of Storm tuples could go into any query running in Bullet and it is intractable to *anchor* a single Bullet aggregation to those tuples, particularly when the results are approximate. However, you should enable acking to ensure at least once message deliveries for the hop from your topology (or spout) to the Filter bolts and for the Query spouts to the Filter and Join bolts. Ackers are lightweight so you need not have the same number of tasks as components that ack in your topology so you can tweak it accordingly. The example above also sets max spout pending to control how fast the spout emits. You could use the back-pressure mechanisms in Storm in addition or in lieu of as you choose. We have found that max spout pending gives a much more predictable way of throttling our spouts during catch up or data spikes.
@@ -122,3 +126,60 @@ You can pass other arguments to Storm using the -c argument. The example above u
 !!! note "Main Class Arguments"
 
     If you run the main class without arguments or pass in the ```--help``` argument, you can see what these arguments mean and what others are supported.
+
+### Using Bullet DSL
+
+Instead of implementing your own spout, you can also use the provided DSL Spout (and optionally, DSL Bolt) with [Bullet DSL]().
+
+Add the following to your YAML configuration:
+
+```yaml
+bullet.topology.dsl.spout.enable: true
+bullet.topology.dsl.spout.parallelism: 10
+bullet.topology.dsl.spout.cpu.load: 50.0
+bullet.topology.dsl.spout.memory.on.heap.load: 256.0
+bullet.topology.dsl.spout.memory.off.heap.load: 160.0
+
+bullet.topology.dsl.bolt.enable: false
+bullet.topology.dsl.bolt.parallelism: 10
+bullet.topology.dsl.bolt.cpu.load: 50.0
+bullet.topology.dsl.bolt.memory.on.heap.load: 256.0
+bullet.topology.dsl.bolt.memory.off.heap.load: 160.0
+
+bullet.topology.dsl.deserializer.enable: false
+```
+
+If only the DSL spout is enabled, Storm will read and convert your data in the same worker. If the DSL Bolt is also enabled, Storm will read data in the spout and convert data in the bolt. This is useful if your data volume is really large.
+
+There's also a setting that enables [BulletDeserializer]()) which is an optional component of Bullet DSL that you may or may not need. 
+
+#### Setup
+
+The bullet storm jar is not built with Bullet DSL nor with other dependencies you may want such as Kafka and Pulsar.
+
+in storm, you can add the jars to storm launcher's and workers' environment, or you can create a fat jar with the dependencies.
+
+in storm 1.2.2+, you also have the option of adding the jars to the classpath in the "storm jar" command.   
+
+First, you can get the appropriate clients [here] and [here]. (For Pulsar, you will also need [pulsar-client-schema] and [protobuf-shaded] jars.)
+
+For Kafka:
+
+[https://bintray.com/bintray/jcenter/org.apache.kafka%3Akafka-clients](kafka-clients) 2.1.0
+
+For Pulsar:
+
+[https://bintray.com/bintray/jcenter/org.apache.pulsar%3Apulsar-client](pulsar-client) 2.2.1
+
+[https://bintray.com/bintray/jcenter/org.apache.pulsar%3Apulsar-client-schema](pulsar-client-schema) 2.2.1
+
+[https://bintray.com/bintray/jcenter/org.apache.pulsar%3Aprotobuf-shaded](protobuf-shaded) 2.1.0-incubating
+
+Example with Pulsar dependencies:
+
+```
+storm jar bullet-storm-0.9.1.jar \
+          com.yahoo.bullet.storm.Topology \
+          --bullet-conf ./bullet_settings.yaml \
+          --jars "bullet-dsl-0.1.2.jar,pulsar-client-2.2.1.jar,pulsar-client-schema-2.2.1.jar,protobuf-shaded-2.1.0-incubating.jar"
+```
