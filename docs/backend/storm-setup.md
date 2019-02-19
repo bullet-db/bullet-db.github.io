@@ -131,43 +131,39 @@ You can pass other arguments to Storm using the -c argument. The example above u
 
 Instead of implementing your own spout, you can also use the provided DSL Spout (and optionally, DSL Bolt) with [Bullet DSL]().
 
-Add the following to your YAML configuration:
+To do so, you would add the following settings to your YAML configuration:
 
 ```yaml
 bullet.topology.dsl.spout.enable: true
-bullet.topology.dsl.spout.parallelism: 10
-bullet.topology.dsl.spout.cpu.load: 50.0
-bullet.topology.dsl.spout.memory.on.heap.load: 256.0
-bullet.topology.dsl.spout.memory.off.heap.load: 160.0
+bullet.topology.dsl.spout.parallelism: 
+bullet.topology.dsl.spout.cpu.load: 
+bullet.topology.dsl.spout.memory.on.heap.load: 
+bullet.topology.dsl.spout.memory.off.heap.load: 
 
 bullet.topology.dsl.bolt.enable: false
-bullet.topology.dsl.bolt.parallelism: 10
-bullet.topology.dsl.bolt.cpu.load: 50.0
-bullet.topology.dsl.bolt.memory.on.heap.load: 256.0
-bullet.topology.dsl.bolt.memory.off.heap.load: 160.0
+bullet.topology.dsl.bolt.parallelism:
+bullet.topology.dsl.bolt.cpu.load:
+bullet.topology.dsl.bolt.memory.on.heap.load:
+bullet.topology.dsl.bolt.memory.off.heap.load:
 
 bullet.topology.dsl.deserializer.enable: false
 ```
 
-If only the DSL spout is enabled, Storm will read and convert your data in the same worker. If the DSL Bolt is also enabled, Storm will read data in the spout and convert data in the bolt. This is useful if your data volume is really large.
+If the DSL Bolt is enabled in addition to the spout (the spout is required!), Storm will read your data in the spout and convert it in the bolt. Without the bolt, reading and converting are done entirely in the spout. By enabling the DSL Bolt, you can lower per-worker latencies when data volume is large.
 
-There's also a setting that enables [BulletDeserializer]()) which is an optional component of Bullet DSL that you may or may not need. 
+Note that there is also a setting to enable [BulletDeserializer]() which is an optional component of Bullet DSL for deserializing data between reading and converting.  
 
 #### Setup
 
-The bullet storm jar is not built with Bullet DSL nor with other dependencies you may want such as Kafka and Pulsar.
+The Bullet Storm jar is not built with Bullet DSL or with other dependencies you may want such as Kafka and Pulsar. 
+Instead, you will have to either add the dependencies to the Storm launcher and worker environments or build a fat jar with the dependencies.
+In Storm 1.2.2+, however, you also have the option of directly adding the jars to the classpath in the "storm jar" command. 
 
-in storm, you can add the jars to storm launcher's and workers' environment, or you can create a fat jar with the dependencies.
-
-in storm 1.2.2+, you also have the option of adding the jars to the classpath in the "storm jar" command.   
-
-First, you can get the appropriate clients [here] and [here]. (For Pulsar, you will also need [pulsar-client-schema] and [protobuf-shaded] jars.)
-
-For Kafka:
+Kafka dependencies:
 
 [https://bintray.com/bintray/jcenter/org.apache.kafka%3Akafka-clients](kafka-clients) 2.1.0
 
-For Pulsar:
+Pulsar dependencies:
 
 [https://bintray.com/bintray/jcenter/org.apache.pulsar%3Apulsar-client](pulsar-client) 2.2.1
 
@@ -175,7 +171,7 @@ For Pulsar:
 
 [https://bintray.com/bintray/jcenter/org.apache.pulsar%3Aprotobuf-shaded](protobuf-shaded) 2.1.0-incubating
 
-Example with Pulsar dependencies:
+Storm 1.2.2 example for Pulsar:
 
 ```
 storm jar bullet-storm-0.9.1.jar \
