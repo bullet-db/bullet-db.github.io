@@ -127,18 +127,16 @@ You can pass other arguments to Storm using the -c argument. The example above u
 
     If you run the main class without arguments or pass in the ```--help``` argument, you can see what these arguments mean and what others are supported.
 
-### Using Bullet DSL
+## Using Bullet DSL
 
-Instead of implementing your own spout, you can also use the provided DSL Spout (and optionally, DSL Bolt) with [Bullet DSL]().
-
-To do so, you would add the following settings to your YAML configuration:
+Instead of implementing your own spout or Topology, you can also use the provided DSL spout (and optionally, DSL Bolt) with [Bullet DSL](dsl.md). To do so, add the following settings to your YAML configuration:
 
 ```yaml
 bullet.topology.dsl.spout.enable: true
-bullet.topology.dsl.spout.parallelism: 
-bullet.topology.dsl.spout.cpu.load: 
-bullet.topology.dsl.spout.memory.on.heap.load: 
-bullet.topology.dsl.spout.memory.off.heap.load: 
+bullet.topology.dsl.spout.parallelism:
+bullet.topology.dsl.spout.cpu.load:
+bullet.topology.dsl.spout.memory.on.heap.load:
+bullet.topology.dsl.spout.memory.off.heap.load:
 
 bullet.topology.dsl.bolt.enable: false
 bullet.topology.dsl.bolt.parallelism:
@@ -149,31 +147,32 @@ bullet.topology.dsl.bolt.memory.off.heap.load:
 bullet.topology.dsl.deserializer.enable: false
 ```
 
-If the DSL Bolt is enabled in addition to the spout (the spout is required!), Storm will read your data in the spout and convert it in the bolt. Without the bolt, reading and converting are done entirely in the spout. By enabling the DSL Bolt, you can lower per-worker latencies when data volume is large.
+If the DSL Bolt is enabled in addition to the spout (the spout is always required!), Storm will read your data in the spout and convert it in the bolt. Without the bolt, reading and converting are done entirely in the spout. If you wish to seperate the two, by enabling the DSL Bolt, you can lower per-worker latencies when data volume is large and scale them independently.
 
-Note that there is also a setting to enable [BulletDeserializer]() which is an optional component of Bullet DSL for deserializing data between reading and converting.  
+There is also a setting to enable [BulletDeserializer](dsl.md#bulletdeserializer), which is an optional component of Bullet DSL for deserializing data between reading and converting.  
 
 #### Setup
 
-The Bullet Storm jar is not built with Bullet DSL or with other dependencies you may want such as Kafka and Pulsar. 
-Instead, you will have to either add the dependencies to the Storm launcher and worker environments or build a fat jar with the dependencies.
-In Storm 1.2.2+, however, you also have the option of directly adding the jars to the classpath in the "storm jar" command. 
+The Bullet Storm jar is not built with Bullet DSL or with other dependencies you may want such as Kafka and Pulsar. Instead, you will have to either add the dependencies (the DSL fat jar and your particular connector dependencies) to the Storm launcher and worker environments or build a fat jar with the dependencies. In Storm 1.2.2+, however, you also have the option of directly adding the following jars to the classpath in the `storm jar` command.
 
-Kafka dependencies:
+##### Kafka
 
-[https://bintray.com/bintray/jcenter/org.apache.kafka%3Akafka-clients](kafka-clients) 2.1.0
+[Kafka Clients 2.1.0](https://bintray.com/bintray/jcenter/org.apache.kafka%3Akafka-clients)
 
-Pulsar dependencies:
+##### Pulsar
 
-[https://bintray.com/bintray/jcenter/org.apache.pulsar%3Apulsar-client](pulsar-client) 2.2.1
+[Pulsar Client 2.2.1](https://bintray.com/bintray/jcenter/org.apache.pulsar%3Apulsar-client)
 
-[https://bintray.com/bintray/jcenter/org.apache.pulsar%3Apulsar-client-schema](pulsar-client-schema) 2.2.1
+[Pulsar Client Schema 2.2.1](https://bintray.com/bintray/jcenter/org.apache.pulsar%3Apulsar-client-schema)
 
-[https://bintray.com/bintray/jcenter/org.apache.pulsar%3Aprotobuf-shaded](protobuf-shaded) 2.1.0-incubating
+[Pulsar Protobuf Shaded 2.1.0-incubating](https://bintray.com/bintray/jcenter/org.apache.pulsar%3Aprotobuf-shaded)
 
-Storm 1.2.2 example for Pulsar:
+##### Example
+
+The following is an example for Pulsar in Storm 1.2.2+:
 
 ```
+
 storm jar bullet-storm-0.9.1.jar \
           com.yahoo.bullet.storm.Topology \
           --bullet-conf ./bullet_settings.yaml \
