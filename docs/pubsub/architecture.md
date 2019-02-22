@@ -14,10 +14,10 @@ With the transport mechanism abstracted out, it opens up a lot of possibilities 
 
 A PubSub operates in two contexts:
 
-1. Submitting queries and reading results. This is the ```QUERY_SUBMISSION``` context and this is PubSub mode for the Web Service
-2. Reading queries and submitting results. This is the ```QUERY_PROCESSING``` context and this is PubSub mode for the Backend
+1. Submitting queries and reading results. This is the ```QUERY_SUBMISSION``` context and the PubSub mode for the Web Service
+2. Reading queries and submitting results. This is the ```QUERY_PROCESSING``` context and the PubSub mode for the Backend
 
-A PubSub provides Publisher and Subscriber instances that, depending on which context it is in, do the right thing. Publishers in ```QUERY_SUBMISSION``` write queries to your PubSub whereas in ```QUERY_PROCESSING```, they write results. Similarly, the Subscribers in ```QUERY_SUBMISSION``` read results but read queries in ```QUERY_PROCESSING```. A Publisher and Subscriber in a particular context make up read and write halves of the *pipes* for stream of queries and stream of results.
+A PubSub provides Publisher and Subscriber instances that, depending on the context it is in, will write and read differently. Publishers in ```QUERY_SUBMISSION``` write queries to your PubSub whereas Publishers in ```QUERY_PROCESSING``` write results. Similarly, Subscribers in ```QUERY_SUBMISSION``` read results, but Subscribers in ```QUERY_PROCESSING``` read queries. A Publisher and Subscriber in a particular context make up read and write halves of the *pipes* for stream of queries and stream of results.
 
 ### Messages
 
@@ -28,6 +28,7 @@ The PubSub layer does not deal with queries and results and just works on instan
 If you want to use an implementation already built, we currently support:
 
 1. [Kafka](kafka.md#setup) for any Backend
+2. [Pulsar](pulsar.md#setup) for any Backend
 2. [REST](rest.md#setup) for any Backend
 3. [Storm DRPC](storm-drpc.md#setup) if you're using Bullet on Storm as your Backend
 
@@ -41,7 +42,7 @@ If you are running sharded instances of your Web Service, you should ensure that
 
 ### Reliability
 
-You can choose to make your Publishers and Subscribers as reliable as you want. Both the Web Service and the Backend will call the appropriate reliability methods (```commit``` and ```fail```) but your implementations can choose to be no-ops if you do not want to be reliability. Alternatively, if you want make your Subscribers reliable, you could use an in-memory reliable implementation of one by extending ```com.yahoo.bullet.pubsub.BufferingSubscriber``` for a simple implementation. This keeps track of uncommitted messages in memory up to a configured threshold (does not read more messages if there are this many uncommitted messages left) and re-emits messages on failures using it.
+You can choose to make your Publishers and Subscribers as reliable as you want. Both the Web Service and the Backend will call the appropriate reliability methods (```commit``` and ```fail```), but your implementations can choose to be no-ops if you do not want to implement reliability. Alternatively, if you want to make your Subscribers reliable, you could use a simple, in-memory reliable implementation by extending ```com.yahoo.bullet.pubsub.BufferingSubscriber```. This keeps track of uncommitted messages in memory up to a configured threshold (does not read more messages if there are this many uncommitted messages left) and re-emits messages on failures using it.
 
 ### Canonical example
 

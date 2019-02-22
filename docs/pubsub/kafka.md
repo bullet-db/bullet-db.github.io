@@ -10,7 +10,7 @@ You do not need to have two topics. You can have one but you should use multiple
 
 !!! note "Kafka Client API"
 
-    The Bullet Kafka implementation uses the Kafka 0.10.2 client APIs. Generally, your forward or backward compatibilities should work as expected.
+    The Bullet Kafka implementation uses the Kafka 2.0.0 client APIs. Generally, your forward or backward compatibilities should work as expected.
 
 ## Setup
 
@@ -36,7 +36,7 @@ You will then need to configure the Publishers and Subscribers. For details on w
 
 ### Plug into the Web Service
 
-You will need the Head over to our [releases page](../releases.md#bullet-kafka) and get the JAR artifact with the ```fat``` classifier. For example, you can download the artifact for the 0.2.0 release [directly from JCenter](http://jcenter.bintray.com/com/yahoo/bullet/bullet-kafka/0.2.0/)).
+You will need to head over to our [releases page](../releases.md#bullet-kafka) and get the JAR artifact with the ```fat``` classifier. For example, you can download the artifact for the 0.2.0 release [directly from JCenter](http://jcenter.bintray.com/com/yahoo/bullet/bullet-kafka/0.2.0/)).
 
 You should then plug in this JAR to your Web Service following the instructions [here](../ws/setup.md#launch).
 

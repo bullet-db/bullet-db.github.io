@@ -1,6 +1,6 @@
 # REST PubSub
 
-The REST PubSub implementation is included in bullet-core, and can be launched along with the Web Service. If it is enabled the Web Service will expose two additional REST endpoints, one for reading/writing Bullet queries, and one for reading/writing results.
+The REST PubSub implementation is included in bullet-core and can be launched along with the Web Service. If it is enabled, the Web Service will expose two additional REST endpoints, one for reading/writing Bullet queries, and one for reading/writing results.
 
 ## How does it work?
 
