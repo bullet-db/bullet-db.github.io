@@ -147,7 +147,7 @@ bullet.topology.dsl.bolt.memory.off.heap.load:
 bullet.topology.dsl.deserializer.enable: false
 ```
 
-If the DSL Bolt is enabled in addition to the spout (the spout is always required!), Storm will read your data in the spout and convert it in the bolt. Without the bolt, reading and converting are done entirely in the spout. If you wish to seperate the two, by enabling the DSL Bolt, you can lower per-worker latencies when data volume is large and scale them independently.
+If the DSL Bolt is enabled in addition to the spout (the spout is always required!), Storm will read your data in the spout and convert it in the bolt. Without the bolt, reading and converting are done entirely in the spout. If you wish to separate the two by enabling the DSL Bolt, you can lower per-worker latencies when data volume is large and scale them independently.
 
 There is also a setting to enable [BulletDeserializer](dsl.md#bulletdeserializer), which is an optional component of Bullet DSL for deserializing data between reading and converting.  
 
