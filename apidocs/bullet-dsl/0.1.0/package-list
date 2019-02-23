@@ -1,0 +1,5 @@
+com.yahoo.bullet.dsl
+com.yahoo.bullet.dsl.connector
+com.yahoo.bullet.dsl.converter
+com.yahoo.bullet.dsl.deserializer
+com.yahoo.bullet.dsl.schema

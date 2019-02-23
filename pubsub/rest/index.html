@@ -401,7 +401,7 @@
         <div class="col-md-9" role="main">
 
 <h1 id="rest-pubsub">REST PubSub</h1>
-<p>The REST PubSub implementation is included in bullet-core, and can be launched along with the Web Service. If it is enabled the Web Service will expose two additional REST endpoints, one for reading/writing Bullet queries, and one for reading/writing results.</p>
+<p>The REST PubSub implementation is included in bullet-core and can be launched along with the Web Service. If it is enabled, the Web Service will expose two additional REST endpoints, one for reading/writing Bullet queries, and one for reading/writing results.</p>
 <h2 id="how-does-it-work">How does it work?</h2>
 <p>When the Web Service receives a query from a user, it will create a PubSubMessage and write the message to the "query" RESTPubSub endpoint. This PubSubMessage will contain not only the query, but also some metadata, including the appropriate host/port to which the response should be sent (this is done to allow for multiple Web Services running simultaneously). The query is then stored in memory until the backend does a GET from this endpoint, at which time the query will be served to the backend, and dropped from the queue in memory.</p>
 <p>Once the backed has generated the results of the query, it will wrap those results in PubSubMessage. The backend extracts the URL to send the results to from the metadata and writes the results PubSubMessage to the "results" REST endpoint with a POST. This result will then be stored in memory until the Web Service does a GET to that endpoint, at which time the Web Service will have the results of the query to send back to the user.</p>

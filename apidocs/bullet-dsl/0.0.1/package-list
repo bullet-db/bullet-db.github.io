@@ -1,0 +1,6 @@
+com.yahoo.bullet.dsl
+com.yahoo.bullet.dsl.connector
+com.yahoo.bullet.dsl.converter
+com.yahoo.bullet.dsl.schema
+com.yahoo.bullet.dsl.serializer.kafka
+com.yahoo.bullet.dsl.serializer.pulsar

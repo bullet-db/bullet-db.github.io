@@ -368,15 +368,103 @@
     <ul class="nav bs-sidenav">
     
         <li class="active">
-            <a href="#coming-soon">Coming soon!</a>
+            <a href="#pulsar-pubsub">Pulsar PubSub</a>
+            <ul class="nav">
+                
+                    <li class="second-level">
+                        <a href="#how-does-it-work">How does it work?</a>
+                        
+                    </li>
             
+                    <li class="second-level">
+                        <a href="#setup">Setup</a>
+                        <ul class="nav">
+                        
+                            <li class="third-level">
+                                <a href="#plug-into-the-backend">Plug into the Backend</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#plug-into-the-web-service">Plug into the Web Service</a>
+                                
+                            </li>
+                        
+                        </ul>
+                    </li>
+            
+                    <li class="second-level">
+                        <a href="#passthrough-configuration">Passthrough configuration</a>
+                        
+                    </li>
+            
+                    <li class="second-level">
+                        <a href="#security">Security</a>
+                        
+                    </li>
+            
+            </ul>
         </li>
     
     </ul>
 </div></div>
         <div class="col-md-9" role="main">
 
-<h3 id="coming-soon">Coming soon!</h3></div>
+<h1 id="pulsar-pubsub">Pulsar PubSub</h1>
+<p>The Pulsar implementation of the Bullet PubSub uses <a href="https://pulsar.apache.org">Apache Pulsar</a> as the backing PubSub messaging queue and can be used with any Backend and Web Service.</p>
+<h2 id="how-does-it-work">How does it work?</h2>
+<p>Bullet Pulsar requires at least one Pulsar topic for queries and at least one Pulsar topic for results. On the Web Service, the PubSub is used to create publishers and subscribers that write queries and read results. Similarly, on the Backend, the PubSub is used to create publishers and subscribers that read queries and write results. Both queries and results are sent as <a href="../architecture/#messages">PubSubMessages</a> over the Pulsar topics.</p>
+<p>With the Pulsar implementation, it is also possible to shard the Web Service by having each Web Service specify a different topic to read results from. Additionally, you may specify a different topic for each Web Service to write queries to, but this is optional as there is only one Backend reading queries.</p>
+<h2 id="setup">Setup</h2>
+<p>Before using Bullet Pulsar, you will need to first set up a Pulsar cluster. To do so, follow the <a href="https://pulsar.apache.org/docs/en/standalone/">instructions here</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For a quick setup, Pulsar topics can be automatically created</p>
+</div>
+<h3 id="plug-into-the-backend">Plug into the Backend</h3>
+<p>Depending on how your Backend is built, you will need to either add Bullet Pulsar to your classpath or include it in your build tool. Get the artifact on our <a href="../../releases/#bullet-pulsar">releases page</a>.</p>
+<p>Note, if you're adding Bullet Pulsar to the classpath instead of building a fat jar, you will need to get the jar with the classifier <code>fat</code> since you will need Bullet Pulsar with all of its dependencies.</p>
+<p>Configure the Backend to use the Pulsar PubSub:</p>
+<pre><code class="yaml">bullet.pubsub.context.name: &quot;QUERY_PROCESSING&quot;
+bullet.pubsub.class.name: &quot;com.yahoo.bullet.pulsar.PulsarPubSub&quot;
+bullet.pubsub.pulsar.client.serviceUrl: &quot;pulsar://your-service-url&quot;
+bullet.pubsub.pulsar.consumer.subscriptionName: &quot;your-subscription-name&quot;\
+bullet.pubsub.pulsar.response.topic.names: [&quot;persistent://sample/ns1/your-query-topic&quot;]
+</code></pre>
+
+<p>You will also need to configure the Pulsar Client, Producer, and Consumer properties used by the PubSub Publishers and Subscribers.</p>
+<p>See the <a href="https://github.com/bullet-db/bullet-pulsar/blob/master/src/main/resources/bullet_pulsar_defaults.yaml">default configuration file</a> for complete configuration details.</p>
+<h3 id="plug-into-the-web-service">Plug into the Web Service</h3>
+<p>You will need to head over to our <a href="../../releases/#bullet-pulsar">releases page</a> and get the JAR artifact with the <code>fat</code> classifier. You can download the artifact for the 0.1.0 release <a href="https://bintray.com/yahoo/maven/bullet-pulsar/0.1.0">directly from JCenter</a>).</p>
+<p>You should then plug in this JAR to your Web Service following the instructions <a href="../../ws/setup/#launch">here</a>.</p>
+<p>For configuration, you should <a href="../../ws/setup/#pubsub-configuration">follow the steps here</a> to create and provide a YAML file to the Web Service. Remember to set the context to <code>QUERY_SUBMISSION</code>.</p>
+<pre><code class="yaml">bullet.pubsub.context.name: &quot;QUERY_SUBMISSION&quot;
+bullet.pubsub.class.name: &quot;com.yahoo.bullet.pulsar.PulsarPubSub&quot;
+bullet.pubsub.pulsar.client.serviceUrl: &quot;pulsar://your-service-url&quot;
+bullet.pubsub.pulsar.consumer.subscriptionName: &quot;your-subscription-name&quot;
+bullet.pubsub.pulsar.request.topic.name: &quot;persistent://sample/ns1/your-query-topic&quot;
+bullet.pubsub.pulsar.response.topic.name: &quot;persistent://sample/ns1/your-response-topic&quot;
+</code></pre>
+
+<p>As with the Backend, you will need to configure the Pulsar Client, Producer, and Consumer properties used by the PubSub Publishers and Subscribers.</p>
+<p>See the <a href="https://github.com/bullet-db/bullet-pulsar/blob/master/src/main/resources/bullet_pulsar_defaults.yaml">default configuration file</a> for complete configuration details.</p>
+<p>Remember that your Subscribers in the Backend are reading what the Producers in your Web Service are producing and vice-versa, so make sure to match up topics and settings accordingly.</p>
+<h2 id="passthrough-configuration">Passthrough configuration</h2>
+<p>You can configure the Pulsar Client, Producer, or Consumer properties for the PubSub Publishers and Subscribers by prefixing them with either <code>bullet.pubsub.pulsar.client.</code>, <code>bullet.pubsub.pulsar.producer.</code>, or <code>bullet.pubsub.pulsar.consumer.</code> respectively. The PubSub configuration sets a few of its own defaults but otherwise uses the default Pulsar settings.</p>
+<p>See the <a href="https://github.com/bullet-db/bullet-pulsar/blob/master/src/main/resources/bullet_pulsar_defaults.yaml">default configuration file</a> for complete configuration details with their defaults.</p>
+<h2 id="security">Security</h2>
+<p>Pulsar supports Athenz Authentication and TLS, and Bullet Pulsar can be configured to use these. For complete details, see the <a href="http://pulsar.apache.org/docs/en/security-overview/">Pulsar documentation</a>.</p>
+<pre><code class="yaml"># Note, these properties are not prefixed by &quot;bullet.pubsub.pulsar.client.&quot;
+bullet.pubsub.pulsar.auth.enable: true
+bullet.pubsub.pulsar.auth.plugin.class.name: &quot;org.apache.pulsar.client.impl.auth.AuthenticationAthenz&quot;
+bullet.pubsub.pulsar.auth.params.string: '{&quot;tenantDomain&quot;:&quot;your_domain&quot;,&quot;tenantService&quot;:&quot;your_app&quot;,&quot;providerDomain&quot;:&quot;pulsar&quot;,&quot;privateKey&quot;:&quot;file:///path/to/private.pem&quot;,&quot;keyId&quot;:&quot;v1&quot;}'
+</code></pre>
+
+<pre><code class="yaml"># Enable TLS
+bullet.pubsub.pulsar.client.useTls: true
+bullet.pubsub.pulsar.client.tlsAllowInsecureConnection: false
+bullet.pubsub.pulsar.client.tlsTrustCertsFilePath: &quot;/path/to/cacert.pem&quot;
+</code></pre></div>
         
     </div>
 

@@ -429,7 +429,7 @@
 <p>You do not need to have two topics. You can have one but you should use multiple partitions and configure your Web Service and Backend to produce to and consume from the right partitions. See the <a href="#configuration">setup</a> section for more details.</p>
 <div class="admonition note">
 <p class="admonition-title">Kafka Client API</p>
-<p>The Bullet Kafka implementation uses the Kafka 0.10.2 client APIs. Generally, your forward or backward compatibilities should work as expected.</p>
+<p>The Bullet Kafka implementation uses the Kafka 2.0.0 client APIs. Generally, your forward or backward compatibilities should work as expected.</p>
 </div>
 <h2 id="setup">Setup</h2>
 <p>Before setting up, you will need a Kafka cluster setup with your topic(s) created. This cluster need only be a couple of machines if it's devoted for Bullet. However, this depends on your query and result volumes. Generally, these are at most a few hundred or thousands of messages per second and a small Kafka cluster will suffice.</p>
@@ -446,7 +446,7 @@ bullet.pubsub.kafka.response.topic.name: &quot;your-result-topic&quot;
 
 <p>You will then need to configure the Publishers and Subscribers. For details on what to configure and what the defaults are, see the <a href="https://github.com/bullet-db/bullet-kafka/blob/master/src/main/resources/bullet_kafka_defaults.yaml">configuration file</a>.</p>
 <h3 id="plug-into-the-web-service">Plug into the Web Service</h3>
-<p>You will need the Head over to our <a href="../../releases/#bullet-kafka">releases page</a> and get the JAR artifact with the <code>fat</code> classifier. For example, you can download the artifact for the 0.2.0 release <a href="http://jcenter.bintray.com/com/yahoo/bullet/bullet-kafka/0.2.0/">directly from JCenter</a>).</p>
+<p>You will need to head over to our <a href="../../releases/#bullet-kafka">releases page</a> and get the JAR artifact with the <code>fat</code> classifier. For example, you can download the artifact for the 0.2.0 release <a href="http://jcenter.bintray.com/com/yahoo/bullet/bullet-kafka/0.2.0/">directly from JCenter</a>).</p>
 <p>You should then plug in this JAR to your Web Service following the instructions <a href="../../ws/setup/#launch">here</a>.</p>
 <p>For configuration, you should <a href="../../ws/setup/#pubsub-configuration">follow the steps here</a> to create and provide a YAML file to the Web Service. Remember to change the context to <code>QUERY_SUBMISSION</code>.</p>
 <pre><code class="yaml">bullet.pubsub.context.name: &quot;QUERY_SUBMISSION&quot;
