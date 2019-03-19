@@ -12,7 +12,10 @@ If you have any issues with any of the particular Bullet sub-components, feel fr
 | UI            | [https://github.com/bullet-db/bullet-ui/issues](https://github.com/bullet-db/bullet-ui/issues)                     |
 | Record        | [https://github.com/bullet-db/bullet-record/issues](https://github.com/bullet-db/bullet-record/issues)             |
 | Core          | [https://github.com/bullet-db/bullet-core/issues](https://github.com/bullet-db/bullet-core/issues)                 |
+| DSL           | [https://github.com/bullet-db/bullet-dsl/issues](https://github.com/bullet-db/bullet-dsl/issues)                   |
+| BQL           | [https://github.com/bullet-db/bullet-bql/issues](https://github.com/bullet-db/bullet-bql/issues)                   |
 | Kafka PubSub  | [https://github.com/bullet-db/bullet-kafka/issues](https://github.com/bullet-db/bullet-kafka/issues)               |
+| Pulsar PubSub | [https://github.com/bullet-db/bullet-pulsar/issues](https://github.com/bullet-db/bullet-pulsar/issues)             |
 | Documentation | [https://github.com/bullet-db/bullet-db.github.io/issues](https://github.com/bullet-db/bullet-db.github.io/issues) |
 
 ## Mailing Lists

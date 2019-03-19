@@ -45,11 +45,12 @@ pages:
 
 markdown_extensions:
     - admonition
+    - attr_list
 
 extra:
   collapse_toc: true
   include_search: true
-  service_version: v0.6.0
+  service_version: v0.6.1
 
 extra_css:
   - css/extra.css

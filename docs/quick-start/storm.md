@@ -7,13 +7,13 @@ At the end of this section, you will have:
   * Setup the Bullet topology using a custom spout on [bullet-storm-0.8.5](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.8.5)
   * Setup the [Web Service](../ws/setup.md) talking to the topology and serving a schema for your UI using [bullet-service-0.4.3](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.4.3)
   * Setup the [REST PubSub](../pubsub/rest.md) talking to the topology and Web Service using [bullet-core-0.6.4](https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.6.4).
-  * Setup the [UI](../ui/setup.md) talking to the Web Service using [bullet-ui-0.6.1](https://github.com/bullet-db/bullet-ui/releases/tag/v0.6.1)
+  * Setup the [UI](../ui/setup.md) talking to the Web Service using [bullet-ui-0.6.2](https://github.com/bullet-db/bullet-ui/releases/tag/v0.6.2)
 
 **Prerequisites**
 
   * You will need to be on an Unix-based system (Mac OS X, Ubuntu ...) with ```curl``` installed
   * You will need [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html) installed
-  * You will need enough CPU and RAM on your machine to run about 8-10 JVMs in ```server``` mode. You should have at least 2 GB free space on your disk. We will be setting up a Storm cluster with multiple components, a couple of Jetty instances and a Node server.
+  * You will need enough CPU and RAM on your machine to run about 8-10 JVMs in ```server``` mode. You should have at least 2 GB free space on your disk. We will be setting up a Storm cluster with multiple components, an embedded Tomcat server and a Node server.
 
 ## Install Script
 
@@ -43,7 +43,7 @@ mkdir -p $BULLET_HOME/backend/storm
 mkdir -p $BULLET_HOME/service
 mkdir -p $BULLET_HOME/ui
 cd $BULLET_HOME
-curl -LO https://github.com/bullet-db/bullet-db.github.io/releases/download/v0.6.0/examples_artifacts.tar.gz
+curl -LO https://github.com/bullet-db/bullet-db.github.io/releases/download/v0.6.1/examples_artifacts.tar.gz
 tar -xzf examples_artifacts.tar.gz
 export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 ```
@@ -168,8 +168,8 @@ nvm use v6.9.4
 
 ```bash
 cd $BULLET_HOME/ui
-curl -LO https://github.com/bullet-db/bullet-ui/releases/download/src/bullet-ui-v0.6.1.tar.gz
-tar -xzf bullet-ui-v0.6.1.tar.gz
+curl -LO https://github.com/bullet-db/bullet-ui/releases/download/src/bullet-ui-v0.6.2.tar.gz
+tar -xzf bullet-ui-v0.6.2.tar.gz
 cp $BULLET_EXAMPLES/ui/env-settings.json config/
 ```
 
@@ -204,7 +204,7 @@ If you were performing the steps yourself, you can also manually cleanup **all t
 | UI             | ```pkill -f [e]xpress-server.js```                               |
 | Web Service    | ```pkill -f [e]xample_rest_pubsub_config.yaml```                      |
 | Storm          | ```pkill -f [a]pache-storm-1.2.2```                              |
-| File System    | ```rm -rf $BULLET_HOME /tmp/dev-storm-zookeeper /tmp/jetty-*```  |
+| File System    | ```rm -rf $BULLET_HOME /tmp/dev-storm-zookeeper```  |
 
 This does *not* delete ```$HOME/.nvm``` and some extra lines nvm may have added to your ```$HOME/{.profile, .bash_profile, .zshrc, .bashrc}```.
 

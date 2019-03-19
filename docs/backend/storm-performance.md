@@ -29,6 +29,10 @@ Using the pluggable metrics interface in Bullet on Storm, we captured worker lev
 
 See [0.3.0](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.3.0) for how to plug in your own metrics collection.
 
+!!!note "Old Version of Bullet"
+
+    This was tested with a relatively old version of Bullet Storm and has not been updated since. With the latest changes in Storm, Bullet Storm, using a proper PubSub, and partitioning in Bullet Core, the performance is actually a lot better. However, the point of this performance section is to simply conclude that (Spoilers Ahead) scaling out is pretty linear and queries mostly fit into the overhead of reading the data when the simultaneous queries desired is in the hundreds.
+
 ### Tools used
 
   * [jq](https://stedolan.github.io/jq/) - a nice tool to parse Bullet JSON responses
@@ -573,7 +577,7 @@ The following table summarizes the results:
 
 The following figure summarizes the minimum number of CPU cores (which are also the number of Filter Bolts) needed to support the the maximum number of ```RAW``` queries with latency < 200 ms.
 
-#### Figure 15. Data Volume vs Memory
+#### Figure 15. CPU vs Max Concurrent Queries
 
 ![Queries](../img/queries-cpu.png)
 
@@ -581,7 +585,7 @@ This shows that the queries supported also scale pretty linearly.
 
 You may have noticed how when latency starts to increase, it increases pretty rapidly. This suggests that there is a *knee* or *exponential* curve for latency. The following figure shows this in the graph of the latency for queries with ```20``` Filter Bolts.
 
-#### Figure 16. Data Volume vs Memory
+#### Figure 16. Max Concurrent Queries vs Latency
 
 ![Queries](../img/queries-20-fb.png)
 
