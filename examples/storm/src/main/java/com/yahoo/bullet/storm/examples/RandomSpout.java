@@ -15,6 +15,7 @@ import org.apache.storm.topology.OutputFieldsDeclarer;
 import org.apache.storm.topology.base.BaseRichSpout;
 import org.apache.storm.tuple.Fields;
 import org.apache.storm.tuple.Values;
+import org.apache.storm.utils.Utils;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -132,11 +133,7 @@ public class RandomSpout extends BaseRichSpout {
             periodCount++;
         }
         // It is courteous to sleep for a short time if you're not emitting anything...
-        try {
-            Thread.sleep(1);
-        } catch (InterruptedException e) {
-            log.error("Error: ", e);
-        }
+        Utils.sleep(1);
     }
 
     private Map<String, String> makeRandomMap() {

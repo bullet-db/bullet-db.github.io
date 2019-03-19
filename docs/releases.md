@@ -149,6 +149,7 @@ The Web Service implementation that can serve a static schema from a file and ta
 
 |    Date      |                                      Release                                           | Highlights | APIDocs |
 | ------------ | -------------------------------------------------------------------------------------- | ---------- | ------- |
+| 2019-03-07   | [**0.5.0**](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.5.0) | QueryManager API updates | [JavaDocs](apidocs/bullet-service/0.5.0/index.html) |
 | 2018-11-28   | [**0.4.3**](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.4.3) | Updates bullet-bql to 0.2.1 | [JavaDocs](apidocs/bullet-service/0.4.3/index.html) |
 | 2018-11-26   | [**0.4.2**](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.4.2) | BQL to JSON endpoint, dead backend reaper, new types in Schema, bullet-core 0.6.4 | [JavaDocs](apidocs/bullet-service/0.4.2/index.html) |
 | 2018-09-06   | [**0.4.1**](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.4.1) | Max Queries limit and bullet-bql 0.1.2 | [JavaDocs](apidocs/bullet-service/0.4.1/index.html) |
@@ -179,6 +180,7 @@ The Bullet UI that lets you build, run, save and visualize results from Bullet.
 
 |    Date      |                                      Release                                           | Highlights |
 | ------------ | -------------------------------------------------------------------------------------- | ---------- |
+| 2019-03-18   | [**0.6.2**](https://github.com/bullet-db/bullet-ui/releases/tag/v0.6.2) | Logo update |
 | 2018-10-05   | [**0.6.1**](https://github.com/bullet-db/bullet-ui/releases/tag/v0.6.1) | Timeseries Graphing, Bar, Pie Charts and FontAwesome |
 | 2018-07-20   | [**0.6.0**](https://github.com/bullet-db/bullet-ui/releases/tag/v0.6.0) | Supports adding a full default starting query |
 | 2018-06-18   | [**0.5.0**](https://github.com/bullet-db/bullet-ui/releases/tag/v0.5.0) | Supports windowing, uses IndexedDB and Ember 3! |

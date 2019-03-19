@@ -37,7 +37,7 @@ mkdir -p $BULLET_HOME/pubsub
 mkdir -p $BULLET_HOME/service
 mkdir -p $BULLET_HOME/ui
 cd $BULLET_HOME
-curl -LO https://github.com/bullet-db/bullet-db.github.io/releases/download/v0.6.0/examples_artifacts.tar.gz
+curl -LO https://github.com/bullet-db/bullet-db.github.io/releases/download/v0.6.1/examples_artifacts.tar.gz
 tar -xzf examples_artifacts.tar.gz
 export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 ```
@@ -96,7 +96,7 @@ tar -xzf spark-2.2.1-bin-hadoop2.7.tgz
 
 ```bash
 cp $BULLET_HOME/bullet-examples/backend/spark/* $BULLET_SPARK
-curl -Lo bullet-spark.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-spark/0.2.1/bullet-spark-0.2.1-standalone.jar
+curl -Lo bullet-spark.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-spark/0.2.2/bullet-spark-0.2.2-standalone.jar
 ```
 
 #### Step 8: Launch the Bullet Spark Backend
@@ -174,8 +174,8 @@ nvm use v6.9.4
 #### Step 13: Install the Bullet UI
 
 ```bash
-curl -LO https://github.com/bullet-db/bullet-ui/releases/download/v0.6.1/bullet-ui-v0.6.1.tar.gz
-tar -xzf bullet-ui-v0.6.1.tar.gz
+curl -LO https://github.com/bullet-db/bullet-ui/releases/download/v0.6.2/bullet-ui-v0.6.2.tar.gz
+tar -xzf bullet-ui-v0.6.2.tar.gz
 cp $BULLET_EXAMPLES/ui/env-settings.json config/
 ```
 
