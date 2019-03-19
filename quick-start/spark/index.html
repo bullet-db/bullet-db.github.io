@@ -71,7 +71,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v0.6.0</small></a>
+            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v0.6.1</small></a>
         </div>
 
         <!-- Expanded navigation -->
@@ -478,7 +478,7 @@ mkdir -p $BULLET_HOME/pubsub
 mkdir -p $BULLET_HOME/service
 mkdir -p $BULLET_HOME/ui
 cd $BULLET_HOME
-curl -LO https://github.com/bullet-db/bullet-db.github.io/releases/download/v0.6.0/examples_artifacts.tar.gz
+curl -LO https://github.com/bullet-db/bullet-db.github.io/releases/download/v0.6.1/examples_artifacts.tar.gz
 tar -xzf examples_artifacts.tar.gz
 export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 </code></pre>
@@ -519,7 +519,7 @@ tar -xzf spark-2.2.1-bin-hadoop2.7.tgz
 
 <h4 id="step-7-setup-bullet-spark-and-example-data-producer">Step 7: Setup Bullet-Spark and Example Data Producer</h4>
 <pre><code class="bash">cp $BULLET_HOME/bullet-examples/backend/spark/* $BULLET_SPARK
-curl -Lo bullet-spark.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-spark/0.2.1/bullet-spark-0.2.1-standalone.jar
+curl -Lo bullet-spark.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-spark/0.2.2/bullet-spark-0.2.2-standalone.jar
 </code></pre>
 
 <h4 id="step-8-launch-the-bullet-spark-backend">Step 8: Launch the Bullet Spark Backend</h4>
@@ -576,8 +576,8 @@ nvm use v6.9.4
 </code></pre>
 
 <h4 id="step-13-install-the-bullet-ui">Step 13: Install the Bullet UI</h4>
-<pre><code class="bash">curl -LO https://github.com/bullet-db/bullet-ui/releases/download/v0.6.1/bullet-ui-v0.6.1.tar.gz
-tar -xzf bullet-ui-v0.6.1.tar.gz
+<pre><code class="bash">curl -LO https://github.com/bullet-db/bullet-ui/releases/download/v0.6.2/bullet-ui-v0.6.2.tar.gz
+tar -xzf bullet-ui-v0.6.2.tar.gz
 cp $BULLET_EXAMPLES/ui/env-settings.json config/
 </code></pre>
 

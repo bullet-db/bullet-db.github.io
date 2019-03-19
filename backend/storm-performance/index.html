@@ -71,7 +71,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v0.6.0</small></a>
+            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v0.6.1</small></a>
         </div>
 
         <!-- Expanded navigation -->
@@ -577,6 +577,10 @@
 <p>This particular version of Bullet on Storm was <strong>prior to the architecture shift</strong> to a PubSub layer but this would be the equivalent to using the Storm DRPC PubSub layer on a newer version of Bullet on Storm. You can replace DRPC spout and PrepareRequest bolt with Query spout and ReturnResults bolt with Result bolt conceptually. The actual implementation of the DRPC based PubSub layer just uses these spout and bolt implementations underneath anyway for the Publishers and Subscribers so the parallelisms and CPU utilizations should map 1-1.</p>
 <p>Using the pluggable metrics interface in Bullet on Storm, we captured worker level metrics such as CPU time, Heap usage, GC times and types, sent them to a in-house monitoring service for time-slicing and graphing. The figures shown below use this service.</p>
 <p>See <a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.3.0">0.3.0</a> for how to plug in your own metrics collection.</p>
+<div class="admonition note">
+<p class="admonition-title">Old Version of Bullet</p>
+<p>This was tested with a relatively old version of Bullet Storm and has not been updated since. With the latest changes in Storm, Bullet Storm, using a proper PubSub, and partitioning in Bullet Core, the performance is actually a lot better. However, the point of this performance section is to simply conclude that (Spoilers Ahead) scaling out is pretty linear and queries mostly fit into the overhead of reading the data when the simultaneous queries desired is in the hundreds.</p>
+</div>
 <h3 id="tools-used">Tools used</h3>
 <ul>
 <li><a href="https://stedolan.github.io/jq/">jq</a> - a nice tool to parse Bullet JSON responses</li>
@@ -1970,11 +1974,11 @@ hiccups in our collection mechanism (the collection granularity was not 5s as we
 </tbody>
 </table>
 <p>The following figure summarizes the minimum number of CPU cores (which are also the number of Filter Bolts) needed to support the the maximum number of <code>RAW</code> queries with latency &lt; 200 ms.</p>
-<h4 id="figure-15-data-volume-vs-memory">Figure 15. Data Volume vs Memory</h4>
+<h4 id="figure-15-cpu-vs-max-concurrent-queries">Figure 15. CPU vs Max Concurrent Queries</h4>
 <p><img alt="Queries" src="../../img/queries-cpu.png" /></p>
 <p>This shows that the queries supported also scale pretty linearly.</p>
 <p>You may have noticed how when latency starts to increase, it increases pretty rapidly. This suggests that there is a <em>knee</em> or <em>exponential</em> curve for latency. The following figure shows this in the graph of the latency for queries with <code>20</code> Filter Bolts.</p>
-<h4 id="figure-16-data-volume-vs-memory">Figure 16. Data Volume vs Memory</h4>
+<h4 id="figure-16-max-concurrent-queries-vs-latency">Figure 16. Max Concurrent Queries vs Latency</h4>
 <p><img alt="Queries" src="../../img/queries-20-fb.png" /></p>
 <h3 id="conclusion_6">Conclusion</h3>
 <p>Since Filter Bolts tend to be the most CPU intensive of the query processing components, this test measured how scaling Filter Bolts affected the number of queries that can be supported. For the fixed data volume, this relationship is linear.</p></div>
