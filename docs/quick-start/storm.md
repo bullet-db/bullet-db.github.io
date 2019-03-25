@@ -168,7 +168,7 @@ nvm use v6.9.4
 
 ```bash
 cd $BULLET_HOME/ui
-curl -LO https://github.com/bullet-db/bullet-ui/releases/download/src/bullet-ui-v0.6.2.tar.gz
+curl -LO https://github.com/bullet-db/bullet-ui/releases/download/v0.6.2/bullet-ui-v0.6.2.tar.gz
 tar -xzf bullet-ui-v0.6.2.tar.gz
 cp $BULLET_EXAMPLES/ui/env-settings.json config/
 ```
