@@ -14,18 +14,11 @@ Rather than sourcing the examples from the Quick Start, these examples are real-
 
 The simplest query you can write would be:
 
-**BQL Query**
-
 ```SQL
 SELECT * FROM STREAM(30000, TIME) LIMIT 1;
 ```
 
-**JSON Query**
-
-```javascript
-{}
-```
-While not a very useful query - this will get any one event record (no filters means that any record would be matched, no projection gets the entire record, and the default aggregation is ```LIMIT```or ```RAW``` with size 1, default duration 30000 ms), this can be used to quickly test your connection to Bullet.
+While not a very useful query - this will get any one event record (no SELECT fields gets the entire record, no WHERE clause means that any record would be matched, and the default aggregation is ```LIMIT```or ```RAW``` with size 1, default duration 30000 ms), this can be used to quickly test your connection to Bullet.
 
 !!! note "WINDOW?"
 
@@ -33,29 +26,11 @@ While not a very useful query - this will get any one event record (no filters m
 
 ### Simple Filtering
 
-**BQL Query**
-
 ```SQL
 SELECT *
 FROM STREAM(30000, TIME)
 WHERE id = 'btsg8l9b234ha'
 LIMIT 1;
-```
-
-**JSON Query**
-
-```javascript
-{
-   "filters":[
-       {
-           "field":"id",
-           "operation":"==",
-           "values":[
-               "btsg8l9b234ha"
-           ]
-       }
-    ]
-}
 ```
 
 Because of the default constraints, this query would find at most 1 record with the id matching the value provided. The record would have all its fields.
@@ -96,51 +71,12 @@ A sample response could be (it has been edited to remove PII and other Yahoo dat
 
 ### Relational Filters and Projections
 
-**BQL Query**
-
 ```SQL
 SELECT timestamp AS ts, device_timestamp AS device_ts,
        event AS event, page_domain AS domain, page_id AS id
 FROM STREAM(20000, TIME)
 WHERE id = 'btsg8l9b234ha' AND page_id IS NOT NULL
 LIMIT 10;
-```
-
-**JSON Query**
-
-```javascript
-{
-    "filters":[
-        {
-            "field":"id",
-            "operation":"==",
-            "values":[
-                "btsg8l9b234ha"
-            ]
-        },
-        {
-            "field":"page_id",
-            "operation":"!=",
-            "values":[
-                "null"
-            ]
-        }
-    ],
-    "projection":{
-        "fields":{
-            "timestamp":"ts",
-            "device_timestamp":"device_ts",
-            "event":"event",
-            "page_domain":"domain",
-            "page_id":"id"
-        }
-    },
-    "aggregation":{
-        "type":"RAW",
-        "size":10
-    },
-    "duration":20000
-}
 ```
 
 The above query finds all events with id set to 'btsg8l9b234ha' and page_id is not null, projects out the fields listed above with their new names (timestamp becomes ts etc) and limits the results to at most 10 such records. ```RAW``` indicates that the complete raw record fields will be returned, and more complicated aggregations such as ```COUNT``` or ```SUM``` will not be performed. The duration would set the query to wait at most 20 seconds for records to show up.
@@ -189,8 +125,6 @@ For the following examples, we will simply show and explain the queries. They al
 
 This query checks to see if the size of the ```data_map``` is equal to 4 and returns all records that do satisfy this.
 
-**BQL Query**
-
 ```SQL
 SELECT *
 FROM STREAM(30000, TIME)
@@ -198,35 +132,9 @@ WHERE SIZEOF(data_map) = 4
 LIMIT 1;
 ```
 
-**JSON Query**
-
-```javascript
-{
-    "filters": [
-        {
-            "field":"data_map",
-            "values":[
-                {
-                    "kind":"VALUE",
-                    "value":"4"
-                }
-            ],
-            "operation":"SIZEIS"
-        }
-    ],
-    "aggregation":{
-        "type":"RAW",
-        "size":1
-    },
-    "duration":30000
-}
-```
-
 #### CONTAINSKEY Filter
 
 This query checks to see if the ```data_map``` contains the key ```id``` and returns all records for which this is true.
-
-**BQL Query**
 
 ```SQL
 SELECT *
@@ -235,35 +143,9 @@ WHERE data_map CONTAINSKEY ("id")
 LIMIT 1;
 ```
 
-**JSON Query**
-
-```javascript
-{
-    "filters":[
-        {
-            "field":"data_map",
-            "values":[
-                {
-                    "kind":"VALUE",
-                    "value":"id"
-                }
-            ],
-            "operation":"CONTAINSKEY"
-        }
-    ],
-    "aggregation":{
-        "type":"RAW",
-        "size":1
-    },
-    "duration":30000
-}
-```
-
 #### CONTAINSVALUE Filter
 
 This query checks to see if the ```data_map``` does not contain the value ```btsg8l9b234ha``` and returns all records for which this is true. If this was applied on a list field or list of maps field, the inner maps would be checked instead.
-
-**BQL Query**
 
 ```SQL
 SELECT *
@@ -272,70 +154,15 @@ WHERE data_map NOT CONTAINSVALUE ("btsg8l9b234ha")
 LIMIT 1;
 ```
 
-**JSON Query**
-
-```javascript
-{
-    "filters":[
-        {
-            "clauses":[
-                {
-                    "field":"data_map",
-                    "values":[
-                        {
-                            "kind":"VALUE",
-                            "value":"btsg8l9b234ha"
-                        }
-                    ],
-                    "operation":"CONTAINSVALUE"
-                }
-            ],
-            "operation": "NOT"
-        }
-    ],
-    "aggregation":{
-        "type":"RAW",
-        "size":1
-    },
-    "duration":30000
-}
-```
-
 ### Relational Filter comparing to other fields
 
 Instead of comparing to static, constant values, you may use the extended values notation and set ```kind``` to ```FIELD``` to  compare to other fields within the same record. The following query returns the first record for which the ```id``` field is set to the ```uid``` field.
-
-**BQL Query**
 
 ```SQL
 SELECT *
 FROM STREAM(30000, TIME)
 WHERE id = uid
 LIMIT 1;
-```
-
-**JSON Query**
-
-```javascript
-{
-    "filters":[
-        {
-            "field":"id",
-            "values":[
-                {
-                    "kind":"FIELD",
-                    "value":"uid"
-                }
-            ],
-            "operation":"=="
-        }
-    ],
-    "aggregation":{
-        "type":"RAW",
-        "size":1
-    },
-    "duration":30000
-}
 ```
 
 A sample result could look like:
@@ -362,8 +189,6 @@ A sample result could look like:
 
 ### Logical Filters and Projections
 
-**BQL Query**
-
 ```SQL
 SELECT id AS id, experience AS experience, page_id AS pid,
        link_id AS lid, tags AS tags, demographics.age AS age
@@ -372,82 +197,6 @@ WHERE (id = 'c14plm1begla7' AND ((experience = 'web' AND page_id IN ('18025', '4
                                   OR link_id LIKE ('2.*')))
       OR (tags.player='true' AND demographics.age > '65')
 LIMIT 1;
-```
-
-**JSON Query**
-
-```javascript
-{
- "filters": [
-                {
-                    "operation": "OR",
-                    "clauses": [
-                        {
-                            "operation": "AND",
-                            "clauses": [
-                                {
-                                    "field": "id",
-                                    "operation": "==",
-                                    "values": ["c14plm1begla7"]
-                                },
-                                {
-                                    "operation": "OR",
-                                    "clauses": [
-                                        {
-                                            "operation": "AND",
-                                            "clauses": [
-                                                {
-                                                    "field": "experience",
-                                                    "operation": "==",
-                                                    "values": ["web"]
-                                                },
-                                                {
-                                                    "field": "page_id",
-                                                    "operation": "==",
-                                                    "values": ["18025", "47729"]
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            "field": "link_id",
-                                            "operation": "RLIKE",
-                                            "values": ["2.*"]
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            "operation": "AND",
-                            "clauses": [
-                                {
-                                    "field": "tags.player",
-                                    "operation": "==",
-                                    "values": ["true"]
-                                },
-                                {
-                                    "field": "demographics.age",
-                                    "operation": ">",
-                                    "values": ["65"]
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ],
- "projection" : {
-    "fields": {
-        "id": "id",
-        "experience": "experience",
-        "page_id": "pid",
-        "link_id": "lid",
-        "tags": "tags",
-        "demographics.age": "age"
-    }
- },
- "aggregation": {"type" : "RAW", "size" : 1},
- "duration": 60000
-}
 ```
 
 !!! note "Typing"
@@ -479,11 +228,8 @@ A sample result could look like (it matched because of tags.player was true and 
 }
 ```
 
-
 ### GROUP ALL COUNT Aggregation
 An example of a query performing a COUNT all records aggregation would look like:
-
-**BQL Query**
 
 ```SQL
 SELECT COUNT(*) AS numSeniors
@@ -493,34 +239,6 @@ GROUP BY ();
 ```
 
 Note that the ```GROUP BY ()``` is optional.
-
-**JSON Query**
-
-```javascript
-{
-   "filters":[
-      {
-         "field":"demographics.age",
-         "operation":">",
-         "values":[
-            "65"
-         ]
-      }
-   ],
-   "aggregation":{
-      "type":"GROUP",
-      "attributes":{
-         "operations":[
-            {
-               "type":"COUNT",
-               "newName":"numSeniors"
-            }
-         ]
-      }
-   },
-   "duration":20000
-}
-```
 
 This query will count the number events for which demographics.age > 65. The aggregation type GROUP indicates that it is a group aggregation. To group by a key, the ```fields``` key needs to be set in the ```aggregation``` part of the query. If ```fields``` is empty or is omitted (as it is in the query above) and the ```type``` is ```GROUP```, it is as if all the records are collapsed into a single group - a ```GROUP ALL```. Adding a ```COUNT``` in the ```operations``` part of the ```attributes``` indicates that the number of records in this group will be counted, and the "newName" key denotes the name the resulting column "numSeniors" in the result. Setting the duration to 20000 counts matching records for
 this duration.
@@ -545,8 +263,6 @@ This result indicates that 363,201 records were counted with demographics.age > 
 
 COUNT is the only GROUP operation for which you can omit a "field".
 
-**BQL Query**
-
 ```SQL
 SELECT COUNT(*) AS numCalifornians, AVG(demographics.age) AS avgAge,
        MIN(demographics.age) AS minAge, MAX(demographics.age) AS maxAge
@@ -555,49 +271,6 @@ WHERE demographics.state = 'california'
 GROUP BY ();
 ```
 Note that the ```GROUP BY ()``` is optional.
-
-**JSON Query**
-
-```javascript
-{
-   "filters":[
-      {
-         "field":"demographics.state",
-         "operation":"==",
-         "values":[
-            "california"
-         ]
-      }
-   ],
-   "aggregation":{
-      "type":"GROUP",
-      "attributes":{
-         "operations":[
-            {
-               "type":"COUNT",
-               "newName":"numCalifornians"
-            },
-            {
-               "type":"AVG",
-               "field":"demographics.age",
-               "newName":"avgAge"
-            },
-            {
-               "type":"MIN",
-               "field":"demographics.age",
-               "newName":"minAge"
-            },
-            {
-               "type":"MAX",
-               "field":"demographics.age",
-               "newName":"maxAge"
-            }
-         ]
-      }
-   },
-   "duration":20000
-}
-```
 
 A sample result would look like:
 
@@ -625,25 +298,9 @@ This result indicates that, among the records observed during the 20s this query
 
 ### Exact COUNT DISTINCT Aggregation
 
-**BQL Query**
-
 ```SQL
 SELECT COUNT(DISTINCT browser_name, browser_version) AS "COUNT DISTINCT"
 FROM STREAM(10000, TIME);
-```
-
-**JSON Query**
-
-```javascript
-{
-   "aggregation":{
-      "type":"COUNT DISTINCT",
-      "fields":{
-         "browser_name":"",
-         "browser_version":""
-      }
-   }
-}
 ```
 
 This gets the count of the unique browser names and versions in the next 30s (default duration). Note that we do not specify values for the keys in fields. This is because they are not relevant
@@ -690,28 +347,9 @@ was estimated or not. The ```standard_deviations``` key denotes the confidence a
 
 ### Approximate COUNT DISTINCT
 
-**BQL Query**
-
 ```SQL
 SELECT COUNT(DISTINCT ip_address) AS uniqueIPs
 FROM STREAM(10000, TIME);
-```
-
-**JSON Query**
-
-```javascript
-{
-   "aggregation":{
-      "type":"COUNT DISTINCT",
-      "fields":{
-         "ip_address":""
-      },
-      "attributes":{
-         "newName":"uniqueIPs"
-      }
-   },
-   "duration":10000
-}
 ```
 
 This query gets us the unique IP addresses in the next 10 s. It renames the result column from "COUNT DISTINCT" to "uniqueIPs".
@@ -758,27 +396,11 @@ Sketch size is 2.34% as defined [here](https://datasketches.github.io/docs/Theta
 
 ### DISTINCT Aggregation
 
-**BQL Query**
-
 ```SQL
 SELECT browser_name AS browser
 FROM STREAM(30000, TIME)
 GROUP BY browser_name
 LIMIT 10;
-```
-
-**JSON Query**
-
-```javascript
-{
-   "aggregation":{
-      "type":"DISTINCT",
-      "size":10,
-      "fields":{
-         "browser_name":"browser"
-      }
-   }
-}
 ```
 
 This query gets the distinct values for the browser_name field and limit the results to 10. It runs for 30 s.
@@ -852,8 +474,6 @@ DISTINCT is just an alias for GROUP. A GROUP by with no operations is exactly a 
 
 ### GROUP by Aggregation
 
-**BQL Query**
-
 ```SQL
 SELECT demographics.country AS country, device AS device,
        COUNT(*) AS count, AVG(demographics.age) AS averageAge,
@@ -862,49 +482,6 @@ FROM STREAM(20000, TIME)
 WHERE demographics IS NOT NULL
 GROUP BY demographics.country, device
 LIMIT 50;
-```
-
-**JSON Query**
-
-```javascript
-{
-   "filters":[
-      {
-         "field":"demographics",
-         "operation":"!=",
-         "values":[
-            "null"
-         ]
-      }
-   ],
-   "aggregation":{
-      "type":"GROUP",
-      "size":50,
-      "fields":{
-         "demographics.country":"country",
-         "device":""
-      },
-      "attributes":{
-         "operations":[
-            {
-               "type":"COUNT",
-               "newName":"count"
-            },
-            {
-               "type":"AVG",
-               "field":"demographics.age",
-               "newName":"averageAge"
-            },
-            {
-               "type":"AVG",
-               "field":"timespent",
-               "newName":"averageTimespent"
-            }
-         ]
-      }
-   },
-   "duration":20000
-}
 ```
 
 This query groups by the country and the device and for each unique group gets the count, average age and time spent by the users for the next 20 seconds. It renames demographics.country to country and does not rename device. It limits the groups to 50. If there were more than
@@ -969,31 +546,10 @@ For readability, if you were just trying to get the unique values for a field or
 
 ### QUANTILE DISTRIBUTION
 
-**BQL Query**
-
 ```SQL
 SELECT QUANTILE(duration, LINEAR, 11)
 FROM STREAM(5000, TIME)
 LIMIT 11;
-```
-
-**JSON Query**
-
-```javascript
-{
-   "aggregation":{
-      "type": "DISTRIBUTION",
-      "size": 11,
-      "fields": {
-          "duration": ""
-      },
-      "attributes": {
-          "type": "QUANTILE",
-          "numberOfPoints": 11
-      }
-   },
-   "duration": 5000
-}
 ```
 
 This query creates 11 points from 0 to 1 (both inclusive) and finds the percentile values of the ```duration``` field (which contains an amount of time in ms) at ```0, 0.1, 0.2 ... 1.0``` or the 0th, 10th, 20th and 100th percentiles. It runs for 5 seconds and returns at most 11 points. As long as the ```size``` is set to higher than the number of points you generate, ```DISTRIBUTION``` queries will return all your values.
@@ -1083,33 +639,10 @@ if the error was 1%).
 
 ### PMF DISTRIBUTION Aggregation
 
-**BQL Query**
-
 ```SQL
 SELECT FREQ(duration, REGION, 2000, 20000, 500)
 FROM STREAM(5000, TIME)
 LIMIT 100;
-```
-
-**JSON Query**
-
-```javascript
-{
-   "aggregation":{
-      "type":"DISTRIBUTION",
-      "size":100,
-      "fields":{
-         "duration":""
-      },
-      "attributes":{
-         "type":"PMF",
-         "start":2000,
-         "end":20000,
-         "increment":500
-      }
-   },
-   "duration":5000
-}
 ```
 
 This query creates 37 points from 2000 to 20000 in 500 increments to bucketize the duration field using these points as split locations and finds the count of duration values that fall into these intervals. It runs for 5s and returns at most 100 records (this means it will return the 38 records).
@@ -1164,31 +697,10 @@ The result consists of 38 records, each denoting an interval in the domain we as
 
 ### CDF DISTRIBUTION Aggregation
 
-**BQL Query**
-
 ```SQL
 SELECT CUMFREQ(duration, MANUAL, 20000, 2000, 15000, 45000)
 FROM STREAM(5000, TIME)
 LIMIT 100;
-```
-
-**JSON Query**
-
-```javascript
-{
-   "aggregation":{
-      "type": "DISTRIBUTION",
-      "size": 100,
-      "fields": {
-          "duration": ""
-      },
-      "attributes": {
-          "type": "CDF",
-          "points": [20000, 2000, 15000, 45000]
-      }
-   },
-   "duration": 5000
-}
 ```
 
 This query specifies a list of points manually using ```points``` property in ```attributes```. It runs for 5s and finds the
@@ -1249,8 +761,6 @@ it is the cumulative frequency distribution.
 
 ### Exact TOP K Aggregation
 
-**BQL Query**
-
 There are two methods for executing a TOP K aggregation in BQL:
 
 ```SQL
@@ -1269,38 +779,6 @@ GROUP BY demographics.country, browser_name
 HAVING COUNT(*) >= 100
 ORDER BY COUNT(*) DESC
 LIMIT 500;
-```
-
-**JSON Query**
-
-```javascript
-{
-   "filters":[
-      {
-         "field": "demographics.country",
-         "operation": "!=",
-         "values": ["null"]
-      },
-      {
-         "field": "browser_name",
-         "operation": "!=",
-         "values": ["null"]
-      }
-   ],
-   "aggregation":{
-      "type": "TOP K",
-      "size": 500,
-      "fields": {
-          "browser_name": "browser",
-          "demographics.country": "country"
-      },
-      "attributes": {
-          "threshold": 100,
-          "newName": "numEvents"
-      }
-   },
-   "duration": 10000
-}
 ```
 
 This query gets the top 500 country, browser combinations where the count of records for each combination is at least 100. It runs for 10s.
@@ -1371,8 +849,6 @@ In our data stream, we only had 18 unique combinations of countries and browser 
 
 ### Approximate TOP K Aggregation
 
-**BQL Query**
-
 There are two methods for executing a TOP K aggregation in BQL:
 
 ```SQL
@@ -1391,43 +867,6 @@ GROUP BY browser_name, browser_version, os_name, os_version, demographics.countr
 HAVING COUNT(*) >= 100
 ORDER BY COUNT(*) DESC
 LIMIT 10;
-```
-
-
-**JSON Query**
-
-```javascript
-{
-   "filters":[
-      {
-         "field": "browser_name",
-         "operation": "!=",
-         "values": ["null"]
-      },
-      {
-         "field": "os_name",
-         "operation": "!=",
-         "values": ["null"]
-      }
-   ],
-   "aggregation":{
-      "type": "TOP K",
-      "size": 10,
-      "fields": {
-          "browser_name": "browser",
-          "browser_version": "bversion",
-          "os_name": "os",
-          "os_version": "oversion",
-          "demographics.country": "country",
-          "demographics.state": "state"
-      },
-      "attributes": {
-          "threshold": 100,
-          "newName": "numEvents"
-      }
-   },
-   "duration": 30000
-}
 ```
 
 In order to make the result approximate, this query adds more dimensions to the [Exact TOP K](#exact-top-k-aggregation) query. It runs for 30s and looks for the top *10* combinations for these events.
@@ -1553,8 +992,6 @@ the second one and possibly be ranked higher. There is no such situation in this
 
 ### Window - Tumbling Group-By
 
-**BQL Query**
-
 ```SQL
 SELECT demographics.country AS country, COUNT(*) AS count, AVG(demographics.age) AS averageAge,
        AVG(timespent) AS averageTimespent
@@ -1563,53 +1000,6 @@ WHERE demographics IS NOT NULL
 GROUP BY demographics.country
 WINDOWING(TUMBLING, 5000, TIME)
 LIMIT 50;
-```
-
-**JSON Query**
-
-```javascript
-{
-   "filters":[
-      {
-         "field":"demographics",
-         "operation":"!=",
-         "values":[
-            "null"
-         ]
-      }
-   ],
-   "aggregation":{
-      "type":"GROUP",
-      "size":5,
-      "fields":{
-         "demographics.country":"country"
-      },
-      "attributes":{
-         "operations":[
-            {
-               "type":"COUNT",
-               "newName":"count"
-            },
-            {
-               "type":"AVG",
-               "field":"demographics.age",
-               "newName":"averageAge"
-            }
-         ]
-      }
-   },
-   "window":{
-       "emit":{
-           "type": "TIME",
-           "every": 5000
-       },
-       "include":{
-           "type": "TIME",
-           "first": 5000
-       }
-   },
-   "duration":20000
-}
 ```
 
 This query specifies a tumbling window that will emit every 5 seconds and contain 5 seconds of data per window. Results will come back to the user every 5 seconds, and since the duration of the query is 20 seconds,
@@ -1677,7 +1067,6 @@ the user will receive a total of 4 results. Since the aggregation size is set to
     }
 }
 
-
 "records":[  
    {  
       "country":"Canada",
@@ -1739,7 +1128,6 @@ the user will receive a total of 4 results. Since the aggregation size is set to
    }
 }
 
-
 "records":[  
    {  
       "country":"Canada",
@@ -1800,7 +1188,6 @@ the user will receive a total of 4 results. Since the aggregation size is set to
       }
    }
 }
-
 
 "records":[  
    {  
@@ -1867,8 +1254,6 @@ the user will receive a total of 4 results. Since the aggregation size is set to
 
 ### Window - Additive Tumbling
 
-**BQL Query**
-
 ```SQL
 SELECT COUNT(*) AS count, AVG(demographics.age) AS averageAge,
        AVG(timespent) AS averageTimespent
@@ -1877,48 +1262,6 @@ WHERE demographics IS NOT NULL
 GROUP BY ()
 WINDOWING(EVERY, 5000, TIME, ALL)
 LIMIT 50;
-```
-
-**JSON Query**
-
-```javascript
-{
-   "filters":[
-      {
-         "field":"demographics",
-         "operation":"!=",
-         "values":[
-            "null"
-         ]
-      }
-   ],
-   "aggregation":{
-      "type":"GROUP",
-      "attributes":{
-         "operations":[
-            {
-               "type":"COUNT",
-               "newName":"count"
-            },
-            {
-               "type":"AVG",
-               "field":"demographics.age",
-               "newName":"averageAge"
-            }
-         ]
-      }
-   },
-   "window":{
-       "emit":{
-           "type": "TIME",
-           "every": 5000
-       },
-       "include":{
-           "type": "ALL"
-       }
-   },
-   "duration":20000
-}
 ```
 
 The above query will run for 20 seconds and emit a result every 5 seconds. The result will contain the average age and the count of the records seen since the very beginning of the query. Results might look like this:
@@ -1944,7 +1287,6 @@ The above query will run for 20 seconds and emit a result every 5 seconds. The r
    }
 }
 
-
 "records":[  
    {  
       "count":17580,
@@ -1965,7 +1307,6 @@ The above query will run for 20 seconds and emit a result every 5 seconds. The r
    }
 }
 
-
 "records":[  
    {  
       "count":26317,
@@ -1985,8 +1326,6 @@ The above query will run for 20 seconds and emit a result every 5 seconds. The r
       "Body":"...(query body)..."
    }
 }
-
-
 
 "records":[  
    {  
@@ -2012,53 +1351,11 @@ The above query will run for 20 seconds and emit a result every 5 seconds. The r
 
 ### Sliding Window of Size 1 with Max Duration
 
-**BQL Query**
-
 ```SQL
 SELECT *
 FROM STREAM(MAX, TIME)
 WHERE browser-id='2siknmdd6kaqm'
 WINDOWING(EVERY, 1, RECORD, FIRST, 1, RECORD)
-```
-
-**JSON Query**
-
-```javascript
-{  
-   "filters":[  
-      {  
-         "field":"browser-id",
-         "operation":"==",
-         "values":[  
-            "2siknmdd6kaqm"
-         ]
-      }
-   ],
-   "aggregation":{  
-      "size":1,
-      "type":"RAW",
-      "fields":null,
-      "attributes":null
-   },
-   "window":{  
-      "emit":{  
-         "type":"RECORD",
-         "every":1
-      },
-      "include":{  
-         "type":"RECORD",
-         "first":1
-      }
-   },
-   "projection":{  
-      "fields":{  
-         "browser-id":"browser-id",
-         "event":"event",
-         "demographics.country":"country"
-      }
-   },
-   "duration":9223372036854775807
-}
 ```
 
 This is a query that will capture raw data, and has a sliding window of size 1. This query will return window results immediately whenever a single record that matches the filters flows through the system. The filters in this example will only match records from a particular browser.
@@ -2088,7 +1385,6 @@ Results might look like this:
       "Body":"...(query body)... "
    }
 }
-
 
 "records":[  
    {  
