@@ -110,4 +110,4 @@ bullet.query.aggregation.top.k.sketch.entries: 1024
 bullet.query.aggregation.top.k.sketch.error.type: "NFN"
 bullet.result.metadata.enable: true
 # Factory class to get new BulletRecords.
-bullet.record.provider.class.name: "com.yahoo.bullet.record.SimpleBulletRecordProvider"
+bullet.record.provider.class.name: "com.yahoo.bullet.record.simple.SimpleBulletRecordProvider"

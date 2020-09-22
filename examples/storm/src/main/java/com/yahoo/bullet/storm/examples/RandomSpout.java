@@ -6,8 +6,8 @@
 package com.yahoo.bullet.storm.examples;
 
 import com.yahoo.bullet.common.BulletConfig;
-import com.yahoo.bullet.record.AvroBulletRecord;
 import com.yahoo.bullet.record.BulletRecord;
+import com.yahoo.bullet.record.avro.TypedAvroBulletRecord;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.storm.spout.SpoutOutputCollector;
 import org.apache.storm.task.TopologyContext;
@@ -144,7 +144,7 @@ public class RandomSpout extends BaseRichSpout {
     }
 
     private BulletRecord generateRecord() {
-        BulletRecord record = new AvroBulletRecord();
+        BulletRecord record = new TypedAvroBulletRecord();
         String uuid = UUID.randomUUID().toString();
 
         record.setString(STRING, uuid);
