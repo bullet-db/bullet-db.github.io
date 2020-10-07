@@ -6,23 +6,25 @@ Rather than sourcing the examples from the Quick Start, these examples are real-
 
     The actual data shown here has been edited and is not how actual Yahoo user events look.
 
-!!! note "BQL translation"
-
-    For each query, we will also rewrite it to BQL - a SQL like querying API if you do not want to use JSON.
-
 ### Simplest Query
 
-The simplest query you can write would be:
+The simplest query you could write would be:
 
 ```SQL
-SELECT * FROM STREAM(30000, TIME) LIMIT 1;
+SELECT * FROM STREAM();
 ```
 
-While not a very useful query - this will get any one event record (no SELECT fields gets the entire record, no WHERE clause means that any record would be matched, and the default aggregation is ```LIMIT```or ```RAW``` with size 1, default duration 30000 ms), this can be used to quickly test your connection to Bullet.
+This query would get any records that pass through for a default duration of 20000 ms up to a max default of 500 records.
+
+```SQL
+SELECT * FROM STREAM(10000, TIME) LIMIT 1;
+```
+
+If you wanted to write a smaller or shorter query to, for example, quickly test your connection to Bullet, you could adjust the query duration and size like shown above. This query would only last for a duration of 10000 ms and return at most 1 record.  
 
 !!! note "WINDOW?"
 
-    There is only one unified data stream in Bullet, so for clarity the ```FROM``` clause is replaced with a non-existent ```WINDOW``` function to denote the look-forward time window for the Bullet query. For the ```SQL``` examples, we pretend that this function understands various time granularities as well.
+    There is only one unified data stream in Bullet, so for clarity the ```FROM``` clause is given a ```STREAM``` function to denote the look-forward time window for the Bullet query. 
 
 ### Simple Filtering
 
@@ -79,7 +81,7 @@ WHERE id = 'btsg8l9b234ha' AND page_id IS NOT NULL
 LIMIT 10;
 ```
 
-The above query finds all events with id set to 'btsg8l9b234ha' and page_id is not null, projects out the fields listed above with their new names (timestamp becomes ts etc) and limits the results to at most 10 such records. ```RAW``` indicates that the complete raw record fields will be returned, and more complicated aggregations such as ```COUNT``` or ```SUM``` will not be performed. The duration would set the query to wait at most 20 seconds for records to show up.
+The above query finds all events where id is set to 'btsg8l9b234ha' and page_id is not null, projects the fields selected above with their aliases (timestamp as ts, etc.) and limits the results to at most 10 records. The query would wait at most 20 seconds for records to show up. 
 
 The resulting response could look like (only 3 events were generated that matched the criteria):
 
@@ -123,7 +125,7 @@ For the following examples, we will simply show and explain the queries. They al
 
 #### SIZEIS Filter
 
-This query checks to see if the size of the ```data_map``` is equal to 4 and returns all records that do satisfy this.
+This query checks to see if the size of the ```data_map``` is equal to 4 and returns all records that satisfy this.
 
 ```SQL
 SELECT *
@@ -139,7 +141,7 @@ This query checks to see if the ```data_map``` contains the key ```id``` and ret
 ```SQL
 SELECT *
 FROM STREAM(30000, TIME)
-WHERE data_map CONTAINSKEY ("id")
+WHERE CONTAINSKEY(data_map, 'id')
 LIMIT 1;
 ```
 
@@ -150,7 +152,7 @@ This query checks to see if the ```data_map``` does not contain the value ```bts
 ```SQL
 SELECT *
 FROM STREAM(30000, TIME)
-WHERE data_map NOT CONTAINSVALUE ("btsg8l9b234ha")
+WHERE NOT CONTAINSVALUE(data_map, 'btsg8l9b234ha')
 LIMIT 1;
 ```
 
@@ -193,15 +195,15 @@ A sample result could look like:
 SELECT id AS id, experience AS experience, page_id AS pid,
        link_id AS lid, tags AS tags, demographics.age AS age
 FROM STREAM(60000, TIME)
-WHERE (id = 'c14plm1begla7' AND ((experience = 'web' AND page_id IN ('18025', '47729'))
-                                  OR link_id LIKE ('2.*')))
-      OR (tags.player='true' AND demographics.age > '65')
+WHERE (id = 'c14plm1begla7' AND ((experience = 'web' AND page_id IN ['18025', '47729'])
+                                  OR link_id RLIKE '2.*'))
+      OR (tags.player = 'true' AND demographics.age > '65')
 LIMIT 1;
 ```
 
 !!! note "Typing"
 
-    If demographics["age"] was of type Long, then Bullet will convert 85 to be an Long, but in this example, we are pretending that it is String.  So, no conversion is made. Similarly for link_id, id, experience and page_id. tags is a Map of String to Boolean so Bullet converts ```"true"``` to the Boolean ```true```. Till we support casting ([#37](https://github.com/bullet-db/bullet-core/issues/37)), this will be the behavior automatically enforced by Bullet.
+    If demographics.age was of type Long, then Bullet will convert 85 to be an Long, but in this example, we are pretending that it is String.  So, no conversion is made. Similarly for link_id, id, experience and page_id. tags is a Map of String to Boolean so Bullet converts ```"true"``` to the Boolean ```true```. Till we support casting ([#37](https://github.com/bullet-db/bullet-core/issues/37)), this will be the behavior automatically enforced by Bullet.
 
 This query is looking for a single event with a specific id and either the page_id is in two specific pages on the "web" experience or with a link_id that starts with 2, or a player event where the age is greater than "65". In other words, it is looking for senior citizens who generate video player events or the events of a particular person (based on id) events on two specific pages or a group of pages that have link that have ids that start with 2. It then projects out only these fields with different names.
 
@@ -235,10 +237,7 @@ An example of a query performing a COUNT all records aggregation would look like
 SELECT COUNT(*) AS numSeniors
 FROM STREAM(20000, TIME)
 WHERE demographics.age > 65
-GROUP BY ();
 ```
-
-Note that the ```GROUP BY ()``` is optional.
 
 This query will count the number events for which demographics.age > 65. The aggregation type GROUP indicates that it is a group aggregation. To group by a key, the ```fields``` key needs to be set in the ```aggregation``` part of the query. If ```fields``` is empty or is omitted (as it is in the query above) and the ```type``` is ```GROUP```, it is as if all the records are collapsed into a single group - a ```GROUP ALL```. Adding a ```COUNT``` in the ```operations``` part of the ```attributes``` indicates that the number of records in this group will be counted, and the "newName" key denotes the name the resulting column "numSeniors" in the result. Setting the duration to 20000 counts matching records for
 this duration.
@@ -268,7 +267,6 @@ SELECT COUNT(*) AS numCalifornians, AVG(demographics.age) AS avgAge,
        MIN(demographics.age) AS minAge, MAX(demographics.age) AS maxAge
 FROM STREAM(20000, TIME)
 WHERE demographics.state = 'california'
-GROUP BY ();
 ```
 Note that the ```GROUP BY ()``` is optional.
 
@@ -400,6 +398,12 @@ Sketch size is 2.34% as defined [here](https://datasketches.github.io/docs/Theta
 SELECT browser_name AS browser
 FROM STREAM(30000, TIME)
 GROUP BY browser_name
+LIMIT 10;
+```
+
+```SQL
+SELECT DISTINCT browser_name AS browser
+FROM STREAM(30000, TIME)
 LIMIT 10;
 ```
 
@@ -548,8 +552,7 @@ For readability, if you were just trying to get the unique values for a field or
 
 ```SQL
 SELECT QUANTILE(duration, LINEAR, 11)
-FROM STREAM(5000, TIME)
-LIMIT 11;
+FROM STREAM(5000, TIME);
 ```
 
 This query creates 11 points from 0 to 1 (both inclusive) and finds the percentile values of the ```duration``` field (which contains an amount of time in ms) at ```0, 0.1, 0.2 ... 1.0``` or the 0th, 10th, 20th and 100th percentiles. It runs for 5 seconds and returns at most 11 points. As long as the ```size``` is set to higher than the number of points you generate, ```DISTRIBUTION``` queries will return all your values.
@@ -641,8 +644,7 @@ if the error was 1%).
 
 ```SQL
 SELECT FREQ(duration, REGION, 2000, 20000, 500)
-FROM STREAM(5000, TIME)
-LIMIT 100;
+FROM STREAM(5000, TIME);
 ```
 
 This query creates 37 points from 2000 to 20000 in 500 increments to bucketize the duration field using these points as split locations and finds the count of duration values that fall into these intervals. It runs for 5s and returns at most 100 records (this means it will return the 38 records).
@@ -699,8 +701,7 @@ The result consists of 38 records, each denoting an interval in the domain we as
 
 ```SQL
 SELECT CUMFREQ(duration, MANUAL, 20000, 2000, 15000, 45000)
-FROM STREAM(5000, TIME)
-LIMIT 100;
+FROM STREAM(5000, TIME);
 ```
 
 This query specifies a list of points manually using ```points``` property in ```attributes```. It runs for 5s and finds the
@@ -998,7 +999,7 @@ SELECT demographics.country AS country, COUNT(*) AS count, AVG(demographics.age)
 FROM STREAM(20000, TIME)
 WHERE demographics IS NOT NULL
 GROUP BY demographics.country
-WINDOWING(TUMBLING, 5000, TIME)
+WINDOWING TUMBLING(5000, TIME)
 LIMIT 50;
 ```
 
@@ -1259,8 +1260,7 @@ SELECT COUNT(*) AS count, AVG(demographics.age) AS averageAge,
        AVG(timespent) AS averageTimespent
 FROM STREAM(20000, TIME)
 WHERE demographics IS NOT NULL
-GROUP BY ()
-WINDOWING(EVERY, 5000, TIME, ALL)
+WINDOWING EVERY(5000, TIME, ALL)
 LIMIT 50;
 ```
 
@@ -1354,8 +1354,8 @@ The above query will run for 20 seconds and emit a result every 5 seconds. The r
 ```SQL
 SELECT *
 FROM STREAM(MAX, TIME)
-WHERE browser-id='2siknmdd6kaqm'
-WINDOWING(EVERY, 1, RECORD, FIRST, 1, RECORD)
+WHERE "browser-id" = '2siknmdd6kaqm'
+WINDOWING EVERY(1, RECORD, FIRST, 1, RECORD)
 ```
 
 This is a query that will capture raw data, and has a sliding window of size 1. This query will return window results immediately whenever a single record that matches the filters flows through the system. The filters in this example will only match records from a particular browser.
