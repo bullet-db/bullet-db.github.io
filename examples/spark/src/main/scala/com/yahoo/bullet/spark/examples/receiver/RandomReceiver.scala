@@ -11,12 +11,11 @@ import java.util.Map
 import java.util.Arrays.asList
 
 import scala.util.Random
-
-import com.yahoo.bullet.record.{BulletRecord, SimpleBulletRecord}
+import com.yahoo.bullet.record.BulletRecord
+import com.yahoo.bullet.record.simple.TypedSimpleBulletRecord
 import com.yahoo.bullet.spark.utils.{BulletSparkConfig, BulletSparkLogger}
 import org.apache.spark.storage.StorageLevel
 import org.apache.spark.streaming.receiver.Receiver
-
 
 object RandomReceiver {
   // Fields in BulletRecord
@@ -47,7 +46,7 @@ object RandomReceiver {
  * @param config The BulletSparkConfig to load settings from.
  */
 class RandomReceiver(val config: BulletSparkConfig)
-  extends Receiver[BulletRecord](StorageLevel.MEMORY_AND_DISK_SER) with BulletSparkLogger {
+  extends Receiver[BulletRecord[_ <: java.io.Serializable]](StorageLevel.MEMORY_AND_DISK_SER) with BulletSparkLogger {
   // Number of tuples to emit
   private val maxPerPeriod = 100L
   // Period in milliseconds. Default 1000 ms
@@ -100,8 +99,8 @@ class RandomReceiver(val config: BulletSparkConfig)
     randomMap
   }
 
-  private def generateRecord(): BulletRecord = {
-    val record = new SimpleBulletRecord()
+  private def generateRecord(): BulletRecord[_ <: java.io.Serializable] = {
+    val record = new TypedSimpleBulletRecord()
     val uuid = UUID.randomUUID().toString
     record.setString(RandomReceiver.STRING, uuid)
     record.setLong(RandomReceiver.LONG, generatedThisPeriod)

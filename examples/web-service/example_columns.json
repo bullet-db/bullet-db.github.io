@@ -31,26 +31,23 @@
     },
     {
         "name": "subtypes",
-        "type": "MAP",
-        "subtype": "STRING",
+        "type": "STRING_MAP",
         "description": "Contains two keys whose values are randomly chosen from: foo, bar, baz, qux, quux, norf",
-        "enumerations": [
+        "subFields": [
             {"name": "field_A", "description": "Value randomly chosen from: foo, bar, baz, qux, quux, norf"},
             {"name": "field_B", "description": "Value randomly chosen from: foo, bar, baz, qux, quux, norf"}
         ]
     },
     {
         "name": "tags",
-        "type": "MAP",
-        "subtype": "BOOLEAN",
+        "type": "BOOLEAN_MAP",
         "description": "Contains four keys which are four fragments of the uuid. The values are randomly generated boolean values from Random#nextBoolean"
     },
     {
         "name": "stats",
-        "type": "MAP",
-        "subtype": "LONG",
+        "type": "LONG_MAP",
         "description": "This map contains some numeric information such as the current number of periods etc.",
-        "enumerations": [
+        "subFields": [
             {"name": "period_count", "description": "The period in which this record was generated"},
             {"name": "record_number", "description": "A monotonically increasing id for the record. There may be gaps in the id but if the data generation has kept up with your maximum tuples per period, this is the nth tuple generated"},
             {"name": "timestamp", "description": "The ms time when this record was generated"},
@@ -59,8 +56,7 @@
     },
     {
         "name": "classifiers",
-        "type": "LIST",
-        "subtype": "MAP",
+        "type": "STRING_MAP_LIST",
         "description": "This contains two maps, each with: field_A and field_B whose values are randomly chosen from: foo, bar, baz, qux, quux, norf"
     }
 ]

@@ -13,10 +13,10 @@ import org.apache.spark.streaming.StreamingContext
 import org.apache.spark.streaming.dstream.DStream
 
 class RandomProducer extends DataProducer {
-  override def getBulletRecordStream(ssc: StreamingContext, config: BulletSparkConfig): DStream[BulletRecord] = {
+  override def getBulletRecordStream(ssc: StreamingContext, config: BulletSparkConfig): DStream[BulletRecord[_ <: java.io.Serializable]] = {
     // Bullet record input stream.
     val bulletReceiver = new RandomReceiver(config)
-    ssc.receiverStream(bulletReceiver).asInstanceOf[DStream[BulletRecord]]
+    ssc.receiverStream(bulletReceiver).asInstanceOf[DStream[BulletRecord[_ <: java.io.Serializable]]]
   }
 }
 
