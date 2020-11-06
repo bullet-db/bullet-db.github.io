@@ -32,8 +32,8 @@ pages:
 - Web Service:
   - Setup: ws/setup.md
   - API:
-    - BQL: ws/api-bql.md
-    - JSON: ws/api-json.md
+    - BQL: ws/api.md
+    - JSON (DEPRECATED Bullet 1.0+): ws/api-json.md
   - Query Examples: ws/examples.md
 - UI:
   - Setup: ui/setup.md
