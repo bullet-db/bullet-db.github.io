@@ -1,14 +1,14 @@
-# Bullet BQL API
+# Bullet API
 
-This section gives a comprehensive overview of the Web Service API for launching Bullet BQL queries.
+This section gives a comprehensive overview of the Web Service API for launching Bullet queries.
 
-For examples of BQL queries, see the [examples page](examples.md).
+For examples of queries, see the [examples page](examples.md).
 
-BQL queries that are received by the Web Service will be detenced and automatically converted to [the JSON format](api-json.md) before being sent to the backend (which requires the basic JSON format). This conversion is done in the web service using [the bullet-bql library](../releases/#bullet-bql).
+BQL is the interface that is exposed to users to query Bullet. BQL queries that are received by the Web Service are converted to an underlying querying format before being sent to the backend. This conversion is done in the web service using [the bullet-bql library](../releases/#bullet-bql).
 
 ## Overview
 
-Bullet-BQL provides users with a friendly SQL-like API to submit queries to the Web Service instead of using the more cumbersome [JSON API](api-json.md).
+Bullet-BQL provides users with a friendly SQL-like API to submit queries to the Web Service.
 
 ## Statement Syntax
 

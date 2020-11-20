@@ -15,7 +15,7 @@
 
 * Filter raw data or aggregate data
 
-* Can be run on storm or spark streaming
+* Can be run on Storm or Spark Streaming
 
 * A look-forward query system - operates on data that arrive after the query is submitted
 
@@ -60,11 +60,11 @@ To set up Bullet on a real data stream, you need:
 
 # Querying in Bullet
 
-Bullet queries allow you to filter, project and aggregate data. You can also specify a window to get incremental results. Bullet lets you fetch raw (the individual data records) as well as aggregated data.
+Bullet queries allow you to filter, project and aggregate data. You can also specify a window to get incremental results. We support basically first-order SQL (no joins or nested queries). Bullet lets you fetch raw (the individual data records) as well as aggregated data.
 
 * See the [UI Usage section](ui/usage.md) for using the UI to build Bullet queries. This is the same UI you will build in the Quick Starts.
 
-* See the API section ([BQL](ws/api-bql.md), or the more verbose, underlying query format - [JSON](ws/api-json.md)) for building Bullet API queries
+* See the API section ([API](ws/api.md) for building Bullet API queries
 
 * For examples using the API, see [Examples](ws/examples.md). These are actual albeit cleansed queries sourced from the instance at Yahoo.
 
@@ -75,55 +75,7 @@ A Bullet query terminates and returns whatever has been collected so far when:
 1. A maximum duration is reached. In other words, a query runs for a defined time window (which can be infinite).
 2. A maximum number of records is reached (only applicable for queries that are fetching raw data records and not aggregating).
 
-## Filters
-
-Bullet supports two kinds of filters:
-
-| Filter Type        | Meaning |
-| ------------------ | ------- |
-| Logical filter     | Allow you to combine filter clauses (Logical or Relational) with logical operations like AND, OR and NOTs |
-| Relational filters | Allow you to use comparison operations like equals, not equals, greater than, less than, regex like etc, on fields |
-
-## Projections
-
-Projections allow you to pull out only the fields needed and rename them when you are querying for raw data records.
-
-## Aggregations
-
-Aggregations allow you to perform some operation on the collected records.
-
-The current aggregation types that are supported are:
-
-| Aggregation    | Meaning |
-| -------------- | ------- |
-| GROUP          | The resulting output would be a record containing the result of an operation for each unique value combination in your specified fields |
-| COUNT DISTINCT | Computes the number of distinct elements in the fields. (May be approximate) |
-| LIMIT or RAW   | The resulting output would be at most the number specified in size. |
-| DISTRIBUTION   | Computes distributions of the elements in the field. E.g. Find the median value or various percentile of a field, or get frequency or cumulative frequency distributions |
-| TOP K          | Returns the top K most frequently appearing values in the column |
-
-Currently we support ```GROUP``` aggregations with the following operations:
-
-| Operation      | Meaning |
-| -------------- | ------- |
-| COUNT          | Computes the number of the elements in the group |
-| SUM            | Computes the sum of the non-null values in the provided field for all elements in the group |
-| MIN            | Returns the minimum of the non-null values in the provided field for all the elements in the group |
-| MAX            | Returns the maximum of the non-null values in the provided field for all the elements in the group |
-| AVG            | Computes the average of the non-null values in the provided field for all the elements in the group |
-
-If you ```GROUP``` with no operation, you are performing a ```DISTINCT``` on the field(s). If you ```GROUP``` with no field(s), you are performing the operation(s) across all your data.
-
-## Post Aggregations
-
-Post Aggregations let you perform some operation before finalizing and returning the results to you. This is applied every time a result is returned to you (see below). The current operations supported are:
-
-| Post Aggregation | Meaning |
-| ---------------- | ------- |
-| ORDER BY         | Orders your result by your specified fields in ascending or descending order |
-| COMPUTATION      | Specify an expression (can be nested expressions) [here](ws/api-json.md#expressions) to do math with or cast fields in your result |
-
-## Windows
+## Windowing
 
 Windows in a Bullet query allow you to specify how often you'd like Bullet to return results.
 

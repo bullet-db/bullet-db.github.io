@@ -282,7 +282,7 @@ A PubSub implementation using Pulsar as the backing PubSub. Can be used with any
 
 ## Bullet BQL
 
-A library facilitating the conversion from Bullet BQL queries to Bullet JSON queries
+A library facilitating the creation of Bullet queries from a SQL-like query language called BQL.
 
 |                            |                 |
 | -------------------------- | --------------- |

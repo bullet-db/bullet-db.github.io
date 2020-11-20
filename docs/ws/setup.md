@@ -2,16 +2,14 @@
 
 The Web Service is a Java JAR file that you can deploy on a machine to communicate with the Bullet Backend. You then plug in a particular Bullet PubSub implementation such as [Kafka PubSub](../pubsub/kafka.md) or [Storm DRPC PubSub](../pubsub/storm-drpc.md). For an example on how to set up a Bullet backend, see the [Storm example setup](../backend/storm-setup.md).
 
-There are two main purposes for this layer at this time:
+There are three main purposes for this layer at this time:
 
-1) It provides an endpoint that can serve a [JSON API schema](http://jsonapi.org/format/) for the Bullet UI. Currently, static schemas from a file are supported.
+1) It handles converting Bullet Queries to a different format and sends it through the PubSub to the backend. It handles responses from the backend for both synchronous and asynchronous queries.
 
-2) It generates unique identifiers and other metadata for a JSON Bullet query before sending the query to the Bullet backend. It wraps errors if the backend is unreachable.
+2) It provides an endpoint that can serve a [JSON API schema](http://jsonapi.org/format/) for the Bullet UI. Currently, static schemas from a file are supported.
 
+3) It manages metadata for queries such unique identifiers or storing queries for resilience.
 
-!!! note "That's it?"
-
-    The Web Service essentially just wraps the PubSub layer and provides some helpful endpoints. When incremental updates drop, it will translate a PubSub's streaming responses back into incremental results for the user. It is also there to be a point of abstraction for implementing things like security, monitoring, access-control, rate-limiting, sharding, different query formats (e.g. SQL Bullet queries) etc, which are planned in the near future.
 
 ## Prerequisites
 

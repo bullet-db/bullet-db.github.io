@@ -1,8 +1,8 @@
 # Bullet JSON API
 
-This section gives a comprehensive overview of the Web Service API for launching Bullet JSON queries.
+This section gives a comprehensive overview of the old Web Service API for launching Bullet JSON queries. This was **deprecated** in favor of [BQL](api.md) in Bullet 1.0+.
 
-The JSON API is the actual Query format that is expected by the backend. [The BQL API](api-bql.md) is a more user-friendly API which can also be used - the Web Service will automatically detect the BQL query and convert the query to this JSON format before submitting it to the backend. With the addition of Post Aggregations and Expressions,
+The JSON API is the old Query format that was expected by the API and the Backend prior to Bullet 1.0. [The API](api.md) is a more user-friendly API which can also be used - the Web Service prior to Bullet 1.0 will automatically detect the BQL query and convert the query to this JSON format before submitting it to the backend. With the addition of Post Aggregations and Expressions,
 it is a lot easier to use BQL rather than construct the JSON. The Bullet Web Service also provides [an API](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.4.2) to convert BQL to JSON if you so desire.
 
 * For info on how to use the UI, see the [UI Usage section](../ui/usage.md)

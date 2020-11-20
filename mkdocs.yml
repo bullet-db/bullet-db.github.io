@@ -18,6 +18,7 @@ pages:
   - Storm:
     - Architecture: backend/storm-architecture.md
     - Setup: backend/storm-setup.md
+    - Storage: backend/storm-storage.md
     - Performance: backend/storm-performance.md
   - Spark:
     - Architecture: backend/spark-architecture.md
@@ -31,10 +32,11 @@ pages:
   - Storm DRPC: pubsub/storm-drpc.md
 - Web Service:
   - Setup: ws/setup.md
+  - Asynchronous Queries: ws/async.md
   - API:
-    - BQL: ws/api.md
-    - JSON (DEPRECATED Bullet 1.0+): ws/api-json.md
-  - Query Examples: ws/examples.md
+      - BQL: ws/api.md
+      - Examples: ws/examples.md
+      - JSON (DEPRECATED): ws/api-json.md
 - UI:
   - Setup: ui/setup.md
   - Usage: ui/usage.md
@@ -50,7 +52,7 @@ markdown_extensions:
 extra:
   collapse_toc: true
   include_search: true
-  service_version: v0.6.1
+  service_version: v1.0.0
 
 extra_css:
   - css/extra.css
