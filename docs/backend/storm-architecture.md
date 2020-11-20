@@ -16,7 +16,7 @@ The pattern on the lines denote how the data (Storm tuples) is moved to the next
 
 !!! note "What's a Replay?"
 
-  The Replay and the [pluggable Storage](#storm-storage.md) are *optional components* in Bullet on Storm. They exist to replay existing queries if you plugged in a storage layer into the [API](#../ws/setup.md#storage). You would use this if you have long running queries and are not tolerant to losing queries for your use-case. Currently, we do not support storage intermediate results in the storage though. For instance, if you restart the topology but have storage and replay configured, you will recreate all the queries on startup but you will lose all intermediate results that were held in memory so far. We plan to add intermediate result storage as well soon!
+    The Replay and the [pluggable storage](#storm-storage.md) are *optional components* in Bullet on Storm. They exist to replay existing queries if you plugged in a storage layer into the [API](#../ws/setup.md#storage). You would use this if you have long running queries and are not tolerant to losing queries for your use-case. Currently, we do not support storage intermediate results in the storage though. For instance, if you restart the topology but have storage and replay configured, you will recreate all the queries on startup but you will lose all intermediate results that were held in memory so far. We plan to add intermediate result storage as well soon!
 
 !!! note "What's a Tick Spout?"
 
@@ -34,14 +34,15 @@ Bullet can accept arbitrary sources of data as long as they can be read from Sto
 
 |                                                                                             | Option 1 | Option 2 | Option 3 |
 | ------------------------------------------------------------------------------------------- | -------- | -------- | -------- |
-| Write code or implement Storm components                                                    | Y        | Y        | N        |
+| Write code to read from your data source and convert to Bullet records                      | Y        | Y        | N        |
+| Write Storm spouts and/or bolts                                                             | Y        | Y        | N        |
 | Saves a persistence/pubsub layer                                                            | N        | Y        | N        |
 | Separate reading data from converting and allowing fan-out                                  | N        | Y        | Y        |
 | Full control over how data is read, processed and converted to Bullet records               | Y        | Y        | N        |
 
-Option 3 is generally flexible. You can possibly do all the things by implementing the DSL interfaces for reading, processing and converting.
+Option 3 is generally flexible and is recommended. Having a code-less way to plug into Bullet is the fastest way to get started. We are adding new data sources and formats to the DSL so that we can support more ways to get your data into Bullet. If a connector or converter is not supported in DSL for your specific data source, you can also implement your own. It will save you from having to write Storm spouts or bolts and lets you reuse the Bullet DSL spout and/or bolt.
 
-Your data is then emitted to the Filter bolt.  If you have no queries in your system, the Filter bolt will promptly drop all Bullet Records and do absolutely nothing. If there are queries in the Filter bolt, the record is checked against each query and if it matches, it is processed by the query. Each query type can choose when to emit based on what window is configured for it. Depending on this, the matched record could be immediately emitted (if it is a RAW query or the intermediate aggregate if anything else) or it could be buffered till a specific time is reached (or the query has expired).
+Regardless of how your data is read, it is then emitted to the Filter bolt. If you have no queries in your system, the Filter bolt will promptly drop all Bullet Records and do nothing. If there are queries in the Filter bolt, the record is checked against each query and if it matches, it is processed by the query. Each query type can choose when to emit its intermediate result based on what window is configured for it. Depending on this, the matched record could be immediately emitted (if it is a RAW query or the intermediate aggregate if anything else) or it could be buffered till a specific time is reached (or the query has expired).
 
 ### Request processing
 
@@ -64,7 +65,7 @@ Since the data from the Query spout (query and metadata) and the data from all F
 
 !!! note "Loop back"
 
-    We have not mentioned the loop components. These are mainly used to perform house-keeping within the topology. For instance, there is a Rate Limit concept in the Bullet core libraries that if violated in any instance of the query being executed, should cause the query to be killed. Wherever this error originates, it will trickle to the Loop bolt and be looped back through the PubSub, through the Query Spout and sent to all components that know about the query. These components will then kill the query as well. We call this a loop because strictly speaking, the topology is a Directed Acyclic Graph and we violate it by making a loop. These are also used to deliver external signals such as killing a query etc from the API or the UI. If you disable windows entirely, the Loop bolt will not be wired up when you launch your Bullet topology.
+    We have not mentioned the loop components or the replay bolts. These are mainly used to perform house-keeping within the topology or if you have configured storage/replay. For instance, there is a Rate Limit concept in the Bullet core libraries that if violated in any instance of the query being executed, should cause the query to be killed. Wherever this error originates, it will trickle to the Loop bolt and be looped back through the PubSub, through the Query Spout and sent to all components that know about the query. These components will then kill the query as well. We call this a loop because strictly speaking, the topology is a Directed Acyclic Graph and we violate it by making a loop. These are also used to deliver external signals such as killing a query etc from the API or the UI. If you disable windows entirely, the Loop bolt will not be wired up when you launch your Bullet topology.
 
 ## Scalability
 
