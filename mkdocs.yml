@@ -32,7 +32,6 @@ pages:
   - Storm DRPC: pubsub/storm-drpc.md
 - Web Service:
   - Setup: ws/setup.md
-  - Asynchronous Queries: ws/async.md
   - API:
       - BQL: ws/api.md
       - Examples: ws/examples.md
