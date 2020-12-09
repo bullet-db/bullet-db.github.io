@@ -18,7 +18,6 @@ pages:
   - Storm:
     - Architecture: backend/storm-architecture.md
     - Setup: backend/storm-setup.md
-    - Storage: backend/storm-storage.md
     - Performance: backend/storm-performance.md
   - Spark:
     - Architecture: backend/spark-architecture.md

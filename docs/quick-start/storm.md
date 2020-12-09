@@ -78,7 +78,7 @@ Once everything is up without errors, visit [http://localhost:8080](http://local
 
 ### Setting up the example Bullet topology
 
-Now that Storm is up and running, we can put Bullet on it. We will use an example Spout that runs on Bullet 0.8.3 on our Storm cluster. The source is available [here](https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/storm). This was part of the artifact that you installed in Step 1.
+Now that Storm is up and running, we can put Bullet on it. We will use an example spout that runs on Bullet 0.8.3 on our Storm cluster. The source is available [here](https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/storm). This was part of the artifact that you installed in Step 1.
 
 #### Step 4: Setup the Storm example
 
@@ -228,7 +228,7 @@ storm jar bullet-storm-example-1.0-SNAPSHOT-jar-with-dependencies.jar \
           ...
 ```
 
-This command launches the jar (an uber or "fat" jar) containing the custom spout code and all dependencies you copied in Step 5. We pass the name of your spout class with ```--bullet-spout com.yahoo.bullet.storm.examples.RandomSpout``` to the Bullet main class ```com.yahoo.bullet.Topology``` with two arguments ```--bullet-spout-arg 20``` and ```--bullet-spout-arg 101```. The first argument tells the Spout to generate at most 20 tuples (records) in a period and the second argument says a period is 101 ms long.
+This command launches the jar (an uber or "fat" jar) containing the custom spout code and all dependencies you copied in Step 5. We pass the name of your spout class with ```--bullet-spout com.yahoo.bullet.storm.examples.RandomSpout``` to the Bullet main class ```com.yahoo.bullet.Topology``` with two arguments ```--bullet-spout-arg 20``` and ```--bullet-spout-arg 101```. The first argument tells the spout to generate at most 20 tuples (records) in a period and the second argument says a period is 101 ms long.
 
 The settings defined by ```--bullet-conf ./bullet_settings.yaml``` and the arguments here run all components in the topology with a parallelism of 1. So there will be one spout that is producing ~200 rps.
 
@@ -313,7 +313,7 @@ private BulletRecord generateRecord() {
 
 This ```generateRecord``` method generates some fields randomly and inserts them into a BulletRecord. Note that the BulletRecord is typed and all data must be inserted with the proper types.
 
-If you put Bullet on your data, you will need to write a Spout (or a topology if your reading is complex), that reads from your data source and emits BulletRecords with the fields you wish to be query-able placed into a BulletRecord similar to this example.
+If you put Bullet on your data, you will need to write a spout (or a topology if your reading is complex), that reads from your data source and emits BulletRecords with the fields you wish to be query-able placed into a BulletRecord similar to this example.
 
 ### PubSub
 

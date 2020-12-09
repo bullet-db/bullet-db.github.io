@@ -35,7 +35,7 @@ public class RandomSpout extends BaseRichSpout {
     protected SpoutOutputCollector outputCollector;
 
     public static final String RECORD_FIELD = "record";
-    // This is the message ID for all tuples. This enables acking from this Spout to the FilterBolt. However
+    // This is the message ID for all tuples. This enables acking from this Spout to the Filterbolt. However
     // this spout does not handle dealing with failures. So, we use this as a way to simply enable acking.
     public static final Long DUMMY_ID = 42L;
 
