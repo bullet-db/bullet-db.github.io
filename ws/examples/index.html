@@ -508,45 +508,25 @@
 <p class="admonition-title">Disclaimer</p>
 <p>The actual data shown here has been edited and is not how actual Yahoo user events look.</p>
 </div>
-<div class="admonition note">
-<p class="admonition-title">BQL translation</p>
-<p>For each query, we will also rewrite it to BQL - a SQL like querying API if you do not want to use JSON.</p>
-</div>
 <h3 id="simplest-query">Simplest Query</h3>
-<p>The simplest query you can write would be:</p>
-<p><strong>BQL Query</strong></p>
-<pre><code class="SQL">SELECT * FROM STREAM(30000, TIME) LIMIT 1;
+<p>The simplest query you could write would be:</p>
+<pre><code class="SQL">SELECT * FROM STREAM();
 </code></pre>
 
-<p><strong>JSON Query</strong></p>
-<pre><code class="javascript">{}
+<p>This query would get any records that pass through for a default duration of 20000 ms up to a max default of 500 records.</p>
+<pre><code class="SQL">SELECT * FROM STREAM(10000, TIME) LIMIT 1;
 </code></pre>
 
-<p>While not a very useful query - this will get any one event record (no filters means that any record would be matched, no projection gets the entire record, and the default aggregation is <code>LIMIT</code>or <code>RAW</code> with size 1, default duration 30000 ms), this can be used to quickly test your connection to Bullet.</p>
+<p>If you wanted to write a smaller or shorter query to, for example, quickly test your connection to Bullet, you could adjust the query duration and size like shown above. This query would only last for a duration of 10000 ms and return at most 1 record.  </p>
 <div class="admonition note">
 <p class="admonition-title">WINDOW?</p>
-<p>There is only one unified data stream in Bullet, so for clarity the <code>FROM</code> clause is replaced with a non-existent <code>WINDOW</code> function to denote the look-forward time window for the Bullet query. For the <code>SQL</code> examples, we pretend that this function understands various time granularities as well.</p>
+<p>There is only one unified data stream in Bullet, so for clarity the <code>FROM</code> clause is given a <code>STREAM</code> function to denote the look-forward time window for the Bullet query. </p>
 </div>
 <h3 id="simple-filtering">Simple Filtering</h3>
-<p><strong>BQL Query</strong></p>
 <pre><code class="SQL">SELECT *
 FROM STREAM(30000, TIME)
 WHERE id = 'btsg8l9b234ha'
 LIMIT 1;
-</code></pre>
-
-<p><strong>JSON Query</strong></p>
-<pre><code class="javascript">{
-   &quot;filters&quot;:[
-       {
-           &quot;field&quot;:&quot;id&quot;,
-           &quot;operation&quot;:&quot;==&quot;,
-           &quot;values&quot;:[
-               &quot;btsg8l9b234ha&quot;
-           ]
-       }
-    ]
-}
 </code></pre>
 
 <p>Because of the default constraints, this query would find at most 1 record with the id matching the value provided. The record would have all its fields.</p>
@@ -583,7 +563,6 @@ LIMIT 1;
 </code></pre>
 
 <h3 id="relational-filters-and-projections">Relational Filters and Projections</h3>
-<p><strong>BQL Query</strong></p>
 <pre><code class="SQL">SELECT timestamp AS ts, device_timestamp AS device_ts,
        event AS event, page_domain AS domain, page_id AS id
 FROM STREAM(20000, TIME)
@@ -591,42 +570,7 @@ WHERE id = 'btsg8l9b234ha' AND page_id IS NOT NULL
 LIMIT 10;
 </code></pre>
 
-<p><strong>JSON Query</strong></p>
-<pre><code class="javascript">{
-    &quot;filters&quot;:[
-        {
-            &quot;field&quot;:&quot;id&quot;,
-            &quot;operation&quot;:&quot;==&quot;,
-            &quot;values&quot;:[
-                &quot;btsg8l9b234ha&quot;
-            ]
-        },
-        {
-            &quot;field&quot;:&quot;page_id&quot;,
-            &quot;operation&quot;:&quot;!=&quot;,
-            &quot;values&quot;:[
-                &quot;null&quot;
-            ]
-        }
-    ],
-    &quot;projection&quot;:{
-        &quot;fields&quot;:{
-            &quot;timestamp&quot;:&quot;ts&quot;,
-            &quot;device_timestamp&quot;:&quot;device_ts&quot;,
-            &quot;event&quot;:&quot;event&quot;,
-            &quot;page_domain&quot;:&quot;domain&quot;,
-            &quot;page_id&quot;:&quot;id&quot;
-        }
-    },
-    &quot;aggregation&quot;:{
-        &quot;type&quot;:&quot;RAW&quot;,
-        &quot;size&quot;:10
-    },
-    &quot;duration&quot;:20000
-}
-</code></pre>
-
-<p>The above query finds all events with id set to 'btsg8l9b234ha' and page_id is not null, projects out the fields listed above with their new names (timestamp becomes ts etc) and limits the results to at most 10 such records. <code>RAW</code> indicates that the complete raw record fields will be returned, and more complicated aggregations such as <code>COUNT</code> or <code>SUM</code> will not be performed. The duration would set the query to wait at most 20 seconds for records to show up.</p>
+<p>The above query finds all events where id is set to 'btsg8l9b234ha' and page_id is not null, projects the fields selected above with their aliases (timestamp as ts, etc.) and limits the results to at most 10 records. The query would wait at most 20 seconds for records to show up. </p>
 <p>The resulting response could look like (only 3 events were generated that matched the criteria):</p>
 <pre><code class="javascript">{
     &quot;records&quot;: [
@@ -664,132 +608,35 @@ LIMIT 10;
 <h3 id="relational-filters-using-the-extended-value-notation-for-static-values">Relational Filters using the extended value notation for static values</h3>
 <p>For the following examples, we will simply show and explain the queries. They also use the extended syntax for specify values in a filter using the <code>kind</code> field.</p>
 <h4 id="sizeis-filter">SIZEIS Filter</h4>
-<p>This query checks to see if the size of the <code>data_map</code> is equal to 4 and returns all records that do satisfy this.</p>
-<p><strong>BQL Query</strong></p>
+<p>This query checks to see if the size of the <code>data_map</code> is equal to 4 and returns all records that satisfy this.</p>
 <pre><code class="SQL">SELECT *
 FROM STREAM(30000, TIME)
 WHERE SIZEOF(data_map) = 4
 LIMIT 1;
 </code></pre>
 
-<p><strong>JSON Query</strong></p>
-<pre><code class="javascript">{
-    &quot;filters&quot;: [
-        {
-            &quot;field&quot;:&quot;data_map&quot;,
-            &quot;values&quot;:[
-                {
-                    &quot;kind&quot;:&quot;VALUE&quot;,
-                    &quot;value&quot;:&quot;4&quot;
-                }
-            ],
-            &quot;operation&quot;:&quot;SIZEIS&quot;
-        }
-    ],
-    &quot;aggregation&quot;:{
-        &quot;type&quot;:&quot;RAW&quot;,
-        &quot;size&quot;:1
-    },
-    &quot;duration&quot;:30000
-}
-</code></pre>
-
 <h4 id="containskey-filter">CONTAINSKEY Filter</h4>
 <p>This query checks to see if the <code>data_map</code> contains the key <code>id</code> and returns all records for which this is true.</p>
-<p><strong>BQL Query</strong></p>
 <pre><code class="SQL">SELECT *
 FROM STREAM(30000, TIME)
-WHERE data_map CONTAINSKEY (&quot;id&quot;)
+WHERE CONTAINSKEY(data_map, 'id')
 LIMIT 1;
-</code></pre>
-
-<p><strong>JSON Query</strong></p>
-<pre><code class="javascript">{
-    &quot;filters&quot;:[
-        {
-            &quot;field&quot;:&quot;data_map&quot;,
-            &quot;values&quot;:[
-                {
-                    &quot;kind&quot;:&quot;VALUE&quot;,
-                    &quot;value&quot;:&quot;id&quot;
-                }
-            ],
-            &quot;operation&quot;:&quot;CONTAINSKEY&quot;
-        }
-    ],
-    &quot;aggregation&quot;:{
-        &quot;type&quot;:&quot;RAW&quot;,
-        &quot;size&quot;:1
-    },
-    &quot;duration&quot;:30000
-}
 </code></pre>
 
 <h4 id="containsvalue-filter">CONTAINSVALUE Filter</h4>
 <p>This query checks to see if the <code>data_map</code> does not contain the value <code>btsg8l9b234ha</code> and returns all records for which this is true. If this was applied on a list field or list of maps field, the inner maps would be checked instead.</p>
-<p><strong>BQL Query</strong></p>
 <pre><code class="SQL">SELECT *
 FROM STREAM(30000, TIME)
-WHERE data_map NOT CONTAINSVALUE (&quot;btsg8l9b234ha&quot;)
+WHERE NOT CONTAINSVALUE(data_map, 'btsg8l9b234ha')
 LIMIT 1;
-</code></pre>
-
-<p><strong>JSON Query</strong></p>
-<pre><code class="javascript">{
-    &quot;filters&quot;:[
-        {
-            &quot;clauses&quot;:[
-                {
-                    &quot;field&quot;:&quot;data_map&quot;,
-                    &quot;values&quot;:[
-                        {
-                            &quot;kind&quot;:&quot;VALUE&quot;,
-                            &quot;value&quot;:&quot;btsg8l9b234ha&quot;
-                        }
-                    ],
-                    &quot;operation&quot;:&quot;CONTAINSVALUE&quot;
-                }
-            ],
-            &quot;operation&quot;: &quot;NOT&quot;
-        }
-    ],
-    &quot;aggregation&quot;:{
-        &quot;type&quot;:&quot;RAW&quot;,
-        &quot;size&quot;:1
-    },
-    &quot;duration&quot;:30000
-}
 </code></pre>
 
 <h3 id="relational-filter-comparing-to-other-fields">Relational Filter comparing to other fields</h3>
 <p>Instead of comparing to static, constant values, you may use the extended values notation and set <code>kind</code> to <code>FIELD</code> to  compare to other fields within the same record. The following query returns the first record for which the <code>id</code> field is set to the <code>uid</code> field.</p>
-<p><strong>BQL Query</strong></p>
 <pre><code class="SQL">SELECT *
 FROM STREAM(30000, TIME)
 WHERE id = uid
 LIMIT 1;
-</code></pre>
-
-<p><strong>JSON Query</strong></p>
-<pre><code class="javascript">{
-    &quot;filters&quot;:[
-        {
-            &quot;field&quot;:&quot;id&quot;,
-            &quot;values&quot;:[
-                {
-                    &quot;kind&quot;:&quot;FIELD&quot;,
-                    &quot;value&quot;:&quot;uid&quot;
-                }
-            ],
-            &quot;operation&quot;:&quot;==&quot;
-        }
-    ],
-    &quot;aggregation&quot;:{
-        &quot;type&quot;:&quot;RAW&quot;,
-        &quot;size&quot;:1
-    },
-    &quot;duration&quot;:30000
-}
 </code></pre>
 
 <p>A sample result could look like:</p>
@@ -813,93 +660,18 @@ LIMIT 1;
 </code></pre>
 
 <h3 id="logical-filters-and-projections">Logical Filters and Projections</h3>
-<p><strong>BQL Query</strong></p>
 <pre><code class="SQL">SELECT id AS id, experience AS experience, page_id AS pid,
        link_id AS lid, tags AS tags, demographics.age AS age
 FROM STREAM(60000, TIME)
-WHERE (id = 'c14plm1begla7' AND ((experience = 'web' AND page_id IN ('18025', '47729'))
-                                  OR link_id LIKE ('2.*')))
-      OR (tags.player='true' AND demographics.age &gt; '65')
+WHERE (id = 'c14plm1begla7' AND ((experience = 'web' AND page_id IN ['18025', '47729'])
+                                  OR link_id RLIKE '2.*'))
+      OR (tags.player = 'true' AND demographics.age &gt; '65')
 LIMIT 1;
-</code></pre>
-
-<p><strong>JSON Query</strong></p>
-<pre><code class="javascript">{
- &quot;filters&quot;: [
-                {
-                    &quot;operation&quot;: &quot;OR&quot;,
-                    &quot;clauses&quot;: [
-                        {
-                            &quot;operation&quot;: &quot;AND&quot;,
-                            &quot;clauses&quot;: [
-                                {
-                                    &quot;field&quot;: &quot;id&quot;,
-                                    &quot;operation&quot;: &quot;==&quot;,
-                                    &quot;values&quot;: [&quot;c14plm1begla7&quot;]
-                                },
-                                {
-                                    &quot;operation&quot;: &quot;OR&quot;,
-                                    &quot;clauses&quot;: [
-                                        {
-                                            &quot;operation&quot;: &quot;AND&quot;,
-                                            &quot;clauses&quot;: [
-                                                {
-                                                    &quot;field&quot;: &quot;experience&quot;,
-                                                    &quot;operation&quot;: &quot;==&quot;,
-                                                    &quot;values&quot;: [&quot;web&quot;]
-                                                },
-                                                {
-                                                    &quot;field&quot;: &quot;page_id&quot;,
-                                                    &quot;operation&quot;: &quot;==&quot;,
-                                                    &quot;values&quot;: [&quot;18025&quot;, &quot;47729&quot;]
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            &quot;field&quot;: &quot;link_id&quot;,
-                                            &quot;operation&quot;: &quot;RLIKE&quot;,
-                                            &quot;values&quot;: [&quot;2.*&quot;]
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            &quot;operation&quot;: &quot;AND&quot;,
-                            &quot;clauses&quot;: [
-                                {
-                                    &quot;field&quot;: &quot;tags.player&quot;,
-                                    &quot;operation&quot;: &quot;==&quot;,
-                                    &quot;values&quot;: [&quot;true&quot;]
-                                },
-                                {
-                                    &quot;field&quot;: &quot;demographics.age&quot;,
-                                    &quot;operation&quot;: &quot;&gt;&quot;,
-                                    &quot;values&quot;: [&quot;65&quot;]
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ],
- &quot;projection&quot; : {
-    &quot;fields&quot;: {
-        &quot;id&quot;: &quot;id&quot;,
-        &quot;experience&quot;: &quot;experience&quot;,
-        &quot;page_id&quot;: &quot;pid&quot;,
-        &quot;link_id&quot;: &quot;lid&quot;,
-        &quot;tags&quot;: &quot;tags&quot;,
-        &quot;demographics.age&quot;: &quot;age&quot;
-    }
- },
- &quot;aggregation&quot;: {&quot;type&quot; : &quot;RAW&quot;, &quot;size&quot; : 1},
- &quot;duration&quot;: 60000
-}
 </code></pre>
 
 <div class="admonition note">
 <p class="admonition-title">Typing</p>
-<p>If demographics["age"] was of type Long, then Bullet will convert 85 to be an Long, but in this example, we are pretending that it is String.  So, no conversion is made. Similarly for link_id, id, experience and page_id. tags is a Map of String to Boolean so Bullet converts <code>"true"</code> to the Boolean <code>true</code>. Till we support casting (<a href="https://github.com/bullet-db/bullet-core/issues/37">#37</a>), this will be the behavior automatically enforced by Bullet.</p>
+<p>If demographics.age was of type Long, then Bullet will convert 85 to be an Long, but in this example, we are pretending that it is String.  So, no conversion is made. Similarly for link_id, id, experience and page_id. tags is a Map of String to Boolean so Bullet converts <code>"true"</code> to the Boolean <code>true</code>. Till we support casting (<a href="https://github.com/bullet-db/bullet-core/issues/37">#37</a>), this will be the behavior automatically enforced by Bullet.</p>
 </div>
 <p>This query is looking for a single event with a specific id and either the page_id is in two specific pages on the "web" experience or with a link_id that starts with 2, or a player event where the age is greater than "65". In other words, it is looking for senior citizens who generate video player events or the events of a particular person (based on id) events on two specific pages or a group of pages that have link that have ids that start with 2. It then projects out only these fields with different names.</p>
 <p>A sample result could look like (it matched because of tags.player was true and demographics.age was &gt; 65):</p>
@@ -925,38 +697,9 @@ LIMIT 1;
 
 <h3 id="group-all-count-aggregation">GROUP ALL COUNT Aggregation</h3>
 <p>An example of a query performing a COUNT all records aggregation would look like:</p>
-<p><strong>BQL Query</strong></p>
 <pre><code class="SQL">SELECT COUNT(*) AS numSeniors
 FROM STREAM(20000, TIME)
 WHERE demographics.age &gt; 65
-GROUP BY ();
-</code></pre>
-
-<p>Note that the <code>GROUP BY ()</code> is optional.</p>
-<p><strong>JSON Query</strong></p>
-<pre><code class="javascript">{
-   &quot;filters&quot;:[
-      {
-         &quot;field&quot;:&quot;demographics.age&quot;,
-         &quot;operation&quot;:&quot;&gt;&quot;,
-         &quot;values&quot;:[
-            &quot;65&quot;
-         ]
-      }
-   ],
-   &quot;aggregation&quot;:{
-      &quot;type&quot;:&quot;GROUP&quot;,
-      &quot;attributes&quot;:{
-         &quot;operations&quot;:[
-            {
-               &quot;type&quot;:&quot;COUNT&quot;,
-               &quot;newName&quot;:&quot;numSeniors&quot;
-            }
-         ]
-      }
-   },
-   &quot;duration&quot;:20000
-}
 </code></pre>
 
 <p>This query will count the number events for which demographics.age &gt; 65. The aggregation type GROUP indicates that it is a group aggregation. To group by a key, the <code>fields</code> key needs to be set in the <code>aggregation</code> part of the query. If <code>fields</code> is empty or is omitted (as it is in the query above) and the <code>type</code> is <code>GROUP</code>, it is as if all the records are collapsed into a single group - a <code>GROUP ALL</code>. Adding a <code>COUNT</code> in the <code>operations</code> part of the <code>attributes</code> indicates that the number of records in this group will be counted, and the "newName" key denotes the name the resulting column "numSeniors" in the result. Setting the duration to 20000 counts matching records for
@@ -975,56 +718,13 @@ this duration.</p>
 <p>This result indicates that 363,201 records were counted with demographics.age &gt; 65 during the 20s the query was running.</p>
 <h3 id="group-all-multiple-aggregations">GROUP ALL Multiple Aggregations</h3>
 <p>COUNT is the only GROUP operation for which you can omit a "field".</p>
-<p><strong>BQL Query</strong></p>
 <pre><code class="SQL">SELECT COUNT(*) AS numCalifornians, AVG(demographics.age) AS avgAge,
        MIN(demographics.age) AS minAge, MAX(demographics.age) AS maxAge
 FROM STREAM(20000, TIME)
 WHERE demographics.state = 'california'
-GROUP BY ();
 </code></pre>
 
 <p>Note that the <code>GROUP BY ()</code> is optional.</p>
-<p><strong>JSON Query</strong></p>
-<pre><code class="javascript">{
-   &quot;filters&quot;:[
-      {
-         &quot;field&quot;:&quot;demographics.state&quot;,
-         &quot;operation&quot;:&quot;==&quot;,
-         &quot;values&quot;:[
-            &quot;california&quot;
-         ]
-      }
-   ],
-   &quot;aggregation&quot;:{
-      &quot;type&quot;:&quot;GROUP&quot;,
-      &quot;attributes&quot;:{
-         &quot;operations&quot;:[
-            {
-               &quot;type&quot;:&quot;COUNT&quot;,
-               &quot;newName&quot;:&quot;numCalifornians&quot;
-            },
-            {
-               &quot;type&quot;:&quot;AVG&quot;,
-               &quot;field&quot;:&quot;demographics.age&quot;,
-               &quot;newName&quot;:&quot;avgAge&quot;
-            },
-            {
-               &quot;type&quot;:&quot;MIN&quot;,
-               &quot;field&quot;:&quot;demographics.age&quot;,
-               &quot;newName&quot;:&quot;minAge&quot;
-            },
-            {
-               &quot;type&quot;:&quot;MAX&quot;,
-               &quot;field&quot;:&quot;demographics.age&quot;,
-               &quot;newName&quot;:&quot;maxAge&quot;
-            }
-         ]
-      }
-   },
-   &quot;duration&quot;:20000
-}
-</code></pre>
-
 <p>A sample result would look like:</p>
 <pre><code class="javascript">{
     &quot;records&quot;: [
@@ -1046,21 +746,8 @@ GROUP BY ();
 
 <p>This result indicates that, among the records observed during the 20s this query ran, there were 188,451 users with demographics.state equal to "california". Among these users the average age was 33.71828, the max age observed was 94, and the minimum age observed was 6.</p>
 <h3 id="exact-count-distinct-aggregation">Exact COUNT DISTINCT Aggregation</h3>
-<p><strong>BQL Query</strong></p>
 <pre><code class="SQL">SELECT COUNT(DISTINCT browser_name, browser_version) AS &quot;COUNT DISTINCT&quot;
 FROM STREAM(10000, TIME);
-</code></pre>
-
-<p><strong>JSON Query</strong></p>
-<pre><code class="javascript">{
-   &quot;aggregation&quot;:{
-      &quot;type&quot;:&quot;COUNT DISTINCT&quot;,
-      &quot;fields&quot;:{
-         &quot;browser_name&quot;:&quot;&quot;,
-         &quot;browser_version&quot;:&quot;&quot;
-      }
-   }
-}
 </code></pre>
 
 <p>This gets the count of the unique browser names and versions in the next 30s (default duration). Note that we do not specify values for the keys in fields. This is because they are not relevant</p>
@@ -1102,24 +789,8 @@ FROM STREAM(10000, TIME);
 <p>There were 158 unique combinations on browser names and versions in our dataset for those 30 s. Note the new <code>sketches</code> object in the meta. It has various metadata about the result. In particular, the <code>was_estimated</code> key denotes where the result
 was estimated or not. The <code>standard_deviations</code> key denotes the confidence at various sigmas: 1 (1 sigma = ~68% confidence, 2 sigma = ~95% confidence, 3 sigma = ~99% confidence). Since this result was not estimated, the result is the same as the upper and lower bounds for the result.</p>
 <h3 id="approximate-count-distinct">Approximate COUNT DISTINCT</h3>
-<p><strong>BQL Query</strong></p>
 <pre><code class="SQL">SELECT COUNT(DISTINCT ip_address) AS uniqueIPs
 FROM STREAM(10000, TIME);
-</code></pre>
-
-<p><strong>JSON Query</strong></p>
-<pre><code class="javascript">{
-   &quot;aggregation&quot;:{
-      &quot;type&quot;:&quot;COUNT DISTINCT&quot;,
-      &quot;fields&quot;:{
-         &quot;ip_address&quot;:&quot;&quot;
-      },
-      &quot;attributes&quot;:{
-         &quot;newName&quot;:&quot;uniqueIPs&quot;
-      }
-   },
-   &quot;duration&quot;:10000
-}
 </code></pre>
 
 <p>This query gets us the unique IP addresses in the next 10 s. It renames the result column from "COUNT DISTINCT" to "uniqueIPs".</p>
@@ -1162,23 +833,15 @@ FROM STREAM(10000, TIME);
 our error is 2.17%. The final result was computed with 131096 bytes or ~128 KiB as denoted by <code>size</code>. This happens to be maximum size the the COUNT DISTINCT sketch will take up at the default nominal entries, so even if we had billions of unique IPs, the size will be the same and the error may be higher (depends on the distribution). For example, the error when the same query was run for 30s was 2.28% at 99% confidence (actual unique IPs: 559428, upper bound: 572514). In fact, the worst the error can get at this
 Sketch size is 2.34% as defined <a href="https://datasketches.github.io/docs/Theta/ThetaErrorTable.html">here</a>, <em>regardless of the number of unique entries added to the Sketch!</em>.</p>
 <h3 id="distinct-aggregation">DISTINCT Aggregation</h3>
-<p><strong>BQL Query</strong></p>
 <pre><code class="SQL">SELECT browser_name AS browser
 FROM STREAM(30000, TIME)
 GROUP BY browser_name
 LIMIT 10;
 </code></pre>
 
-<p><strong>JSON Query</strong></p>
-<pre><code class="javascript">{
-   &quot;aggregation&quot;:{
-      &quot;type&quot;:&quot;DISTINCT&quot;,
-      &quot;size&quot;:10,
-      &quot;fields&quot;:{
-         &quot;browser_name&quot;:&quot;browser&quot;
-      }
-   }
-}
+<pre><code class="SQL">SELECT DISTINCT browser_name AS browser
+FROM STREAM(30000, TIME)
+LIMIT 10;
 </code></pre>
 
 <p>This query gets the distinct values for the browser_name field and limit the results to 10. It runs for 30 s.</p>
@@ -1247,7 +910,6 @@ LIMIT 10;
 <p>There were 28 unique results but we asked for 10, so the query returned a uniform sample across the 28 distinct values.</p>
 <p>DISTINCT is just an alias for GROUP. A GROUP by with no operations is exactly a DISTINCT.</p>
 <h3 id="group-by-aggregation">GROUP by Aggregation</h3>
-<p><strong>BQL Query</strong></p>
 <pre><code class="SQL">SELECT demographics.country AS country, device AS device,
        COUNT(*) AS count, AVG(demographics.age) AS averageAge,
        AVG(timespent) AS averageTimespent
@@ -1255,47 +917,6 @@ FROM STREAM(20000, TIME)
 WHERE demographics IS NOT NULL
 GROUP BY demographics.country, device
 LIMIT 50;
-</code></pre>
-
-<p><strong>JSON Query</strong></p>
-<pre><code class="javascript">{
-   &quot;filters&quot;:[
-      {
-         &quot;field&quot;:&quot;demographics&quot;,
-         &quot;operation&quot;:&quot;!=&quot;,
-         &quot;values&quot;:[
-            &quot;null&quot;
-         ]
-      }
-   ],
-   &quot;aggregation&quot;:{
-      &quot;type&quot;:&quot;GROUP&quot;,
-      &quot;size&quot;:50,
-      &quot;fields&quot;:{
-         &quot;demographics.country&quot;:&quot;country&quot;,
-         &quot;device&quot;:&quot;&quot;
-      },
-      &quot;attributes&quot;:{
-         &quot;operations&quot;:[
-            {
-               &quot;type&quot;:&quot;COUNT&quot;,
-               &quot;newName&quot;:&quot;count&quot;
-            },
-            {
-               &quot;type&quot;:&quot;AVG&quot;,
-               &quot;field&quot;:&quot;demographics.age&quot;,
-               &quot;newName&quot;:&quot;averageAge&quot;
-            },
-            {
-               &quot;type&quot;:&quot;AVG&quot;,
-               &quot;field&quot;:&quot;timespent&quot;,
-               &quot;newName&quot;:&quot;averageTimespent&quot;
-            }
-         ]
-      }
-   },
-   &quot;duration&quot;:20000
-}
 </code></pre>
 
 <p>This query groups by the country and the device and for each unique group gets the count, average age and time spent by the users for the next 20 seconds. It renames demographics.country to country and does not rename device. It limits the groups to 50. If there were more than
@@ -1354,27 +975,8 @@ but by increasing your aggregation size higher, you could get the rest.</p>
 <p>For readability, if you were just trying to get the unique values for a field or a set of fields, you could leave out the attributes section and specify your fields section. You could also call the type <code>DISTINCT</code> instead of
 <code>GROUP</code> to make that explicit. <code>DISTINCT</code> is just an alias for <code>GROUP</code>. See <a href="#distinct-aggregation">the DISTINCT example</a>.</p>
 <h3 id="quantile-distribution">QUANTILE DISTRIBUTION</h3>
-<p><strong>BQL Query</strong></p>
 <pre><code class="SQL">SELECT QUANTILE(duration, LINEAR, 11)
-FROM STREAM(5000, TIME)
-LIMIT 11;
-</code></pre>
-
-<p><strong>JSON Query</strong></p>
-<pre><code class="javascript">{
-   &quot;aggregation&quot;:{
-      &quot;type&quot;: &quot;DISTRIBUTION&quot;,
-      &quot;size&quot;: 11,
-      &quot;fields&quot;: {
-          &quot;duration&quot;: &quot;&quot;
-      },
-      &quot;attributes&quot;: {
-          &quot;type&quot;: &quot;QUANTILE&quot;,
-          &quot;numberOfPoints&quot;: 11
-      }
-   },
-   &quot;duration&quot;: 5000
-}
+FROM STREAM(5000, TIME);
 </code></pre>
 
 <p>This query creates 11 points from 0 to 1 (both inclusive) and finds the percentile values of the <code>duration</code> field (which contains an amount of time in ms) at <code>0, 0.1, 0.2 ... 1.0</code> or the 0th, 10th, 20th and 100th percentiles. It runs for 5 seconds and returns at most 11 points. As long as the <code>size</code> is set to higher than the number of points you generate, <code>DISTRIBUTION</code> queries will return all your values.</p>
@@ -1456,29 +1058,8 @@ granularities lower than this rank error, the results may not be accurate. While
 error was 1% and you obtained quantile values at 0.48, 0.50 and 0.52, you could use the values at 0.52 and 0.48 as very reasonable upper and lower bounds on your true median (you might even be able to use 0.49 and 0.51
 if the error was 1%).</p>
 <h3 id="pmf-distribution-aggregation">PMF DISTRIBUTION Aggregation</h3>
-<p><strong>BQL Query</strong></p>
 <pre><code class="SQL">SELECT FREQ(duration, REGION, 2000, 20000, 500)
-FROM STREAM(5000, TIME)
-LIMIT 100;
-</code></pre>
-
-<p><strong>JSON Query</strong></p>
-<pre><code class="javascript">{
-   &quot;aggregation&quot;:{
-      &quot;type&quot;:&quot;DISTRIBUTION&quot;,
-      &quot;size&quot;:100,
-      &quot;fields&quot;:{
-         &quot;duration&quot;:&quot;&quot;
-      },
-      &quot;attributes&quot;:{
-         &quot;type&quot;:&quot;PMF&quot;,
-         &quot;start&quot;:2000,
-         &quot;end&quot;:20000,
-         &quot;increment&quot;:500
-      }
-   },
-   &quot;duration&quot;:5000
-}
+FROM STREAM(5000, TIME);
 </code></pre>
 
 <p>This query creates 37 points from 2000 to 20000 in 500 increments to bucketize the duration field using these points as split locations and finds the count of duration values that fall into these intervals. It runs for 5s and returns at most 100 records (this means it will return the 38 records).</p>
@@ -1527,27 +1108,8 @@ LIMIT 100;
 
 <p>The result consists of 38 records, each denoting an interval in the domain we asked for. The result was not estimated. Note that the interval is denoted by the <code>Range</code> key and the count by the <code>Count</code> key. There is also a probability that estimates how likely a value for duration is likely to fall into that range.</p>
 <h3 id="cdf-distribution-aggregation">CDF DISTRIBUTION Aggregation</h3>
-<p><strong>BQL Query</strong></p>
 <pre><code class="SQL">SELECT CUMFREQ(duration, MANUAL, 20000, 2000, 15000, 45000)
-FROM STREAM(5000, TIME)
-LIMIT 100;
-</code></pre>
-
-<p><strong>JSON Query</strong></p>
-<pre><code class="javascript">{
-   &quot;aggregation&quot;:{
-      &quot;type&quot;: &quot;DISTRIBUTION&quot;,
-      &quot;size&quot;: 100,
-      &quot;fields&quot;: {
-          &quot;duration&quot;: &quot;&quot;
-      },
-      &quot;attributes&quot;: {
-          &quot;type&quot;: &quot;CDF&quot;,
-          &quot;points&quot;: [20000, 2000, 15000, 45000]
-      }
-   },
-   &quot;duration&quot;: 5000
-}
+FROM STREAM(5000, TIME);
 </code></pre>
 
 <p>This query specifies a list of points manually using <code>points</code> property in <code>attributes</code>. It runs for 5s and finds the
@@ -1603,7 +1165,6 @@ get all of the intervals).</p>
 <p>The result contains the 5 intervals produced by the split points. It was not estimated so these counts are exact. Note that the start of each interval is <em>-&infin;</em> because
 it is the cumulative frequency distribution.</p>
 <h3 id="exact-top-k-aggregation">Exact TOP K Aggregation</h3>
-<p><strong>BQL Query</strong></p>
 <p>There are two methods for executing a TOP K aggregation in BQL:</p>
 <pre><code class="SQL">SELECT TOP(500, 100, demographics.country, browser_name) AS numEvents
 FROM STREAM(10000, TIME)
@@ -1618,36 +1179,6 @@ GROUP BY demographics.country, browser_name
 HAVING COUNT(*) &gt;= 100
 ORDER BY COUNT(*) DESC
 LIMIT 500;
-</code></pre>
-
-<p><strong>JSON Query</strong></p>
-<pre><code class="javascript">{
-   &quot;filters&quot;:[
-      {
-         &quot;field&quot;: &quot;demographics.country&quot;,
-         &quot;operation&quot;: &quot;!=&quot;,
-         &quot;values&quot;: [&quot;null&quot;]
-      },
-      {
-         &quot;field&quot;: &quot;browser_name&quot;,
-         &quot;operation&quot;: &quot;!=&quot;,
-         &quot;values&quot;: [&quot;null&quot;]
-      }
-   ],
-   &quot;aggregation&quot;:{
-      &quot;type&quot;: &quot;TOP K&quot;,
-      &quot;size&quot;: 500,
-      &quot;fields&quot;: {
-          &quot;browser_name&quot;: &quot;browser&quot;,
-          &quot;demographics.country&quot;: &quot;country&quot;
-      },
-      &quot;attributes&quot;: {
-          &quot;threshold&quot;: 100,
-          &quot;newName&quot;: &quot;numEvents&quot;
-      }
-   },
-   &quot;duration&quot;: 10000
-}
 </code></pre>
 
 <p>This query gets the top 500 country, browser combinations where the count of records for each combination is at least 100. It runs for 10s.</p>
@@ -1714,7 +1245,6 @@ LIMIT 500;
 <p>The results gave us the top 18 country, browser combinations that had counts over a 100. Note the <code>maximum_count_error</code> key in the metadata. This represents how off the count is. It is 0 because these counts are exact.
 In our data stream, we only had 18 unique combinations of countries and browser names at the time the query was run.</p>
 <h3 id="approximate-top-k-aggregation">Approximate TOP K Aggregation</h3>
-<p><strong>BQL Query</strong></p>
 <p>There are two methods for executing a TOP K aggregation in BQL:</p>
 <pre><code class="SQL">SELECT TOP(10, 100, browser_name, browser_version, os_name, os_version, demographics.country, demographics.state) AS numEvents
 FROM STREAM(10000, TIME)
@@ -1729,40 +1259,6 @@ GROUP BY browser_name, browser_version, os_name, os_version, demographics.countr
 HAVING COUNT(*) &gt;= 100
 ORDER BY COUNT(*) DESC
 LIMIT 10;
-</code></pre>
-
-<p><strong>JSON Query</strong></p>
-<pre><code class="javascript">{
-   &quot;filters&quot;:[
-      {
-         &quot;field&quot;: &quot;browser_name&quot;,
-         &quot;operation&quot;: &quot;!=&quot;,
-         &quot;values&quot;: [&quot;null&quot;]
-      },
-      {
-         &quot;field&quot;: &quot;os_name&quot;,
-         &quot;operation&quot;: &quot;!=&quot;,
-         &quot;values&quot;: [&quot;null&quot;]
-      }
-   ],
-   &quot;aggregation&quot;:{
-      &quot;type&quot;: &quot;TOP K&quot;,
-      &quot;size&quot;: 10,
-      &quot;fields&quot;: {
-          &quot;browser_name&quot;: &quot;browser&quot;,
-          &quot;browser_version&quot;: &quot;bversion&quot;,
-          &quot;os_name&quot;: &quot;os&quot;,
-          &quot;os_version&quot;: &quot;oversion&quot;,
-          &quot;demographics.country&quot;: &quot;country&quot;,
-          &quot;demographics.state&quot;: &quot;state&quot;
-      },
-      &quot;attributes&quot;: {
-          &quot;threshold&quot;: 100,
-          &quot;newName&quot;: &quot;numEvents&quot;
-      }
-   },
-   &quot;duration&quot;: 30000
-}
 </code></pre>
 
 <p>In order to make the result approximate, this query adds more dimensions to the <a href="#exact-top-k-aggregation">Exact TOP K</a> query. It runs for 30s and looks for the top <em>10</em> combinations for these events.</p>
@@ -1882,59 +1378,13 @@ subtract 24 from it, you get the lower bound of the true count.</p>
 <p>Note that this also means the order of the items could be off. If two items had <code>Count</code> within 24 of each other, it is possible that the higher one <em>may</em> actually have had a true count <em>lower</em> than
 the second one and possibly be ranked higher. There is no such situation in this result set.</p>
 <h3 id="window-tumbling-group-by">Window - Tumbling Group-By</h3>
-<p><strong>BQL Query</strong></p>
 <pre><code class="SQL">SELECT demographics.country AS country, COUNT(*) AS count, AVG(demographics.age) AS averageAge,
        AVG(timespent) AS averageTimespent
 FROM STREAM(20000, TIME)
 WHERE demographics IS NOT NULL
 GROUP BY demographics.country
-WINDOWING(TUMBLING, 5000, TIME)
+WINDOWING TUMBLING(5000, TIME)
 LIMIT 50;
-</code></pre>
-
-<p><strong>JSON Query</strong></p>
-<pre><code class="javascript">{
-   &quot;filters&quot;:[
-      {
-         &quot;field&quot;:&quot;demographics&quot;,
-         &quot;operation&quot;:&quot;!=&quot;,
-         &quot;values&quot;:[
-            &quot;null&quot;
-         ]
-      }
-   ],
-   &quot;aggregation&quot;:{
-      &quot;type&quot;:&quot;GROUP&quot;,
-      &quot;size&quot;:5,
-      &quot;fields&quot;:{
-         &quot;demographics.country&quot;:&quot;country&quot;
-      },
-      &quot;attributes&quot;:{
-         &quot;operations&quot;:[
-            {
-               &quot;type&quot;:&quot;COUNT&quot;,
-               &quot;newName&quot;:&quot;count&quot;
-            },
-            {
-               &quot;type&quot;:&quot;AVG&quot;,
-               &quot;field&quot;:&quot;demographics.age&quot;,
-               &quot;newName&quot;:&quot;averageAge&quot;
-            }
-         ]
-      }
-   },
-   &quot;window&quot;:{
-       &quot;emit&quot;:{
-           &quot;type&quot;: &quot;TIME&quot;,
-           &quot;every&quot;: 5000
-       },
-       &quot;include&quot;:{
-           &quot;type&quot;: &quot;TIME&quot;,
-           &quot;first&quot;: 5000
-       }
-   },
-   &quot;duration&quot;:20000
-}
 </code></pre>
 
 <p>This query specifies a tumbling window that will emit every 5 seconds and contain 5 seconds of data per window. Results will come back to the user every 5 seconds, and since the duration of the query is 20 seconds,
@@ -2000,7 +1450,6 @@ the user will receive a total of 4 results. Since the aggregation size is set to
     }
 }
 
-
 &quot;records&quot;:[  
    {  
       &quot;country&quot;:&quot;Canada&quot;,
@@ -2062,7 +1511,6 @@ the user will receive a total of 4 results. Since the aggregation size is set to
    }
 }
 
-
 &quot;records&quot;:[  
    {  
       &quot;country&quot;:&quot;Canada&quot;,
@@ -2123,7 +1571,6 @@ the user will receive a total of 4 results. Since the aggregation size is set to
       }
    }
 }
-
 
 &quot;records&quot;:[  
    {  
@@ -2189,54 +1636,12 @@ the user will receive a total of 4 results. Since the aggregation size is set to
 </code></pre>
 
 <h3 id="window-additive-tumbling">Window - Additive Tumbling</h3>
-<p><strong>BQL Query</strong></p>
 <pre><code class="SQL">SELECT COUNT(*) AS count, AVG(demographics.age) AS averageAge,
        AVG(timespent) AS averageTimespent
 FROM STREAM(20000, TIME)
 WHERE demographics IS NOT NULL
-GROUP BY ()
-WINDOWING(EVERY, 5000, TIME, ALL)
+WINDOWING EVERY(5000, TIME, ALL)
 LIMIT 50;
-</code></pre>
-
-<p><strong>JSON Query</strong></p>
-<pre><code class="javascript">{
-   &quot;filters&quot;:[
-      {
-         &quot;field&quot;:&quot;demographics&quot;,
-         &quot;operation&quot;:&quot;!=&quot;,
-         &quot;values&quot;:[
-            &quot;null&quot;
-         ]
-      }
-   ],
-   &quot;aggregation&quot;:{
-      &quot;type&quot;:&quot;GROUP&quot;,
-      &quot;attributes&quot;:{
-         &quot;operations&quot;:[
-            {
-               &quot;type&quot;:&quot;COUNT&quot;,
-               &quot;newName&quot;:&quot;count&quot;
-            },
-            {
-               &quot;type&quot;:&quot;AVG&quot;,
-               &quot;field&quot;:&quot;demographics.age&quot;,
-               &quot;newName&quot;:&quot;averageAge&quot;
-            }
-         ]
-      }
-   },
-   &quot;window&quot;:{
-       &quot;emit&quot;:{
-           &quot;type&quot;: &quot;TIME&quot;,
-           &quot;every&quot;: 5000
-       },
-       &quot;include&quot;:{
-           &quot;type&quot;: &quot;ALL&quot;
-       }
-   },
-   &quot;duration&quot;:20000
-}
 </code></pre>
 
 <p>The above query will run for 20 seconds and emit a result every 5 seconds. The result will contain the average age and the count of the records seen since the very beginning of the query. Results might look like this:</p>
@@ -2260,7 +1665,6 @@ LIMIT 50;
    }
 }
 
-
 &quot;records&quot;:[  
    {  
       &quot;count&quot;:17580,
@@ -2281,7 +1685,6 @@ LIMIT 50;
    }
 }
 
-
 &quot;records&quot;:[  
    {  
       &quot;count&quot;:26317,
@@ -2301,8 +1704,6 @@ LIMIT 50;
       &quot;Body&quot;:&quot;...(query body)...&quot;
    }
 }
-
-
 
 &quot;records&quot;:[  
    {  
@@ -2327,49 +1728,10 @@ LIMIT 50;
 </code></pre>
 
 <h3 id="sliding-window-of-size-1-with-max-duration">Sliding Window of Size 1 with Max Duration</h3>
-<p><strong>BQL Query</strong></p>
 <pre><code class="SQL">SELECT *
 FROM STREAM(MAX, TIME)
-WHERE browser-id='2siknmdd6kaqm'
-WINDOWING(EVERY, 1, RECORD, FIRST, 1, RECORD)
-</code></pre>
-
-<p><strong>JSON Query</strong></p>
-<pre><code class="javascript">{  
-   &quot;filters&quot;:[  
-      {  
-         &quot;field&quot;:&quot;browser-id&quot;,
-         &quot;operation&quot;:&quot;==&quot;,
-         &quot;values&quot;:[  
-            &quot;2siknmdd6kaqm&quot;
-         ]
-      }
-   ],
-   &quot;aggregation&quot;:{  
-      &quot;size&quot;:1,
-      &quot;type&quot;:&quot;RAW&quot;,
-      &quot;fields&quot;:null,
-      &quot;attributes&quot;:null
-   },
-   &quot;window&quot;:{  
-      &quot;emit&quot;:{  
-         &quot;type&quot;:&quot;RECORD&quot;,
-         &quot;every&quot;:1
-      },
-      &quot;include&quot;:{  
-         &quot;type&quot;:&quot;RECORD&quot;,
-         &quot;first&quot;:1
-      }
-   },
-   &quot;projection&quot;:{  
-      &quot;fields&quot;:{  
-         &quot;browser-id&quot;:&quot;browser-id&quot;,
-         &quot;event&quot;:&quot;event&quot;,
-         &quot;demographics.country&quot;:&quot;country&quot;
-      }
-   },
-   &quot;duration&quot;:9223372036854775807
-}
+WHERE &quot;browser-id&quot; = '2siknmdd6kaqm'
+WINDOWING EVERY(1, RECORD, FIRST, 1, RECORD)
 </code></pre>
 
 <p>This is a query that will capture raw data, and has a sliding window of size 1. This query will return window results immediately whenever a single record that matches the filters flows through the system. The filters in this example will only match records from a particular browser.</p>
@@ -2395,7 +1757,6 @@ WINDOWING(EVERY, 1, RECORD, FIRST, 1, RECORD)
       &quot;Body&quot;:&quot;...(query body)... &quot;
    }
 }
-
 
 &quot;records&quot;:[  
    {  
