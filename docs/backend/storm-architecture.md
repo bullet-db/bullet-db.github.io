@@ -1,4 +1,4 @@
-spout# Storm architecture
+# Storm architecture
 
 This section describes how the [Backend architecture](../index.md#backend) is implemented in Storm.
 

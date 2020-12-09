@@ -179,4 +179,8 @@ storm jar bullet-storm-0.9.1.jar \
           --jars "bullet-dsl-0.1.2.jar,pulsar-client-2.2.1.jar,pulsar-client-schema-2.2.1.jar,protobuf-shaded-2.1.0-incubating.jar"
 ```
 
-## Storage
+## Storage and Replay
+
+If you set up the [Storage layer in the Web Service](../ws/setup.md#storage-configuration), you can turn on the replaying feature in Bullet on Storm. This wires up the Replay bolts to the topology. This component keeps track of the queries in the backend and replays queries from the Storage layer upon restart or component failure.
+
+Currently, only queries are stored. In the future, the Storage module will also be used for storing intermediate results in addition to queries to accommodate for restarts or component failures without loss of data for executing queries.
