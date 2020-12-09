@@ -30,6 +30,8 @@ The core Bullet logic (a library) that can be used to implement Bullet on differ
 
 |    Date      |                                        Release                                        | Highlights | APIDocs |
 | ------------ | ------------------------------------------------------------------------------------- | ---------- | ------- |
+| 2020-10-30   | [**1.1.0**](https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-1.1.0)  | Ternary Logic, Bullet Record 1.1 | [JavaDocs](apidocs/bullet-core/1.1.0/index.html) |
+| 2020-10-02   | [**1.0.0**](https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-1.0.0)  | Major release - Expressions, Storage, Async queries, No JSON queries | [JavaDocs](apidocs/bullet-core/1.0.0/index.html) |
 | 2019-02-01   | [**0.6.6**](https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.6.6)  | QueryManager partition leak cleanup | [JavaDocs](apidocs/bullet-core/0.6.6/index.html) |
 | 2018-12-20   | [**0.6.5**](https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.6.5)  | QueryManager logging fixes | [JavaDocs](apidocs/bullet-core/0.6.5/index.html) |
 | 2018-11-21   | [**0.6.4**](https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.6.4)  | Extended field extraction in Projections | [JavaDocs](apidocs/bullet-core/0.6.4/index.html) |
@@ -60,15 +62,15 @@ The core Bullet logic (a library) that can be used to implement Bullet on differ
 
 ## Bullet Storm
 
-The implementation of Bullet on Storm. Due to major API changes between Storm <= 0.10 and Storm 1.0, Bullet Storm [builds two artifacts](backend/storm-setup.md#older-storm-versions). The ```artifactId``` changes from ```bullet-storm``` (for 1.0+) to ```bullet-storm-0.10```. All releases include migration and testing of the code on *both* versions. Both versions are built simultaneously. Feature parity depends on what was new in Storm 1.0. For example, the Resource Aware Scheduler or RAS, is only present in Storm 1.0+. So, bullet-storm-0.10 removes certain CPU and memory related settings specific to RAS in its configuration. There are also minor changes to the Metrics API in Storm. In terms of Bullet itself, there should be no differences.
+The implementation of Bullet on Storm. Due to major API changes between Storm <= 0.10 and Storm 1.0, Bullet Storm used to [build two artifacts](backend/storm-setup.md#older-storm-versions). The ```artifactId``` changes from ```bullet-storm``` (for 1.0+) to ```bullet-storm-0.10```. All releases for both versions include migration and testing of the code on *both* platforms. Feature parity depends on what was new in Storm 1.0. For example, the Resource Aware Scheduler or RAS, is only present in Storm 1.0+. So, bullet-storm-0.10 removes certain CPU and memory related settings specific to RAS in its configuration. There are also minor changes to the Metrics API in Storm. In terms of Bullet itself, there should be no differences.
 
 !!! note "Storm DRPC PubSub "
 
     The DRPC PubSub is part of this artifact and is fully released and available for use starting with versions 0.6.2 and above. It is only meant to be used if you're using Storm as your Backend.
 
-!!! note "Future support"
+!!! note "Storm 0.10"
 
-    We will support Storm 0.10 for a bit longer till Storm 2.0 is up and stable. Storm versions 1.0+ have a lot of performance fixes and features that you should be running with.
+    We will no longer support Storm 0.10 since Storm 2.0 is now stable starting with Bullet on Storm 1.0.
 
 |                               |                 |
 | ----------------------------- | --------------- |
@@ -81,8 +83,9 @@ The implementation of Bullet on Storm. Due to major API changes between Storm <=
 
 ### Releases
 
-|    Date      |                            Storm 1.0                                        |                                 Storm 0.10                                  | Highlights | APIDocs |
+|    Date      |                            Storm 1.0+                                       |                                 Storm 0.10                                  | Highlights | APIDocs |
 | ------------ | --------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ---------- | ------- |
+| 2021-01-01   | [**1.0.0**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-1.0.0) | - | Bullet Core 1.1, Replay, Storage | [JavaDocs](apidocs/bullet-storm/1.0.0/index.html) |
 | 2019-02-07   | [**0.9.1**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.9.1) | [**0.9.1**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.9.1) | Bullet DSL 0.1.2 and packaging fixes | [JavaDocs](apidocs/bullet-storm/0.9.1/index.html) |
 | 2019-02-07   | [**0.9.0**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.9.0) | [**0.9.0**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.9.0) | Bullet DSL support! | [JavaDocs](apidocs/bullet-storm/0.9.0/index.html) |
 | 2018-11-26   | [**0.8.5**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.8.5) | [**0.8.5**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.8.5) | Extended field notation and updates bullet-core to 0.6.4| [JavaDocs](apidocs/bullet-storm/0.8.5/index.html) |
@@ -122,6 +125,7 @@ The implementation of Bullet on Spark Streaming.
 
 |    Date      |                                      Release                                      | Highlights | APIDocs |
 | ------------ | --------------------------------------------------------------------------------- | ---------- | ------- |
+| 2021-01-01   | [**1.0.0**](https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-1.0.0)  | Bullet Core 1.1, Storage | [SparkDocs](apidocs/bullet-spark/1.0.0/index.html) |
 | 2019-02-07   | [**0.2.2**](https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-0.2.2)  | Fixes a NPE in JoinStreaming for very short queries | [SparkDocs](apidocs/bullet-spark/0.2.2/index.html) |
 | 2018-11-26   | [**0.2.1**](https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-0.2.1)  | Uses bullet-core 0.6.4 and supports extended field notation in queries | [SparkDocs](apidocs/bullet-spark/0.2.1/index.html) |
 | 2018-11-16   | [**0.2.0**](https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-0.2.0)  | Uses bullet-core 0.6.1 and adds partitioning support | [SparkDocs](apidocs/bullet-spark/0.2.0/index.html) |
@@ -149,6 +153,7 @@ The Web Service implementation that can serve a static schema from a file and ta
 
 |    Date      |                                      Release                                           | Highlights | APIDocs |
 | ------------ | -------------------------------------------------------------------------------------- | ---------- | ------- |
+| 2021-01-01   | [**1.0.0**](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.5.0) | Async queries, Storage, Metrics, BQL only 1.0, Bullet Core 1.0 | [JavaDocs](apidocs/bullet-service/1.0.0/index.html) |
 | 2019-03-07   | [**0.5.0**](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.5.0) | QueryManager API updates | [JavaDocs](apidocs/bullet-service/0.5.0/index.html) |
 | 2018-11-28   | [**0.4.3**](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.4.3) | Updates bullet-bql to 0.2.1 | [JavaDocs](apidocs/bullet-service/0.4.3/index.html) |
 | 2018-11-26   | [**0.4.2**](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.4.2) | BQL to JSON endpoint, dead backend reaper, new types in Schema, bullet-core 0.6.4 | [JavaDocs](apidocs/bullet-service/0.4.2/index.html) |
@@ -180,6 +185,7 @@ The Bullet UI that lets you build, run, save and visualize results from Bullet.
 
 |    Date      |                                      Release                                           | Highlights |
 | ------------ | -------------------------------------------------------------------------------------- | ---------- |
+| 2021-01-01   | [**1.0.0**](https://github.com/bullet-db/bullet-ui/releases/tag/v1.0.0) | Ember 3 Octane, BQL support, new filter operators |
 | 2019-03-18   | [**0.6.2**](https://github.com/bullet-db/bullet-ui/releases/tag/v0.6.2) | Logo update |
 | 2018-10-05   | [**0.6.1**](https://github.com/bullet-db/bullet-ui/releases/tag/v0.6.1) | Timeseries Graphing, Bar, Pie Charts and FontAwesome |
 | 2018-07-20   | [**0.6.0**](https://github.com/bullet-db/bullet-ui/releases/tag/v0.6.0) | Supports adding a full default starting query |
@@ -195,7 +201,7 @@ The Bullet UI that lets you build, run, save and visualize results from Bullet.
 
 ## Bullet Record
 
-The AVRO container that you need to convert your data into to be consumed by Bullet.
+The AVRO and other containers that you need to convert your data into to be consumed by Bullet. Also manages the typing in Bullet.
 
 |                            |                 |
 | -------------------------- | --------------- |
@@ -209,6 +215,8 @@ The AVRO container that you need to convert your data into to be consumed by Bul
 
 |    Date      |                                  Release                                             | Highlights | APIDocs |
 | ------------ | ------------------------------------------------------------------------------------ | ---------- | ------- |
+| 2020-10-30   | [**1.1.0**](https://github.com/bullet-db/bullet-record/releases/tag/bullet-record-1.1.0) | Ternary logic | [JavaDocs](apidocs/bullet-record/1.1.0/index.html) |
+| 2020-06-04   | [**1.0.0**](https://github.com/bullet-db/bullet-record/releases/tag/bullet-record-1.0.0) | Type System, Typed records, Schemas, extended Types | [JavaDocs](apidocs/bullet-record/1.0.0/index.html) |
 | 2018-11-21   | [**0.3.0**](https://github.com/bullet-db/bullet-record/releases/tag/bullet-record-0.3.0) | More setters in BulletRecord including a forceSet | [JavaDocs](apidocs/bullet-record/0.3.0/index.html) |
 | 2018-10-30   | [**0.2.2**](https://github.com/bullet-db/bullet-record/releases/tag/bullet-record-0.2.2) | Extract from Lists and Map of Maps | [JavaDocs](apidocs/bullet-record/0.2.2/index.html) |
 | 2018-08-14   | [**0.2.1**](https://github.com/bullet-db/bullet-record/releases/tag/bullet-record-0.2.1) | Supports List of Primitive types | [JavaDocs](apidocs/bullet-record/0.2.1/index.html) |
@@ -233,7 +241,7 @@ A DSL to plug data sources into the Bullet Backend and Web Service.
 
 |    Date      |                                  Release                                                 | Highlights | APIDocs |
 | ------------ | ---------------------------------------------------------------------------------------- | ---------- | ------- |
-| 2019-02-07   | [**0.1.2**](https://github.com/bullet-db/bullet-dsl/releases/tag/bullet-dsl-0.1.2) | Thinner Fat jar | [JavaDocs](apidocs/bullet-dsl/0.1.2/index.html) |
+| 2020-10-30   | [**1.0.0**](https://github.com/bullet-db/bullet-dsl/releases/tag/bullet-dsl-1.0.0) | Bullet Core 1.1, Types to match Bullet Record 1.1 | [JavaDocs](apidocs/bullet-dsl/1.0.0/index.html) |
 | 2019-02-07   | [**0.1.1**](https://github.com/bullet-db/bullet-dsl/releases/tag/bullet-dsl-0.1.1) | Interface consolidation, IdentityDeserializer | [JavaDocs](apidocs/bullet-dsl/0.1.1/index.html) |
 | 2019-02-05   | [**0.1.0**](https://github.com/bullet-db/bullet-dsl/releases/tag/bullet-dsl-0.1.0) | Bullet DSL, Fat jar, Interface refactors | [JavaDocs](apidocs/bullet-dsl/0.1.0/index.html) |
 | 2019-01-08   | [**0.0.1**](https://github.com/bullet-db/bullet-dsl/releases/tag/bullet-dsl-0.0.1) | First release | [JavaDocs](apidocs/bullet-dsl/0.0.1/index.html) |
@@ -254,6 +262,7 @@ A PubSub implementation using Kafka as the backing PubSub. Can be used with any 
 
 |    Date      |                                  Release                                             | Highlights | APIDocs |
 | ------------ | ------------------------------------------------------------------------------------ | ---------- | ------- |
+| 2020-10-30   | [**1.0.0**](https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-1.0.0) | Bullet Core 1.1 | [JavaDocs](apidocs/bullet-kafka/1.0.0/index.html) |
 | 2018-12-17   | [**0.3.3**](https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-0.3.3) | Removes adding unnecessary properties to Producers/Consumers | [JavaDocs](apidocs/bullet-kafka/0.3.3/index.html) |
 | 2018-11-26   | [**0.3.2**](https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-0.3.2) | Uses bullet-core-0.6.4 | [JavaDocs](apidocs/bullet-kafka/0.3.2/index.html) |
 | 2018-11-26   | [**0.3.1**](https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-0.3.1) | Uses bullet-core-0.6.0 and adds Validator | [JavaDocs](apidocs/bullet-kafka/0.3.1/index.html) |
@@ -278,11 +287,12 @@ A PubSub implementation using Pulsar as the backing PubSub. Can be used with any
 
 |    Date      |                                  Release                                                 | Highlights | APIDocs |
 | ------------ | ---------------------------------------------------------------------------------------- | ---------- | ------- |
+| 2020-10-30   | [**1.0.0**](https://github.com/bullet-db/bullet-pulsar/releases/tag/bullet-pulsar-1.0.0) | Bullet Core 1.1 | [JavaDocs](apidocs/bullet-pulsar/1.0.0/index.html) |
 | 2018-12-10   | [**0.1.0**](https://github.com/bullet-db/bullet-pulsar/releases/tag/bullet-pulsar-0.1.0) | First release using the PubSub interfaces | [JavaDocs](apidocs/bullet-pulsar/0.1.0/index.html) |
 
 ## Bullet BQL
 
-A library facilitating the conversion from Bullet BQL queries to Bullet JSON queries
+A library facilitating the conversion from Bullet BQL queries to Bullet queries. This is the interface to the API.
 
 |                            |                 |
 | -------------------------- | --------------- |
@@ -296,6 +306,7 @@ A library facilitating the conversion from Bullet BQL queries to Bullet JSON que
 
 |    Date      |                                  Release                                             | Highlights | APIDocs |
 | ------------ | ------------------------------------------------------------------------------------ | ---------- | ------- |
+| 2020-01-01   | [**1.0.0**](https://github.com/bullet-db/bullet-bql/releases/tag/bullet-bql-1.0.0) | Expressions, Schema integration, native queries instead of JSON | [JavaDocs](apidocs/bullet-bql/1.0.0/index.html) |
 | 2018-11-28   | [**0.2.1**](https://github.com/bullet-db/bullet-bql/releases/tag/bullet-bql-0.2.1) | Extended field access notation | [JavaDocs](apidocs/bullet-bql/0.2.1/index.html) |
 | 2018-09-28   | [**0.2.0**](https://github.com/bullet-db/bullet-bql/releases/tag/bullet-bql-0.2.0) | Adds Post Aggregations and uses bullet-core-0.5.1 | [JavaDocs](apidocs/bullet-bql/0.2.0/index.html) |
 | 2018-09-06   | [**0.1.2**](https://github.com/bullet-db/bullet-bql/releases/tag/bullet-bql-0.1.2) | Supports CONTAINSKEY, CONTAINSVALUE, SIZEOF, comparing to other fields. Fixes some bugs | [JavaDocs](apidocs/bullet-bql/0.1.2/index.html) |
