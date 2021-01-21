@@ -71,7 +71,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v0.6.1</small></a>
+            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v1.0.0</small></a>
         </div>
 
         <!-- Expanded navigation -->
@@ -248,24 +248,24 @@
         
             
 <li >
-    <a href="../../ws/api-bql/">BQL</a>
+    <a href="../../ws/api/">BQL</a>
 </li>
 
         
             
 <li >
-    <a href="../../ws/api-json/">JSON</a>
+    <a href="../../ws/examples/">Examples</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../ws/api-json/">JSON (DEPRECATED)</a>
 </li>
 
         
     </ul>
   </li>
-
-                        
-                            
-<li >
-    <a href="../../ws/examples/">Query Examples</a>
-</li>
 
                         
                         </ul>
@@ -409,50 +409,77 @@
 <p>This section describes how the <a href="../..#backend">Backend architecture</a> is implemented in Storm.</p>
 <h2 id="topology">Topology</h2>
 <p>For Bullet on Storm, the Storm topology implements the backend piece from the full <a href="../..#architecture">Architecture</a>. The topology is implemented with the standard Storm spout and bolt components:</p>
-<p><img alt="Bullet Storm Topology" src="../../img/topology-3.png" /></p>
-<p>The components in <a href="../..#architecture">Architecture</a> have direct counterparts here. The Query spouts reading from the PubSub layer using plugged-in PubSub consumers make up the Request Processor. The Filter bolts and your plugin for your source of data (generally a spout but could be a topology) make up the Data Processor. The Join bolt, the Loop bolt and the Result bolt make up the Combiner.</p>
-<p>The red colored lines are the path for the queries that come in through the PubSub, the blue is for the data from your data source and the orange is for metadata and loop-back signals used internally by the backend. The pattern on the lines denote how the data (Storm tuples) is moved to the next component. Dashed indicates a broadcast (sent to all instances of the component), dotted indicates a key grouping (sent to a particular instance based on hashing on a particular field), and solid indicates a shuffle (randomly sent to an instance).</p>
+<p><img alt="Bullet Storm Topology" src="../../img/topology-4.svg" /></p>
+<p>The components in <a href="../..#architecture">Architecture</a> have direct counterparts here. The Query spouts reading from the PubSub layer using plugged-in PubSub consumers make up the Request Processor. The Filter bolts and your plugin for your source of data (shown here using plugged with both the DSL spouts and DSL bolts from <a href="#dsl.md">Bullet DSL</a>) make up the Data Processor. The Join bolt, the Loop bolt and the Result bolt make up the Combiner. There are peripheral components such as the Loop bolts, Tick spouts or the Replay bolts to handle metadata management in the topology.</p>
+<p>The red colored lines are the path for the queries that come in through the PubSub, the blue is for the data from your data source and the orange is for metadata and loop-back signals used internally by the backend. The purple lines highlight the most important components where queries and data intermix (the Filter and Join bolts).</p>
+<p>The pattern on the lines denote how the data (Storm tuples) is moved to the next component. Dashed indicates a broadcast (sent to all instances of the component), dotted indicates a key grouping (sent to a particular instance based on hashing on a particular field), solid indicates a shuffle (randomly sent to an instance) and dashed-dotted indicates a custom grouping.</p>
 <div class="admonition note">
-<p class="admonition-title">What's a Tick Spout?</p>
-<p>The Tick Spout component produces Storm tuples at predefined intervals to the Filter and Join Bolts. These tuples, called tick tuples, behave like CPU clock cycles for Bullet. Bullet performs all its system related activities on a tick. This includes purging stale queries, emitting left over data for queries, etc. We could have gone the route of having asynchronous threads that do the same thing but this was a far more simpler solution. The downside is that Bullet is as fast or as slow as its tick period, which can be configured on launch (defaults to <code>100 ms</code>). In practice, this means that your time-based windows need to be at least twice as long as your tick period.</p>
+<p class="admonition-title">What's a Replay?</p>
+<p>The Replay and the <a href="../storm-setup/#storage">pluggable storage</a> are <em>optional components</em> in Bullet on Storm. They exist to replay existing queries if you plugged in a storage layer into the <a href="#../ws/setup.md#storage">API</a>. You would use this if you have long running queries and are not tolerant to losing queries for your use-case. Currently, we do not support storage intermediate results in the storage though. For instance, if you restart the topology but have storage and replay configured, you will recreate all the queries on startup but you will lose all intermediate results that were held in memory so far. We plan to add intermediate result storage as well soon!</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">What's a Tick spout?</p>
+<p>The Tick spout component produces Storm tuples at predefined intervals to the Filter and Join bolts. These tuples, called tick tuples, behave like CPU clock cycles for Bullet. Bullet performs all its system related activities on a tick. This includes purging stale queries, emitting left over data for queries, etc. We could have gone the route of having asynchronous threads that do the same thing but this was a far more simpler solution. The downside is that Bullet is as fast or as slow as its tick period, which can be configured on launch (defaults to <code>100 ms</code>). In practice, this means that your time-based windows need to be at least twice as long as your tick period.</p>
 <p>As a practical example of how Bullet uses ticks: when the final data is emitted from the Filter bolts when the query has expired, the Join bolt receiving it waits for 3 (this is configurable) ticks after <em>its query</em> expires to collect all the last intermediate results from the Filter bolts. If the tick period is set as high as 5 s, this means that a query will take 3 * 15 or 15 s to get back after its expiry! Setting it to 1 s, makes it 1 * 3 s. Similarly, intermediate windows are buffered (for certain kinds of windowed queries) to collect all results for that window before sending it back to the user.</p>
 </div>
 <h3 id="data-processing">Data processing</h3>
 <p>Bullet can accept arbitrary sources of data as long as they can be read from Storm. You can either:</p>
 <ol>
-<li>Write a Storm spout that reads your data from where ever it is (Kafka etc) and <a href="../ingestion/">converts it to Bullet Records</a>. See <a href="../../quick-start/storm/#storm-topology">Quick Start</a> for an example.</li>
+<li>Write a Storm spout (or optionally topology) that reads your data from where ever it is (Kafka etc) and <a href="../ingestion/">converts it to Bullet Records</a>. See <a href="../../quick-start/storm/#storm-topology">Quick Start</a> for an example.</li>
 <li>Hook up an existing topology that is doing something else directly to Bullet. You will still write and hook up a component that converts your data into Bullet Records in your existing topology.</li>
+<li>Use <a href="../dsl/">Bullet DSL</a> to configure a DSL spout (and optionally a DSL bolt) to use the DSL interfaces to automatically understand your data source with its data format and convert it to the interface Bullet uses without code.</li>
 </ol>
 <table>
 <thead>
 <tr>
 <th></th>
-<th>Pros</th>
-<th>Cons</th>
+<th>Option 1</th>
+<th>Option 2</th>
+<th>Option 3</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Option 1</td>
-<td>Very simple to get started. Just implement a spout</td>
-<td>Need a storage layer that your spout pulls or some system has to push to your spouts</td>
+<td>Write code to read from your data source and convert to Bullet records</td>
+<td>Y</td>
+<td>Y</td>
+<td>N</td>
 </tr>
 <tr>
-<td>Option 2</td>
-<td>Saves a persistence layer</td>
-<td>Ties your topology to Bullet directly, making it affected by Storm Backpressure etc</td>
+<td>Write Storm spouts and/or bolts</td>
+<td>Y</td>
+<td>Y</td>
+<td>N</td>
 </tr>
 <tr>
-<td>Option 2</td>
-<td>You can add bolts to do more processing on your data before sending it to Bullet</td>
-<td>Increases the complexity of the topology</td>
+<td>Saves a persistence/pubsub layer</td>
+<td>N</td>
+<td>Y</td>
+<td>N</td>
+</tr>
+<tr>
+<td>Separate reading data from converting and allowing fan-out</td>
+<td>N</td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>Full control over how data is read, processed and converted to Bullet records</td>
+<td>Y</td>
+<td>Y</td>
+<td>N</td>
 </tr>
 </tbody>
 </table>
-<p>Your data is then emitted to the Filter bolt.  If you have no queries in your system, the Filter bolt will promptly drop all Bullet Records and do absolutely nothing. If there are queries in the Filter bolt, the record is checked against the <a href="../..#filters">filters</a> in each query and if it matches, it is processed by the query. Each query type can choose when to emit based on what window is configured for it. Depending on this, the matched record could be immediately emitted (if it is a RAW query or the intermediate aggregate if anything else) or it could be buffered till a specific time is reached (or the query has expired).</p>
+<p>Option 3 is generally flexible and is recommended. Having a code-less way to plug into Bullet is the fastest way to get started. We are adding new data sources and formats to the DSL so that we can support more ways to get your data into Bullet. If a connector or converter is not supported in DSL for your specific data source, you can also implement your own. It will save you from having to write Storm spouts or bolts and lets you reuse the Bullet DSL spout and/or bolt.</p>
+<p>Regardless of how your data is read, it is then emitted to the Filter bolt. If you have no queries in your system, the Filter bolt will promptly drop all Bullet Records and do nothing. If there are queries in the Filter bolt, the record is checked against each query and if it matches, it is processed by the query. Each query type can choose when to emit its intermediate result based on what window is configured for it. Depending on this, the matched record could be immediately emitted (if it is a RAW query or the intermediate aggregate if anything else) or it could be buffered till a specific time is reached (or the query has expired).</p>
 <h3 id="request-processing">Request processing</h3>
 <p>The Query spouts fetch Bullet queries through the PubSub layer using the Subscribers provided by the plugged in PubSub layer. The queries received through the PubSub also contain information about the query such as its unique identifier and potentially other metadata. The Query spouts broadcasts the query body to every Filter bolt. Since every Filter bolt has a copy of every query, the shuffled data from the source of data can be compared against the query no matter which particular Filter bolt it ends up at. Each Filter bolt has access to the unique query id and is able to key group by the id to the Join bolt with the intermediate results for the query.</p>
 <p>The Query spout also key groups the query and additional query metadata to the Join bolts. This means that the query and the metadata will be end up at exactly one Join bolt.</p>
+<div class="admonition note">
+<p class="admonition-title">Key grouping</p>
+<p>Technically, Bullet uses a Custom grouping in Storm instead of Key grouping. The Custom grouping does the same thing as what the Key grouping would do in Storm. The reason why we use the Custom grouping is for Replay so that we can deterministically control the Join bolt component that will receive a query and reuse that information for certain aspects of replaying. This is just defensive programming in case Storm changes their key group algorithm to function differently.</p>
+</div>
 <h3 id="combining">Combining</h3>
 <p>Since the data from the Query spout (query and metadata) and the data from all Filter bolts (intermediate results) is key grouped by the unique query id, only one particular Join bolt receives both the query and the intermediate results for a particular query. The Join bolt can then combine the intermediate results and produce a final result. This result is joined (hence the name) along with the metadata for the query and is shuffled to the Result bolts. This bolt then uses the particular Publisher from the plugged in PubSub layer and uses the metadata if it needs to and sends the results back through the PubSub layer to the requestor.</p>
 <div class="admonition note">
@@ -461,13 +488,13 @@
 </div>
 <div class="admonition note">
 <p class="admonition-title">Loop back</p>
-<p>We have not mentioned the loop components. These are mainly used to perform house-keeping within the topology. For instance, there is a Rate Limit concept in the Bullet core libraries that if violated in any instance of the query being executed, should cause the query to be killed. Wherever this error originates, it will trickle to the Loop bolt and be looped back through the PubSub, through the Query Spout and sent to all components that know about the query. These components will then kill the query as well. We call this a loop because strictly speaking, the topology is a Directed Acyclic Graph and we violate it by making a loop. These are also used to deliver external signals such as killing a query etc from the API or the UI. If you disable windows entirely, the Loop bolt will not be wired up when you launch your Bullet topology.</p>
+<p>We have not mentioned the loop components or the replay bolts. These are mainly used to perform house-keeping within the topology or if you have configured storage/replay. For instance, there is a Rate Limit concept in the Bullet core libraries that if violated in any instance of the query being executed, should cause the query to be killed. Wherever this error originates, it will trickle to the Loop bolt and be looped back through the PubSub, through the Query spout and sent to all components that know about the query. These components will then kill the query as well. We call this a loop because strictly speaking, the topology is a Directed Acyclic Graph and we violate it by making a loop. These are also used to deliver external signals such as killing a query etc from the API or the UI. If you disable windows entirely, the Loop bolt will not be wired up when you launch your Bullet topology.</p>
 </div>
 <h2 id="scalability">Scalability</h2>
 <p>The topology set up this way scales horizontally and has some nice properties:</p>
 <ul>
 <li>If you want to scale for processing more data but the same amount of queries, you only need to scale the components that read your data (the spout reading the data or your custom topology) and the Filter bolts.</li>
-<li>If you want to scale for more queries but the same amount of data, you generally need to scale up the Filter Bolts. If you need it, you can scale the Query spouts, Join bolts, Loop bolts and Result bolts. You should ensure that your PubSub layer (if you're using the Storm DRPC PubSub layer, then this is the number of DRPC servers in your Storm cluster) can handle the volume of queries and results being sent through it. These components generally have low parallelisms compared to your data processing components since the data volume is generally much higher than your query volume, so this is generally not needed.</li>
+<li>If you want to scale for more queries but the same amount of data, you generally need to scale up the Filter bolts. If you need it, you can scale the Query spouts, Join bolts, Loop bolts and Result bolts. You should ensure that your PubSub layer (if you're using the Storm DRPC PubSub layer, then this is the number of DRPC servers in your Storm cluster) can handle the volume of queries and results being sent through it. These components generally have low parallelisms compared to your data processing components since the data volume is generally much higher than your query volume, so this is generally not needed.</li>
 </ul>
 <p>See <a href="../storm-performance/#test-7-scaling-for-more-queries">Scaling for more Queries</a> and <a href="../storm-performance/#test-6-scaling-for-more-data">Scaling for more Data</a> for more details.</p>
 <div class="admonition note">

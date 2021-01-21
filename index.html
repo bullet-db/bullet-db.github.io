@@ -71,7 +71,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href=".">Bullet Docs<small class="small small-brand-text">v0.6.1</small></a>
+            <a class="navbar-brand" href=".">Bullet Docs<small class="small small-brand-text">v1.0.0</small></a>
         </div>
 
         <!-- Expanded navigation -->
@@ -248,24 +248,24 @@
         
             
 <li >
-    <a href="ws/api-bql/">BQL</a>
+    <a href="ws/api/">BQL</a>
 </li>
 
         
             
 <li >
-    <a href="ws/api-json/">JSON</a>
+    <a href="ws/examples/">Examples</a>
+</li>
+
+        
+            
+<li >
+    <a href="ws/api-json/">JSON (DEPRECATED)</a>
 </li>
 
         
     </ul>
   </li>
-
-                        
-                            
-<li >
-    <a href="ws/examples/">Query Examples</a>
-</li>
 
                         
                         </ul>
@@ -399,27 +399,7 @@
                     </li>
             
                     <li class="second-level">
-                        <a href="#filters">Filters</a>
-                        
-                    </li>
-            
-                    <li class="second-level">
-                        <a href="#projections">Projections</a>
-                        
-                    </li>
-            
-                    <li class="second-level">
-                        <a href="#aggregations">Aggregations</a>
-                        
-                    </li>
-            
-                    <li class="second-level">
-                        <a href="#post-aggregations">Post Aggregations</a>
-                        
-                    </li>
-            
-                    <li class="second-level">
-                        <a href="#windows">Windows</a>
+                        <a href="#windowing">Windowing</a>
                         
                     </li>
             
@@ -491,7 +471,7 @@
 <p>Filter raw data or aggregate data</p>
 </li>
 <li>
-<p>Can be run on storm or spark streaming</p>
+<p>Can be run on Storm or Spark Streaming</p>
 </li>
 <li>
 <p>A look-forward query system - operates on data that arrive after the query is submitted</p>
@@ -530,13 +510,13 @@
 </div>
 <hr />
 <h1 id="querying-in-bullet">Querying in Bullet</h1>
-<p>Bullet queries allow you to filter, project and aggregate data. You can also specify a window to get incremental results. Bullet lets you fetch raw (the individual data records) as well as aggregated data.</p>
+<p>Bullet queries allow you to filter, project and aggregate data. You can also specify a window to get incremental results. We support basically first-order SQL (no joins or nested queries). Bullet lets you fetch raw (the individual data records) as well as aggregated data.</p>
 <ul>
 <li>
 <p>See the <a href="ui/usage/">UI Usage section</a> for using the UI to build Bullet queries. This is the same UI you will build in the Quick Starts.</p>
 </li>
 <li>
-<p>See the API section (<a href="ws/api-bql/">BQL</a>, or the more verbose, underlying query format - <a href="ws/api-json/">JSON</a>) for building Bullet API queries</p>
+<p>See the API section (<a href="ws/api/">API</a> for building Bullet API queries</p>
 </li>
 <li>
 <p>For examples using the API, see <a href="ws/examples/">Examples</a>. These are actual albeit cleansed queries sourced from the instance at Yahoo.</p>
@@ -548,114 +528,7 @@
 <li>A maximum duration is reached. In other words, a query runs for a defined time window (which can be infinite).</li>
 <li>A maximum number of records is reached (only applicable for queries that are fetching raw data records and not aggregating).</li>
 </ol>
-<h2 id="filters">Filters</h2>
-<p>Bullet supports two kinds of filters:</p>
-<table>
-<thead>
-<tr>
-<th>Filter Type</th>
-<th>Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Logical filter</td>
-<td>Allow you to combine filter clauses (Logical or Relational) with logical operations like AND, OR and NOTs</td>
-</tr>
-<tr>
-<td>Relational filters</td>
-<td>Allow you to use comparison operations like equals, not equals, greater than, less than, regex like etc, on fields</td>
-</tr>
-</tbody>
-</table>
-<h2 id="projections">Projections</h2>
-<p>Projections allow you to pull out only the fields needed and rename them when you are querying for raw data records.</p>
-<h2 id="aggregations">Aggregations</h2>
-<p>Aggregations allow you to perform some operation on the collected records.</p>
-<p>The current aggregation types that are supported are:</p>
-<table>
-<thead>
-<tr>
-<th>Aggregation</th>
-<th>Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>GROUP</td>
-<td>The resulting output would be a record containing the result of an operation for each unique value combination in your specified fields</td>
-</tr>
-<tr>
-<td>COUNT DISTINCT</td>
-<td>Computes the number of distinct elements in the fields. (May be approximate)</td>
-</tr>
-<tr>
-<td>LIMIT or RAW</td>
-<td>The resulting output would be at most the number specified in size.</td>
-</tr>
-<tr>
-<td>DISTRIBUTION</td>
-<td>Computes distributions of the elements in the field. E.g. Find the median value or various percentile of a field, or get frequency or cumulative frequency distributions</td>
-</tr>
-<tr>
-<td>TOP K</td>
-<td>Returns the top K most frequently appearing values in the column</td>
-</tr>
-</tbody>
-</table>
-<p>Currently we support <code>GROUP</code> aggregations with the following operations:</p>
-<table>
-<thead>
-<tr>
-<th>Operation</th>
-<th>Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>COUNT</td>
-<td>Computes the number of the elements in the group</td>
-</tr>
-<tr>
-<td>SUM</td>
-<td>Computes the sum of the non-null values in the provided field for all elements in the group</td>
-</tr>
-<tr>
-<td>MIN</td>
-<td>Returns the minimum of the non-null values in the provided field for all the elements in the group</td>
-</tr>
-<tr>
-<td>MAX</td>
-<td>Returns the maximum of the non-null values in the provided field for all the elements in the group</td>
-</tr>
-<tr>
-<td>AVG</td>
-<td>Computes the average of the non-null values in the provided field for all the elements in the group</td>
-</tr>
-</tbody>
-</table>
-<p>If you <code>GROUP</code> with no operation, you are performing a <code>DISTINCT</code> on the field(s). If you <code>GROUP</code> with no field(s), you are performing the operation(s) across all your data.</p>
-<h2 id="post-aggregations">Post Aggregations</h2>
-<p>Post Aggregations let you perform some operation before finalizing and returning the results to you. This is applied every time a result is returned to you (see below). The current operations supported are:</p>
-<table>
-<thead>
-<tr>
-<th>Post Aggregation</th>
-<th>Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>ORDER BY</td>
-<td>Orders your result by your specified fields in ascending or descending order</td>
-</tr>
-<tr>
-<td>COMPUTATION</td>
-<td>Specify an expression (can be nested expressions) <a href="ws/api-json/#expressions">here</a> to do math with or cast fields in your result</td>
-</tr>
-</tbody>
-</table>
-<h2 id="windows">Windows</h2>
+<h2 id="windowing">Windowing</h2>
 <p>Windows in a Bullet query allow you to specify how often you'd like Bullet to return results.</p>
 <p>For example, you could launch a query for 2 minutes, and have Bullet return a COUNT DISTINCT on a particular field every 3 seconds:</p>
 <p><img alt="Time-Based Tumbling Windows" src="./../img/time-based-tumbling.png" /></p>
@@ -669,8 +542,8 @@
 <p>We also use Sketches as a way to control high cardinality grouping (group by a natural key column or related) and rely on the Sketching data structure to drop excess groups. It is up to you setting up Bullet to determine to set Sketch sizes large or small enough for to satisfy the queries that will be performed on that instance of Bullet.</p>
 <h1 id="architecture">Architecture</h1>
 <h2 id="end-to-end-architecture">End-to-End Architecture</h2>
-<p><img alt="Overall Architecture" src="./img/overallarch-2.png" /></p>
-<p>The image above shows how the various pieces of the Bullet interact at a high-level. All these layers are modular and pluggable. You can choose an implementation for the Backend and the PubSub (or create your own). The core of Bullet is abstracted into a <a href="https://github.com/yahoo/bullet-core">library</a> that can be reused to implement the Backend, Web Service and PubSub layers in a platform agnostic manner.</p>
+<p><img alt="Overall Architecture" src="./img/overallarch-3.svg" /></p>
+<p>The image above shows how the various pieces of the Bullet interact at a high-level. All these layers are modular and pluggable. Some, like the persistence layer for queries, are optional. You can choose an implementation for the Backend and the PubSub (or create your own). The core of Bullet is abstracted into a <a href="https://github.com/yahoo/bullet-core">library</a> that can be reused to implement the Backend, Web Service and PubSub layers in a platform agnostic manner.</p>
 <hr />
 <h2 id="backend">Backend</h2>
 <p><img alt="High Level Architecture" src="./img/higharch.png" /></p>
@@ -764,5 +637,5 @@ We currently support four different PubSub implementations:</p>
 
 <!--
 MkDocs version : 0.16.3
-Build Date UTC : 2020-12-09 23:38:03
+Build Date UTC : 2021-01-21 18:25:30
 -->

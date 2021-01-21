@@ -71,7 +71,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v0.6.1</small></a>
+            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v1.0.0</small></a>
         </div>
 
         <!-- Expanded navigation -->
@@ -248,24 +248,24 @@
         
             
 <li >
-    <a href="../../ws/api-bql/">BQL</a>
+    <a href="../../ws/api/">BQL</a>
 </li>
 
         
             
 <li >
-    <a href="../../ws/api-json/">JSON</a>
+    <a href="../../ws/examples/">Examples</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../ws/api-json/">JSON (DEPRECATED)</a>
 </li>
 
         
     </ul>
   </li>
-
-                        
-                            
-<li >
-    <a href="../../ws/examples/">Query Examples</a>
-</li>
 
                         
                         </ul>
@@ -509,7 +509,7 @@ storm supervisor &amp;
 <p>If you notice any problems while setting up storm or while relaunching a topology, it may be because some state is corrupted. When running Storm in this fashion, states and serializations are stored in <code>storm-local</code> and <code>/tmp/</code>. You may want to <code>rm -rf storm-local/* /tmp/dev-storm-zookeeper</code> to clean up this state before relaunching Storm components. See the <a href="#teardown">tear down section</a> on how to kill any running instances.</p>
 </div>
 <h3 id="setting-up-the-example-bullet-topology">Setting up the example Bullet topology</h3>
-<p>Now that Storm is up and running, we can put Bullet on it. We will use an example Spout that runs on Bullet 0.8.3 on our Storm cluster. The source is available <a href="https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/storm">here</a>. This was part of the artifact that you installed in Step 1.</p>
+<p>Now that Storm is up and running, we can put Bullet on it. We will use an example spout that runs on Bullet 0.8.3 on our Storm cluster. The source is available <a href="https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/storm">here</a>. This was part of the artifact that you installed in Step 1.</p>
 <h4 id="step-4-setup-the-storm-example">Step 4: Setup the Storm example</h4>
 <pre><code class="bash">cp $BULLET_EXAMPLES/backend/storm/* $BULLET_HOME/backend/storm
 </code></pre>
@@ -634,7 +634,7 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
           ...
 </code></pre>
 
-<p>This command launches the jar (an uber or "fat" jar) containing the custom spout code and all dependencies you copied in Step 5. We pass the name of your spout class with <code>--bullet-spout com.yahoo.bullet.storm.examples.RandomSpout</code> to the Bullet main class <code>com.yahoo.bullet.Topology</code> with two arguments <code>--bullet-spout-arg 20</code> and <code>--bullet-spout-arg 101</code>. The first argument tells the Spout to generate at most 20 tuples (records) in a period and the second argument says a period is 101 ms long.</p>
+<p>This command launches the jar (an uber or "fat" jar) containing the custom spout code and all dependencies you copied in Step 5. We pass the name of your spout class with <code>--bullet-spout com.yahoo.bullet.storm.examples.RandomSpout</code> to the Bullet main class <code>com.yahoo.bullet.Topology</code> with two arguments <code>--bullet-spout-arg 20</code> and <code>--bullet-spout-arg 101</code>. The first argument tells the spout to generate at most 20 tuples (records) in a period and the second argument says a period is 101 ms long.</p>
 <p>The settings defined by <code>--bullet-conf ./bullet_settings.yaml</code> and the arguments here run all components in the topology with a parallelism of 1. So there will be one spout that is producing ~200 rps.</p>
 <div class="admonition note">
 <p class="admonition-title">I thought you said hundreds of thousands of records...</p>
@@ -711,7 +711,7 @@ private BulletRecord generateRecord() {
 </code></pre>
 
 <p>This <code>generateRecord</code> method generates some fields randomly and inserts them into a BulletRecord. Note that the BulletRecord is typed and all data must be inserted with the proper types.</p>
-<p>If you put Bullet on your data, you will need to write a Spout (or a topology if your reading is complex), that reads from your data source and emits BulletRecords with the fields you wish to be query-able placed into a BulletRecord similar to this example.</p>
+<p>If you put Bullet on your data, you will need to write a spout (or a topology if your reading is complex), that reads from your data source and emits BulletRecords with the fields you wish to be query-able placed into a BulletRecord similar to this example.</p>
 <h3 id="pubsub">PubSub</h3>
 <p>We used the <a href="../../pubsub/rest/">REST PubSub</a>. Note that even though we support a DRPC PubSub, it doesn't actually support windowing so we have not used it for this example. We configured the Backend to use this PubSub by adding these settings to the YAML file that we passed to our Storm topology. Notice that we set the context to <code>QUERY_PROCESSING</code> since this is the Backend. We do not set <code>bullet.pubsub.rest.result.url</code> because each query sent to the topology has this information so that the results could be returned back to it.</p>
 <pre><code class="yaml">bullet.pubsub.context.name: &quot;QUERY_PROCESSING&quot;

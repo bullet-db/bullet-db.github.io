@@ -71,7 +71,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v0.6.1</small></a>
+            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v1.0.0</small></a>
         </div>
 
         <!-- Expanded navigation -->
@@ -248,24 +248,24 @@
         
             
 <li >
-    <a href="../../ws/api-bql/">BQL</a>
+    <a href="../../ws/api/">BQL</a>
 </li>
 
         
             
 <li >
-    <a href="../../ws/api-json/">JSON</a>
+    <a href="../../ws/examples/">Examples</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../ws/api-json/">JSON (DEPRECATED)</a>
 </li>
 
         
     </ul>
   </li>
-
-                        
-                            
-<li >
-    <a href="../../ws/examples/">Query Examples</a>
-</li>
 
                         
                         </ul>
@@ -405,6 +405,11 @@
                         </ul>
                     </li>
             
+                    <li class="second-level">
+                        <a href="#storage-and-replay">Storage and Replay</a>
+                        
+                    </li>
+            
             </ul>
         </li>
     
@@ -417,12 +422,12 @@
 <h2 id="configuration">Configuration</h2>
 <p>Bullet is configured at run-time using settings defined in a file. Settings not overridden will default to the values in <a href="https://github.com/bullet-db/bullet-storm/blob/master/src/main/resources/bullet_defaults.yaml">bullet_defaults.yaml</a>. There are too many to list here. You can find out what these settings do in the comments listed in the defaults.</p>
 <h2 id="installation">Installation</h2>
-<p>To use Bullet, you need to implement a way to read from your data source and convert your data into Bullet Records (bullet-record is a transitive dependency for Bullet and can be found <a href="../ingestion/#installing-the-record-directly">in JCenter</a>. You have two options in how to get your data into Bullet:</p>
+<p>To use Bullet, you need to implement a way to read from your data source and convert your data into Bullet Records (bullet-record is a transitive dependency for Bullet and can be found <a href="../ingestion/#installing-the-record-directly">in JCenter</a>. You have a couple of options in how to get your data into Bullet:</p>
 <ol>
-<li>You can implement a Spout that reads from your data source and emits Bullet Record. This spout must have a constructor that takes a List of Strings.</li>
-<li>You can pipe your existing Storm topology directly into Bullet. In other words, you convert the data you wish to be query-able through Bullet into Bullet Records from a bolt in your topology.</li>
+<li>You can implement a spout (or even a topology) that reads from your data source and emits Bullet Records. You then write a main class that submits the topology with your topology wired in <a href="https://github.com/bullet-db/bullet-storm/blob/master/src/main/java/com/yahoo/bullet/storm/StormUtils.java">using our submit method</a>.</li>
+<li>Use Bullet DSL to configure a spout (and optionally a bolt) that you provide in the settings to our main class. This will wire up your data source and data format to Bullet without you having to write code!</li>
 </ol>
-<p>Option 1 is the simplest to start with and should accommodate most scenarios. See <a href="../storm-architecture/#data-processing">Pros and Cons</a>.</p>
+<p>You can refer to the <a href="../storm-architecture/#data-processing">Pros and Cons</a> of the various approaches to determine what works best for you.</p>
 <p>You need a JVM based project that implements one of the two options above. You include the Bullet artifact and Storm dependencies in your pom.xml or other dependency management system. The artifacts are available through JCenter, so you will need to add the repository.</p>
 <pre><code class="xml">&lt;repositories&gt;
     &lt;repository&gt;
@@ -453,7 +458,7 @@
 <p>If you just need the jar artifact directly, you can download it from <a href="http://jcenter.bintray.com/com/yahoo/bullet/bullet-storm/">JCenter</a>.</p>
 <p>You can also add <code>&lt;classifier&gt;sources&lt;/classifier&gt;</code>  or <code>&lt;classifier&gt;javadoc&lt;/classifier&gt;</code> if you want the sources or javadoc. We also package up our test code where we have some helper classes to deal with <a href="https://github.com/bullet-db/bullet-storm/tree/master/src/test/java/com/yahoo/bullet/storm">Storm components</a>. If you wish to use these to help with testing your topology, you can add another dependency on bullet-storm with <code>&lt;type&gt;test-jar&lt;/type&gt;</code>.</p>
 <p>If you are going to use the second option (directly pipe data into Bullet from your Storm topology), then you will need a main class that directly calls the submit method with your wired up topology and the name of the component that is going to emit Bullet Records in that wired up topology. The submit method can be found in <a href="https://github.com/bulletbullet-storm/blob/master/src/main/java/com/yahoo/bullet/Topology.java">Topology.java</a>. The submit method submits the topology so it should be the last thing you do in your main.</p>
-<p>If you are just implementing a Spout, see the <a href="#launch">Launch</a> section below on how to use the main class in Bullet to create and submit your topology.</p>
+<p>If you are just implementing a spout, see the <a href="#launch">Launch</a> section below on how to use the main class in Bullet to create and submit your topology.</p>
 <p>Storm topologies are generally launched with "fat" jars (jar-with-dependencies), excluding storm itself:</p>
 <pre><code class="xml">&lt;plugin&gt;
     &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
@@ -514,7 +519,7 @@ bullet.topology.bullet.spout.memory.off.heap.load: 256.0
 <p>If you run the main class without arguments or pass in the <code>--help</code> argument, you can see what these arguments mean and what others are supported.</p>
 </div>
 <h2 id="using-bullet-dsl">Using Bullet DSL</h2>
-<p>Instead of implementing your own spout or Topology, you can also use the provided DSL spout (and optionally, DSL Bolt) with <a href="../dsl/">Bullet DSL</a>. To do so, add the following settings to your YAML configuration:</p>
+<p>Instead of implementing your own spout or Topology, you can also use the provided DSL spout (and optionally, DSL bolt) with <a href="../dsl/">Bullet DSL</a>. To do so, add the following settings to your YAML configuration:</p>
 <pre><code class="yaml">bullet.topology.dsl.spout.enable: true
 bullet.topology.dsl.spout.parallelism:
 bullet.topology.dsl.spout.cpu.load:
@@ -530,7 +535,7 @@ bullet.topology.dsl.bolt.memory.off.heap.load:
 bullet.topology.dsl.deserializer.enable: false
 </code></pre>
 
-<p>If the DSL Bolt is enabled in addition to the spout (the spout is always required!), Storm will read your data in the spout and convert it in the bolt. Without the bolt, reading and converting are done entirely in the spout. If you wish to separate the two by enabling the DSL Bolt, you can lower per-worker latencies when data volume is large and scale them independently.</p>
+<p>If the DSL bolt is enabled in addition to the spout (the spout is always required!), Storm will read your data in the spout and convert it in the bolt. Without the bolt, reading and converting are done entirely in the spout. If you wish to separate the two by enabling the DSL bolt, you can lower per-worker latencies when data volume is large and scale them independently.</p>
 <p>There is also a setting to enable <a href="../dsl/#bulletdeserializer">BulletDeserializer</a>, which is an optional component of Bullet DSL for deserializing data between reading and converting.  </p>
 <h4 id="setup">Setup</h4>
 <p>The Bullet Storm jar is not built with Bullet DSL or with other dependencies you may want such as Kafka and Pulsar. Instead, you will have to either add the dependencies (the DSL fat jar and your particular connector dependencies) to the Storm launcher and worker environments or build a fat jar with the dependencies. In Storm 1.2.2+, however, you also have the option of directly adding the following jars to the classpath in the <code>storm jar</code> command.</p>
@@ -547,7 +552,11 @@ storm jar bullet-storm-0.9.1.jar \
           com.yahoo.bullet.storm.Topology \
           --bullet-conf ./bullet_settings.yaml \
           --jars &quot;bullet-dsl-0.1.2.jar,pulsar-client-2.2.1.jar,pulsar-client-schema-2.2.1.jar,protobuf-shaded-2.1.0-incubating.jar&quot;
-</code></pre></div>
+</code></pre>
+
+<h2 id="storage-and-replay">Storage and Replay</h2>
+<p>If you set up the <a href="../../ws/setup/#storage-configuration">Storage layer in the Web Service</a>, you can turn on the replaying feature in Bullet on Storm. This wires up the Replay bolts to the topology. This component keeps track of the queries in the backend and replays queries from the Storage layer upon restart or component failure.</p>
+<p>Currently, only queries are stored. In the future, the Storage module will also be used for storing intermediate results in addition to queries to accommodate for restarts or component failures without loss of data for executing queries.</p></div>
         
     </div>
 
