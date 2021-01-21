@@ -103,9 +103,9 @@ We also use Sketches as a way to control high cardinality grouping (group by a n
 
 ## End-to-End Architecture
 
-![Overall Architecture](img/overallarch-2.png)
+![Overall Architecture](img/overallarch-3.svg)
 
-The image above shows how the various pieces of the Bullet interact at a high-level. All these layers are modular and pluggable. You can choose an implementation for the Backend and the PubSub (or create your own). The core of Bullet is abstracted into a [library](https://github.com/yahoo/bullet-core) that can be reused to implement the Backend, Web Service and PubSub layers in a platform agnostic manner.
+The image above shows how the various pieces of the Bullet interact at a high-level. All these layers are modular and pluggable. Some, like the persistence layer for queries, are optional. You can choose an implementation for the Backend and the PubSub (or create your own). The core of Bullet is abstracted into a [library](https://github.com/yahoo/bullet-core) that can be reused to implement the Backend, Web Service and PubSub layers in a platform agnostic manner.
 
 ---
 
