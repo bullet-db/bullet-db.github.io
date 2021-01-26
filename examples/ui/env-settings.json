@@ -3,6 +3,7 @@
     "queryHost": "http://localhost:9999",
     "queryNamespace": "api/bullet",
     "queryPath": "ws-query",
+    "validationPath": "validate-query",
     "queryStompRequestChannel": "/server/request",
     "queryStompResponseChannel": "/client/response",
     "schemaHost": "http://localhost:9999",
@@ -14,14 +15,14 @@
       }
     ],
     "bugLink": "https://github.com/bullet-db/bullet-ui/issues",
-    "modelVersion": 3,
+    "modelVersion": 4,
     "migrations": {
       "deletions": "query"
     },
     "defaultValues": {
       "aggregationMaxSize": 1024,
       "rawMaxSize": 500,
-      "durationMaxSecs": 86400,
+      "durationMaxSecs": 9007199254740,
       "distributionNumberOfPoints": 11,
       "distributionQuantilePoints": "0, 0.25, 0.5, 0.75, 0.9, 1",
       "distributionQuantileStart": 0,
@@ -29,7 +30,7 @@
       "distributionQuantileIncrement": 0.1,
       "windowEmitFrequencyMinSecs": 1,
       "everyForRecordBasedWindow": 1,
-      "everyForTimeBasedWindow": 2,
+      "everyForTimeBasedWindow": 2000,
       "sketches": {
         "countDistinctMaxEntries": 16384,
         "groupByMaxEntries": 512,

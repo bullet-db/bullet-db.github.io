@@ -39,7 +39,8 @@ bullet.topology.bullet.spout.memory.off.heap.load: 160.0
 
 # Bullet Core settings
 bullet.query.aggregation.raw.max.size: 500
-bullet.query.aggregation.max.size: 1024
+# This setting is enforced in the API at this time
+# bullet.query.aggregation.max.size: 1024
 bullet.query.aggregation.count.distinct.sketch.entries: 16384
 bullet.query.aggregation.group.sketch.entries: 1024
 bullet.query.aggregation.distribution.sketch.entries: 1024

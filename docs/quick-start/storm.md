@@ -4,10 +4,10 @@ This section gets you running a mock instance of Bullet to play around with. The
 
 At the end of this section, you will have:
 
-  * Setup the Bullet topology using a custom spout on [bullet-storm-0.8.5](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.8.5)
-  * Setup the [Web Service](../ws/setup.md) talking to the topology and serving a schema for your UI using [bullet-service-0.4.3](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.4.3)
-  * Setup the [REST PubSub](../pubsub/rest.md) talking to the topology and Web Service using [bullet-core-0.6.4](https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.6.4).
-  * Setup the [UI](../ui/setup.md) talking to the Web Service using [bullet-ui-0.6.2](https://github.com/bullet-db/bullet-ui/releases/tag/v0.6.2)
+  * Setup the Bullet topology using a custom spout on [bullet-storm-1.0.0](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-1.0.0)
+  * Setup the [Web Service](../ws/setup.md) talking to the topology and serving a schema for your UI using [bullet-service-1.0.0](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-1.0.0)
+  * Setup the [REST PubSub](../pubsub/rest.md) talking to the topology and Web Service using [bullet-core-1.2.0](https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-1.2.0).
+  * Setup the [UI](../ui/setup.md) talking to the Web Service using [bullet-ui-1.0.0](https://github.com/bullet-db/bullet-ui/releases/tag/v1.0.0)
 
 **Prerequisites**
 
@@ -43,18 +43,18 @@ mkdir -p $BULLET_HOME/backend/storm
 mkdir -p $BULLET_HOME/service
 mkdir -p $BULLET_HOME/ui
 cd $BULLET_HOME
-curl -LO https://github.com/bullet-db/bullet-db.github.io/releases/download/v0.6.1/examples_artifacts.tar.gz
+curl -LO https://github.com/bullet-db/bullet-db.github.io/releases/download/v1.0.0/examples_artifacts.tar.gz
 tar -xzf examples_artifacts.tar.gz
 export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 ```
 
-#### Step 2: Install Storm 1.2
+#### Step 2: Install Storm 2.2
 
 ```bash
 cd $BULLET_HOME/backend
-curl -O http://apache.org/dist/storm/apache-storm-1.2.2/apache-storm-1.2.2.zip
-unzip apache-storm-1.2.2.zip
-export PATH=$(pwd)/apache-storm-1.2.2/bin/:$PATH
+curl -O http://apache.org/dist/storm/apache-storm-2.2.0/apache-storm-2.2.0.zip
+unzip apache-storm-2.2.0.zip
+export PATH=$(pwd)/apache-storm-2.2.0/bin/:$PATH
 ```
 #### Step 3: Launch Storm components
 
@@ -78,7 +78,7 @@ Once everything is up without errors, visit [http://localhost:8080](http://local
 
 ### Setting up the example Bullet topology
 
-Now that Storm is up and running, we can put Bullet on it. We will use an example spout that runs on Bullet 0.8.3 on our Storm cluster. The source is available [here](https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/storm). This was part of the artifact that you installed in Step 1.
+Now that Storm is up and running, we can put Bullet on it. We will use an example spout that runs on Bullet 1.2.0 on our Storm cluster. The source is available [here](https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/storm). This was part of the artifact that you installed in Step 1.
 
 #### Step 4: Setup the Storm example
 
@@ -91,8 +91,6 @@ cp $BULLET_EXAMPLES/backend/storm/* $BULLET_HOME/backend/storm
     Take a look at bullet_settings.yaml for the settings that are being overridden for this example. You can add or change settings as you like by referring to [core Bullet settings in bullet_defaults.yaml](https://github.com/bullet-db/bullet-core/blob/master/src/main/resources/bullet_defaults.yaml) and [Storm settings in bullet_storm_defaults.yaml](https://github.com/bullet-db/bullet-storm/blob/master/src/main/resources/bullet_storm_defaults.yaml). In particular, we have [customized these settings](https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/storm/src/main/resources/bullet_settings.yaml) that affect the Bullet queries you can run:
 
     ```bullet.query.aggregation.raw.max.size: 500``` The max ```RAW``` records you can fetch is 500.
-
-    ```bullet.query.aggregation.max.size: 1024``` The max records you can fetch for any query is 1024.
 
     ```bullet.query.aggregation.count.distinct.sketch.entries: 16384``` We can count 16384 unique values exactly. Approximates after.
 
@@ -153,23 +151,30 @@ curl -s -H 'Content-Type: text/plain' -X POST -d '{"aggregation": {"size": 1}}' 
 curl -s http://localhost:9999/api/bullet/columns
 ```
 
+!!! note "Settings"
+
+    Take a look at example_query_settings.yaml for the settings that are being overridden for this example. You can add or change the query settings (used by BQL when creating the query) by referring to [core Bullet settings in bullet_defaults.yaml](https://github.com/bullet-db/bullet-core/blob/master/src/main/resources/bullet_defaults.yaml). We have [customized these settings](https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/web-service/example_query_settings.yaml):
+
+    ```bullet.query.aggregation.max.size: 1024``` The max records you can fetch for any query is 1024.
+
+
 ### Setting up the Bullet UI
 
 #### Step 8: Install Node
 
 ```bash
-curl -s https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
+curl -s https://raw.githubusercontent.com/creationix/nvm/v0.37.2/install.sh | bash
 source ~/.bashrc
-nvm install v6.9.4
-nvm use v6.9.4
+nvm install v10.20.1
+nvm use v10.20.1
 ```
 
 #### Step 9: Install the Bullet UI
 
 ```bash
 cd $BULLET_HOME/ui
-curl -LO https://github.com/bullet-db/bullet-ui/releases/download/v0.6.2/bullet-ui-v0.6.2.tar.gz
-tar -xzf bullet-ui-v0.6.2.tar.gz
+curl -LO https://github.com/bullet-db/bullet-ui/releases/download/v1.0.0/bullet-ui-v1.0.0.tar.gz
+tar -xzf bullet-ui-v1.0.0.tar.gz
 cp $BULLET_EXAMPLES/ui/env-settings.json config/
 ```
 
@@ -203,7 +208,7 @@ If you were performing the steps yourself, you can also manually cleanup **all t
 | -------------- | ---------------------------------------------------------------- |
 | UI             | ```pkill -f [e]xpress-server.js```                               |
 | Web Service    | ```pkill -f [e]xample_rest_pubsub_config.yaml```                      |
-| Storm          | ```pkill -f [a]pache-storm-1.2.2```                              |
+| Storm          | ```pkill -f [a]pache-storm-2.2.0```                              |
 | File System    | ```rm -rf $BULLET_HOME /tmp/dev-storm-zookeeper```  |
 
 This does *not* delete ```$HOME/.nvm``` and some extra lines nvm may have added to your ```$HOME/{.profile, .bash_profile, .zshrc, .bashrc}```.
@@ -388,6 +393,7 @@ Finally, we configured the UI with the custom environment specific settings file
     "queryHost": "http://localhost:9999",
     "queryNamespace": "api/bullet",
     "queryPath": "ws-query",
+    "validationPath": "validate-query",
     "queryStompRequestChannel": "/server/request",
     "queryStompResponseChannel": "/client/response",
     "schemaHost": "http://localhost:9999",
@@ -399,14 +405,14 @@ Finally, we configured the UI with the custom environment specific settings file
       }
     ],
     "bugLink": "https://github.com/bullet-db/bullet-ui/issues",
-    "modelVersion": 3,
+    "modelVersion": 4,
     "migrations": {
       "deletions": "query"
     },
     "defaultValues": {
       "aggregationMaxSize": 1024,
       "rawMaxSize": 500,
-      "durationMaxSecs": 86400,
+      "durationMaxSecs": 9007199254740,
       "distributionNumberOfPoints": 11,
       "distributionQuantilePoints": "0, 0.25, 0.5, 0.75, 0.9, 1",
       "distributionQuantileStart": 0,
@@ -414,7 +420,7 @@ Finally, we configured the UI with the custom environment specific settings file
       "distributionQuantileIncrement": 0.1,
       "windowEmitFrequencyMinSecs": 1,
       "everyForRecordBasedWindow": 1,
-      "everyForTimeBasedWindow": 2,
+      "everyForTimeBasedWindow": 2000,
       "sketches": {
         "countDistinctMaxEntries": 16384,
         "groupByMaxEntries": 512,
