@@ -94,15 +94,15 @@ These are the properties in the ```defaultValues``` object. The Validated column
 | --------------------------------------- | --------- | ------- | ---------------- |
 | aggregationMaxSize                      | Yes       | Yes     | The size used when doing a Count Distinct, Distinct, Group By, or Distribution query. Set this to your max aggregations size in your backend configuration |
 | rawMaxSize                              | Yes       | Yes     | The maximum size for a Raw query. Set this to your max raw aggregation size in your backend configuration |
-| durationMaxSecs                         | Yes       | Yes     | The maximum duration for a query. Set this to the seconds version of milliseconds max duration in your backend configuration |
+| durationMaxSecs                         | Yes       | Yes     | The maximum duration for a query. Set this to the seconds version of the milliseconds max duration in your backend configuration |
 | distributionNumberOfPoints              | Yes       | No      | The default value filled in for the Number of Points field for all Distribution aggregations |
 | distributionQuantilePoints              | No        | No      | The default value filled in for the Points field for Quantile Distribution aggregations |
 | distributionQuantileStart               | No        | No      | The default value filled in for the Start field for Quantile Distribution aggregations |
 | distributionQuantileEnd                 | No        | No      | The default value filled in for the End field for Quantile Distribution aggregations |
 | distributionQuantileIncrement           | No        | No      | The default value filled in for the Increment field for Quantile Distribution aggregations |
-| windowEmitFrequencyMinSecs              | Yes       | No      | The minimum time interval at which a time based window can be returned. Set this to the minimum window emit frequency from your backend configuration |
+| windowEmitFrequencyMinSecs              | Yes       | No      | The minimum time interval at which a time based window can be returned in seconds. Set this to the minimum window emit frequency from your backend configuration |
 | everyForRecordBasedWindow               | No        | No      | The default value for the number of records in a window for a record based window |
-| everyForTimeBasedWindow                 | No        | No      | The default value for the number of records in a window for a time based window |
+| everyForTimeBasedWindow                 | No        | No      | The default value for the number of records in a window for a time based window in milliseconds |
 | sketches.countDistinctMaxEntries        | No        | Yes     | The maximum entries configured for your Count Distinct sketch in your backend configuration |
 | sketches.groupByMaxEntries              | No        | Yes     | The maximum entries configured for your Group sketch in your backend configuration |
 | sketches.distributionMaxEntries         | No        | Yes     | The maximum entries configured for your Distribution sketch in your backend configuration |
@@ -133,7 +133,7 @@ that are the same as the [default backend settings](https://github.com/bullet-db
 {
   "default": {
     "queryHost": "http://localhost:5555",
-    "queryNamespace": "api/bullet",
+    "queryNamespace": "api/bullet/queries",
     "queryPath": "ws-query",
     "validationPath": "validate-query",
     "queryStompRequestChannel": "/server/request",
