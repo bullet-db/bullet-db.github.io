@@ -56,6 +56,24 @@
             <scope>test</scope>
         </dependency>
         -->
+        <!-- There are transitive dependencies that might clash with Storm so place the bullet dependencies first
+             to use any particular versions from the bullet dependencies. E.g. jackson-core -->
+        <dependency>
+            <groupId>com.yahoo.bullet</groupId>
+            <artifactId>bullet-storm</artifactId>
+            <version>${bullet.storm.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.yahoo.bullet</groupId>
+            <artifactId>bullet-record</artifactId>
+            <version>${bullet.record.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.yahoo.bullet</groupId>
+            <artifactId>bullet-core</artifactId>
+            <version>${bullet.core.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
@@ -91,21 +109,6 @@
             <version>${storm.version}</version>
         </dependency>
         -->
-        <dependency>
-            <groupId>com.yahoo.bullet</groupId>
-            <artifactId>bullet-storm</artifactId>
-            <version>${bullet.storm.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.yahoo.bullet</groupId>
-            <artifactId>bullet-record</artifactId>
-            <version>${bullet.record.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.yahoo.bullet</groupId>
-            <artifactId>bullet-core</artifactId>
-            <version>${bullet.core.version}</version>
-        </dependency>
     </dependencies>
     <build>
         <plugins>
