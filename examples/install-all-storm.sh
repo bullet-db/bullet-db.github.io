@@ -147,7 +147,7 @@ launch_bullet_web_service() {
     curl -s http://localhost:9999/api/bullet/columns
     println ""
     println "Getting one random record from Bullet through the Web Service..."
-    curl -s -H 'Content-Type: text/plain' -X POST -d '{"aggregation": {"size": 1}}' http://localhost:9999/api/bullet/queries/sse-query
+    curl -s -H 'Content-Type: text/plain' -X POST -d 'SELECT * FROM STREAM(2000, TIME) LIMIT 1;' http://localhost:9999/api/bullet/queries/sse-query
     println ""
     println "Finished Bullet Web Service test!"
 }
