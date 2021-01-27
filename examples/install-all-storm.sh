@@ -154,7 +154,7 @@ launch_bullet_web_service() {
 
 install_node() {
     # NVM unset var bug
-    set +u
+    set +eu
 
     println "Trying to install nvm. If there is a failure, manually perform: "
     println "    curl -s https://raw.githubusercontent.com/creationix/nvm/v${NVM_VERSION}/install.sh | bash"
@@ -173,7 +173,7 @@ install_node() {
     nvm install "v${NODE_VERSION}"
     nvm use "v${NODE_VERSION}"
 
-    set -u
+    set -eu
 
     println "Done!"
 }
