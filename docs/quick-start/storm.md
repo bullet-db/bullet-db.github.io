@@ -391,7 +391,7 @@ Finally, we configured the UI with the custom environment specific settings file
 {
   "default": {
     "queryHost": "http://localhost:9999",
-    "queryNamespace": "api/bullet",
+    "queryNamespace": "api/bullet/queries",
     "queryPath": "ws-query",
     "validationPath": "validate-query",
     "queryStompRequestChannel": "/server/request",
