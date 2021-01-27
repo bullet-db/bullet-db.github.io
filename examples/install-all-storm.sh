@@ -132,7 +132,8 @@ launch_bullet_web_service() {
     println "Launching Bullet Web Service with the built-in REST PubSub enabled..."
     cd "${BULLET_SERVICE_HOME}"
     java -jar ${BULLET_SERVICE_HOME}/bullet-service.jar \
-         --bullet.pubsub.config=${BULLET_SERVICE_HOME}/example_rest_pubsub_config.yaml  \
+         --bullet.pubsub.config=${BULLET_SERVICE_HOME}/example_rest_pubsub_config.yaml \
+         --bullet.query.config=${BULLET_SERVICE_HOME}/example_query_config.yaml \
          --bullet.schema.file=${BULLET_SERVICE_HOME}/example_columns.json \
          --server.port=9999  --bullet.pubsub.builtin.rest.enabled=true --logging.path="${BULLET_SERVICE_HOME}" \
          --logging.file=log.txt &> "${BULLET_SERVICE_HOME}/log.txt" &
@@ -141,13 +142,13 @@ launch_bullet_web_service() {
     sleep 15
 
     println "Testing the Web Service"
-    println ""
-    println "Getting one random record from Bullet through the Web Service..."
-    curl -s -H 'Content-Type: text/plain' -X POST -d '{"aggregation": {"size": 1}}' http://localhost:9999/api/bullet/sse-query
-    println ""
     println "Getting column schema from the Web Service..."
     println ""
     curl -s http://localhost:9999/api/bullet/columns
+    println ""
+    println "Getting one random record from Bullet through the Web Service..."
+    curl -s -H 'Content-Type: text/plain' -X POST -d '{"aggregation": {"size": 1}}' http://localhost:9999/api/bullet/queries/sse-query
+    println ""
     println "Finished Bullet Web Service test!"
 }
 
