@@ -24,7 +24,7 @@ If you wanted to write a smaller or shorter query to, for example, quickly test 
 
 !!! note "WINDOW?"
 
-    There is only one unified data stream in Bullet, so for clarity the ```FROM``` clause is given a ```STREAM``` function to denote the look-forward time window for the Bullet query. 
+    There is only one unified data stream in Bullet, so for clarity the ```FROM``` clause is given a ```STREAM``` function to denote the look-forward time window for the Bullet query.
 
 ### Simple Filtering
 
@@ -81,7 +81,7 @@ WHERE id = 'btsg8l9b234ha' AND page_id IS NOT NULL
 LIMIT 10;
 ```
 
-The above query finds all events where id is set to 'btsg8l9b234ha' and page_id is not null, projects the fields selected above with their aliases (timestamp as ts, etc.) and limits the results to at most 10 records. The query would wait at most 20 seconds for records to show up. 
+The above query finds all events where id is set to 'btsg8l9b234ha' and page_id is not null, projects the fields selected above with their aliases (timestamp as ts, etc.) and limits the results to at most 10 records. The query would wait at most 20 seconds for records to show up.
 
 The resulting response could look like (only 3 events were generated that matched the criteria):
 
@@ -123,7 +123,7 @@ The resulting response could look like (only 3 events were generated that matche
 
 For the following examples, we will simply show and explain the queries. They also use the extended syntax for specify values in a filter using the ```kind``` field.
 
-#### SIZEIS Filter
+#### SIZEOF Filter
 
 This query checks to see if the size of the ```data_map``` is equal to 4 and returns all records that satisfy this.
 
