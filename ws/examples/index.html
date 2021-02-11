@@ -391,7 +391,7 @@
                         <ul class="nav">
                         
                             <li class="third-level">
-                                <a href="#sizeis-filter">SIZEIS Filter</a>
+                                <a href="#sizeof-filter">SIZEOF Filter</a>
                                 
                             </li>
                         
@@ -520,7 +520,7 @@
 <p>If you wanted to write a smaller or shorter query to, for example, quickly test your connection to Bullet, you could adjust the query duration and size like shown above. This query would only last for a duration of 10000 ms and return at most 1 record.  </p>
 <div class="admonition note">
 <p class="admonition-title">WINDOW?</p>
-<p>There is only one unified data stream in Bullet, so for clarity the <code>FROM</code> clause is given a <code>STREAM</code> function to denote the look-forward time window for the Bullet query. </p>
+<p>There is only one unified data stream in Bullet, so for clarity the <code>FROM</code> clause is given a <code>STREAM</code> function to denote the look-forward time window for the Bullet query.</p>
 </div>
 <h3 id="simple-filtering">Simple Filtering</h3>
 <pre><code class="SQL">SELECT *
@@ -570,7 +570,7 @@ WHERE id = 'btsg8l9b234ha' AND page_id IS NOT NULL
 LIMIT 10;
 </code></pre>
 
-<p>The above query finds all events where id is set to 'btsg8l9b234ha' and page_id is not null, projects the fields selected above with their aliases (timestamp as ts, etc.) and limits the results to at most 10 records. The query would wait at most 20 seconds for records to show up. </p>
+<p>The above query finds all events where id is set to 'btsg8l9b234ha' and page_id is not null, projects the fields selected above with their aliases (timestamp as ts, etc.) and limits the results to at most 10 records. The query would wait at most 20 seconds for records to show up.</p>
 <p>The resulting response could look like (only 3 events were generated that matched the criteria):</p>
 <pre><code class="javascript">{
     &quot;records&quot;: [
@@ -607,7 +607,7 @@ LIMIT 10;
 
 <h3 id="relational-filters-using-the-extended-value-notation-for-static-values">Relational Filters using the extended value notation for static values</h3>
 <p>For the following examples, we will simply show and explain the queries. They also use the extended syntax for specify values in a filter using the <code>kind</code> field.</p>
-<h4 id="sizeis-filter">SIZEIS Filter</h4>
+<h4 id="sizeof-filter">SIZEOF Filter</h4>
 <p>This query checks to see if the size of the <code>data_map</code> is equal to 4 and returns all records that satisfy this.</p>
 <pre><code class="SQL">SELECT *
 FROM STREAM(30000, TIME)

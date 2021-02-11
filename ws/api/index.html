@@ -386,11 +386,6 @@
                         
                     </li>
             
-                    <li class="second-level">
-                        <a href="#reserved-keywords">Reserved Keywords</a>
-                        
-                    </li>
-            
             </ul>
         </li>
     
@@ -405,76 +400,99 @@
 <h2 id="overview">Overview</h2>
 <p>Bullet-BQL provides users with a friendly SQL-like API to submit queries to the Web Service.</p>
 <h2 id="statement-syntax">Statement Syntax</h2>
-<pre><code>SELECT DISTINCT? select_clause
-FROM from_clause
-( WHERE where_clause )?
-( GROUP BY groupBy_clause )?
-( HAVING having_clause )?
-( ORDER BY orderBy_clause )?
-( WINDOWING windowing_clause )?
-( LIMIT limit_clause )?;
+<pre><code>SELECT select
+FROM stream
+( WHERE expression )?
+( GROUP BY expression ( , expression )* )?
+( HAVING expression )?
+( ORDER BY orderBy )?
+( WINDOWING window )?
+( LIMIT Integer )?
+';'?
 </code></pre>
-<p>where <code>select_clause</code> is one of</p>
-<pre><code>*
-COUNT( DISTINCT reference_expr ( , reference_expr )? )
-group_function ( AS? ColumnReference )? ( , group_function ( AS? ColumnReference )? )? ( , reference_expr ( AS? ColumnReference )? )?
-reference_expr ( AS? ColumnReference )? ( , reference_expr ( AS? ColumnReference )? )?
-distribution_type( reference_expr, input_mode ) ( AS? ColumnReference )?
-TOP ( ( Integer | Long ) ( , Integer | Long ) )? , reference_expr ( , reference_expr )? ) ( AS? ColumnReference )?
+<p>where <code>select</code> is</p>
+<pre><code>DISTINCT? selectItem ( , selectItem )*
 </code></pre>
-<p><code>reference_expr</code> is one of <code>ColumnReference</code> or <code>Dereference</code>.</p>
-<p>and <code>group_function</code> is one of <code>SUM(reference_expr)</code>, <code>MIN(reference_expr)</code>, <code>MAX(reference_expr)</code>, <code>AVG(reference_expr)</code> and <code>COUNT(*)</code>. <code>reference_expr</code> is one of ColumnReference and Dereference. <code>distribution_type</code> is one of <code>QUANTILE</code>, <code>FREQ</code> and <code>CUMFREQ</code>. The 1st number in <code>TOP</code> is K, and the 2nd number is an optional threshold.  The <code>input_mode</code> is one of</p>
-<pre><code>LINEAR, ( Integer | Long )                                              evenly spaced
-REGION, ( Integer | Long ), ( Integer | Long ), ( Integer | Long )      evenly spaced in a region
-MANUAL, ( Integer | Long ) (, ( Integer | Long ) )*                     defined points
+<p>and <code>selectItem</code> is one of</p>
+<pre><code>expression ( AS? identifier )?
+*
 </code></pre>
-<p>and <code>from_clause</code> is one of</p>
-<pre><code>STREAM()                                                          default time duration will be set from BQLConfig
-STREAM( ( Long | MAX ), TIME )                                    time based duration control.
-STREAM( ( Long | MAX ), TIME, ( Long | MAX ), RECORD )            time and record based duration control.
+<p>and <code>expression</code> is one of</p>
+<pre><code>valueExpression                                                                         
+fieldExpression                                                                         
+listExpression                                                                          
+expression IS NULL                                                                      
+expression IS NOT NULL                                                                  
+unaryExpression                                                                         
+functionExpression                                                                      
+expression NOT? IN expression                                    
+expression RLIKE ANY? expression                                 
+expression ( * | / ) expression                                  
+expression ( + | - ) expression                                      
+expression ( &lt; | &lt;= | &gt; | &gt;= ) ( ANY | ALL )? expression         
+expression ( = | != ) ( ANY | ALL )? expression                    
+expression AND expression                                                 
+expression XOR expression                                                 
+expression OR expression                                                  
+( expression )
+</code></pre>
+<p>where <code>valueExpression</code> is one of Null, Boolean, Integer, Long, Float, Double, or String</p>
+<p>and <code>fieldExpression</code> is one of</p>
+<pre><code>identifier ( : fieldType )?
+identifier [ Integer ] ( : fieldType )?
+identifier [ Integer ] . identifier ( : fieldType )?
+identifier . identifier ( : fieldType )?
+identifier . identifier . identifier ( : fieldType )?
+</code></pre>
+<p><code>fieldType</code> is one of</p>
+<pre><code>primitiveType
+LIST [ primitiveType ]
+MAP [ primitiveType ]
+LIST [ MAP [ primitiveType ] ]
+MAP [ MAP [ primitiveType ] ]
+</code></pre>
+<p>and <code>primitiveType</code> is <code>INTEGER</code>, <code>LONG</code>, <code>FLOAT</code>, <code>DOUBLE</code>, <code>BOOLEAN</code>, or <code>STRING</code></p>
+<p>where <code>listExpression</code> is one of</p>
+<pre><code>[]
+[ expression ( , expression )* ]
+</code></pre>
+<p><code>unaryExpression</code> is</p>
+<pre><code>( NOT | SIZEOF ) ( expression )                                                 with optional parentheses
+</code></pre>
+<p><code>functionExpression</code> is one of</p>
+<pre><code>( SIZEIS | CONTAINSKEY | CONTAINSVALUE | FILTER ) ( expression, expression )      
+IF ( expression ( , expression )* )                                             three arguments                         
+aggregateExpression                               
+CAST ( expression AS primitiveType )
+</code></pre>
+<p>where <code>aggregateExpression</code> is one of</p>
+<pre><code>COUNT ( * )                                                    
+( SUM | AVG | MIN | MAX ) ( expression )                                
+COUNT ( DISTINCT expression ( , expression )* )                                           
+distributionType ( expression, inputMode )                            
+TOP ( Integer ( , Integer )?, expression ( , expression )* )
+</code></pre>
+<p>where <code>distributionType</code> is <code>QUANTILE</code>, <code>FREQ</code>, or <code>CUMFREQ</code></p>
+<p>and <code>inputMode</code> is one of</p>
+<pre><code>LINEAR, Integer                                                                 evenly spaced
+REGION, Number, Number, Number                                                  evenly spaced in a region
+MANUAL, Number ( , Number )*                                                    defined points
+</code></pre>
+<p>and <code>stream</code> is one of</p>
+<pre><code>STREAM()                                                                        default time duration will be set from BQLConfig
+STREAM( ( Integer | MAX ), TIME )                                               time based duration control
 </code></pre>
 <p><code>RECORD</code> will be supported in the future.</p>
-<p>and <code>where_clause</code> is one of</p>
-<pre><code>NOT where_clause
-where_clause AND where_clause
-where_clause OR where_clause
-reference_expr IS NOT? NULL
-reference_expr IS NOT? EMPTY
-reference_expr IS NOT? DISTINCT FROM value_expr
-reference_expr NOT? BETWEEN value_expr AND value_expr
-reference_expr NOT? IN ( value_expr ( , value_expr )* )
-reference_expr NOT? LIKE ( value_expr ( , value_expr )* )
-reference_expr NOT? CONTAINSKEY ( value_expr ( , value_expr )* )
-reference_expr NOT? CONTAINSVALUE ( value_expr ( , value_expr )* )
-reference_expr ( = | &lt;&gt; | != | &lt; | &gt; | &lt;= | &gt;= ) value_expr
-SIZEOF(reference_expr) ( = | &lt;&gt; | != ) value_expr
-SIZEOF(reference_expr) NOT? IN ( value_expr ( , value_expr )* )
-SIZEOF(reference_expr) NOT? DISTINCT FROM value_expr
+<p>and <code>orderBy</code> is</p>
+<pre><code>expression ( ASC | DESC )? ( , expression ( ASC | DESC )? )*
 </code></pre>
-<p><code>value_expr</code> is one of Null, Boolean, Integer, Long, Double, Decimal, String or <code>reference_expr</code>.</p>
-<p>and <code>groupBy_clause</code> is one of</p>
-<pre><code>()                                                                group all
-reference_expr ( , reference_expr )*                              group by
-( reference_expr ( , reference_expr )* )                          group by
-</code></pre>
-<p>and <code>HAVING</code> and <code>ORDER BY</code> are only supported for TopK. In which case, <code>having_clause</code> is</p>
-<pre><code>COUNT(*) &gt;= Integer
-</code></pre>
-<p>and <code>orderBy_clause</code> is</p>
-<pre><code>COUNT(*)
-</code></pre>
-<p>and <code>windowing_clause</code> is one of</p>
-<pre><code>( EVERY, ( Integer | Long ), ( TIME | RECORD ), include )
-( TUMBLING, ( Integer | Long ), ( TIME | RECORD ) )
+<p>and <code>window</code> is one of</p>
+<pre><code>EVERY ( Integer, ( TIME | RECORD ), include )
+TUMBLING ( Integer, ( TIME | RECORD ) )
 </code></pre>
 <p><code>include</code> is one of</p>
 <pre><code>ALL
-FIRST, ( Integer | Long ), ( TIME | RECORD )
-LAST, ( Integer | Long ), ( TIME | RECORD )                       will be supported
-</code></pre>
-<p>and <code>limit_clause</code> is one of</p>
-<pre><code>Integer | Long
-ALL                                                               will be supported
+FIRST, Integer, ( TIME | RECORD )
 </code></pre>
 <h2 id="data-types">Data Types</h2>
 <ul>
@@ -491,378 +509,21 @@ ALL                                                               will be suppor
 <p><strong>Long</strong>: 64-bit signed two’s complement integer with a minimum value of <code>-2^63 + 1</code> and a maximum value of <code>2^63 - 1</code>. Example: <code>9223372036854775807</code>, <code>-9223372036854775807</code>.</p>
 </li>
 <li>
-<p><strong>Double</strong>: 64-bit inexact, variable-precision with a minimum value of <code>2^-1074</code> and a maximum value of <code>(2-2^-52)·2^1023</code>. Example: <code>1.7976931348623157E+308</code>, <code>.17976931348623157E+309</code>, <code>4.9E-324</code>.</p>
+<p><strong>Float</strong>: 32-bit inexact, variable-precision with a minimum value of <code>2^-149</code> and a maximum value of <code>(2-2^-23)·2^127</code>. Example: <code>1.70141183E+38</code>, <code>1.17549435E-38</code>, <code>0.15625</code>.</p>
 </li>
 <li>
-<p><strong>Decimal</strong>: decimal number can be treated as Double, String or ParsingException. This is controlled by <code>ParsingOptions</code>. <code>1.7976931348623157</code>, <code>.17976931348623157</code>.</p>
+<p><strong>Double</strong>: 64-bit inexact, variable-precision with a minimum value of <code>2^-1074</code> and a maximum value of <code>(2-2^-52)·2^1023</code>. Example: <code>1.7976931348623157E+308</code>, <code>.17976931348623157E+309</code>, <code>4.9E-324</code>.</p>
 </li>
 <li>
 <p><strong>String</strong>: character string which can have escapes. Example: <code>'this is a string'</code>, <code>'this is ''another'' string'</code>.</p>
 </li>
 <li>
-<p><strong>ColumnReference</strong>: representation of a column field. Unquoted ColumnReference must start with a letter or <code>_</code>. Example: <code>column_name</code> or <code>column_name.foo</code>  or <code>column_name.foo.bar</code> or <code>column_name.0.bar</code>.</p>
+<p><strong>Identifier</strong>: representation of a field. Unquoted identifier must start with a letter or <code>_</code>. Example: <code>column_name</code>, <code>column_name.foo</code>, <code>column_name.foo.bar</code>, <code>column_name[0].bar</code>, or <code>"123column"</code>.</p>
 </li>
 <li>
-<p><strong>All</strong>: representation of all columns. Example: <code>*</code>. <code>column_name.*</code> is interpreted as <code>column_name</code>.</p>
+<p><strong>All</strong>: representation of all fields. Example: <code>*</code>.</p>
 </li>
-</ul>
-<h2 id="reserved-keywords">Reserved Keywords</h2>
-<table>
-<thead>
-<tr>
-<th>Keyword</th>
-<th align="center">SQL:2016</th>
-<th align="center">SQL-92</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>ALTER</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>AND</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>AS</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>BETWEEN</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>BY</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>CASE</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>CAST</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>CONSTRAINT</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>CREATE</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>CROSS</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>CUBE</code></td>
-<td align="center">reserved</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td><code>CURRENT_DATE</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>CURRENT_TIME</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>CURRENT_TIMESTAMP</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>CURRENT_USER</code></td>
-<td align="center">reserved</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td><code>DEALLOCATE</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>DELETE</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>DESCRIBE</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>DISTINCT</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>DROP</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>ELSE</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>END</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>ESCAPE</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>EXCEPT</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>EXECUTE</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>EXISTS</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>EXTRACT</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>FALSE</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>FOR</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>FROM</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>FULL</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>GROUP</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>GROUPING</code></td>
-<td align="center">reserved</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td><code>HAVING</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>IN</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>INNER</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>INSERT</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>INTERSECT</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>INTO</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>IS</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>JOIN</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>LEFT</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>LIKE</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>LOCALTIME</code></td>
-<td align="center">reserved</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td><code>LOCALTIMESTAMP</code></td>
-<td align="center">reserved</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td><code>NATURAL</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>NORMALIZE</code></td>
-<td align="center">reserved</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td><code>NOT</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>NULL</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>ON</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>OR</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>ORDER</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>OUTER</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>PREPARE</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>RECURSIVE</code></td>
-<td align="center">reserved</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td><code>RIGHT</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>ROLLUP</code></td>
-<td align="center">reserved</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td><code>SELECT</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>TABLE</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>THEN</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>TRUE</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>UESCAPE</code></td>
-<td align="center">reserved</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td><code>UNION</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>UNNEST</code></td>
-<td align="center">reserved</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td><code>USING</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>VALUES</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>WHEN</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>WHERE</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-<tr>
-<td><code>WITH</code></td>
-<td align="center">reserved</td>
-<td align="center">reserved</td>
-</tr>
-</tbody>
-</table></div>
+</ul></div>
         
     </div>
 

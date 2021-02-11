@@ -565,7 +565,7 @@ express-server.js
 <td>durationMaxSecs</td>
 <td>Yes</td>
 <td>Yes</td>
-<td>The maximum duration for a query. Set this to the seconds version of milliseconds max duration in your backend configuration</td>
+<td>The maximum duration for a query. Set this to the seconds version of the milliseconds max duration in your backend configuration</td>
 </tr>
 <tr>
 <td>distributionNumberOfPoints</td>
@@ -601,7 +601,7 @@ express-server.js
 <td>windowEmitFrequencyMinSecs</td>
 <td>Yes</td>
 <td>No</td>
-<td>The minimum time interval at which a time based window can be returned. Set this to the minimum window emit frequency from your backend configuration</td>
+<td>The minimum time interval at which a time based window can be returned in seconds. Set this to the minimum window emit frequency from your backend configuration</td>
 </tr>
 <tr>
 <td>everyForRecordBasedWindow</td>
@@ -613,7 +613,7 @@ express-server.js
 <td>everyForTimeBasedWindow</td>
 <td>No</td>
 <td>No</td>
-<td>The default value for the number of records in a window for a time based window</td>
+<td>The default value for the number of records in a window for a time based window in milliseconds</td>
 </tr>
 <tr>
 <td>sketches.countDistinctMaxEntries</td>
@@ -743,7 +743,7 @@ that are the same as the <a href="https://github.com/bullet-db/bullet-storm/blob
 <pre><code class="json">{
   &quot;default&quot;: {
     &quot;queryHost&quot;: &quot;http://localhost:5555&quot;,
-    &quot;queryNamespace&quot;: &quot;api/bullet&quot;,
+    &quot;queryNamespace&quot;: &quot;api/bullet/queries&quot;,
     &quot;queryPath&quot;: &quot;ws-query&quot;,
     &quot;validationPath&quot;: &quot;validate-query&quot;,
     &quot;queryStompRequestChannel&quot;: &quot;/server/request&quot;,
