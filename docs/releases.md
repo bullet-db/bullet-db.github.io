@@ -242,6 +242,7 @@ A DSL to plug data sources into the Bullet Backend and Web Service.
 
 |    Date      |                                  Release                                                 | Highlights | APIDocs |
 | ------------ | ---------------------------------------------------------------------------------------- | ---------- | ------- |
+| 2021-02-11   | [**1.0.1**](https://github.com/bullet-db/bullet-dsl/releases/tag/bullet-dsl-1.0.1) | Bullet Core 1.2, Unsets default connector/converter | [JavaDocs](apidocs/bullet-dsl/1.0.1/index.html) |
 | 2020-10-30   | [**1.0.0**](https://github.com/bullet-db/bullet-dsl/releases/tag/bullet-dsl-1.0.0) | Bullet Core 1.1, Types to match Bullet Record 1.1 | [JavaDocs](apidocs/bullet-dsl/1.0.0/index.html) |
 | 2019-02-07   | [**0.1.1**](https://github.com/bullet-db/bullet-dsl/releases/tag/bullet-dsl-0.1.1) | Interface consolidation, IdentityDeserializer | [JavaDocs](apidocs/bullet-dsl/0.1.1/index.html) |
 | 2019-02-05   | [**0.1.0**](https://github.com/bullet-db/bullet-dsl/releases/tag/bullet-dsl-0.1.0) | Bullet DSL, Fat jar, Interface refactors | [JavaDocs](apidocs/bullet-dsl/0.1.0/index.html) |

@@ -11,7 +11,7 @@
         <scala.dep.version>2.11</scala.dep.version>
         <spark.version>2.3.0</spark.version>
         <bullet.spark.version>1.0.0</bullet.spark.version>
-        <bullet.record.version>1.0.0</bullet.record.version>
+        <bullet.record.version>1.1.0</bullet.record.version>
     </properties>
 
     <repositories>
