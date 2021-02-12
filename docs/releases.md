@@ -126,7 +126,7 @@ The implementation of Bullet on Spark Streaming.
 
 |    Date      |                                      Release                                      | Highlights | APIDocs |
 | ------------ | --------------------------------------------------------------------------------- | ---------- | ------- |
-|              | [**1.0.0**](https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-1.0.0)  | Bullet Core 1.2, DSL, Storage (Not released yet) | [SparkDocs](apidocs/bullet-spark/1.0.0/index.html) |
+| 2021-02-12   | [**1.0.0**](https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-1.0.0)  | Bullet Core 1.2, DSL | [SparkDocs](apidocs/bullet-spark/1.0.0/index.html) |
 | 2019-02-07   | [**0.2.2**](https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-0.2.2)  | Fixes a NPE in JoinStreaming for very short queries | [SparkDocs](apidocs/bullet-spark/0.2.2/index.html) |
 | 2018-11-26   | [**0.2.1**](https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-0.2.1)  | Uses bullet-core 0.6.4 and supports extended field notation in queries | [SparkDocs](apidocs/bullet-spark/0.2.1/index.html) |
 | 2018-11-16   | [**0.2.0**](https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-0.2.0)  | Uses bullet-core 0.6.1 and adds partitioning support | [SparkDocs](apidocs/bullet-spark/0.2.0/index.html) |
