@@ -12,7 +12,7 @@ Download the Bullet Spark standalone jar from [JCenter](http://jcenter.bintray.c
 
 If you are using Bullet Kafka as pluggable PubSub, you can download the fat jar from [JCenter](http://jcenter.bintray.com/com/yahoo/bullet/bullet-kafka/). Otherwise, you need to plug in your own PubSub jar or use the RESTPubSub built-into bullet-core and turned on in the API.
 
-To use Bullet Spark, you need to implement your own [Data Producer Trait](https://github.com/bullet-db/bullet-spark/blob/master/src/main/scala/com/yahoo/bullet/spark/DataProducer.scala) with a JVM based project. You have two ways to implement it as described in the [Spark Architecture](spark-architecture.md#data-processing) section. You include the Bullet artifact and Spark dependencies in your pom.xml or other equivalent build tools. The artifacts are available through JCenter. Here is an example if you use Scala and Maven:
+To use Bullet Spark, you need to implement your own [Data Producer Trait](https://github.com/bullet-db/bullet-spark/blob/master/src/main/scala/com/yahoo/bullet/spark/DataProducer.scala) with a JVM based project or you can use Bullet DSL (see below). If you choose to implement your own, you have two ways as described in the [Spark Architecture](spark-architecture.md#data-processing) section. You include the Bullet artifact and Spark dependencies in your pom.xml or other equivalent build tools. The artifacts are available through JCenter. Here is an example if you use Scala and Maven:
 
 ```xml
 <repositories>
@@ -65,9 +65,26 @@ To use Bullet Spark, you need to implement your own [Data Producer Trait](https:
 
 You can also add ```<classifier>sources</classifier>``` or ```<classifier>javadoc</classifier>``` if you want the sources or javadoc.
 
+### Using Bullet DSL
+
+Instead of implementing your own Data Producer, you can also use the provided DSL receiver with [Bullet DSL](dsl.md). To do so, add the following settings to your YAML configuration:
+
+```yaml
+# If true, enables the Bullet DSL data producer which can be configured to read from a custom data source. If enabled,
+# the DSL data producer is used instead of the producer.
+bullet.spark.dsl.data.producer.enable: true
+
+# If true, enables the deserializer between the Bullet DSL connector and converter components. Otherwise, this step is skipped.
+bullet.spark.dsl.deserializer.enable: false
+```
+
+You may then use the appropriate DSL settings to point to the class names of the Connector and Converter you wish to use to read from your data source and convert it to BulletRecord instances.
+
+There is also a setting to enable [BulletDeserializer](dsl.md#bulletdeserializer), which is an optional component of Bullet DSL for deserializing data between reading and converting.  
+
 ## Launch
 
-After you have implemented your own data producer and built a jar, you could launch your Bullet Spark application. Here is an example command for a [YARN cluster](https://hadoop.apache.org/docs/current/hadoop-yarn/hadoop-yarn-site/YARN.html).
+After you have implemented your own data producer or used Bullet DSL and built a jar, you could launch your Bullet Spark application. Here is an example command for a [YARN cluster](https://hadoop.apache.org/docs/current/hadoop-yarn/hadoop-yarn-site/YARN.html).
 
 ```bash
 ./bin/spark-submit \

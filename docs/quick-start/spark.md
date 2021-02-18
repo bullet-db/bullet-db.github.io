@@ -37,7 +37,7 @@ mkdir -p $BULLET_HOME/pubsub
 mkdir -p $BULLET_HOME/service
 mkdir -p $BULLET_HOME/ui
 cd $BULLET_HOME
-curl -LO https://github.com/bullet-db/bullet-db.github.io/releases/download/v0.6.1/examples_artifacts.tar.gz
+curl -LO https://github.com/bullet-db/bullet-db.github.io/releases/download/v1.0.0/examples_artifacts.tar.gz
 tar -xzf examples_artifacts.tar.gz
 export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 ```
@@ -50,10 +50,10 @@ For this instance of Bullet we will use the Kafka PubSub implementation found in
 
 ```bash
 cd $BULLET_HOME/pubsub
-curl -Lo bullet-kafka.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-kafka/0.3.2/bullet-kafka-0.3.2-fat.jar
-curl -LO https://archive.apache.org/dist/kafka/0.11.0.1/kafka_2.12-0.11.0.1.tgz
-tar -xzf kafka_2.12-0.11.0.1.tgz
-export KAFKA_DIR=$BULLET_HOME/pubsub/kafka_2.12-0.11.0.1
+curl -Lo bullet-kafka.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-kafka/1.0.0/bullet-kafka-1.0.0-fat.jar
+curl -LO https://archive.apache.org/dist/kafka/2.3.1/kafka_2.12-2.3.1.tgz
+tar -xzf kafka_2.12-2.3.1.tgz
+export KAFKA_DIR=$BULLET_HOME/pubsub/kafka_2.12-2.3.1
 ```
 
 #### Step 3: Start Zookeeper
@@ -81,15 +81,15 @@ $KAFKA_DIR/bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication
 
 ### Setup Bullet Backend on Spark
 
-We will run the bullet-spark backend using [Spark 2.2.1](https://spark.apache.org/releases/spark-release-2-2-1.html).
+We will run the bullet-spark backend using [Spark 3.0.1](https://spark.apache.org/releases/spark-release-3-0-1.html).
 
-#### Step 6: Install Spark 2.2.1
+#### Step 6: Install Spark 3.0.1
 
 ```bash
 export BULLET_SPARK=$BULLET_HOME/backend/spark
 cd $BULLET_SPARK
-curl -O https://archive.apache.org/dist/spark/spark-2.2.1/spark-2.2.1-bin-hadoop2.7.tgz
-tar -xzf spark-2.2.1-bin-hadoop2.7.tgz
+curl -O https://archive.apache.org/dist/spark/spark-3.0.1/spark-3.0.1-bin-hadoop2.7.tgz
+tar -xzf spark-3.0.1-bin-hadoop2.7.tgz
 ```
 
 #### Step 7: Setup Bullet-Spark and Example Data Producer
@@ -104,7 +104,7 @@ curl -Lo bullet-spark.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-spa
 Run this multi-line command (new lines are escaped):
 
 ```bash
-$BULLET_SPARK/spark-2.2.1-bin-hadoop2.7/bin/spark-submit \
+$BULLET_SPARK/spark-3.0.1-bin-hadoop2.7/bin/spark-submit \
     --master local[10]  \
     --class com.yahoo.bullet.spark.BulletSparkStreamingMain \
     --jars $BULLET_HOME/pubsub/bullet-kafka.jar,$BULLET_SPARK/bullet-spark-example.jar \
@@ -121,8 +121,9 @@ The Backend will usually be up and running usually within 5-10 seconds. Once it 
 
 ```bash
 cd $BULLET_HOME/service
-curl -Lo bullet-service.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/0.4.3/bullet-service-0.4.3-embedded.jar
+curl -Lo bullet-service.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/1.0.0/bullet-service-1.0.0-embedded.jar
 cp $BULLET_EXAMPLES/web-service/example_kafka_pubsub_config.yaml $BULLET_HOME/service/
+cp $BULLET_EXAMPLES/web-service/example_query_config.yaml $BULLET_HOME/service/
 cp $BULLET_EXAMPLES/web-service/example_columns.json $BULLET_HOME/service/
 ```
 
@@ -133,6 +134,7 @@ Run this multi-line command (new lines are escaped):
 ```bash
 java -Dloader.path=$BULLET_HOME/pubsub/bullet-kafka.jar -jar bullet-service.jar \
     --bullet.pubsub.config=$BULLET_HOME/service/example_kafka_pubsub_config.yaml \
+    --bullet.query.config=${BULLET_HOME}/service/example_query_config.yaml \
     --bullet.schema.file=$BULLET_HOME/service/example_columns.json \
     --server.port=9999  \
     --logging.path=. \
@@ -148,7 +150,7 @@ curl -s http://localhost:9999/api/bullet/columns
 ```
 
 ```bash
-curl -s -H 'Content-Type: text/plain' -X POST -d '{"aggregation": {"size": 1}}' http://localhost:9999/api/bullet/sse-query
+curl -s -H 'Content-Type: text/plain' -X POST -d 'SELECT * FROM STREAM(2000, TIME) LIMIT 1;' http://localhost:9999/api/bullet/queries/sse-query
 ```
 
 This query will return a result JSON containing a "records" field containing a single record, and a "meta" field with some meta information.
@@ -165,17 +167,17 @@ You can also check the status of the Web Service by looking at the Web Service l
 
 ```bash
 cd $BULLET_HOME/ui
-curl -s https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
+curl -s https://raw.githubusercontent.com/creationix/nvm/v0.37.2/install.sh | bash
 source ~/.bashrc
-nvm install v6.9.4
-nvm use v6.9.4
+nvm install v10.20.1
+nvm use v10.20.1
 ```
 
 #### Step 13: Install the Bullet UI
 
 ```bash
-curl -LO https://github.com/bullet-db/bullet-ui/releases/download/v0.6.2/bullet-ui-v0.6.2.tar.gz
-tar -xzf bullet-ui-v0.6.2.tar.gz
+curl -LO https://github.com/bullet-db/bullet-ui/releases/download/v1.0.0/bullet-ui-v1.0.0.tar.gz
+tar -xzf bullet-ui-v1.0.0.tar.gz
 cp $BULLET_EXAMPLES/ui/env-settings.json config/
 ```
 
@@ -227,7 +229,7 @@ This section will go over the various custom pieces this example plugged into Bu
 The Spark Streaming application we ran was Bullet plugged in with a custom Receiver in our implementation of the Bullet Spark DataProducer trait. This Receiver and DataProducer are implemented in this [example project](https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/spark/) and was already built for you when you [downloaded the examples](#step-1-setup-directories-and-examples). It does not read from any data source and just produces random, structured data. It also produces only up to a maximum number of records in a given period. Both this maximum and the length of a period are configured in the Receiver (at most 100 every 1 second).
 
 ```bash
-$BULLET_SPARK/spark-2.2.1-bin-hadoop2.7/bin/spark-submit \
+$BULLET_SPARK/spark-3.0.1-bin-hadoop2.7/bin/spark-submit \
     --master local[10]  \
     --class com.yahoo.bullet.spark.BulletSparkStreamingMain \
     --jars $BULLET_HOME/pubsub/bullet-kafka.jar,$BULLET_SPARK/bullet-spark-example.jar \
@@ -248,74 +250,74 @@ The settings defined by ```--bullet-spark-conf=$BULLET_SPARK/bullet_spark_kafka_
 Let's look at the [custom Receiver code](https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/spark/src/main/scala/com/yahoo/bullet/spark/examples/receiver/RandomReceiver.scala) that generates the data.
 
 ```scala
-  private def receive(): Unit = {
-    nextIntervalStart = System.currentTimeMillis()
-    while (!isStopped) {
-      val timeNow = System.currentTimeMillis()
-      // Only emit if we are still in the interval and haven't gone over our per period max
-      if (timeNow <= nextIntervalStart && generatedThisPeriod < maxPerPeriod) {
-        store(generateRecord())
-        generatedThisPeriod += 1
-      }
-      if (timeNow > nextIntervalStart) {
-        logger.info("Generated {} tuples out of {}", generatedThisPeriod, maxPerPeriod)
-        nextIntervalStart = timeNow + period
-        generatedThisPeriod = 0
-        periodCount += 1
-      }
-      // It is courteous to sleep for a short time.
-      try {
-        Thread.sleep(1)
-      } catch {
-        case e: InterruptedException => logger.error("Error: ", e)
+    private def receive(): Unit = {
+      nextIntervalStart = System.currentTimeMillis()
+      while (!isStopped) {
+        val timeNow = System.currentTimeMillis()
+        // Only emit if we are still in the interval and haven't gone over our per period max
+        if (timeNow <= nextIntervalStart && generatedThisPeriod < maxPerPeriod) {
+          store(generateRecord())
+          generatedThisPeriod += 1
+        }
+        if (timeNow > nextIntervalStart) {
+          logger.info("Generated {} tuples out of {}", generatedThisPeriod, maxPerPeriod)
+          nextIntervalStart = timeNow + period
+          generatedThisPeriod = 0
+          periodCount += 1
+        }
+        // It is courteous to sleep for a short time.
+        try {
+          Thread.sleep(1)
+        } catch {
+          case e: InterruptedException => logger.error("Error: ", e)
+        }
       }
     }
-  }
 ```
 
 This method above emits the data. This method is wrapped in a thread that is called by the Spark framework. This function only emits at most the given maximum tuples per period.
 
 ```scala
-  private def makeRandomMap: Map[java.lang.String, java.lang.String] = {
-    val randomMap = new HashMap[java.lang.String, java.lang.String](2)
-    randomMap.put(RandomReceiver.RANDOM_MAP_KEY_A, RandomReceiver.STRING_POOL(Random.nextInt(RandomReceiver.STRING_POOL.length)))
-    randomMap.put(RandomReceiver.RANDOM_MAP_KEY_B, RandomReceiver.STRING_POOL(Random.nextInt(RandomReceiver.STRING_POOL.length)))
-    randomMap
-  }
+    private def makeRandomMap: Map[java.lang.String, java.lang.String] = {
+      val randomMap = new HashMap[java.lang.String, java.lang.String](2)
+      randomMap.put(RandomReceiver.RANDOM_MAP_KEY_A, RandomReceiver.STRING_POOL(Random.nextInt(RandomReceiver.STRING_POOL.length)))
+      randomMap.put(RandomReceiver.RANDOM_MAP_KEY_B, RandomReceiver.STRING_POOL(Random.nextInt(RandomReceiver.STRING_POOL.length)))
+      randomMap
+    }
 
-  private def generateRecord(): BulletRecord = {
-    val record = new SimpleBulletRecord()
-    val uuid = UUID.randomUUID().toString
-    record.setString(RandomReceiver.STRING, uuid)
-    record.setLong(RandomReceiver.LONG, generatedThisPeriod)
-    record.setDouble(RandomReceiver.DOUBLE, Random.nextDouble())
-    record.setDouble(RandomReceiver.GAUSSIAN, Random.nextGaussian())
-    record.setString(RandomReceiver.TYPE, RandomReceiver.STRING_POOL(Random.nextInt(RandomReceiver.STRING_POOL.length)))
-    record.setLong(RandomReceiver.DURATION, System.nanoTime() % RandomReceiver.INTEGER_POOL(Random.nextInt(RandomReceiver.INTEGER_POOL.length)))
+    private def generateRecord(): BulletRecord[_ <: java.io.Serializable] = {
+      val record = new TypedSimpleBulletRecord()
+      val uuid = UUID.randomUUID().toString
+      record.setString(RandomReceiver.STRING, uuid)
+      record.setLong(RandomReceiver.LONG, generatedThisPeriod)
+      record.setDouble(RandomReceiver.DOUBLE, Random.nextDouble())
+      record.setDouble(RandomReceiver.GAUSSIAN, Random.nextGaussian())
+      record.setString(RandomReceiver.TYPE, RandomReceiver.STRING_POOL(Random.nextInt(RandomReceiver.STRING_POOL.length)))
+      record.setLong(RandomReceiver.DURATION, System.nanoTime() % RandomReceiver.INTEGER_POOL(Random.nextInt(RandomReceiver.INTEGER_POOL.length)))
 
-    // Don't use Scala Map and convert it by asJava when calling setxxxMap method in BulletRecord.
-    // It converts Scala Map to scala.collection.convert.Wrappers$MapWrapper which is not serializable in scala 2.11.x (https://issues.scala-lang.org/browse/SI-8911).
+      // Don't use Scala Map and convert it by asJava when calling setxxxMap method in BulletRecord.
+      // It converts Scala Map to scala.collection.convert.Wrappers$MapWrapper which is not serializable in scala 2.11.x (https://issues.scala-lang.org/browse/SI-8911).
 
-    record.setStringMap(RandomReceiver.SUBTYPES_MAP, makeRandomMap);
+      record.setStringMap(RandomReceiver.SUBTYPES_MAP, makeRandomMap);
 
-    val booleanMap = new HashMap[java.lang.String, java.lang.Boolean](4)
-    booleanMap.put(uuid.substring(0, 8), Random.nextBoolean())
-    booleanMap.put(uuid.substring(9, 13), Random.nextBoolean())
-    booleanMap.put(uuid.substring(14, 18), Random.nextBoolean())
-    booleanMap.put(uuid.substring(19, 23), Random.nextBoolean())
-    record.setBooleanMap(RandomReceiver.BOOLEAN_MAP, booleanMap)
+      val booleanMap = new HashMap[java.lang.String, java.lang.Boolean](4)
+      booleanMap.put(uuid.substring(0, 8), Random.nextBoolean())
+      booleanMap.put(uuid.substring(9, 13), Random.nextBoolean())
+      booleanMap.put(uuid.substring(14, 18), Random.nextBoolean())
+      booleanMap.put(uuid.substring(19, 23), Random.nextBoolean())
+      record.setBooleanMap(RandomReceiver.BOOLEAN_MAP, booleanMap)
 
 
-    val statsMap = new HashMap[java.lang.String, java.lang.Long](4)
-    statsMap.put(RandomReceiver.PERIOD_COUNT, periodCount)
-    statsMap.put(RandomReceiver.RECORD_NUMBER, periodCount * maxPerPeriod + generatedThisPeriod)
-    statsMap.put(RandomReceiver.NANO_TIME, System.nanoTime())
-    statsMap.put(RandomReceiver.TIMESTAMP, System.nanoTime())
-    record.setLongMap(RandomReceiver.STATS_MAP, statsMap)
+      val statsMap = new HashMap[java.lang.String, java.lang.Long](4)
+      statsMap.put(RandomReceiver.PERIOD_COUNT, periodCount)
+      statsMap.put(RandomReceiver.RECORD_NUMBER, periodCount * maxPerPeriod + generatedThisPeriod)
+      statsMap.put(RandomReceiver.NANO_TIME, System.nanoTime())
+      statsMap.put(RandomReceiver.TIMESTAMP, System.nanoTime())
+      record.setLongMap(RandomReceiver.STATS_MAP, statsMap)
 
-    record.setListOfStringMap(RandomReceiver.LIST, asList(makeRandomMap, makeRandomMap))
-    record
-  }
+      record.setListOfStringMap(RandomReceiver.LIST, asList(makeRandomMap, makeRandomMap))
+      record
+    }
 ```
 
 This ```generateRecord``` method generates some fields randomly and inserts them into a BulletRecord (simple). Note that the BulletRecord is typed and all data must be inserted with the proper types.
@@ -342,7 +344,7 @@ class RandomProducer extends DataProducer {
 }
 ```
 
-If you put Bullet on your data, you will need to write a DataProducer (or a full on Spark DAG if your reading is complex), that reads from your data source and emits a DStream of BulletRecords with the fields you wish to be query-able similar to this example.
+If you put Bullet on your data, you will need to write a DataProducer (or a full on Spark DAG if your reading is complex), that reads from your data source and emits a DStream of BulletRecords with the fields you wish to be query-able similar to this example, or you can use [Bullet DSL to configure and plug in](../backend/spark-setup.md#using-bullet-dsl) a DSL based receiver that uses the Bullet DSL's Connector -> Serializer -> Converter system to read and convert your dataset without having to write code!
 
 ### PubSub
 
@@ -410,8 +412,9 @@ Finally, we configured the UI with the custom environment specific settings file
 {
   "default": {
     "queryHost": "http://localhost:9999",
-    "queryNamespace": "api/bullet",
+    "queryNamespace": "api/bullet/queries",
     "queryPath": "ws-query",
+    "validationPath": "validate-query",
     "queryStompRequestChannel": "/server/request",
     "queryStompResponseChannel": "/client/response",
     "schemaHost": "http://localhost:9999",
@@ -423,14 +426,14 @@ Finally, we configured the UI with the custom environment specific settings file
       }
     ],
     "bugLink": "https://github.com/bullet-db/bullet-ui/issues",
-    "modelVersion": 3,
+    "modelVersion": 4,
     "migrations": {
       "deletions": "query"
     },
     "defaultValues": {
       "aggregationMaxSize": 1024,
       "rawMaxSize": 500,
-      "durationMaxSecs": 86400,
+      "durationMaxSecs": 9007199254740,
       "distributionNumberOfPoints": 11,
       "distributionQuantilePoints": "0, 0.25, 0.5, 0.75, 0.9, 1",
       "distributionQuantileStart": 0,
@@ -438,7 +441,7 @@ Finally, we configured the UI with the custom environment specific settings file
       "distributionQuantileIncrement": 0.1,
       "windowEmitFrequencyMinSecs": 1,
       "everyForRecordBasedWindow": 1,
-      "everyForTimeBasedWindow": 2,
+      "everyForTimeBasedWindow": 2000,
       "sketches": {
         "countDistinctMaxEntries": 16384,
         "groupByMaxEntries": 512,

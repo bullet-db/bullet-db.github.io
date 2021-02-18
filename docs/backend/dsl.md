@@ -14,10 +14,6 @@ The four interfaces that the DSL uses are:
 3. The **BulletRecordConverter** : Bullet DSL's converting component
 4. The **Bullet Backend** : The implementation of Bullet on a Stream Processor
 
-!!!note
-
-    For the Backend, please refer to the DSL-specific Bullet Storm setup [here](storm-setup.md#using-bullet-dsl). (Currently, only Bullet Storm supports Bullet DSL.)
-
 ## BulletConnector
 
 BulletConnector is an abstract Java class that can be implemented to read data from different pluggable data sources. As with all our components, we provide and maintain implementations while providing an interface to add new ones. Currently, we support two BulletConnector implementations:
