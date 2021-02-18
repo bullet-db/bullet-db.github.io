@@ -403,6 +403,11 @@
                             </li>
                         
                             <li class="third-level">
+                                <a href="#jsonbulletrecordconverter">JSONBulletRecordConverter</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
                                 <a href="#avrobulletrecordconverter">AvroBulletRecordConverter</a>
                                 
                             </li>
@@ -451,10 +456,6 @@ By enabling Bullet DSL in the Backend and configuring Bullet DSL, your backend w
 <li>The <strong>BulletRecordConverter</strong> : Bullet DSL's converting component</li>
 <li>The <strong>Bullet Backend</strong> : The implementation of Bullet on a Stream Processor</li>
 </ol>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>For the Backend, please refer to the DSL-specific Bullet Storm setup <a href="../storm-setup/#using-bullet-dsl">here</a>. (Currently, only Bullet Storm supports Bullet DSL.)</p>
-</div>
 <h2 id="bulletconnector">BulletConnector</h2>
 <p>BulletConnector is an abstract Java class that can be implemented to read data from different pluggable data sources. As with all our components, we provide and maintain implementations while providing an interface to add new ones. Currently, we support two BulletConnector implementations:</p>
 <ol>
@@ -550,6 +551,8 @@ interface <a href="https://github.com/bullet-db/bullet-dsl/blob/master/src/main/
 
 <h3 id="mapbulletrecordconverter">MapBulletRecordConverter</h3>
 <p>The MapBulletRecordConverter is used to convert Java Maps of Objects into BulletRecords. Without a schema, it simply inserts every entry in the Map into a BulletRecord without any type-checking. If the Map contains objects that are not types supported by the BulletRecord, you might have issues when serializing the record.</p>
+<h3 id="jsonbulletrecordconverter">JSONBulletRecordConverter</h3>
+<p>The JSONBulletRecordConverter is used to convert String JSON representations of records into BulletRecords. Without a schema, it simply inserts every entry in the JSON object into a BulletRecord without any type-checking. Without a schema, it only uses the Double type for all numeric values (since it is unable to guess whether records might need a wider type). You should use a schema and mention the appropriate types if you want more specific types for the fields in your record. If the JSON contains objects that are not types supported by the BulletRecord, you might have issues when serializing the record.</p>
 <h3 id="avrobulletrecordconverter">AvroBulletRecordConverter</h3>
 <p>The AvroBulletRecordConverter is used to convert Avro records into BulletRecords. Without a schema, it inserts every field into a BulletRecord without any type-checking. With a schema, you get type-checking, and you can also specify a RECORD field, and the converter will accept Avro Records in addition to Maps, flattening them into the BulletRecord.</p>
 <h3 id="schema">Schema</h3>
