@@ -134,7 +134,7 @@ The MapBulletRecordConverter is used to convert Java Maps of Objects into Bullet
 
 ### JSONBulletRecordConverter
 
-The JSONBulletRecordConverter is used to convert String JSON representations of records into BulletRecords. Without a schema, it simply inserts every entry in the JSON object into a BulletRecord without any type-checking. Without a schema, it only uses the Double type for all numeric values (since it is unable to guess whether records might need a wider type). You should use a schema and mention the appropriate types if you want more specific types for the fields in your record. If the JSON contains objects that are not types supported by the BulletRecord, you might have issues when serializing the record.
+The JSONBulletRecordConverter is used to convert String JSON representations of records into BulletRecords. Without a schema, it simply inserts every entry in the JSON object into a BulletRecord without any type-checking and it only uses the Double type for all numeric values (since it is unable to guess whether records might need a wider type). You should use a schema and mention the appropriate types if you want more specific numeric types for the fields in your record. If the JSON contains objects that are not types supported by the BulletRecord, you might have issues when serializing the record.
 
 ### AvroBulletRecordConverter
 

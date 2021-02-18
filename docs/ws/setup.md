@@ -112,13 +112,13 @@ By default, this module is disabled. However, it is mock configured to use [a st
 
 ### Metrics Configuration
 
-This module lets you monitor the Web Service for information on what is happening. It tracks the various status codes and publishes them using the [MetricPublisher interface](https://github.com/bullet-db/bullet-core/blob/master/src/main/java/com/yahoo/bullet/common/metrics/MetricPublisher.java) to a place of your choice. By default, the [HTTPMetricPublisher interface](https://github.com/bullet-db/bullet-core/blob/master/src/main/java/com/yahoo/bullet/common/metrics/HTTPMetricEventPublisher.java) is configured, which can post to an URL of your choice.
+This module lets you monitor the Web Service for information on what is happening. It tracks the various status codes and publishes them using the [MetricPublisher interface](https://github.com/bullet-db/bullet-core/blob/master/src/main/java/com/yahoo/bullet/common/metrics/MetricPublisher.java) to a place of your choice. By default, the [HTTPMetricPublisher interface](https://github.com/bullet-db/bullet-core/blob/master/src/main/java/com/yahoo/bullet/common/metrics/HTTPMetricEventPublisher.java) is configured, which can post to a URL of your choice.
 
 You can provide a configuration yaml file that supplies your particular settings for your MetricPublisher by using the `bullet.metric.config` setting. See the [defaults](https://github.com/bullet-db/bullet-service/blob/master/src/main/resources/metric_defaults.yaml) for more information.
 
 ### Status Configuration
 
-This module periodically sents a *tick* query to the backend to make sure it is functioning properly. You can configure various settings for it here. If enabled, this module can disable the whole API if the backend is unreachable. This can be used if you front multiple Web Service instances talking to different instances of a backend behind a proxy and take down the backends one at a time for upgrades.
+This module periodically sends a *tick* query to the backend to make sure it is functioning properly. You can configure various settings for it here. If enabled, this module can disable the whole API if the backend is unreachable. This can be used if you front multiple Web Service instances talking to different instances of a backend behind a proxy and take down the backends one at a time for upgrades.
 
 ## Launch
 
