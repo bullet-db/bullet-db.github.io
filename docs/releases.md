@@ -265,6 +265,7 @@ A PubSub implementation using Kafka as the backing PubSub. Can be used with any 
 
 |    Date      |                                  Release                                             | Highlights | APIDocs |
 | ------------ | ------------------------------------------------------------------------------------ | ---------- | ------- |
+| 2021-02-17   | [**1.0.1**](https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-1.0.1) | Bullet Core 1.2 | [JavaDocs](apidocs/bullet-kafka/1.0.1/index.html) |
 | 2020-10-30   | [**1.0.0**](https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-1.0.0) | Bullet Core 1.1 | [JavaDocs](apidocs/bullet-kafka/1.0.0/index.html) |
 | 2018-12-17   | [**0.3.3**](https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-0.3.3) | Removes adding unnecessary properties to Producers/Consumers | [JavaDocs](apidocs/bullet-kafka/0.3.3/index.html) |
 | 2018-11-26   | [**0.3.2**](https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-0.3.2) | Uses bullet-core-0.6.4 | [JavaDocs](apidocs/bullet-kafka/0.3.2/index.html) |

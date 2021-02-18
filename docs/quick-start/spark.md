@@ -50,7 +50,7 @@ For this instance of Bullet we will use the Kafka PubSub implementation found in
 
 ```bash
 cd $BULLET_HOME/pubsub
-curl -Lo bullet-kafka.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-kafka/1.0.0/bullet-kafka-1.0.0-fat.jar
+curl -Lo bullet-kafka.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-kafka/1.0.1/bullet-kafka-1.0.1-fat.jar
 curl -LO https://archive.apache.org/dist/kafka/2.3.1/kafka_2.12-2.3.1.tgz
 tar -xzf kafka_2.12-2.3.1.tgz
 export KAFKA_DIR=$BULLET_HOME/pubsub/kafka_2.12-2.3.1
