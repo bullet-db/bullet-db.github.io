@@ -71,7 +71,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v0.6.1</small></a>
+            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v1.0.0</small></a>
         </div>
 
         <!-- Expanded navigation -->
@@ -248,24 +248,24 @@
         
             
 <li >
-    <a href="../../ws/api-bql/">BQL</a>
+    <a href="../../ws/api/">BQL</a>
 </li>
 
         
             
 <li >
-    <a href="../../ws/api-json/">JSON</a>
+    <a href="../../ws/examples/">Examples</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../ws/api-json/">JSON (DEPRECATED)</a>
 </li>
 
         
     </ul>
   </li>
-
-                        
-                            
-<li >
-    <a href="../../ws/examples/">Query Examples</a>
-</li>
 
                         
                         </ul>
@@ -633,7 +633,7 @@ bullet.query.aggregation.distribution.max.points: 200
 <p>Any setting not listed here defaults to the defaults in <a href="https://github.com/bullet-db/bullet-storm/blob/bullet-storm-0.4.2/src/main/resources/bullet_defaults.yaml">bullet_defaults.yaml</a>. In particular, <strong>metadata collection</strong> and <strong>timestamp injection</strong> is enabled. <code>RAW</code> type queries also micro-batch by size 1 (in other words, do not micro-batch).</p>
 <p>The parallelisms, CPU and memory settings for the components are listed below.</p>
 <h2 id="testing-on-kafka-0901">Testing on Kafka 0.9.0.1</h2>
-<p>For Tests 1 through 4, we read from a Kafka 0.9 cluster with the following configuration for the various Bullet components (unless specified). We use the single Spout model to read from the Kafka topic, partitioned into <code>64</code> partitions.</p>
+<p>For Tests 1 through 4, we read from a Kafka 0.9 cluster with the following configuration for the various Bullet components (unless specified). We use the single spout model to read from the Kafka topic, partitioned into <code>64</code> partitions.</p>
 <h3 id="resource-utilization">Resource utilization</h3>
 <div class="one-text-numeri-table"></div>
 
@@ -650,7 +650,7 @@ bullet.query.aggregation.distribution.max.points: 200
 </thead>
 <tbody>
 <tr>
-<td align="left">DataSource Spout</td>
+<td align="left">DataSource spout</td>
 <td align="right">64</td>
 <td align="right">64</td>
 <td align="right">768.0</td>
@@ -658,7 +658,7 @@ bullet.query.aggregation.distribution.max.points: 200
 <td align="right">61440</td>
 </tr>
 <tr>
-<td align="left">Filter Bolt</td>
+<td align="left">Filter bolt</td>
 <td align="right">128</td>
 <td align="right">128</td>
 <td align="right">384.0</td>
@@ -666,7 +666,7 @@ bullet.query.aggregation.distribution.max.points: 200
 <td align="right">73728</td>
 </tr>
 <tr>
-<td align="left">Join Bolt</td>
+<td align="left">Join bolt</td>
 <td align="right">2</td>
 <td align="right">1</td>
 <td align="right">384.0</td>
@@ -674,7 +674,7 @@ bullet.query.aggregation.distribution.max.points: 200
 <td align="right">1152</td>
 </tr>
 <tr>
-<td align="left">DRPC Spout</td>
+<td align="left">DRPC spout</td>
 <td align="right">2</td>
 <td align="right">0.4</td>
 <td align="right">128.0</td>
@@ -682,7 +682,7 @@ bullet.query.aggregation.distribution.max.points: 200
 <td align="right">640</td>
 </tr>
 <tr>
-<td align="left">PrepareRequest Bolt</td>
+<td align="left">PrepareRequest bolt</td>
 <td align="right">1</td>
 <td align="right">0.2</td>
 <td align="right">128.0</td>
@@ -690,7 +690,7 @@ bullet.query.aggregation.distribution.max.points: 200
 <td align="right">320</td>
 </tr>
 <tr>
-<td align="left">ReturnResults Bolt</td>
+<td align="left">ReturnResults bolt</td>
 <td align="right">1</td>
 <td align="right">0.2</td>
 <td align="right">128.0</td>
@@ -741,16 +741,16 @@ bullet.query.aggregation.distribution.max.points: 200
 
 <ol>
 <li>The spout parallelism is 64 because it is going to read from a Kafka topic with 64 partitions (any more is meaningless since it cannot be split further). It reads and converts the data into Bullet Records.</li>
-<li>We've fanned out from the spouts to the Filter Bolts by a ratio of 2. We may or may not need this.</li>
-<li>We use <code>topology.max.spout.pending=20000</code> to limit the number of in-flight tuples there can be from a DataSource Spout instance and throttle it if too many queries are slowing down processing downstream. This is set pretty high to account for catch-up and skew in our Kafka partitions</li>
+<li>We've fanned out from the spouts to the Filter bolts by a ratio of 2. We may or may not need this.</li>
+<li>We use <code>topology.max.spout.pending=20000</code> to limit the number of in-flight tuples there can be from a DataSource spout instance and throttle it if too many queries are slowing down processing downstream. This is set pretty high to account for catch-up and skew in our Kafka partitions</li>
 <li>We have set the max heap size for a worker to <code>4 GiB</code> since we do not want too large of a worker. If a component dies or a worker is killed by RAS, it will not affect too many other components. It also makes heap dumps etc manageable.</li>
 <li>We set <code>topology.worker.gc.childopts</code> to use <code>ParNewGC</code> and <code>CMS</code>. These are our cluster defaults but we are listing them here since this may not be true for all Storm clusters. We have also added the <code>-XX:NewRatio=1</code> to the defaults since most of our objects are short-lived and having a larger Young Generation reduces our Young Generation GC (ParNew) frequency.</li>
-<li>We are using 256 acker tasks. There is acking from the DataSource Spout to the Filter Bolt and from the DRPCSpout and the PrepareRequestBolt, so about ~130 components will be acking. We could get away with using much less ackers as they are very light-weight.</li>
+<li>We are using 256 acker tasks. There is acking from the DataSource spout to the Filter bolt and from the DRPCSpout and the PrepareRequestBolt, so about ~130 components will be acking. We could get away with using much less ackers as they are very light-weight.</li>
 </ol>
 <h2 id="test-1-measuring-the-minimum-latency-of-bullet">Test 1: Measuring the minimum latency of Bullet</h2>
-<p>We are <a href="../../ws/examples/#simplest-query">running this query</a> in this test. This <code>RAW</code> query without any filters will serve to measure the intrinsic delay added by Bullet. The data record pulled out has a timestamp for when the record was emitted into Kafka, Bullet will inject the timestamp into the record when the Filter Bolt sends it on and the metadata collection logs timestamps for when the query was received and terminated. Using these, we can measure the end-to-end latency for getting one record through Bullet.</p>
+<p>We are <a href="../../ws/examples/#simplest-query">running this query</a> in this test. This <code>RAW</code> query without any filters will serve to measure the intrinsic delay added by Bullet. The data record pulled out has a timestamp for when the record was emitted into Kafka, Bullet will inject the timestamp into the record when the Filter bolt sends it on and the metadata collection logs timestamps for when the query was received and terminated. Using these, we can measure the end-to-end latency for getting one record through Bullet.</p>
 <h3 id="result">Result</h3>
-<p>The following table shows the timestamps averaged by running <strong>100</strong> of these queries. The delays below are shown <em>relative</em> to the Query Received timestamp (when the query was received by Bullet at the Join Bolt).</p>
+<p>The following table shows the timestamps averaged by running <strong>100</strong> of these queries. The delays below are shown <em>relative</em> to the Query Received timestamp (when the query was received by Bullet at the Join bolt).</p>
 <div class="one-text-numeri-table"></div>
 
 <table>
@@ -779,12 +779,12 @@ bullet.query.aggregation.distribution.max.points: 200
 </tr>
 </tbody>
 </table>
-<p>The Bullet Filtered timestamp above is negative because the Filter Bolt received the query and emitted an arbitrary record <code>2.16 ms</code> before the Join Bolt received the query. The data was submitted into Kafka about <code>710.75 ms</code> before the query was received by Bullet and that difference is the processing time of Kafka and the time for our spouts to read the data into Bullet.</p>
+<p>The Bullet Filtered timestamp above is negative because the Filter bolt received the query and emitted an arbitrary record <code>2.16 ms</code> before the Join bolt received the query. The data was submitted into Kafka about <code>710.75 ms</code> before the query was received by Bullet and that difference is the processing time of Kafka and the time for our spouts to read the data into Bullet.</p>
 <h3 id="conclusion">Conclusion</h3>
 <p>Bullet adds a delay of a few ms - <strong><code>1.66 ms</code></strong> in the test above - to just pull out a record. This result shows that this is the fastest Bullet can be. It cannot return data any faster than this for meaningful queries.</p>
 <h2 id="test-2-measuring-the-time-to-find-a-record">Test 2: Measuring the time to find a record</h2>
 <p>The <a href="#test-1-measuring-the-minimum-latency-of-bullet">last test</a> attempted to measure how long Bullet takes to pick out a record. Here we will measure how long it takes to find a record <em>that we generate</em>. This is the average of running <strong>100</strong> queries across a time interval of 30 minutes trying to filter for a record with a single unique value in a field <a href="../../ws/examples/#simple-filtering">similar to this query</a>.</p>
-<p>We added a timestamp into the record when the record was initially read by the DataSource Spout. Using this and the Bullet Filtered timestamp and Query Finished timestamps, we can easily track the record through Bullet.</p>
+<p>We added a timestamp into the record when the record was initially read by the DataSource spout. Using this and the Bullet Filtered timestamp and Query Finished timestamps, we can easily track the record through Bullet.</p>
 <p>Since we are looking at values in the data, the average data volume across this test was: <code>Data: 76,000 R/s and 101 MiB/s</code></p>
 <h3 id="result_1">Result</h3>
 <div class="one-text-numeri-table"></div>
@@ -822,11 +822,11 @@ bullet.query.aggregation.distribution.max.points: 200
 <p>The record was emitted into Kafka <code>445.81 ms</code> after the query was received. The delay is the time it takes for the generated record to flow through our network and into Kafka.</p>
 <p>Bullet received the record <code>996.5 ms</code> after the query was received. The delay from when Kafka received the record to Bullet received is the delay for Kafka to make the record available for reading.</p>
 <h3 id="conclusion_1">Conclusion</h3>
-<p>We see that Bullet took on average <code>1006.8 ms - 996.5 ms</code> or <strong><code>10.3 ms</code></strong> from the time it saw the record first in DataSource Spout to finishing up the query and returning it in the Join Bolt.</p>
+<p>We see that Bullet took on average <code>1006.8 ms - 996.5 ms</code> or <strong><code>10.3 ms</code></strong> from the time it saw the record first in DataSource spout to finishing up the query and returning it in the Join bolt.</p>
 <h2 id="test-3-measuring-the-maximum-number-of-parallel-raw-queries">Test 3: Measuring the maximum number of parallel <code>RAW</code> queries</h2>
 <p>This test runs a query similar to the <a href="../../ws/examples/#simple-filtering">simple filtering query</a>. The query looks for <code>10</code> records that match the filter or runs for <code>30</code> seconds, whichever comes first. The average, uncompressed record size was about <code>1.8 KiB</code>.</p>
 <h3 id="what-is-meant-by-maximum">What is meant by maximum?</h3>
-<p>We want to see how many of these queries we can have running simultaneously till the Filter Bolt is unable to process records from the spouts in time. If a Filter Bolt is unable to keep up with the rate of data produced by the spouts, our queries will not find all 10 records. Workers may start dying (killed by RAS for exceeding capacity) as well. We will be trying to find the number of queries in parallel that we can run without these happening.</p>
+<p>We want to see how many of these queries we can have running simultaneously till the Filter bolt is unable to process records from the spouts in time. If a Filter bolt is unable to keep up with the rate of data produced by the spouts, our queries will not find all 10 records. Workers may start dying (killed by RAS for exceeding capacity) as well. We will be trying to find the number of queries in parallel that we can run without these happening.</p>
 <p>The average data volume across this test was: <code>Data: 85,000 R/s and 126 MiB/s</code></p>
 <h3 id="query">Query</h3>
 <pre><code class="javascript">{
@@ -846,14 +846,14 @@ bullet.query.aggregation.distribution.max.points: 200
 <li>It waits out the rest of the time and uses jq to validate that all the generated data was found</li>
 </ol>
 <h3 id="result_2">Result</h3>
-<p>We were able to run 200 queries successfully but 300 and higher started causing our Filter Bolts to slow down. This slow down caused our spouts to be throttled and fall behind reading data. This caused the matching data to not show up in time during the queries. Some of our attempts would not return all the expected 10 records.</p>
+<p>We were able to run 200 queries successfully but 300 and higher started causing our Filter bolts to slow down. This slow down caused our spouts to be throttled and fall behind reading data. This caused the matching data to not show up in time during the queries. Some of our attempts would not return all the expected 10 records.</p>
 <p>Using our metrics that were captured using our in-house metrics aggregation system (that our IMetricsConsumer publishes to), let's take a look at the CPU, Heap utilizations.</p>
 <p>Before you look at the figures:</p>
 <ol>
 <li>All the figures below are for the same time interval. The X-axis represents time in <code>1 minute</code> intervals</li>
 <li><a href="#figure-1-queries-running">Figure 1</a> shows the number of queries running for a time interval</li>
-<li>The other figures show a metric across <strong>all</strong> the workers (JVMs) in the Storm topology, each running a mix of a components (spouts reading from Kafka, Filter Bolts etc)</li>
-<li>The majority of the components (excluding ackers) are spouts reading from Kafka or Filter Bolts, so the figures can be taken to be primarily describing those workers</li>
+<li>The other figures show a metric across <strong>all</strong> the workers (JVMs) in the Storm topology, each running a mix of a components (spouts reading from Kafka, Filter bolts etc)</li>
+<li>The majority of the components (excluding ackers) are spouts reading from Kafka or Filter bolts, so the figures can be taken to be primarily describing those workers</li>
 </ol>
 <h4 id="figure-1-queries-running">Figure 1. Queries running</h4>
 <p><img alt="Queries" src="../../img/raw-perf-queries.png" /></p>
@@ -869,7 +869,7 @@ bullet.query.aggregation.distribution.max.points: 200
 <p><a href="#figure-4-garbage-collection-times">Figure 4</a> shows the time spent garbage collecting in ms.</p>
 <div class="admonition note">
 <p class="admonition-title">Garbage collection</p>
-<p>As we increase the number of queries sent into Bullet, more objects are created in the Filter and Join Bolts. These quickly fill up our heap and cause GCs. The zig-zags represents heaps being cleared after GC and filling back up quickly. Also, note that the CPU usage is directly related to the GC times. In other words, performance is pretty much directly correlated with the amount of GC we do.</p>
+<p>As we increase the number of queries sent into Bullet, more objects are created in the Filter and Join bolts. These quickly fill up our heap and cause GCs. The zig-zags represents heaps being cleared after GC and filling back up quickly. Also, note that the CPU usage is directly related to the GC times. In other words, performance is pretty much directly correlated with the amount of GC we do.</p>
 </div>
 <p>The following table summarizes these figures:</p>
 <div class="one-text-numeri-table"></div>
@@ -941,7 +941,7 @@ bullet.query.aggregation.distribution.max.points: 200
 </thead>
 <tbody>
 <tr>
-<td align="left">DataSource Spout</td>
+<td align="left">DataSource spout</td>
 <td align="right">64</td>
 <td align="right">64</td>
 <td align="right"><strong>1280.0</strong></td>
@@ -949,7 +949,7 @@ bullet.query.aggregation.distribution.max.points: 200
 <td align="right">94208</td>
 </tr>
 <tr>
-<td align="left">Filter Bolt</td>
+<td align="left">Filter bolt</td>
 <td align="right">128</td>
 <td align="right">128</td>
 <td align="right"><strong>1024.0</strong></td>
@@ -957,7 +957,7 @@ bullet.query.aggregation.distribution.max.points: 200
 <td align="right">155648</td>
 </tr>
 <tr>
-<td align="left">Join Bolt</td>
+<td align="left">Join bolt</td>
 <td align="right">2</td>
 <td align="right">1</td>
 <td align="right">384.0</td>
@@ -965,7 +965,7 @@ bullet.query.aggregation.distribution.max.points: 200
 <td align="right">1152</td>
 </tr>
 <tr>
-<td align="left">DRPC Spout</td>
+<td align="left">DRPC spout</td>
 <td align="right">2</td>
 <td align="right">0.4</td>
 <td align="right">128.0</td>
@@ -973,7 +973,7 @@ bullet.query.aggregation.distribution.max.points: 200
 <td align="right">640</td>
 </tr>
 <tr>
-<td align="left">PrepareRequest Bolt</td>
+<td align="left">PrepareRequest bolt</td>
 <td align="right">1</td>
 <td align="right">0.2</td>
 <td align="right">128.0</td>
@@ -981,7 +981,7 @@ bullet.query.aggregation.distribution.max.points: 200
 <td align="right">320</td>
 </tr>
 <tr>
-<td align="left">ReturnResults Bolt</td>
+<td align="left">ReturnResults bolt</td>
 <td align="right">1</td>
 <td align="right">0.2</td>
 <td align="right">128.0</td>
@@ -1082,7 +1082,7 @@ bullet.query.aggregation.distribution.max.points: 200
 <p>This is what our Storm cluster's configuration and our usage of the Storm DRPC limits us to. There is an async implementation for DRPC that we could eventually switch to. If we used another PubSub implementation like Kafka, we would be able to bypass this limit.</p>
 </div>
 <h2 id="testing-on-kafka-01001">Testing on Kafka 0.10.0.1</h2>
-<p>For this and subsequent tests, we upgraded our Kafka cluster to 0.10. We used the new Kafka consumer APIs to read <em>batches</em> of messages instead of a message at a time. We changed our DataSource Spout to read batches of messages (raw bytes) instead and added a DataSource Bolt that converts each batch message into Bullet records. Switching to this model let us be a lot more efficient in our data reading.</p>
+<p>For this and subsequent tests, we upgraded our Kafka cluster to 0.10. We used the new Kafka consumer APIs to read <em>batches</em> of messages instead of a message at a time. We changed our DataSource spout to read batches of messages (raw bytes) instead and added a DataSource bolt that converts each batch message into Bullet records. Switching to this model let us be a lot more efficient in our data reading.</p>
 <p>To read more data, we will be trying to read a topic that is a superset of our data set so far and produces up to <strong>13</strong> times the number of records (maximum of 1.3 million records/sec) and <strong>20</strong> times the size of the data we were reading till now. This Kafka topic has <strong>256</strong> partitions.</p>
 <h2 id="test-5-reading-more-data">Test 5: Reading more Data</h2>
 <p>Our average data volume across this test was: <code>Data: 756,000 R/s and 3080 MiB/s</code></p>
@@ -1101,7 +1101,7 @@ bullet.query.aggregation.distribution.max.points: 200
 </thead>
 <tbody>
 <tr>
-<td align="left">DataSource Spout</td>
+<td align="left">DataSource spout</td>
 <td align="right">128</td>
 <td align="right">128</td>
 <td align="right">1024.0</td>
@@ -1109,7 +1109,7 @@ bullet.query.aggregation.distribution.max.points: 200
 <td align="right">155648</td>
 </tr>
 <tr>
-<td align="left">DataSource Bolt</td>
+<td align="left">DataSource bolt</td>
 <td align="right">256</td>
 <td align="right">512</td>
 <td align="right">2580.0</td>
@@ -1117,7 +1117,7 @@ bullet.query.aggregation.distribution.max.points: 200
 <td align="right">709632</td>
 </tr>
 <tr>
-<td align="left">Filter Bolt</td>
+<td align="left">Filter bolt</td>
 <td align="right">512</td>
 <td align="right">512</td>
 <td align="right">1024.0</td>
@@ -1125,7 +1125,7 @@ bullet.query.aggregation.distribution.max.points: 200
 <td align="right">622592</td>
 </tr>
 <tr>
-<td align="left">Join Bolt</td>
+<td align="left">Join bolt</td>
 <td align="right">2</td>
 <td align="right">1</td>
 <td align="right">512.0</td>
@@ -1133,7 +1133,7 @@ bullet.query.aggregation.distribution.max.points: 200
 <td align="right">1408</td>
 </tr>
 <tr>
-<td align="left">DRPC Spout</td>
+<td align="left">DRPC spout</td>
 <td align="right">2</td>
 <td align="right">0.4</td>
 <td align="right">128.0</td>
@@ -1141,7 +1141,7 @@ bullet.query.aggregation.distribution.max.points: 200
 <td align="right">640</td>
 </tr>
 <tr>
-<td align="left">PrepareRequest Bolt</td>
+<td align="left">PrepareRequest bolt</td>
 <td align="right">1</td>
 <td align="right">0.2</td>
 <td align="right">128.0</td>
@@ -1149,7 +1149,7 @@ bullet.query.aggregation.distribution.max.points: 200
 <td align="right">320</td>
 </tr>
 <tr>
-<td align="left">ReturnResults Bolt</td>
+<td align="left">ReturnResults bolt</td>
 <td align="right">1</td>
 <td align="right">0.2</td>
 <td align="right">128.0</td>
@@ -1199,7 +1199,7 @@ bullet.query.aggregation.distribution.max.points: 200
 <p>We capped the GC threads to <code>8</code> and <code>4</code>, which helps performance on our 48 core machines when multiple JVMs run on a machine. We also bumped up the Young Generation size (<code>NewRatio=2</code>) and triggered the CMS collection to run at <code>50%</code> of Old Generation instead of the default of <code>70%</code>. Our objects are short-lived in our streaming scenario, this makes sense. We arrived at this after a few iterations, which we'll skip here for brevity.</p>
 <div class="admonition note">
 <p class="admonition-title">Max Spout Pending is now 30 ?!</p>
-<p>We use <code>topology.max.spout.pending</code> as a way to throttle how fast we read from Kafka. There is no acking past the Filter Bolt. The maximum number of batch messages we read is <code>500</code> from Kafka. This makes our true max spout pending: <code>500 * 30 = 15,000</code>. The tuple that is emitted from the spout is a large tuple that contains up to <code>500</code> records and we limit up to <code>30</code> of those to go unacked from any single spout before we throttle it. Since we have <code>128</code> spouts, we can have <code>128 * 15,000</code> messages unacked in the topology at any time at the most.</p>
+<p>We use <code>topology.max.spout.pending</code> as a way to throttle how fast we read from Kafka. There is no acking past the Filter bolt. The maximum number of batch messages we read is <code>500</code> from Kafka. This makes our true max spout pending: <code>500 * 30 = 15,000</code>. The tuple that is emitted from the spout is a large tuple that contains up to <code>500</code> records and we limit up to <code>30</code> of those to go unacked from any single spout before we throttle it. Since we have <code>128</code> spouts, we can have <code>128 * 15,000</code> messages unacked in the topology at any time at the most.</p>
 </div>
 <h3 id="result_4">Result</h3>
 <p>We were able to run over 600 queries with this configuration and failed in the high 600s due to hitting the DRPC limit again. With our improved reading model and GC configs, our base resource footprint has improved from <code>50K</code> CPU ms/min to around <code>25K</code> CPU ms/min.</p>
@@ -1262,11 +1262,11 @@ bullet.query.aggregation.distribution.max.points: 200
 <p>Note that the drops when we were running simultaneous queries in <a href="#figure-9-queries-running">Figure 9</a> are due to some
 hiccups in our collection mechanism (the collection granularity was not 5s as we configured but higher) and not actually drops in the simultaneous queries.</p>
 <h3 id="conclusion_4">Conclusion</h3>
-<p>We are trying to read a data source that could have<code>13</code> times more records and <code>20</code> times more data volume. So we have roughly increased the parallelism of the components reading the data by 10x (<code>128 + 512 = 768</code> cores to read and convert the data whereas previously we were using <code>64</code> cores). Once this is fixed and we can read the data comfortably using our DataSource Spouts and Bolts, we can scale the Filter Bolts and other components to accommodate for queries. We set our Filter Bolt parallelism (dominates the rest of the components) to <code>512</code>. We need about <code>25</code> machines (5 times more than the previous of <code>5</code>).</p>
+<p>We are trying to read a data source that could have<code>13</code> times more records and <code>20</code> times more data volume. So we have roughly increased the parallelism of the components reading the data by 10x (<code>128 + 512 = 768</code> cores to read and convert the data whereas previously we were using <code>64</code> cores). Once this is fixed and we can read the data comfortably using our DataSource spouts and bolts, we can scale the Filter bolts and other components to accommodate for queries. We set our Filter bolt parallelism (dominates the rest of the components) to <code>512</code>. We need about <code>25</code> machines (5 times more than the previous of <code>5</code>).</p>
 <p>With this configuration, we were able to run <strong><code>680</code></strong> queries simultaneously before we hit the DRPC limit. Since DRPC is a shared resource for the cluster, this limit is slightly lower than the previously observed number possibly due to our test environment being multi-tenant and other topologies using the shared resource.</p>
 <div class="admonition note">
 <p class="admonition-title">Measuring latency in Bullet</p>
-<p>So far, we have been using data being delayed long enough as a proxy for queries failing. <a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.4.3">Bullet-Storm 0.4.3</a> adds an average latency metric computed in the Filter Bolts. For the next tests, we add a timestamp in the Data Source spouts when the record is read and this latency metric tells us exactly how long it takes for the record to be matched against a query and acked. By setting a limit for this latency, we can much more accurately measure acceptable performance.</p>
+<p>So far, we have been using data being delayed long enough as a proxy for queries failing. <a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.4.3">Bullet-Storm 0.4.3</a> adds an average latency metric computed in the Filter bolts. For the next tests, we add a timestamp in the Data Source spouts when the record is read and this latency metric tells us exactly how long it takes for the record to be matched against a query and acked. By setting a limit for this latency, we can much more accurately measure acceptable performance.</p>
 </div>
 <h2 id="test-6-scaling-for-more-data">Test 6: Scaling for More Data</h2>
 <p>For this test, we'll establish how much resources we need to read various data volumes. We want to be able to:</p>
@@ -1277,7 +1277,7 @@ hiccups in our collection mechanism (the collection granularity was not 5s as we
 <li>The average latency for reading a record to filtering it be <code>&lt; 200 ms</code></li>
 </ul>
 <p>For reading the data, we have to first scale the DataSource spouts and bolts and then set the parallelism of the Filter bolts to support the minimum 400 queries we want at the data volume. We leave the rest of the components at their default values as seen in in <a href="#test-5-reading-more-data">Test 5</a>.</p>
-<p>To get various data volumes, we read a large Kafka topic with (256 partitions) with over 1 million R/s and sample various percentages to get less data. The sampling is done in our DataSource Spouts.</p>
+<p>To get various data volumes, we read a large Kafka topic with (256 partitions) with over 1 million R/s and sample various percentages to get less data. The sampling is done in our DataSource spouts.</p>
 <h3 id="result_5">Result</h3>
 <p>The following table summarizes the results:</p>
 <div class="two-one-text-numeric-table"></div>
@@ -1306,7 +1306,7 @@ hiccups in our collection mechanism (the collection granularity was not 5s as we
 </tr>
 <tr>
 <td align="left"></td>
-<td align="left">DataSource Spout</td>
+<td align="left">DataSource spout</td>
 <td align="right">16</td>
 <td align="right">0.5</td>
 <td align="right">1024</td>
@@ -1315,7 +1315,7 @@ hiccups in our collection mechanism (the collection granularity was not 5s as we
 </tr>
 <tr>
 <td align="left"></td>
-<td align="left">DataSource Bolt</td>
+<td align="left">DataSource bolt</td>
 <td align="right">32</td>
 <td align="right">2</td>
 <td align="right">2048</td>
@@ -1324,7 +1324,7 @@ hiccups in our collection mechanism (the collection granularity was not 5s as we
 </tr>
 <tr>
 <td align="left"></td>
-<td align="left">Filter Bolt</td>
+<td align="left">Filter bolt</td>
 <td align="right">24</td>
 <td align="right">1</td>
 <td align="right">1024</td>
@@ -1342,7 +1342,7 @@ hiccups in our collection mechanism (the collection granularity was not 5s as we
 </tr>
 <tr>
 <td align="left"></td>
-<td align="left">DataSource Spout</td>
+<td align="left">DataSource spout</td>
 <td align="right">32</td>
 <td align="right">1</td>
 <td align="right">1024</td>
@@ -1351,7 +1351,7 @@ hiccups in our collection mechanism (the collection granularity was not 5s as we
 </tr>
 <tr>
 <td align="left"></td>
-<td align="left">DataSource Bolt</td>
+<td align="left">DataSource bolt</td>
 <td align="right">72</td>
 <td align="right">2</td>
 <td align="right">2048</td>
@@ -1360,7 +1360,7 @@ hiccups in our collection mechanism (the collection granularity was not 5s as we
 </tr>
 <tr>
 <td align="left"></td>
-<td align="left">Filter Bolt</td>
+<td align="left">Filter bolt</td>
 <td align="right">64</td>
 <td align="right">1</td>
 <td align="right">1024</td>
@@ -1378,7 +1378,7 @@ hiccups in our collection mechanism (the collection granularity was not 5s as we
 </tr>
 <tr>
 <td align="left"></td>
-<td align="left">DataSource Spout</td>
+<td align="left">DataSource spout</td>
 <td align="right">64</td>
 <td align="right">1</td>
 <td align="right">1024</td>
@@ -1387,7 +1387,7 @@ hiccups in our collection mechanism (the collection granularity was not 5s as we
 </tr>
 <tr>
 <td align="left"></td>
-<td align="left">DataSource Bolt</td>
+<td align="left">DataSource bolt</td>
 <td align="right">160</td>
 <td align="right">2</td>
 <td align="right">2048</td>
@@ -1396,7 +1396,7 @@ hiccups in our collection mechanism (the collection granularity was not 5s as we
 </tr>
 <tr>
 <td align="left"></td>
-<td align="left">Filter Bolt</td>
+<td align="left">Filter bolt</td>
 <td align="right">144</td>
 <td align="right">1</td>
 <td align="right">1024</td>
@@ -1414,7 +1414,7 @@ hiccups in our collection mechanism (the collection granularity was not 5s as we
 </tr>
 <tr>
 <td align="left"></td>
-<td align="left">DataSource Spout</td>
+<td align="left">DataSource spout</td>
 <td align="right">72</td>
 <td align="right">1</td>
 <td align="right">1024</td>
@@ -1423,7 +1423,7 @@ hiccups in our collection mechanism (the collection granularity was not 5s as we
 </tr>
 <tr>
 <td align="left"></td>
-<td align="left">DataSource Bolt</td>
+<td align="left">DataSource bolt</td>
 <td align="right">256</td>
 <td align="right">2</td>
 <td align="right">2048</td>
@@ -1432,7 +1432,7 @@ hiccups in our collection mechanism (the collection granularity was not 5s as we
 </tr>
 <tr>
 <td align="left"></td>
-<td align="left">Filter Bolt</td>
+<td align="left">Filter bolt</td>
 <td align="right">224</td>
 <td align="right">1</td>
 <td align="right">1024</td>
@@ -1450,7 +1450,7 @@ hiccups in our collection mechanism (the collection granularity was not 5s as we
 </tr>
 <tr>
 <td align="left"></td>
-<td align="left">DataSource Spout</td>
+<td align="left">DataSource spout</td>
 <td align="right">96</td>
 <td align="right">1</td>
 <td align="right">1024</td>
@@ -1459,7 +1459,7 @@ hiccups in our collection mechanism (the collection granularity was not 5s as we
 </tr>
 <tr>
 <td align="left"></td>
-<td align="left">DataSource Bolt</td>
+<td align="left">DataSource bolt</td>
 <td align="right">320</td>
 <td align="right">2</td>
 <td align="right">2580</td>
@@ -1468,7 +1468,7 @@ hiccups in our collection mechanism (the collection granularity was not 5s as we
 </tr>
 <tr>
 <td align="left"></td>
-<td align="left">Filter Bolt</td>
+<td align="left">Filter bolt</td>
 <td align="right">256</td>
 <td align="right">1</td>
 <td align="right">1024</td>
@@ -1486,7 +1486,7 @@ hiccups in our collection mechanism (the collection granularity was not 5s as we
 </tr>
 <tr>
 <td align="left"></td>
-<td align="left">DataSource Spout</td>
+<td align="left">DataSource spout</td>
 <td align="right">96</td>
 <td align="right">1</td>
 <td align="right">1024</td>
@@ -1495,7 +1495,7 @@ hiccups in our collection mechanism (the collection granularity was not 5s as we
 </tr>
 <tr>
 <td align="left"></td>
-<td align="left">DataSource Bolt</td>
+<td align="left">DataSource bolt</td>
 <td align="right">384</td>
 <td align="right">2</td>
 <td align="right">2580</td>
@@ -1504,7 +1504,7 @@ hiccups in our collection mechanism (the collection granularity was not 5s as we
 </tr>
 <tr>
 <td align="left"></td>
-<td align="left">Filter Bolt</td>
+<td align="left">Filter bolt</td>
 <td align="right">320</td>
 <td align="right">1</td>
 <td align="right">1024</td>
@@ -1525,11 +1525,11 @@ hiccups in our collection mechanism (the collection granularity was not 5s as we
 <p>For this test, we'll establish how much resources we need to support more queries for a fixed data volume: <code>Data: 68,400 R/s and 105 MiB/s</code>.</p>
 <p>As our 3 server DRPC cluster currently does not let us do more than <code>680 RAW</code> queries, in this test, we will:</p>
 <ul>
-<li>Vary the number of Filter Bolts as they are the primary bottleneck for supporting more queries.</li>
-<li>To simplify things, we will only vary the <strong>parallelism</strong> and fix the CPU and memory of each Filter Bolt to <code>1 Core</code> and <code>1 GiB Memory</code></li>
+<li>Vary the number of Filter bolts as they are the primary bottleneck for supporting more queries.</li>
+<li>To simplify things, we will only vary the <strong>parallelism</strong> and fix the CPU and memory of each Filter bolt to <code>1 Core</code> and <code>1 GiB Memory</code></li>
 <li>We will use <code>RAW</code> queries as the queries to scale</li>
-<li>Each <code>RAW</code> query will run for <code>30 s</code> and search for <code>10</code> records that we generate. The query will actually look for <em>11</em> records to force it to run for the full <code>30 s</code>. This is because we want to stress the Filter Bolt as much as possible. As long as there is a query in the system, the Filter Bolt will deserialize and check every record that it processes</li>
-<li>We will measure the same filtering latency: the time taken from the record read in DataSource Spout to its emission in the Filter Bolt. We want the maximum latency to be less than <code>200 ms</code></li>
+<li>Each <code>RAW</code> query will run for <code>30 s</code> and search for <code>10</code> records that we generate. The query will actually look for <em>11</em> records to force it to run for the full <code>30 s</code>. This is because we want to stress the Filter bolt as much as possible. As long as there is a query in the system, the Filter bolt will deserialize and check every record that it processes</li>
+<li>We will measure the same filtering latency: the time taken from the record read in DataSource spout to its emission in the Filter bolt. We want the maximum latency to be less than <code>200 ms</code></li>
 </ul>
 <h3 id="results">Results</h3>
 <p>The following table summarizes the results:</p>
@@ -1538,7 +1538,7 @@ hiccups in our collection mechanism (the collection granularity was not 5s as we
 <table>
 <thead>
 <tr>
-<th align="left">Filter Bolt Parallelism</th>
+<th align="left">Filter bolt Parallelism</th>
 <th align="right">Queries</th>
 <th align="right">Average Latency (ms)</th>
 <th align="right">Status</th>
@@ -1973,15 +1973,15 @@ hiccups in our collection mechanism (the collection granularity was not 5s as we
 </tr>
 </tbody>
 </table>
-<p>The following figure summarizes the minimum number of CPU cores (which are also the number of Filter Bolts) needed to support the the maximum number of <code>RAW</code> queries with latency &lt; 200 ms.</p>
+<p>The following figure summarizes the minimum number of CPU cores (which are also the number of Filter bolts) needed to support the the maximum number of <code>RAW</code> queries with latency &lt; 200 ms.</p>
 <h4 id="figure-15-cpu-vs-max-concurrent-queries">Figure 15. CPU vs Max Concurrent Queries</h4>
 <p><img alt="Queries" src="../../img/queries-cpu.png" /></p>
 <p>This shows that the queries supported also scale pretty linearly.</p>
-<p>You may have noticed how when latency starts to increase, it increases pretty rapidly. This suggests that there is a <em>knee</em> or <em>exponential</em> curve for latency. The following figure shows this in the graph of the latency for queries with <code>20</code> Filter Bolts.</p>
+<p>You may have noticed how when latency starts to increase, it increases pretty rapidly. This suggests that there is a <em>knee</em> or <em>exponential</em> curve for latency. The following figure shows this in the graph of the latency for queries with <code>20</code> Filter bolts.</p>
 <h4 id="figure-16-max-concurrent-queries-vs-latency">Figure 16. Max Concurrent Queries vs Latency</h4>
 <p><img alt="Queries" src="../../img/queries-20-fb.png" /></p>
 <h3 id="conclusion_6">Conclusion</h3>
-<p>Since Filter Bolts tend to be the most CPU intensive of the query processing components, this test measured how scaling Filter Bolts affected the number of queries that can be supported. For the fixed data volume, this relationship is linear.</p></div>
+<p>Since Filter bolts tend to be the most CPU intensive of the query processing components, this test measured how scaling Filter bolts affected the number of queries that can be supported. For the fixed data volume, this relationship is linear.</p></div>
         
     </div>
 

@@ -71,7 +71,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v0.6.1</small></a>
+            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v1.0.0</small></a>
         </div>
 
         <!-- Expanded navigation -->
@@ -248,24 +248,24 @@
         
             
 <li >
-    <a href="../../ws/api-bql/">BQL</a>
+    <a href="../../ws/api/">BQL</a>
 </li>
 
         
             
 <li >
-    <a href="../../ws/api-json/">JSON</a>
+    <a href="../../ws/examples/">Examples</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../ws/api-json/">JSON (DEPRECATED)</a>
 </li>
 
         
     </ul>
   </li>
-
-                        
-                            
-<li >
-    <a href="../../ws/examples/">Query Examples</a>
-</li>
 
                         
                         </ul>
@@ -333,7 +333,7 @@
                 
                 
                     <li >
-                        <a rel="next" href="../../ws/examples/">
+                        <a rel="next" href="../../ws/api-json/">
                             <i class="fa fa-arrow-left"></i> Previous
                         </a>
                     </li>
@@ -493,6 +493,10 @@ express-server.js
 <td>The path fragment after the <code>queryNamespace</code> on your Web Service running on your <code>queryHost</code> for the WebSocket endpoint</td>
 </tr>
 <tr>
+<td>validationPath</td>
+<td>The path fragment after the <code>queryNamespace</code> on your Web Service running on your <code>queryHost</code> for the Query Validation endpoint</td>
+</tr>
+<tr>
 <td>queryStompRequestChannel</td>
 <td>The fragment after this is the Stomp Request channel as configured in your Web Service for the WebSocket endpoint</td>
 </tr>
@@ -510,7 +514,7 @@ express-server.js
 </tr>
 <tr>
 <td>modelVersion</td>
-<td>This is used an indicator to apply changes to the stored queries, results etc. It is monotonically increasing. On startup, changes specified in <code>migrations</code> will be applied if the old modelVersion is not present or is &lt; than this number</td>
+<td>This is used an indicator to apply changes to the stored queries, results etc. It is monotonically increasing. On startup, changes specified in <code>migrations</code> will be applied if the old modelVersion is not present or is &lt; than this number. This is generally incremented by the UI once backwards-incompatible changes are made.</td>
 </tr>
 <tr>
 <td>migrations</td>
@@ -522,7 +526,7 @@ express-server.js
 </tr>
 <tr>
 <td>defaultQuery</td>
-<td>Can either be a <a href="../../ws/api-json/">API Query</a> or a URL from which one could be fetched dynamically. The UI makes this the query created on every newly created Query. You could use this as a way to have user specific (for example, cookie based) filters created for your users or customize an aggregation when they create a new query in the UI. Note that if you have are accessing a map subfield and your field value in the filter is set as <code>foo.bar</code> and you want <code>bar</code> to be the subfield in the UI query builder, you will need to add a key called <code>subfield</code> in the filter (not supported by the API) and set its value to <code>true</code></td>
+<td>Can either be a <a href="../../ws/api/">API Query</a> or a URL from which one could be fetched dynamically. The UI makes this the query created on every newly created Query. You could use this as a way to have user specific (for example, cookie based) filters created for your users or customize an aggregation when they create a new query in the UI. Note that Builder Query do not support all API queries yet but whatever query you specify here (as long as it's a valid query) will be supported in the BQL query page in the UI. If it is not possible to convert your query into a Builder query, a default one will be used instead.</td>
 </tr>
 <tr>
 <td>bugLink</td>
@@ -561,7 +565,7 @@ express-server.js
 <td>durationMaxSecs</td>
 <td>Yes</td>
 <td>Yes</td>
-<td>The maximum duration for a query. Set this to the seconds version of milliseconds max duration in your backend configuration</td>
+<td>The maximum duration for a query. Set this to the seconds version of the milliseconds max duration in your backend configuration</td>
 </tr>
 <tr>
 <td>distributionNumberOfPoints</td>
@@ -597,7 +601,7 @@ express-server.js
 <td>windowEmitFrequencyMinSecs</td>
 <td>Yes</td>
 <td>No</td>
-<td>The minimum time interval at which a time based window can be returned. Set this to the minimum window emit frequency from your backend configuration</td>
+<td>The minimum time interval at which a time based window can be returned in seconds. Set this to the minimum window emit frequency from your backend configuration</td>
 </tr>
 <tr>
 <td>everyForRecordBasedWindow</td>
@@ -609,7 +613,7 @@ express-server.js
 <td>everyForTimeBasedWindow</td>
 <td>No</td>
 <td>No</td>
-<td>The default value for the number of records in a window for a time based window</td>
+<td>The default value for the number of records in a window for a time based window in milliseconds</td>
 </tr>
 <tr>
 <td>sketches.countDistinctMaxEntries</td>
@@ -735,12 +739,15 @@ express-server.js
 </table>
 <p>You can specify values for each property above in the <code>env-settings.json</code> file. These will be used when running a custom instance of the UI (see <a href="#Running">above</a>).</p>
 <p>The <code>default</code> property in the <code>env-settings.json</code> that loads default settings for the UI that can be selectively overridden based on which environment you are running on. All settings explained above have default values
-that are the same as the <a href="https://github.com/bullet-db/bullet-storm/blob/master/src/main/resources/bullet_defaults.yaml">default backend settings</a>. However, the defaults do not add the <code>defaultQuery</code> setting explained above.</p>
+that are the same as the <a href="https://github.com/bullet-db/bullet-storm/blob/master/src/main/resources/bullet_defaults.yaml">default backend settings</a>.</p>
 <pre><code class="json">{
   &quot;default&quot;: {
     &quot;queryHost&quot;: &quot;http://localhost:5555&quot;,
-    &quot;queryNamespace&quot;: &quot;api/bullet&quot;,
-    &quot;queryPath&quot;: &quot;query&quot;,
+    &quot;queryNamespace&quot;: &quot;api/bullet/queries&quot;,
+    &quot;queryPath&quot;: &quot;ws-query&quot;,
+    &quot;validationPath&quot;: &quot;validate-query&quot;,
+    &quot;queryStompRequestChannel&quot;: &quot;/server/request&quot;,
+    &quot;queryStompResponseChannel&quot;: &quot;/client/response&quot;,
     &quot;schemaHost&quot;: &quot;http://localhost:5555&quot;,
     &quot;schemaNamespace&quot;: &quot;api/bullet&quot;,
     &quot;helpLinks&quot;: [
@@ -750,17 +757,23 @@ that are the same as the <a href="https://github.com/bullet-db/bullet-storm/blob
       }
     ],
     &quot;bugLink&quot;: &quot;https://github.com/bullet-db/bullet-ui/issues&quot;,
-    &quot;modelVersion&quot;: 1,
+    &quot;modelVersion&quot;: 4,
+    &quot;migrations&quot;: {
+      &quot;deletions&quot;: &quot;query&quot;
+    },
+    &quot;defaultQuery&quot;: &quot;SELECT COUNT(*) FROM STREAM(60000, TIME) WINDOWING TUMBLING(2000, TIME);&quot;,
     &quot;defaultValues&quot;: {
-      &quot;aggregationMaxSize&quot;: 512,
+      &quot;aggregationMaxSize&quot;: 500,
       &quot;rawMaxSize&quot;: 100,
-      &quot;durationMaxSecs&quot;: 120,
+      &quot;durationMaxSecs&quot;: 9007199254740,
       &quot;distributionNumberOfPoints&quot;: 11,
       &quot;distributionQuantilePoints&quot;: &quot;0, 0.25, 0.5, 0.75, 0.9, 1&quot;,
       &quot;distributionQuantileStart&quot;: 0,
       &quot;distributionQuantileEnd&quot;: 1,
       &quot;distributionQuantileIncrement&quot;: 0.1,
-      &quot;queryTimeoutSecs&quot;: 3,
+      &quot;windowEmitFrequencyMinSecs&quot;: 1,
+      &quot;everyForRecordBasedWindow&quot;: 1,
+      &quot;everyForTimeBasedWindow&quot;: 2000,
       &quot;sketches&quot;: {
         &quot;countDistinctMaxEntries&quot;: 16384,
         &quot;groupByMaxEntries&quot;: 512,
@@ -770,17 +783,24 @@ that are the same as the <a href="https://github.com/bullet-db/bullet-storm/blob
         &quot;topKErrorType&quot;: &quot;No False Negatives&quot;
       },
       &quot;metadataKeyMapping&quot;: {
-        &quot;theta&quot;: &quot;theta&quot;,
-        &quot;uniquesEstimate&quot;: &quot;uniques_estimate&quot;,
-        &quot;queryCreationTime&quot;: &quot;query_receive_time&quot;,
-        &quot;queryTerminationTime&quot;: &quot;query_finish_time&quot;,
-        &quot;estimatedResult&quot;: &quot;was_estimated&quot;,
-        &quot;standardDeviations&quot;: &quot;standard_deviations&quot;,
-        &quot;normalizedRankError&quot;: &quot;normalized_rank_error&quot;,
-        &quot;maximumCountError&quot;: &quot;maximum_count_error&quot;,
-        &quot;itemsSeen&quot;: &quot;items_seen&quot;,
-        &quot;minimumValue&quot;: &quot;minimum_value&quot;,
-        &quot;maximumValue&quot;: &quot;maximum_value&quot;
+        &quot;querySection&quot;: &quot;Query&quot;,
+        &quot;windowSection&quot;: &quot;Window&quot;,
+        &quot;sketchSection&quot;: &quot;Sketch&quot;,
+        &quot;theta&quot;: &quot;Theta&quot;,
+        &quot;uniquesEstimate&quot;: &quot;Uniques Estimate&quot;,
+        &quot;queryCreationTime&quot;: &quot;Receive Time&quot;,
+        &quot;queryTerminationTime&quot;: &quot;Finish Time&quot;,
+        &quot;estimatedResult&quot;: &quot;Was Estimated&quot;,
+        &quot;standardDeviations&quot;: &quot;Standard Deviations&quot;,
+        &quot;normalizedRankError&quot;: &quot;Normalized Rank Error&quot;,
+        &quot;maximumCountError&quot;: &quot;Maximum Count Error&quot;,
+        &quot;itemsSeen&quot;: &quot;Items Seen&quot;,
+        &quot;minimumValue&quot;: &quot;Minimum Value&quot;,
+        &quot;maximumValue&quot;: &quot;Maximum Value&quot;,
+        &quot;windowNumber&quot;: &quot;Number&quot;,
+        &quot;windowSize&quot;: &quot;Size&quot;,
+        &quot;windowEmitTime&quot;: &quot;Emit Time&quot;,
+        &quot;expectedEmitTime&quot;: &quot;Expected Emit Time&quot;
       }
     }
   }
@@ -818,13 +838,14 @@ that are the same as the <a href="https://github.com/bullet-db/bullet-storm/blob
 
 <p>Your UI on your CI environment will:</p>
 <ul>
-<li>POST to <code>http://bullet-ws.dev.domain.com:4080/bullet/api/drpc</code> for UI created Bullet queries</li>
-<li>GET the schema from <code>http://bullet-ws.dev.domain.com:4080/bullet/api/columns</code></li>
+<li>Talk using Websockets to <code>http://bullet-ws.dev.domain.com:4080/api/bullet/ws-query</code> for UI created Bullet queries</li>
+<li>GET the schema from <code>http://bullet-ws.dev.domain.com:4080/api/bullet/columns</code></li>
+<li>Validate queries in the BQL page with <code>http://bullet-ws.dev.domain.com:4080/api/bullet/validate-query</code></li>
 <li>Populate an additional link on the Help drop-down pointing to <code>http://data.docs.domain.com</code></li>
 <li>Allow queries to run as long as 300 seconds</li>
 <li>Use 32768 in the help menu for the max number of unique elements that can be counted exactly</li>
 <li>Allow only 50 points to be generated for Distribution queries</li>
-<li>GET and cache a defaultQuery from <code>http://bullet-ws.dev.domain.com:4080/custom-endpoint/api/defaultQuery</code></li>
+<li>GET and cache a default query from <code>http://bullet-ws.dev.domain.com:4080/custom-endpoint/api/defaultQuery</code></li>
 </ul>
 <p>You would make express use these settings by running</p>
 <pre><code class="bash">NODE_ENV=ci PORT=8800 node express-server.js

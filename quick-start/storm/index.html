@@ -71,7 +71,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v0.6.1</small></a>
+            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v1.0.0</small></a>
         </div>
 
         <!-- Expanded navigation -->
@@ -248,24 +248,24 @@
         
             
 <li >
-    <a href="../../ws/api-bql/">BQL</a>
+    <a href="../../ws/api/">BQL</a>
 </li>
 
         
             
 <li >
-    <a href="../../ws/api-json/">JSON</a>
+    <a href="../../ws/examples/">Examples</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../ws/api-json/">JSON (DEPRECATED)</a>
 </li>
 
         
     </ul>
   </li>
-
-                        
-                            
-<li >
-    <a href="../../ws/examples/">Query Examples</a>
-</li>
 
                         
                         </ul>
@@ -451,15 +451,15 @@
 <p>This section gets you running a mock instance of Bullet to play around with. The instance will run using <a href="../../backend/storm-setup/">Bullet on Storm</a> and use the <a href="../../pubsub/rest/">REST Pubsub</a>. Since we do not have an actual data source, we will produce some fake data and convert it into <a href="../../backend/ingestion/">Bullet Records</a> in a <a href="https://github.com/bullet-db/bullet-db.github.io/blob/master/examples/storm/src/main/java/com/yahoo/bullet/storm/examples/RandomSpout.java">custom Storm spout</a>. If you want to use Bullet for your data, you will need to do read and convert your data to Bullet Records in a similar manner.</p>
 <p>At the end of this section, you will have:</p>
 <ul>
-<li>Setup the Bullet topology using a custom spout on <a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.8.5">bullet-storm-0.8.5</a></li>
-<li>Setup the <a href="../../ws/setup/">Web Service</a> talking to the topology and serving a schema for your UI using <a href="https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.4.3">bullet-service-0.4.3</a></li>
-<li>Setup the <a href="../../pubsub/rest/">REST PubSub</a> talking to the topology and Web Service using <a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.6.4">bullet-core-0.6.4</a>.</li>
-<li>Setup the <a href="../../ui/setup/">UI</a> talking to the Web Service using <a href="https://github.com/bullet-db/bullet-ui/releases/tag/v0.6.2">bullet-ui-0.6.2</a></li>
+<li>Setup the Bullet topology using a custom spout on <a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-1.0.0">bullet-storm-1.0.0</a></li>
+<li>Setup the <a href="../../ws/setup/">Web Service</a> talking to the topology and serving a schema for your UI using <a href="https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-1.0.0">bullet-service-1.0.0</a></li>
+<li>Setup the <a href="../../pubsub/rest/">REST PubSub</a> talking to the topology and Web Service using <a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-1.2.0">bullet-core-1.2.0</a>.</li>
+<li>Setup the <a href="../../ui/setup/">UI</a> talking to the Web Service using <a href="https://github.com/bullet-db/bullet-ui/releases/tag/v1.0.0">bullet-ui-1.0.0</a></li>
 </ul>
 <p><strong>Prerequisites</strong></p>
 <ul>
 <li>You will need to be on an Unix-based system (Mac OS X, Ubuntu ...) with <code>curl</code> installed</li>
-<li>You will need <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">JDK 8</a> installed</li>
+<li>You will need <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">JDK 8+</a> installed</li>
 <li>You will need enough CPU and RAM on your machine to run about 8-10 JVMs in <code>server</code> mode. You should have at least 2 GB free space on your disk. We will be setting up a Storm cluster with multiple components, an embedded Tomcat server and a Node server.</li>
 </ul>
 <h2 id="install-script">Install Script</h2>
@@ -481,16 +481,16 @@ mkdir -p $BULLET_HOME/backend/storm
 mkdir -p $BULLET_HOME/service
 mkdir -p $BULLET_HOME/ui
 cd $BULLET_HOME
-curl -LO https://github.com/bullet-db/bullet-db.github.io/releases/download/v0.6.1/examples_artifacts.tar.gz
+curl -LO https://github.com/bullet-db/bullet-db.github.io/releases/download/v1.0.0/examples_artifacts.tar.gz
 tar -xzf examples_artifacts.tar.gz
 export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 </code></pre>
 
-<h4 id="step-2-install-storm-12">Step 2: Install Storm 1.2</h4>
+<h4 id="step-2-install-storm-22">Step 2: Install Storm 2.2</h4>
 <pre><code class="bash">cd $BULLET_HOME/backend
-curl -O http://apache.org/dist/storm/apache-storm-1.2.2/apache-storm-1.2.2.zip
-unzip apache-storm-1.2.2.zip
-export PATH=$(pwd)/apache-storm-1.2.2/bin/:$PATH
+curl -O http://apache.org/dist/storm/apache-storm-2.2.0/apache-storm-2.2.0.zip
+unzip apache-storm-2.2.0.zip
+export PATH=$(pwd)/apache-storm-2.2.0/bin/:$PATH
 </code></pre>
 
 <h4 id="step-3-launch-storm-components">Step 3: Launch Storm components</h4>
@@ -509,7 +509,7 @@ storm supervisor &amp;
 <p>If you notice any problems while setting up storm or while relaunching a topology, it may be because some state is corrupted. When running Storm in this fashion, states and serializations are stored in <code>storm-local</code> and <code>/tmp/</code>. You may want to <code>rm -rf storm-local/* /tmp/dev-storm-zookeeper</code> to clean up this state before relaunching Storm components. See the <a href="#teardown">tear down section</a> on how to kill any running instances.</p>
 </div>
 <h3 id="setting-up-the-example-bullet-topology">Setting up the example Bullet topology</h3>
-<p>Now that Storm is up and running, we can put Bullet on it. We will use an example Spout that runs on Bullet 0.8.3 on our Storm cluster. The source is available <a href="https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/storm">here</a>. This was part of the artifact that you installed in Step 1.</p>
+<p>Now that Storm is up and running, we can put Bullet on it. We will use an example spout that runs on Bullet 1.2.0 on our Storm cluster. The source is available <a href="https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/storm">here</a>. This was part of the artifact that you installed in Step 1.</p>
 <h4 id="step-4-setup-the-storm-example">Step 4: Setup the Storm example</h4>
 <pre><code class="bash">cp $BULLET_EXAMPLES/backend/storm/* $BULLET_HOME/backend/storm
 </code></pre>
@@ -518,7 +518,6 @@ storm supervisor &amp;
 <p class="admonition-title">Settings</p>
 <p>Take a look at bullet_settings.yaml for the settings that are being overridden for this example. You can add or change settings as you like by referring to <a href="https://github.com/bullet-db/bullet-core/blob/master/src/main/resources/bullet_defaults.yaml">core Bullet settings in bullet_defaults.yaml</a> and <a href="https://github.com/bullet-db/bullet-storm/blob/master/src/main/resources/bullet_storm_defaults.yaml">Storm settings in bullet_storm_defaults.yaml</a>. In particular, we have <a href="https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/storm/src/main/resources/bullet_settings.yaml">customized these settings</a> that affect the Bullet queries you can run:</p>
 <p><code>bullet.query.aggregation.raw.max.size: 500</code> The max <code>RAW</code> records you can fetch is 500.</p>
-<p><code>bullet.query.aggregation.max.size: 1024</code> The max records you can fetch for any query is 1024.</p>
 <p><code>bullet.query.aggregation.count.distinct.sketch.entries: 16384</code> We can count 16384 unique values exactly. Approximates after.</p>
 <p><code>bullet.query.aggregation.group.sketch.entries: 1024</code> The max unique groups can be 1024. Uniform sample after.</p>
 <p><code>bullet.query.aggregation.distribution.sketch.entries: 1024</code> Determines the normalized rank error for distributions.</p>
@@ -560,18 +559,23 @@ java -jar bullet-service.jar --bullet.pubsub.config=example_rest_pubsub_config.y
 curl -s http://localhost:9999/api/bullet/columns
 </code></pre>
 
+<div class="admonition note">
+<p class="admonition-title">Settings</p>
+<p>Take a look at example_query_settings.yaml for the settings that are being overridden for this example. You can add or change the query settings (used by BQL when creating the query) by referring to <a href="https://github.com/bullet-db/bullet-core/blob/master/src/main/resources/bullet_defaults.yaml">core Bullet settings in bullet_defaults.yaml</a>. We have <a href="https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/web-service/example_query_settings.yaml">customized these settings</a>:</p>
+<p><code>bullet.query.aggregation.max.size: 1024</code> The max records you can fetch for any query is 1024.</p>
+</div>
 <h3 id="setting-up-the-bullet-ui">Setting up the Bullet UI</h3>
 <h4 id="step-8-install-node">Step 8: Install Node</h4>
-<pre><code class="bash">curl -s https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
+<pre><code class="bash">curl -s https://raw.githubusercontent.com/creationix/nvm/v0.37.2/install.sh | bash
 source ~/.bashrc
-nvm install v6.9.4
-nvm use v6.9.4
+nvm install v10.20.1
+nvm use v10.20.1
 </code></pre>
 
 <h4 id="step-9-install-the-bullet-ui">Step 9: Install the Bullet UI</h4>
 <pre><code class="bash">cd $BULLET_HOME/ui
-curl -LO https://github.com/bullet-db/bullet-ui/releases/download/v0.6.2/bullet-ui-v0.6.2.tar.gz
-tar -xzf bullet-ui-v0.6.2.tar.gz
+curl -LO https://github.com/bullet-db/bullet-ui/releases/download/v1.0.0/bullet-ui-v1.0.0.tar.gz
+tar -xzf bullet-ui-v1.0.0.tar.gz
 cp $BULLET_EXAMPLES/ui/env-settings.json config/
 </code></pre>
 
@@ -610,7 +614,7 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
 </tr>
 <tr>
 <td>Storm</td>
-<td><code>pkill -f [a]pache-storm-1.2.2</code></td>
+<td><code>pkill -f [a]pache-storm-2.2.0</code></td>
 </tr>
 <tr>
 <td>File System</td>
@@ -634,7 +638,7 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
           ...
 </code></pre>
 
-<p>This command launches the jar (an uber or "fat" jar) containing the custom spout code and all dependencies you copied in Step 5. We pass the name of your spout class with <code>--bullet-spout com.yahoo.bullet.storm.examples.RandomSpout</code> to the Bullet main class <code>com.yahoo.bullet.Topology</code> with two arguments <code>--bullet-spout-arg 20</code> and <code>--bullet-spout-arg 101</code>. The first argument tells the Spout to generate at most 20 tuples (records) in a period and the second argument says a period is 101 ms long.</p>
+<p>This command launches the jar (an uber or "fat" jar) containing the custom spout code and all dependencies you copied in Step 5. We pass the name of your spout class with <code>--bullet-spout com.yahoo.bullet.storm.examples.RandomSpout</code> to the Bullet main class <code>com.yahoo.bullet.Topology</code> with two arguments <code>--bullet-spout-arg 20</code> and <code>--bullet-spout-arg 101</code>. The first argument tells the spout to generate at most 20 tuples (records) in a period and the second argument says a period is 101 ms long.</p>
 <p>The settings defined by <code>--bullet-conf ./bullet_settings.yaml</code> and the arguments here run all components in the topology with a parallelism of 1. So there will be one spout that is producing ~200 rps.</p>
 <div class="admonition note">
 <p class="admonition-title">I thought you said hundreds of thousands of records...</p>
@@ -711,7 +715,7 @@ private BulletRecord generateRecord() {
 </code></pre>
 
 <p>This <code>generateRecord</code> method generates some fields randomly and inserts them into a BulletRecord. Note that the BulletRecord is typed and all data must be inserted with the proper types.</p>
-<p>If you put Bullet on your data, you will need to write a Spout (or a topology if your reading is complex), that reads from your data source and emits BulletRecords with the fields you wish to be query-able placed into a BulletRecord similar to this example.</p>
+<p>If you put Bullet on your data, you will need to write a spout (or a topology if your reading is complex), that reads from your data source and emits BulletRecords with the fields you wish to be query-able placed into a BulletRecord similar to this example.</p>
 <h3 id="pubsub">PubSub</h3>
 <p>We used the <a href="../../pubsub/rest/">REST PubSub</a>. Note that even though we support a DRPC PubSub, it doesn't actually support windowing so we have not used it for this example. We configured the Backend to use this PubSub by adding these settings to the YAML file that we passed to our Storm topology. Notice that we set the context to <code>QUERY_PROCESSING</code> since this is the Backend. We do not set <code>bullet.pubsub.rest.result.url</code> because each query sent to the topology has this information so that the results could be returned back to it.</p>
 <pre><code class="yaml">bullet.pubsub.context.name: &quot;QUERY_PROCESSING&quot;
@@ -769,8 +773,9 @@ bullet.pubsub.rest.query.subscriber.min.wait.ms: 10
 <pre><code class="javascript">{
   &quot;default&quot;: {
     &quot;queryHost&quot;: &quot;http://localhost:9999&quot;,
-    &quot;queryNamespace&quot;: &quot;api/bullet&quot;,
+    &quot;queryNamespace&quot;: &quot;api/bullet/queries&quot;,
     &quot;queryPath&quot;: &quot;ws-query&quot;,
+    &quot;validationPath&quot;: &quot;validate-query&quot;,
     &quot;queryStompRequestChannel&quot;: &quot;/server/request&quot;,
     &quot;queryStompResponseChannel&quot;: &quot;/client/response&quot;,
     &quot;schemaHost&quot;: &quot;http://localhost:9999&quot;,
@@ -782,14 +787,14 @@ bullet.pubsub.rest.query.subscriber.min.wait.ms: 10
       }
     ],
     &quot;bugLink&quot;: &quot;https://github.com/bullet-db/bullet-ui/issues&quot;,
-    &quot;modelVersion&quot;: 3,
+    &quot;modelVersion&quot;: 4,
     &quot;migrations&quot;: {
       &quot;deletions&quot;: &quot;query&quot;
     },
     &quot;defaultValues&quot;: {
       &quot;aggregationMaxSize&quot;: 1024,
       &quot;rawMaxSize&quot;: 500,
-      &quot;durationMaxSecs&quot;: 86400,
+      &quot;durationMaxSecs&quot;: 9007199254740,
       &quot;distributionNumberOfPoints&quot;: 11,
       &quot;distributionQuantilePoints&quot;: &quot;0, 0.25, 0.5, 0.75, 0.9, 1&quot;,
       &quot;distributionQuantileStart&quot;: 0,
@@ -797,7 +802,7 @@ bullet.pubsub.rest.query.subscriber.min.wait.ms: 10
       &quot;distributionQuantileIncrement&quot;: 0.1,
       &quot;windowEmitFrequencyMinSecs&quot;: 1,
       &quot;everyForRecordBasedWindow&quot;: 1,
-      &quot;everyForTimeBasedWindow&quot;: 2,
+      &quot;everyForTimeBasedWindow&quot;: 2000,
       &quot;sketches&quot;: {
         &quot;countDistinctMaxEntries&quot;: 16384,
         &quot;groupByMaxEntries&quot;: 512,

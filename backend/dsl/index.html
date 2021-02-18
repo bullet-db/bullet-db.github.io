@@ -71,7 +71,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v0.6.1</small></a>
+            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v1.0.0</small></a>
         </div>
 
         <!-- Expanded navigation -->
@@ -248,24 +248,24 @@
         
             
 <li >
-    <a href="../../ws/api-bql/">BQL</a>
+    <a href="../../ws/api/">BQL</a>
 </li>
 
         
             
 <li >
-    <a href="../../ws/api-json/">JSON</a>
+    <a href="../../ws/examples/">Examples</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../ws/api-json/">JSON (DEPRECATED)</a>
 </li>
 
         
     </ul>
   </li>
-
-                        
-                            
-<li >
-    <a href="../../ws/examples/">Query Examples</a>
-</li>
 
                         
                         </ul>
@@ -403,6 +403,11 @@
                             </li>
                         
                             <li class="third-level">
+                                <a href="#jsonbulletrecordconverter">JSONBulletRecordConverter</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
                                 <a href="#avrobulletrecordconverter">AvroBulletRecordConverter</a>
                                 
                             </li>
@@ -443,17 +448,14 @@
 <p>Bullet DSL is a configuration-based DSL that allows users to plug their data into the Bullet Backend. Instead of having users write their own code to set up the Backend on their data, users can now accomplish the same thing by simply providing the appropriate configuration to Bullet.</p>
 <p>To support this, Bullet DSL provides two major components. The first is for reading data from a pluggable data source (the <em>connectors</em> for talking to various data sources), and the second is for converting data (the <em>converters</em> for understanding your data formats) into <a href="../ingestion/">BulletRecords</a>.
 By enabling Bullet DSL in the Backend and configuring Bullet DSL, your backend will use the two components to read from the configured data source and convert the data into BulletRecords, without you having to write any code.</p>
-<p>The three interfaces that the DSL uses are:</p>
+<p>There is also an optional minor component that acts as the glue between the connectors and the converters. These are the <em>deserializers</em>. They exist if the data coming out of connector is of a format that cannot be understood by a converter. Typically, this happens for serialized data that needs to be deserialized first before a converter can understand it.</p>
+<p>The four interfaces that the DSL uses are:</p>
 <ol>
 <li>The <strong>BulletConnector</strong> : Bullet DSL's reading component</li>
+<li>The <strong>BulletDeserializer</strong> : Bullet DSL's optional deserializing component</li>
 <li>The <strong>BulletRecordConverter</strong> : Bullet DSL's converting component</li>
 <li>The <strong>Bullet Backend</strong> : The implementation of Bullet on a Stream Processor</li>
 </ol>
-<p>There is also an optional BulletDeserializer component that sits between the Connector and the Converter to deserialize the data.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>For the Backend, please refer to the DSL-specific Bullet Storm setup <a href="../storm-setup/#using-bullet-dsl">here</a>. (Currently, only Bullet Storm supports Bullet DSL.)</p>
-</div>
 <h2 id="bulletconnector">BulletConnector</h2>
 <p>BulletConnector is an abstract Java class that can be implemented to read data from different pluggable data sources. As with all our components, we provide and maintain implementations while providing an interface to add new ones. Currently, we support two BulletConnector implementations:</p>
 <ol>
@@ -549,6 +551,8 @@ interface <a href="https://github.com/bullet-db/bullet-dsl/blob/master/src/main/
 
 <h3 id="mapbulletrecordconverter">MapBulletRecordConverter</h3>
 <p>The MapBulletRecordConverter is used to convert Java Maps of Objects into BulletRecords. Without a schema, it simply inserts every entry in the Map into a BulletRecord without any type-checking. If the Map contains objects that are not types supported by the BulletRecord, you might have issues when serializing the record.</p>
+<h3 id="jsonbulletrecordconverter">JSONBulletRecordConverter</h3>
+<p>The JSONBulletRecordConverter is used to convert String JSON representations of records into BulletRecords. Without a schema, it simply inserts every entry in the JSON object into a BulletRecord without any type-checking and it only uses the Double type for all numeric values (since it is unable to guess whether records might need a wider type). You should use a schema and mention the appropriate types if you want more specific numeric types for the fields in your record. If the JSON contains objects that are not types supported by the BulletRecord, you might have issues when serializing the record.</p>
 <h3 id="avrobulletrecordconverter">AvroBulletRecordConverter</h3>
 <p>The AvroBulletRecordConverter is used to convert Avro records into BulletRecords. Without a schema, it inserts every field into a BulletRecord without any type-checking. With a schema, you get type-checking, and you can also specify a RECORD field, and the converter will accept Avro Records in addition to Maps, flattening them into the BulletRecord.</p>
 <h3 id="schema">Schema</h3>
@@ -557,15 +561,13 @@ interface <a href="https://github.com/bullet-db/bullet-dsl/blob/master/src/main/
 <li><code>name</code> :  The name of the field in the BulletRecord</li>
 <li><code>reference</code> : The field to extract from the to-be-converted object</li>
 <li><code>type</code> : The type of the field</li>
-<li><code>subtype</code> : The subtype of any nested fields in this field (if any)</li>
 </ol>
 <p>When using the schema:</p>
 <ol>
 <li>The <code>name</code> of the field in the schema will be the name of the field in the BulletRecord.</li>
 <li>The <code>reference</code> of the field in the schema is the field/value to be extracted from an object when it is converted to a BulletRecord.</li>
 <li>If the <code>reference</code> is null, it is assumed that the <code>name</code> and the <code>reference</code> are the same.</li>
-<li>The <code>type</code> must be specified and will be used for type-checking.</li>
-<li>The <code>subtype</code> must be specified for certain <code>type</code> values (<code>LIST</code>, <code>LISTOFMAP</code>, <code>MAP</code>, or <code>MAPOFMAP</code>). Otherwise, it must be null.</li>
+<li>The <code>type</code> must be specified and can be used for type-checking. If you provide a schema and set the <code>bullet.dsl.converter.schema.type.check.enable</code> setting, then the converter will validate that the types in the source data matches the given type here. Otherwise, the type provided will be assumed. This is useful when initially using the DSL and you are not sure of the types.</li>
 </ol>
 <h4 id="types">Types</h4>
 <ol>
@@ -575,24 +577,34 @@ interface <a href="https://github.com/bullet-db/bullet-dsl/blob/master/src/main/
 <li>FLOAT</li>
 <li>DOUBLE</li>
 <li>STRING</li>
-<li>LIST</li>
-<li>LISTOFMAP</li>
-<li>MAP</li>
-<li>MAPOFMAP</li>
-<li>RECORD</li>
-</ol>
-<h4 id="subtypes">Subtypes</h4>
-<ol>
-<li>BOOLEAN</li>
-<li>INTEGER</li>
-<li>LONG</li>
-<li>FLOAT</li>
-<li>DOUBLE</li>
-<li>STRING</li>
+<li>BOOLEAN_MAP</li>
+<li>INTEGER_MAP</li>
+<li>LONG_MAP</li>
+<li>FLOAT_MAP</li>
+<li>DOUBLE_MAP</li>
+<li>STRING_MAP</li>
+<li>BOOLEAN_MAP_MAP</li>
+<li>INTEGER_MAP_MAP</li>
+<li>LONG_MAP_MAP</li>
+<li>FLOAT_MAP_MAP</li>
+<li>DOUBLE_MAP_MAP</li>
+<li>STRING_MAP_MAP</li>
+<li>BOOLEAN_LIST</li>
+<li>INTEGER_LIST</li>
+<li>LONG_LIST</li>
+<li>FLOAT_LIST</li>
+<li>DOUBLE_LIST</li>
+<li>STRING_LIST</li>
+<li>BOOLEAN_MAP_LIST</li>
+<li>INTEGER_MAP_LIST</li>
+<li>LONG_MAP_LIST</li>
+<li>FLOAT_MAP_LIST</li>
+<li>DOUBLE_MAP_LIST</li>
+<li>STRING_MAP_LIST</li>
 </ol>
 <div class="admonition note">
-<p class="admonition-title">RECORD</p>
-<p>For RECORD type, you should normally reference a Map. For each key-value pair in the Map, a field will be inserted into the BulletRecord. Hence, the name in a RECORD field is left empty.</p>
+<p class="admonition-title">Special Type for a RECORD</p>
+<p>There is a special case where if you omit the <code>type</code> and the <code>name</code> for an entry in the schema, the reference is assumed to be a map containing arbitrary fields with types in the list above. You can use this if you have a map field that contains various objects with one or more types in the list above and want to flatten that map out into the target record using the respective types of each field in the map. The names of the fields in the map will be used as the top-level names in the resulting record.</p>
 </div>
 <h4 id="example-schema">Example Schema</h4>
 <pre><code class="json">{
@@ -603,13 +615,11 @@ interface <a href="https://github.com/bullet-db/bullet-dsl/blob/master/src/main/
     },
     {
       &quot;name&quot;: &quot;myBoolMap&quot;,
-      &quot;type&quot;: &quot;MAP&quot;,
-      &quot;subtype&quot;: &quot;BOOLEAN&quot;
+      &quot;type&quot;: &quot;BOOLEAN_MAP&quot;
     },
     {
       &quot;name&quot;: &quot;myLongMapMap&quot;,
-      &quot;type&quot;: &quot;MAPOFMAP&quot;,
-      &quot;subtype&quot;: &quot;LONG&quot;
+      &quot;type&quot;: &quot;LONG_MAP_MAP&quot;
     },
     {
       &quot;name&quot;: &quot;myIntFromSomeMap&quot;,
@@ -625,17 +635,16 @@ interface <a href="https://github.com/bullet-db/bullet-dsl/blob/master/src/main/
       &quot;name&quot;: &quot;myIntFromSomeNestedMapsAndLists&quot;,
       &quot;reference&quot;: &quot;someMap.nestedMap.nestedList.0&quot;,
       &quot;type&quot;: &quot;INTEGER&quot;
-    },
+    },    
     {
-      &quot;reference&quot; : &quot;someMap&quot;,
-      &quot;type&quot;: &quot;RECORD&quot;
+      &quot;reference&quot; : &quot;someMap&quot;
     }
   ]
 }
 </code></pre>
 
 <h2 id="bulletdeserializer">BulletDeserializer</h2>
-<p>BulletDeserializer is an abstract Java class that can be implemented to deserialize/transform output from BulletConnector to input for BulletRecordConverter. It is an <em>optional</em> component and whether it's necessary or not depends on the output of your data sources. For example, if your KafkaConnector outputs byte arrays that are actually Java-serialized Maps, and you're using a MapBulletRecordConverter, you would use the JavaDeserializer, which would deserialize byte arrays into Java Maps for the converter.</p>
+<p>BulletDeserializer is an abstract Java class that can be implemented to deserialize/transform output from BulletConnector to input for BulletRecordConverter. It is an <em>optional</em> component and whether it's necessary or not depends on the output of your data sources. If one is not needed, the <code>IdentityDeserializer</code> can be used. For example, if your KafkaConnector outputs byte arrays that are actually Java-serialized Maps, and you're using a MapBulletRecordConverter, you would use the JavaDeserializer, which would deserialize byte arrays into Java Maps for the converter.</p>
 <p>Currently, we support two BulletDeserializer implementations:</p>
 <ol>
 <li><a href="https://github.com/bullet-db/bullet-dsl/blob/master/src/main/java/com/yahoo/bullet/dsl/deserializer/JavaDeserializer.java">JavaDeserializer</a></li>
