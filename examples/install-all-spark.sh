@@ -2,15 +2,15 @@
 
 set -euo pipefail
 
-BULLET_EXAMPLES_VERSION=0.6.1
-BULLET_UI_VERSION=0.6.2
-BULLET_WS_VERSION=0.4.3
-BULLET_KAFKA_VERSION=0.3.2
-BULLET_SPARK_VERSION=0.2.2
-KAFKA_VERSION=0.11.0.1
-SPARK_VERSION=2.2.1
-NVM_VERSION=0.33.1
-NODE_VERSION=6.9.4
+BULLET_EXAMPLES_VERSION=1.0.0
+BULLET_UI_VERSION=1.0.0
+BULLET_WS_VERSION=1.0.0
+BULLET_KAFKA_VERSION=1.0.1
+BULLET_SPARK_VERSION=1.0.0
+KAFKA_VERSION=2.3.1
+SPARK_VERSION=3.0.1
+NVM_VERSION=0.37.2
+NODE_VERSION=10.20.1
 
 KAFKA_TOPIC_REQUESTS=bullet.requests
 KAFKA_TOPIC_RESPONSES=bullet.responses
@@ -130,42 +130,37 @@ create_topics() {
     println "Done!"
 }
 
-install_web_service() {
-    local BULLET_WEB_SERVICE="bullet-service-${BULLET_WS_VERSION}-embedded.jar"
-
-    println "Downloading Bullet Web Service version ${BULLET_WS_VERSION}..."
-    download "http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/${BULLET_WS_VERSION}" "${BULLET_WEB_SERVICE}"
-
-    println "Installing Bullet Web Service..."
-    cp ${BULLET_DOWNLOADS}/${BULLET_WEB_SERVICE} ${BULLET_HOME}/service/
-    cp ${BULLET_EXAMPLES}/web-service/example_kafka_pubsub_config.yaml ${BULLET_HOME}/service/
-    cp ${BULLET_EXAMPLES}/web-service/example_columns.json ${BULLET_HOME}/service/
-    export BULLET_WS_JAR=${BULLET_HOME}/service/${BULLET_WEB_SERVICE}
-
-    println "Done!"
-}
-
-launch_web_service() {
+launch_bullet_web_service() {
+    local BULLET_WS_JAR="bullet-service-${BULLET_WS_VERSION}-embedded.jar"
     local BULLET_SERVICE_HOME="${BULLET_HOME}/service"
 
-    println "Launching Bullet Web Service..."
+    println "Downloading Bullet Web Service ${BULLET_WS_VERSION}..."
+    download "http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/${BULLET_WS_VERSION}" "${BULLET_WS_JAR}"
+
+    println "Configuring Bullet Web Service and plugging in Kafka PubSub..."
+    cp "${BULLET_DOWNLOADS}/${BULLET_WS_JAR}" "${BULLET_SERVICE_HOME}/bullet-service.jar"
+    cp "${BULLET_EXAMPLES}/web-service/"example_* "${BULLET_SERVICE_HOME}/"
+
+    println "Launching Bullet Web Service with the Kafka PubSub..."
     cd "${BULLET_SERVICE_HOME}"
-    java -Dloader.path=${BULLET_HOME}/pubsub/bullet-kafka-${BULLET_KAFKA_VERSION}-fat.jar -jar ${BULLET_WS_JAR} \
-        --bullet.pubsub.config=${BULLET_SERVICE_HOME}/example_kafka_pubsub_config.yaml \
-        --bullet.schema.file=${BULLET_SERVICE_HOME}/example_columns.json \
-        --server.port=9999  \
-        --logging.path=${BULLET_SERVICE_HOME} \
-        --logging.file=log.txt &> ${BULLET_SERVICE_HOME}/log.txt &
+    java -Dloader.path=${BULLET_HOME}/pubsub/bullet-kafka-${BULLET_KAFKA_VERSION}-fat.jar -jar ${BULLET_SERVICE_HOME}/bullet-service.jar \
+         --bullet.pubsub.config=${BULLET_SERVICE_HOME}/example_kafka_pubsub_config.yaml \
+         --bullet.query.config=${BULLET_SERVICE_HOME}/example_query_config.yaml \
+         --bullet.schema.file=${BULLET_SERVICE_HOME}/example_columns.json \
+         --server.port=9999  --logging.path="${BULLET_SERVICE_HOME}" \
+         --logging.file=log.txt &> "${BULLET_SERVICE_HOME}/log.txt" &
 
     println "Sleeping for 15 s to ensure Bullet Web Service is up..."
     sleep 15
 
-    println "Getting one random record from Bullet through the Web Service..."
-    curl -s -H 'Content-Type: text/plain' -X POST -d '{"aggregation": {"size": 1}}' http://localhost:9999/api/bullet/sse-query
-    println ""
+    println "Testing the Web Service"
     println "Getting column schema from the Web Service..."
     println ""
     curl -s http://localhost:9999/api/bullet/columns
+    println ""
+    println "Getting one random record from Bullet through the Web Service..."
+    curl -s -H 'Content-Type: text/plain' -X POST -d 'SELECT * FROM STREAM(2000, TIME) LIMIT 1;' http://localhost:9999/api/bullet/queries/sse-query
+    println ""
     println "Finished Bullet Web Service test!"
 }
 
@@ -217,7 +212,7 @@ launch_bullet_spark() {
 
 install_node() {
     # NVM unset var bug
-    set +u
+    set +eu
 
     println "Trying to install nvm. If there is a failure, manually perform: "
     println "    curl -s https://raw.githubusercontent.com/creationix/nvm/v${NVM_VERSION}/install.sh | bash"
@@ -236,7 +231,7 @@ install_node() {
     nvm install "v${NODE_VERSION}"
     nvm use "v${NODE_VERSION}"
 
-    set -u
+    set -eu
 
     println "Done!"
 }
@@ -269,7 +264,7 @@ cleanup() {
 
     pkill -f "[e]xpress-server.js"
     pkill -f "[e]xample_kafka_pubsub_config.yaml"
-    pkill -f "[b]ullet-spark"
+    pkill -9 -f "[b]ullet-spark"
     ${KAFKA_INSTALL_DIR}/bin/kafka-server-stop.sh
     ${KAFKA_INSTALL_DIR}/bin/zookeeper-server-stop.sh
 
@@ -316,8 +311,7 @@ launch() {
     install_bullet_spark
     launch_bullet_spark
 
-    install_web_service
-    launch_web_service
+    launch_bullet_web_service
 
     install_node
     launch_bullet_ui

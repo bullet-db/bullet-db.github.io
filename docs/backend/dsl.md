@@ -5,17 +5,14 @@ Bullet DSL is a configuration-based DSL that allows users to plug their data int
 To support this, Bullet DSL provides two major components. The first is for reading data from a pluggable data source (the *connectors* for talking to various data sources), and the second is for converting data (the *converters* for understanding your data formats) into [BulletRecords](ingestion.md).
 By enabling Bullet DSL in the Backend and configuring Bullet DSL, your backend will use the two components to read from the configured data source and convert the data into BulletRecords, without you having to write any code.
 
-The three interfaces that the DSL uses are:
+There is also an optional minor component that acts as the glue between the connectors and the converters. These are the *deserializers*. They exist if the data coming out of connector is of a format that cannot be understood by a converter. Typically, this happens for serialized data that needs to be deserialized first before a converter can understand it.
+
+The four interfaces that the DSL uses are:
 
 1. The **BulletConnector** : Bullet DSL's reading component
-2. The **BulletRecordConverter** : Bullet DSL's converting component
-3. The **Bullet Backend** : The implementation of Bullet on a Stream Processor
-
-There is also an optional BulletDeserializer component that sits between the Connector and the Converter to deserialize the data.
-
-!!!note
-
-    For the Backend, please refer to the DSL-specific Bullet Storm setup [here](storm-setup.md#using-bullet-dsl). (Currently, only Bullet Storm supports Bullet DSL.)
+2. The **BulletDeserializer** : Bullet DSL's optional deserializing component
+3. The **BulletRecordConverter** : Bullet DSL's converting component
+4. The **Bullet Backend** : The implementation of Bullet on a Stream Processor
 
 ## BulletConnector
 
@@ -135,6 +132,10 @@ bullet.dsl.converter.pojo.class.name: "com.your.package.YourPOJO"
 
 The MapBulletRecordConverter is used to convert Java Maps of Objects into BulletRecords. Without a schema, it simply inserts every entry in the Map into a BulletRecord without any type-checking. If the Map contains objects that are not types supported by the BulletRecord, you might have issues when serializing the record.
 
+### JSONBulletRecordConverter
+
+The JSONBulletRecordConverter is used to convert String JSON representations of records into BulletRecords. Without a schema, it simply inserts every entry in the JSON object into a BulletRecord without any type-checking and it only uses the Double type for all numeric values (since it is unable to guess whether records might need a wider type). You should use a schema and mention the appropriate types if you want more specific numeric types for the fields in your record. If the JSON contains objects that are not types supported by the BulletRecord, you might have issues when serializing the record.
+
 ### AvroBulletRecordConverter
 
 The AvroBulletRecordConverter is used to convert Avro records into BulletRecords. Without a schema, it inserts every field into a BulletRecord without any type-checking. With a schema, you get type-checking, and you can also specify a RECORD field, and the converter will accept Avro Records in addition to Maps, flattening them into the BulletRecord.
@@ -146,7 +147,6 @@ The schema consists of a list of fields each described by a name, reference, typ
 1. `name` :  The name of the field in the BulletRecord
 2. `reference` : The field to extract from the to-be-converted object
 3. `type` : The type of the field
-4. `subtype` : The subtype of any nested fields in this field (if any)
 
 
 When using the schema:
@@ -154,8 +154,7 @@ When using the schema:
 1. The `name` of the field in the schema will be the name of the field in the BulletRecord.
 2. The `reference` of the field in the schema is the field/value to be extracted from an object when it is converted to a BulletRecord.
 3. If the `reference` is null, it is assumed that the `name` and the `reference` are the same.
-4. The `type` must be specified and will be used for type-checking.
-5. The `subtype` must be specified for certain `type` values (`LIST`, `LISTOFMAP`, `MAP`, or `MAPOFMAP`). Otherwise, it must be null.
+4. The `type` must be specified and can be used for type-checking. If you provide a schema and set the `bullet.dsl.converter.schema.type.check.enable` setting, then the converter will validate that the types in the source data matches the given type here. Otherwise, the type provided will be assumed. This is useful when initially using the DSL and you are not sure of the types.
 
 #### Types
 
@@ -165,24 +164,34 @@ When using the schema:
 4. FLOAT
 5. DOUBLE
 6. STRING
-7. LIST
-8. LISTOFMAP
-9. MAP
-10. MAPOFMAP
-11. RECORD
+7. BOOLEAN_MAP
+8. INTEGER_MAP
+9. LONG_MAP
+10. FLOAT_MAP
+11. DOUBLE_MAP
+12. STRING_MAP
+13. BOOLEAN_MAP_MAP
+14. INTEGER_MAP_MAP
+15. LONG_MAP_MAP
+16. FLOAT_MAP_MAP
+17. DOUBLE_MAP_MAP
+18. STRING_MAP_MAP
+19. BOOLEAN_LIST
+20. INTEGER_LIST
+21. LONG_LIST
+22. FLOAT_LIST
+23. DOUBLE_LIST
+24. STRING_LIST
+25. BOOLEAN_MAP_LIST
+26. INTEGER_MAP_LIST
+27. LONG_MAP_LIST
+28. FLOAT_MAP_LIST
+29. DOUBLE_MAP_LIST
+30. STRING_MAP_LIST
 
-#### Subtypes
+!!!note "Special Type for a RECORD"
 
-1. BOOLEAN
-2. INTEGER
-3. LONG
-4. FLOAT
-5. DOUBLE
-6. STRING
-
-!!!note "RECORD"
-
-    For RECORD type, you should normally reference a Map. For each key-value pair in the Map, a field will be inserted into the BulletRecord. Hence, the name in a RECORD field is left empty.
+    There is a special case where if you omit the `type` and the `name` for an entry in the schema, the reference is assumed to be a map containing arbitrary fields with types in the list above. You can use this if you have a map field that contains various objects with one or more types in the list above and want to flatten that map out into the target record using the respective types of each field in the map. The names of the fields in the map will be used as the top-level names in the resulting record.
 
 #### Example Schema
 
@@ -195,13 +204,11 @@ When using the schema:
     },
     {
       "name": "myBoolMap",
-      "type": "MAP",
-      "subtype": "BOOLEAN"
+      "type": "BOOLEAN_MAP"
     },
     {
       "name": "myLongMapMap",
-      "type": "MAPOFMAP",
-      "subtype": "LONG"
+      "type": "LONG_MAP_MAP"
     },
     {
       "name": "myIntFromSomeMap",
@@ -217,10 +224,9 @@ When using the schema:
       "name": "myIntFromSomeNestedMapsAndLists",
       "reference": "someMap.nestedMap.nestedList.0",
       "type": "INTEGER"
-    },
+    },    
     {
-      "reference" : "someMap",
-      "type": "RECORD"
+      "reference" : "someMap"
     }
   ]
 }
@@ -228,7 +234,7 @@ When using the schema:
 
 ## BulletDeserializer
 
-BulletDeserializer is an abstract Java class that can be implemented to deserialize/transform output from BulletConnector to input for BulletRecordConverter. It is an *optional* component and whether it's necessary or not depends on the output of your data sources. For example, if your KafkaConnector outputs byte arrays that are actually Java-serialized Maps, and you're using a MapBulletRecordConverter, you would use the JavaDeserializer, which would deserialize byte arrays into Java Maps for the converter.
+BulletDeserializer is an abstract Java class that can be implemented to deserialize/transform output from BulletConnector to input for BulletRecordConverter. It is an *optional* component and whether it's necessary or not depends on the output of your data sources. If one is not needed, the `IdentityDeserializer` can be used. For example, if your KafkaConnector outputs byte arrays that are actually Java-serialized Maps, and you're using a MapBulletRecordConverter, you would use the JavaDeserializer, which would deserialize byte arrays into Java Maps for the converter.
 
 Currently, we support two BulletDeserializer implementations:
 

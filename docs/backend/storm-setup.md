@@ -8,12 +8,12 @@ Bullet is configured at run-time using settings defined in a file. Settings not 
 
 ## Installation
 
-To use Bullet, you need to implement a way to read from your data source and convert your data into Bullet Records (bullet-record is a transitive dependency for Bullet and can be found [in JCenter](ingestion.md#installing-the-record-directly). You have two options in how to get your data into Bullet:
+To use Bullet, you need to implement a way to read from your data source and convert your data into Bullet Records (bullet-record is a transitive dependency for Bullet and can be found [in JCenter](ingestion.md#installing-the-record-directly). You have a couple of options in how to get your data into Bullet:
 
-1. You can implement a Spout that reads from your data source and emits Bullet Record. This spout must have a constructor that takes a List of Strings.
-2. You can pipe your existing Storm topology directly into Bullet. In other words, you convert the data you wish to be query-able through Bullet into Bullet Records from a bolt in your topology.
+1. You can implement a spout (or even a topology) that reads from your data source and emits Bullet Records. You then write a main class that submits the topology with your topology wired in [using our submit method](https://github.com/bullet-db/bullet-storm/blob/master/src/main/java/com/yahoo/bullet/storm/StormUtils.java).
+2. Use Bullet DSL to configure a spout (and optionally a bolt) that you provide in the settings to our main class. This will wire up your data source and data format to Bullet without you having to write code!
 
-Option 1 is the simplest to start with and should accommodate most scenarios. See [Pros and Cons](storm-architecture.md#data-processing).
+You can refer to the [Pros and Cons](storm-architecture.md#data-processing) of the various approaches to determine what works best for you.
 
 You need a JVM based project that implements one of the two options above. You include the Bullet artifact and Storm dependencies in your pom.xml or other dependency management system. The artifacts are available through JCenter, so you will need to add the repository.
 
@@ -51,7 +51,7 @@ You can also add ```<classifier>sources</classifier>```  or ```<classifier>javad
 
 If you are going to use the second option (directly pipe data into Bullet from your Storm topology), then you will need a main class that directly calls the submit method with your wired up topology and the name of the component that is going to emit Bullet Records in that wired up topology. The submit method can be found in [Topology.java](https://github.com/bulletbullet-storm/blob/master/src/main/java/com/yahoo/bullet/Topology.java). The submit method submits the topology so it should be the last thing you do in your main.
 
-If you are just implementing a Spout, see the [Launch](#launch) section below on how to use the main class in Bullet to create and submit your topology.
+If you are just implementing a spout, see the [Launch](#launch) section below on how to use the main class in Bullet to create and submit your topology.
 
 Storm topologies are generally launched with "fat" jars (jar-with-dependencies), excluding storm itself:
 
@@ -129,7 +129,7 @@ You can pass other arguments to Storm using the -c argument. The example above u
 
 ## Using Bullet DSL
 
-Instead of implementing your own spout or Topology, you can also use the provided DSL spout (and optionally, DSL Bolt) with [Bullet DSL](dsl.md). To do so, add the following settings to your YAML configuration:
+Instead of implementing your own spout or Topology, you can also use the provided DSL spout (and optionally, DSL bolt) with [Bullet DSL](dsl.md). To do so, add the following settings to your YAML configuration:
 
 ```yaml
 bullet.topology.dsl.spout.enable: true
@@ -147,7 +147,7 @@ bullet.topology.dsl.bolt.memory.off.heap.load:
 bullet.topology.dsl.deserializer.enable: false
 ```
 
-If the DSL Bolt is enabled in addition to the spout (the spout is always required!), Storm will read your data in the spout and convert it in the bolt. Without the bolt, reading and converting are done entirely in the spout. If you wish to separate the two by enabling the DSL Bolt, you can lower per-worker latencies when data volume is large and scale them independently.
+If the DSL bolt is enabled in addition to the spout (the spout is always required!), Storm will read your data in the spout and convert it in the bolt. Without the bolt, reading and converting are done entirely in the spout. If you wish to separate the two by enabling the DSL bolt, you can lower per-worker latencies when data volume is large and scale them independently.
 
 There is also a setting to enable [BulletDeserializer](dsl.md#bulletdeserializer), which is an optional component of Bullet DSL for deserializing data between reading and converting.  
 
@@ -178,3 +178,9 @@ storm jar bullet-storm-0.9.1.jar \
           --bullet-conf ./bullet_settings.yaml \
           --jars "bullet-dsl-0.1.2.jar,pulsar-client-2.2.1.jar,pulsar-client-schema-2.2.1.jar,protobuf-shaded-2.1.0-incubating.jar"
 ```
+
+## Storage and Replay
+
+If you set up the [Storage layer in the Web Service](../ws/setup.md#storage-configuration), you can turn on the replaying feature in Bullet on Storm. This wires up the Replay bolts to the topology. This component keeps track of the queries in the backend and replays queries from the Storage layer upon restart or component failure.
+
+Currently, only queries are stored. In the future, the Storage module will also be used for storing intermediate results in addition to queries to accommodate for restarts or component failures without loss of data for executing queries.

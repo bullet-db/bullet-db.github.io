@@ -27,9 +27,9 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <bullet.storm.version>1.0.0</bullet.storm.version>
-        <bullet.core.version>1.0.0</bullet.core.version>
-        <bullet.record.version>1.0.0</bullet.record.version>
-        <storm.version>2.1.0</storm.version>
+        <bullet.core.version>1.2.0</bullet.core.version>
+        <bullet.record.version>1.1.0</bullet.record.version>
+        <storm.version>2.2.0</storm.version>
     </properties>
 
     <dependencies>
@@ -56,6 +56,24 @@
             <scope>test</scope>
         </dependency>
         -->
+        <!-- There are transitive dependencies that might clash with Storm so place the bullet dependencies first
+             to use any particular versions from the bullet dependencies. E.g. jackson-core -->
+        <dependency>
+            <groupId>com.yahoo.bullet</groupId>
+            <artifactId>bullet-storm</artifactId>
+            <version>${bullet.storm.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.yahoo.bullet</groupId>
+            <artifactId>bullet-record</artifactId>
+            <version>${bullet.record.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.yahoo.bullet</groupId>
+            <artifactId>bullet-core</artifactId>
+            <version>${bullet.core.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
@@ -91,21 +109,6 @@
             <version>${storm.version}</version>
         </dependency>
         -->
-        <dependency>
-            <groupId>com.yahoo.bullet</groupId>
-            <artifactId>bullet-storm</artifactId>
-            <version>${bullet.storm.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.yahoo.bullet</groupId>
-            <artifactId>bullet-record</artifactId>
-            <version>${bullet.record.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.yahoo.bullet</groupId>
-            <artifactId>bullet-core</artifactId>
-            <version>${bullet.core.version}</version>
-        </dependency>
     </dependencies>
     <build>
         <plugins>

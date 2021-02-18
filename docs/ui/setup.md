@@ -76,14 +76,15 @@ The configuration for the UI lets you have different instances of Bullet for dif
 | queryHost                 | The end point (port included) of your Web Service machine that is talking to the Bullet backend |
 | queryNamespace            | Any qualifiers you have after your host and port on your Web Service running on your ```queryHost``` |
 | queryPath                 | The path fragment after the ```queryNamespace``` on your Web Service running on your ```queryHost``` for the WebSocket endpoint |
+| validationPath            | The path fragment after the ```queryNamespace``` on your Web Service running on your ```queryHost``` for the Query Validation endpoint |
 | queryStompRequestChannel  | The fragment after this is the Stomp Request channel as configured in your Web Service for the WebSocket endpoint |
 | queryStompResponseChannel | The fragment after this is the Stomp Response channel as configured in your Web Service for the WebSocket endpoint |
 | schemaHost                | The end point (port included) of your Web Service machine that is serving your schema in the JSON API format (see [Web Service setup](../ws/setup.md) for details.)|
 | schemaNamespace           | The path fragment on your schema Web Service running on the ```schemaHost```. There is no ```schemaPath``` because it **must** be ```columns``` in order for the UI to be able fetch the column resource (the fields in your schema).|
-| modelVersion              | This is used an indicator to apply changes to the stored queries, results etc. It is monotonically increasing. On startup, changes specified in ```migrations``` will be applied if the old modelVersion is not present or is < than this number |
+| modelVersion              | This is used an indicator to apply changes to the stored queries, results etc. It is monotonically increasing. On startup, changes specified in ```migrations``` will be applied if the old modelVersion is not present or is < than this number. This is generally incremented by the UI once backwards-incompatible changes are made. |
 | migrations                | is an object that currently supports one key: ```deletions``` of type string. The value can be set to either ```result``` or ```query```. The former wipes all existing results. The latter wipes everything. See ```modelVersion``` above. |
 | helpLinks                 | Is a list of objects, where each object is a help link. These links populate the "Help" drop-down on the UI's top navbar. You can add links to explain your data for example |
-| defaultQuery              | Can either be a [API Query](../ws/api-json.md) or a URL from which one could be fetched dynamically. The UI makes this the query created on every newly created Query. You could use this as a way to have user specific (for example, cookie based) filters created for your users or customize an aggregation when they create a new query in the UI. Note that if you have are accessing a map subfield and your field value in the filter is set as ```foo.bar``` and you want ```bar``` to be the subfield in the UI query builder, you will need to add a key called ```subfield``` in the filter (not supported by the API) and set its value to ```true``` |
+| defaultQuery              | Can either be a [API Query](../ws/api.md) or a URL from which one could be fetched dynamically. The UI makes this the query created on every newly created Query. You could use this as a way to have user specific (for example, cookie based) filters created for your users or customize an aggregation when they create a new query in the UI. Note that Builder Query do not support all API queries yet but whatever query you specify here (as long as it's a valid query) will be supported in the BQL query page in the UI. If it is not possible to convert your query into a Builder query, a default one will be used instead. |
 | bugLink                   | Is a URL that by default points to the issues page for the UI GitHub repository. You can change it to point to your own custom JIRA queue or something else |
 | defaultValues             | Is an object that lets you configures defaults for various query parameters and lets you tie your custom backend settings to the UI |
 
@@ -93,15 +94,15 @@ These are the properties in the ```defaultValues``` object. The Validated column
 | --------------------------------------- | --------- | ------- | ---------------- |
 | aggregationMaxSize                      | Yes       | Yes     | The size used when doing a Count Distinct, Distinct, Group By, or Distribution query. Set this to your max aggregations size in your backend configuration |
 | rawMaxSize                              | Yes       | Yes     | The maximum size for a Raw query. Set this to your max raw aggregation size in your backend configuration |
-| durationMaxSecs                         | Yes       | Yes     | The maximum duration for a query. Set this to the seconds version of milliseconds max duration in your backend configuration |
+| durationMaxSecs                         | Yes       | Yes     | The maximum duration for a query. Set this to the seconds version of the milliseconds max duration in your backend configuration |
 | distributionNumberOfPoints              | Yes       | No      | The default value filled in for the Number of Points field for all Distribution aggregations |
 | distributionQuantilePoints              | No        | No      | The default value filled in for the Points field for Quantile Distribution aggregations |
 | distributionQuantileStart               | No        | No      | The default value filled in for the Start field for Quantile Distribution aggregations |
 | distributionQuantileEnd                 | No        | No      | The default value filled in for the End field for Quantile Distribution aggregations |
 | distributionQuantileIncrement           | No        | No      | The default value filled in for the Increment field for Quantile Distribution aggregations |
-| windowEmitFrequencyMinSecs              | Yes       | No      | The minimum time interval at which a time based window can be returned. Set this to the minimum window emit frequency from your backend configuration |
+| windowEmitFrequencyMinSecs              | Yes       | No      | The minimum time interval at which a time based window can be returned in seconds. Set this to the minimum window emit frequency from your backend configuration |
 | everyForRecordBasedWindow               | No        | No      | The default value for the number of records in a window for a record based window |
-| everyForTimeBasedWindow                 | No        | No      | The default value for the number of records in a window for a time based window |
+| everyForTimeBasedWindow                 | No        | No      | The default value for the number of records in a window for a time based window in milliseconds |
 | sketches.countDistinctMaxEntries        | No        | Yes     | The maximum entries configured for your Count Distinct sketch in your backend configuration |
 | sketches.groupByMaxEntries              | No        | Yes     | The maximum entries configured for your Group sketch in your backend configuration |
 | sketches.distributionMaxEntries         | No        | Yes     | The maximum entries configured for your Distribution sketch in your backend configuration |
@@ -126,14 +127,17 @@ These are the properties in the ```defaultValues``` object. The Validated column
 You can specify values for each property above in the ```env-settings.json``` file. These will be used when running a custom instance of the UI (see [above](#Running)).
 
 The ```default``` property in the ```env-settings.json``` that loads default settings for the UI that can be selectively overridden based on which environment you are running on. All settings explained above have default values
-that are the same as the [default backend settings](https://github.com/bullet-db/bullet-storm/blob/master/src/main/resources/bullet_defaults.yaml). However, the defaults do not add the ```defaultQuery``` setting explained above.
+that are the same as the [default backend settings](https://github.com/bullet-db/bullet-storm/blob/master/src/main/resources/bullet_defaults.yaml).
 
 ```json
 {
   "default": {
     "queryHost": "http://localhost:5555",
-    "queryNamespace": "api/bullet",
-    "queryPath": "query",
+    "queryNamespace": "api/bullet/queries",
+    "queryPath": "ws-query",
+    "validationPath": "validate-query",
+    "queryStompRequestChannel": "/server/request",
+    "queryStompResponseChannel": "/client/response",
     "schemaHost": "http://localhost:5555",
     "schemaNamespace": "api/bullet",
     "helpLinks": [
@@ -143,17 +147,23 @@ that are the same as the [default backend settings](https://github.com/bullet-db
       }
     ],
     "bugLink": "https://github.com/bullet-db/bullet-ui/issues",
-    "modelVersion": 1,
+    "modelVersion": 4,
+    "migrations": {
+      "deletions": "query"
+    },
+    "defaultQuery": "SELECT COUNT(*) FROM STREAM(60000, TIME) WINDOWING TUMBLING(2000, TIME);",
     "defaultValues": {
-      "aggregationMaxSize": 512,
+      "aggregationMaxSize": 500,
       "rawMaxSize": 100,
-      "durationMaxSecs": 120,
+      "durationMaxSecs": 9007199254740,
       "distributionNumberOfPoints": 11,
       "distributionQuantilePoints": "0, 0.25, 0.5, 0.75, 0.9, 1",
       "distributionQuantileStart": 0,
       "distributionQuantileEnd": 1,
       "distributionQuantileIncrement": 0.1,
-      "queryTimeoutSecs": 3,
+      "windowEmitFrequencyMinSecs": 1,
+      "everyForRecordBasedWindow": 1,
+      "everyForTimeBasedWindow": 2000,
       "sketches": {
         "countDistinctMaxEntries": 16384,
         "groupByMaxEntries": 512,
@@ -163,17 +173,24 @@ that are the same as the [default backend settings](https://github.com/bullet-db
         "topKErrorType": "No False Negatives"
       },
       "metadataKeyMapping": {
-        "theta": "theta",
-        "uniquesEstimate": "uniques_estimate",
-        "queryCreationTime": "query_receive_time",
-        "queryTerminationTime": "query_finish_time",
-        "estimatedResult": "was_estimated",
-        "standardDeviations": "standard_deviations",
-        "normalizedRankError": "normalized_rank_error",
-        "maximumCountError": "maximum_count_error",
-        "itemsSeen": "items_seen",
-        "minimumValue": "minimum_value",
-        "maximumValue": "maximum_value"
+        "querySection": "Query",
+        "windowSection": "Window",
+        "sketchSection": "Sketch",
+        "theta": "Theta",
+        "uniquesEstimate": "Uniques Estimate",
+        "queryCreationTime": "Receive Time",
+        "queryTerminationTime": "Finish Time",
+        "estimatedResult": "Was Estimated",
+        "standardDeviations": "Standard Deviations",
+        "normalizedRankError": "Normalized Rank Error",
+        "maximumCountError": "Maximum Count Error",
+        "itemsSeen": "Items Seen",
+        "minimumValue": "Minimum Value",
+        "maximumValue": "Maximum Value",
+        "windowNumber": "Number",
+        "windowSize": "Size",
+        "windowEmitTime": "Emit Time",
+        "expectedEmitTime": "Expected Emit Time"
       }
     }
   }
@@ -215,13 +232,14 @@ To cement all this, if you wanted an instance of the UI in your CI environment, 
 
 Your UI on your CI environment will:
 
-  * POST to ```http://bullet-ws.dev.domain.com:4080/bullet/api/drpc``` for UI created Bullet queries
-  * GET the schema from ```http://bullet-ws.dev.domain.com:4080/bullet/api/columns```
+  * Talk using Websockets to ```http://bullet-ws.dev.domain.com:4080/api/bullet/ws-query``` for UI created Bullet queries
+  * GET the schema from ```http://bullet-ws.dev.domain.com:4080/api/bullet/columns```
+  * Validate queries in the BQL page with ```http://bullet-ws.dev.domain.com:4080/api/bullet/validate-query```
   * Populate an additional link on the Help drop-down pointing to ```http://data.docs.domain.com```
   * Allow queries to run as long as 300 seconds
   * Use 32768 in the help menu for the max number of unique elements that can be counted exactly
   * Allow only 50 points to be generated for Distribution queries
-  * GET and cache a defaultQuery from ```http://bullet-ws.dev.domain.com:4080/custom-endpoint/api/defaultQuery```
+  * GET and cache a default query from ```http://bullet-ws.dev.domain.com:4080/custom-endpoint/api/defaultQuery```
 
 You would make express use these settings by running
 

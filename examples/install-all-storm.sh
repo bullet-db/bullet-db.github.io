@@ -2,12 +2,12 @@
 
 set -euo pipefail
 
-BULLET_EXAMPLES_VERSION=0.6.1
-BULLET_UI_VERSION=0.6.2
-BULLET_WS_VERSION=0.4.3
-STORM_VERSION=1.2.2
-NVM_VERSION=0.33.1
-NODE_VERSION=6.9.4
+BULLET_EXAMPLES_VERSION=1.0.0
+BULLET_UI_VERSION=1.0.0
+BULLET_WS_VERSION=1.0.0
+STORM_VERSION=2.2.0
+NVM_VERSION=0.37.2
+NODE_VERSION=10.20.1
 
 println() {
     local DATE
@@ -132,7 +132,8 @@ launch_bullet_web_service() {
     println "Launching Bullet Web Service with the built-in REST PubSub enabled..."
     cd "${BULLET_SERVICE_HOME}"
     java -jar ${BULLET_SERVICE_HOME}/bullet-service.jar \
-         --bullet.pubsub.config=${BULLET_SERVICE_HOME}/example_rest_pubsub_config.yaml  \
+         --bullet.pubsub.config=${BULLET_SERVICE_HOME}/example_rest_pubsub_config.yaml \
+         --bullet.query.config=${BULLET_SERVICE_HOME}/example_query_config.yaml \
          --bullet.schema.file=${BULLET_SERVICE_HOME}/example_columns.json \
          --server.port=9999  --bullet.pubsub.builtin.rest.enabled=true --logging.path="${BULLET_SERVICE_HOME}" \
          --logging.file=log.txt &> "${BULLET_SERVICE_HOME}/log.txt" &
@@ -141,19 +142,19 @@ launch_bullet_web_service() {
     sleep 15
 
     println "Testing the Web Service"
-    println ""
-    println "Getting one random record from Bullet through the Web Service..."
-    curl -s -H 'Content-Type: text/plain' -X POST -d '{"aggregation": {"size": 1}}' http://localhost:9999/api/bullet/sse-query
-    println ""
     println "Getting column schema from the Web Service..."
     println ""
     curl -s http://localhost:9999/api/bullet/columns
+    println ""
+    println "Getting one random record from Bullet through the Web Service..."
+    curl -s -H 'Content-Type: text/plain' -X POST -d 'SELECT * FROM STREAM(2000, TIME) LIMIT 1;' http://localhost:9999/api/bullet/queries/sse-query
+    println ""
     println "Finished Bullet Web Service test!"
 }
 
 install_node() {
     # NVM unset var bug
-    set +u
+    set +eu
 
     println "Trying to install nvm. If there is a failure, manually perform: "
     println "    curl -s https://raw.githubusercontent.com/creationix/nvm/v${NVM_VERSION}/install.sh | bash"
@@ -172,7 +173,7 @@ install_node() {
     nvm install "v${NODE_VERSION}"
     nvm use "v${NODE_VERSION}"
 
-    set -u
+    set -eu
 
     println "Done!"
 }

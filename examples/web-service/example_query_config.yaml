@@ -1,0 +1,4 @@
+# Custom or notable settings for the example
+# Settings not overridden will default to values in bullet_defaults.yaml in the bullet-core artifact.
+
+bullet.query.aggregation.max.size: 1024

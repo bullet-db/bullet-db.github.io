@@ -17,7 +17,7 @@ build-spark:
 	mkdir -p bullet-examples/backend/spark
 	cp install-all-spark.sh bullet-examples/
 	cd spark && mvn package
-	cp spark/target/bullet-spark-example-0.0.1-SNAPSHOT.jar bullet-examples/backend/spark/bullet-spark-example.jar
+	cp spark/target/bullet-spark-example-*-SNAPSHOT.jar bullet-examples/backend/spark/bullet-spark-example.jar
 	cp spark/src/main/resources/bullet_spark_kafka_settings.yaml bullet-examples/backend/spark
 
 build-web-service:

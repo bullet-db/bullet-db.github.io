@@ -33,6 +33,7 @@ Data placed into a Bullet Record is strongly typed. We support these types curre
 
 1. Map of Strings to any of the [Primitives](#primitives)
 2. Map of Strings to any Map in 1
+3. List of any of the [Primitives](#primitives)
 3. List of any Map in 1
 
 With these types, it is unlikely you would have data that cannot be represented as Bullet Record but if you do, please let us know and we are more than willing to accommodate.
