@@ -7,7 +7,7 @@ At the end of this section, you will have:
   * Setup the Bullet topology using a custom spout on [bullet-storm-1.0.0](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-1.0.0)
   * Setup the [Web Service](../ws/setup.md) talking to the topology and serving a schema for your UI using [bullet-service-1.0.0](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-1.0.0)
   * Setup the [REST PubSub](../pubsub/rest.md) talking to the topology and Web Service using [bullet-core-1.2.0](https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-1.2.0).
-  * Setup the [UI](../ui/setup.md) talking to the Web Service using [bullet-ui-1.0.0](https://github.com/bullet-db/bullet-ui/releases/tag/v1.0.0)
+  * Setup the [UI](../ui/setup.md) talking to the Web Service using [bullet-ui-1.0.1](https://github.com/bullet-db/bullet-ui/releases/tag/v1.0.1)
 
 **Prerequisites**
 
@@ -173,8 +173,8 @@ nvm use v10.20.1
 
 ```bash
 cd $BULLET_HOME/ui
-curl -LO https://github.com/bullet-db/bullet-ui/releases/download/v1.0.0/bullet-ui-v1.0.0.tar.gz
-tar -xzf bullet-ui-v1.0.0.tar.gz
+curl -LO https://github.com/bullet-db/bullet-ui/releases/download/v1.0.1/bullet-ui-v1.0.1.tar.gz
+tar -xzf bullet-ui-v1.0.1.tar.gz
 cp $BULLET_EXAMPLES/ui/env-settings.json config/
 ```
 

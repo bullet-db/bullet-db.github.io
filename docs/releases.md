@@ -186,6 +186,7 @@ The Bullet UI that lets you build, run, save and visualize results from Bullet.
 
 |    Date      |                                      Release                                           | Highlights |
 | ------------ | -------------------------------------------------------------------------------------- | ---------- |
+| 2021-02-18   | [**1.0.1**](https://github.com/bullet-db/bullet-ui/releases/tag/v1.0.1) | Stomp Websocket disconnect on query end |
 | 2021-01-12   | [**1.0.0**](https://github.com/bullet-db/bullet-ui/releases/tag/v1.0.0) | Ember 3 Octane, BQL support, new filter operators |
 | 2019-03-18   | [**0.6.2**](https://github.com/bullet-db/bullet-ui/releases/tag/v0.6.2) | Logo update |
 | 2018-10-05   | [**0.6.1**](https://github.com/bullet-db/bullet-ui/releases/tag/v0.6.1) | Timeseries Graphing, Bar, Pie Charts and FontAwesome |

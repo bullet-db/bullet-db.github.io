@@ -176,8 +176,8 @@ nvm use v10.20.1
 #### Step 13: Install the Bullet UI
 
 ```bash
-curl -LO https://github.com/bullet-db/bullet-ui/releases/download/v1.0.0/bullet-ui-v1.0.0.tar.gz
-tar -xzf bullet-ui-v1.0.0.tar.gz
+curl -LO https://github.com/bullet-db/bullet-ui/releases/download/v1.0.1/bullet-ui-v1.0.1.tar.gz
+tar -xzf bullet-ui-v1.0.1.tar.gz
 cp $BULLET_EXAMPLES/ui/env-settings.json config/
 ```
 
