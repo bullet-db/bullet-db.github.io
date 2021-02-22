@@ -72,7 +72,7 @@ install_bullet_examples() {
 
 install_storm() {
     println "Downloading Storm ${STORM_VERSION}..."
-    download "http://apache.org/dist/storm/${STORM_DISTRO}" "${STORM_DISTRO}.zip"
+    download "https://downloads.apache.org/storm/${STORM_DISTRO}" "${STORM_DISTRO}.zip"
 
     println "Installing Storm ..."
     unzip -qq "${BULLET_DOWNLOADS}/${STORM_DISTRO}.zip" -d "${BULLET_HOME}/backend"

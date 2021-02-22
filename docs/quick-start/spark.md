@@ -21,7 +21,7 @@ Simply run:
 curl -sLo- https://raw.githubusercontent.com/bullet-db/bullet-db.github.io/src/examples/install-all-spark.sh | bash
 ```
 
-This will setup a local Spark and Kafka cluster, a Bullet running on it, the Bullet Web Service and a Bullet UI for you. Once everything has launched, you should be able to go to the Bullet UI running locally at [http://localhost:8800](http://localhost:8800). You can then [**continue this guide from here**](#what-did-we-do).
+This will setup a local Spark and Kafka cluster, a Bullet running on it, the Bullet Web Service and a Bullet UI for you. Once everything has launched, you should be able to go to the Bullet UI running locally at [http://localhost:8800](http://localhost:8800). You can then [**continue this guide from here**](#playing-around-with-the-instance).
 
 !!! note "Want to DIY?"
     If you want to manually run all the commands or if the script died while doing something above (might want to perform the [teardown](#teardown) first), you can continue below.
@@ -193,7 +193,7 @@ Visit [http://localhost:8800](http://localhost:8800) to query your topology with
 
     If you access the UI from another machine than where your UI is actually running, you will need to edit ```config/env-settings.json```. Since the UI is a client-side app, the machine that your browser is running on will fetch the UI and attempt to use these settings to talk to the Web Service. Since they point to localhost by default, your browser will attempt to connect there and fail. An easy fix is to change ```localhost``` in your env-settings.json to point to the host name where you will hosting the UI. This will be the same as the UI host you use in the browser. You can also do a local port forward on the machine accessing the UI by running: ```ssh -N -L 8800:localhost:8800 -L 9999:localhost:9999 hostname-of-the-quickstart-components 2>&1```.
 
-#### Playing around with the instance:
+## Playing around with the instance
 
 Check out and follow along with the [UI Usage](../ui/usage.md) page as it shows you some queries you can run using this UI.
 

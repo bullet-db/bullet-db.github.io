@@ -23,7 +23,7 @@ Simply run:
 curl -sLo- https://raw.githubusercontent.com/bullet-db/bullet-db.github.io/src/examples/install-all-storm.sh | bash
 ```
 
-This will setup a local Storm cluster, a Bullet running on it, the Bullet Web Service and a Bullet UI for you. Once everything has launched, you should be able to go to the Bullet UI running locally at [http://localhost:8800](http://localhost:8800). You can then [**continue this guide from here**](#what-did-we-do).
+This will setup a local Storm cluster, a Bullet running on it, the Bullet Web Service and a Bullet UI for you. Once everything has launched, you should be able to go to the Bullet UI running locally at [http://localhost:8800](http://localhost:8800). You can then [**continue this guide from here**](#playing-around-with-the-instance).
 
 !!! note "Want to DIY?"
     If you want to manually run all the commands or if the script died while doing something above (might want to perform the [teardown](#teardown) first), you can continue below.
@@ -52,7 +52,7 @@ export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 
 ```bash
 cd $BULLET_HOME/backend
-curl -O http://apache.org/dist/storm/apache-storm-2.2.0/apache-storm-2.2.0.zip
+curl -LO https://downloads.apache.org/storm/apache-storm-2.2.0/apache-storm-2.2.0.zip
 unzip apache-storm-2.2.0.zip
 export PATH=$(pwd)/apache-storm-2.2.0/bin/:$PATH
 ```
@@ -131,7 +131,7 @@ Visit the UI and see if the topology is up. You should see the ```DataSource``` 
 
 ```bash
 cd $BULLET_HOME/service
-curl -Lo bullet-service.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/0.4.3/bullet-service-0.4.3-embedded.jar
+curl -Lo bullet-service.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/1.0.0/bullet-service-1.0.0-embedded.jar
 cp $BULLET_EXAMPLES/web-service/example* $BULLET_HOME/service/
 ```
 
@@ -147,7 +147,7 @@ Note that we turned on the built-in REST pubsub in the Web Service when launchin
 You can verify that it is up by running a Bullet query or getting the example columns through the API:
 
 ```bash
-curl -s -H 'Content-Type: text/plain' -X POST -d '{"aggregation": {"size": 1}}' http://localhost:9999/api/bullet/sse-query
+curl -s -H 'Content-Type: text/plain' -X POST -d 'SELECT * FROM STREAM(10000, TIME) LIMIT 1' http://localhost:9999/api/bullet/queries/sse-query
 curl -s http://localhost:9999/api/bullet/columns
 ```
 
