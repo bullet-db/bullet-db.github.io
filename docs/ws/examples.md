@@ -203,7 +203,20 @@ LIMIT 1;
 
 !!! note "Typing"
 
-    If demographics.age was of type Long, then Bullet will convert 85 to be an Long, but in this example, we are pretending that it is String.  So, no conversion is made. Similarly for link_id, id, experience and page_id. tags is a Map of String to Boolean so Bullet converts ```"true"``` to the Boolean ```true```. Till we support casting ([#37](https://github.com/bullet-db/bullet-core/issues/37)), this will be the behavior automatically enforced by Bullet.
+    If demographics.age was of type Long, then Bullet will convert 85 to be an Long, but in this example, we are pretending that it is String.  So, no conversion is made. Similarly for link_id, id, experience and page_id. tags is a Map of String to Boolean so Bullet converts ```"true"``` to the Boolean ```true```. See below on how to rewrite it with casting.
+
+
+#### Logical Filters and Projections with Casting
+
+    ```SQL
+    SELECT id AS id, experience AS experience, page_id AS pid,
+           link_id AS lid, tags AS tags, CAST(demographics.age AS LONG) AS age
+    FROM STREAM(60000, TIME)
+    WHERE (id = 'c14plm1begla7' AND ((experience = 'web' AND page_id IN ['18025', '47729'])
+                                      OR link_id RLIKE '2.*'))
+          OR (tags.player = 'true' AND CAST(demographics.age AS LONG) > 65L)
+    LIMIT 1;
+    ```
 
 This query is looking for a single event with a specific id and either the page_id is in two specific pages on the "web" experience or with a link_id that starts with 2, or a player event where the age is greater than "65". In other words, it is looking for senior citizens who generate video player events or the events of a particular person (based on id) events on two specific pages or a group of pages that have link that have ids that start with 2. It then projects out only these fields with different names.
 
@@ -217,7 +230,7 @@ A sample result could look like (it matched because of tags.player was true and 
             "id":"0qcgofdbfqs9s",
             "experience":"web",
             "lid":"978500434",
-            "age":"66",
+            "age":66,
             "tags":{"player":true}
         }
     ],
