@@ -409,6 +409,11 @@
                     </li>
             
                     <li class="second-level">
+                        <a href="#playing-around-with-the-instance">Playing around with the instance</a>
+                        
+                    </li>
+            
+                    <li class="second-level">
                         <a href="#teardown">Teardown</a>
                         
                     </li>
@@ -465,7 +470,7 @@
 <pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/bullet-db/bullet-db.github.io/src/examples/install-all-spark.sh | bash
 </code></pre>
 
-<p>This will setup a local Spark and Kafka cluster, a Bullet running on it, the Bullet Web Service and a Bullet UI for you. Once everything has launched, you should be able to go to the Bullet UI running locally at <a href="http://localhost:8800">http://localhost:8800</a>. You can then <a href="#what-did-we-do"><strong>continue this guide from here</strong></a>.</p>
+<p>This will setup a local Spark and Kafka cluster, a Bullet running on it, the Bullet Web Service and a Bullet UI for you. Once everything has launched, you should be able to go to the Bullet UI running locally at <a href="http://localhost:8800">http://localhost:8800</a>. You can then <a href="#playing-around-with-the-instance"><strong>continue this guide from here</strong></a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Want to DIY?</p>
 <p>If you want to manually run all the commands or if the script died while doing something above (might want to perform the <a href="#teardown">teardown</a> first), you can continue below.</p>
@@ -592,7 +597,7 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
 <p class="admonition-title">Running it remotely?</p>
 <p>If you access the UI from another machine than where your UI is actually running, you will need to edit <code>config/env-settings.json</code>. Since the UI is a client-side app, the machine that your browser is running on will fetch the UI and attempt to use these settings to talk to the Web Service. Since they point to localhost by default, your browser will attempt to connect there and fail. An easy fix is to change <code>localhost</code> in your env-settings.json to point to the host name where you will hosting the UI. This will be the same as the UI host you use in the browser. You can also do a local port forward on the machine accessing the UI by running: <code>ssh -N -L 8800:localhost:8800 -L 9999:localhost:9999 hostname-of-the-quickstart-components 2&gt;&amp;1</code>.</p>
 </div>
-<h4 id="playing-around-with-the-instance">Playing around with the instance:</h4>
+<h2 id="playing-around-with-the-instance">Playing around with the instance</h2>
 <p>Check out and follow along with the <a href="../../ui/usage/">UI Usage</a> page as it shows you some queries you can run using this UI.</p>
 <h2 id="teardown">Teardown</h2>
 <p>When you are done trying out Bullet, you can stop the processes and cleanup using the instructions below.</p>

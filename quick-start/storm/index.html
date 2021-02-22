@@ -467,7 +467,7 @@
 <pre><code class="bash">curl -sLo- https://raw.githubusercontent.com/bullet-db/bullet-db.github.io/src/examples/install-all-storm.sh | bash
 </code></pre>
 
-<p>This will setup a local Storm cluster, a Bullet running on it, the Bullet Web Service and a Bullet UI for you. Once everything has launched, you should be able to go to the Bullet UI running locally at <a href="http://localhost:8800">http://localhost:8800</a>. You can then <a href="#what-did-we-do"><strong>continue this guide from here</strong></a>.</p>
+<p>This will setup a local Storm cluster, a Bullet running on it, the Bullet Web Service and a Bullet UI for you. Once everything has launched, you should be able to go to the Bullet UI running locally at <a href="http://localhost:8800">http://localhost:8800</a>. You can then <a href="#playing-around-with-the-instance"><strong>continue this guide from here</strong></a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Want to DIY?</p>
 <p>If you want to manually run all the commands or if the script died while doing something above (might want to perform the <a href="#teardown">teardown</a> first), you can continue below.</p>
@@ -488,7 +488,7 @@ export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 
 <h4 id="step-2-install-storm-22">Step 2: Install Storm 2.2</h4>
 <pre><code class="bash">cd $BULLET_HOME/backend
-curl -O http://apache.org/dist/storm/apache-storm-2.2.0/apache-storm-2.2.0.zip
+curl -LO https://downloads.apache.org/storm/apache-storm-2.2.0/apache-storm-2.2.0.zip
 unzip apache-storm-2.2.0.zip
 export PATH=$(pwd)/apache-storm-2.2.0/bin/:$PATH
 </code></pre>
@@ -544,7 +544,7 @@ storm supervisor &amp;
 <h3 id="setting-up-the-bullet-web-service">Setting up the Bullet Web Service</h3>
 <h4 id="step-6-install-the-bullet-web-service">Step 6: Install the Bullet Web Service</h4>
 <pre><code class="bash">cd $BULLET_HOME/service
-curl -Lo bullet-service.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/0.4.3/bullet-service-0.4.3-embedded.jar
+curl -Lo bullet-service.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/1.0.0/bullet-service-1.0.0-embedded.jar
 cp $BULLET_EXAMPLES/web-service/example* $BULLET_HOME/service/
 </code></pre>
 
@@ -555,7 +555,7 @@ java -jar bullet-service.jar --bullet.pubsub.config=example_rest_pubsub_config.y
 
 <p>Note that we turned on the built-in REST pubsub in the Web Service when launching it. The REST PubSub is bundled into the Bullet API by default, so no additional jars are needed.</p>
 <p>You can verify that it is up by running a Bullet query or getting the example columns through the API:</p>
-<pre><code class="bash">curl -s -H 'Content-Type: text/plain' -X POST -d '{&quot;aggregation&quot;: {&quot;size&quot;: 1}}' http://localhost:9999/api/bullet/sse-query
+<pre><code class="bash">curl -s -H 'Content-Type: text/plain' -X POST -d 'SELECT * FROM STREAM(10000, TIME) LIMIT 1' http://localhost:9999/api/bullet/queries/sse-query
 curl -s http://localhost:9999/api/bullet/columns
 </code></pre>
 
