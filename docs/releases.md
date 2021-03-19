@@ -86,7 +86,7 @@ The implementation of Bullet on Storm. Due to major API changes between Storm <=
 
 |    Date      |                            Storm 1.0+                                       |                                 Storm 0.10                                  | Highlights | APIDocs |
 | ------------ | --------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ---------- | ------- |
-| 2021-03-19   | [**1.1.0**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-1.0.1) | - | SpoutConnector | [JavaDocs](apidocs/bullet-storm/1.1.0/index.html) |
+| 2021-03-19   | [**1.1.0**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-1.1.0) | - | SpoutConnector | [JavaDocs](apidocs/bullet-storm/1.1.0/index.html) |
 | 2021-03-01   | [**1.0.1**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-1.0.1) | - | Extra submit API with Storm Config | [JavaDocs](apidocs/bullet-storm/1.0.1/index.html) |
 | 2021-01-12   | [**1.0.0**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-1.0.0) | - | Bullet Core 1.1, Replay, Storage | [JavaDocs](apidocs/bullet-storm/1.0.0/index.html) |
 | 2019-02-07   | [**0.9.1**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.9.1) | [**0.9.1**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.9.1) | Bullet DSL 0.1.2 and packaging fixes | [JavaDocs](apidocs/bullet-storm/0.9.1/index.html) |
