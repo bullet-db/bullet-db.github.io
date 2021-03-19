@@ -86,6 +86,7 @@ The implementation of Bullet on Storm. Due to major API changes between Storm <=
 
 |    Date      |                            Storm 1.0+                                       |                                 Storm 0.10                                  | Highlights | APIDocs |
 | ------------ | --------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ---------- | ------- |
+| 2021-03-19   | [**1.1.0**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-1.0.1) | - | SpoutConnector | [JavaDocs](apidocs/bullet-storm/1.1.0/index.html) |
 | 2021-03-01   | [**1.0.1**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-1.0.1) | - | Extra submit API with Storm Config | [JavaDocs](apidocs/bullet-storm/1.0.1/index.html) |
 | 2021-01-12   | [**1.0.0**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-1.0.0) | - | Bullet Core 1.1, Replay, Storage | [JavaDocs](apidocs/bullet-storm/1.0.0/index.html) |
 | 2019-02-07   | [**0.9.1**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.9.1) | [**0.9.1**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.9.1) | Bullet DSL 0.1.2 and packaging fixes | [JavaDocs](apidocs/bullet-storm/0.9.1/index.html) |
@@ -244,6 +245,7 @@ A DSL to plug data sources into the Bullet Backend and Web Service.
 
 |    Date      |                                  Release                                                 | Highlights | APIDocs |
 | ------------ | ---------------------------------------------------------------------------------------- | ---------- | ------- |
+| 2021-03-18   | [**1.1.1**](https://github.com/bullet-db/bullet-dsl/releases/tag/bullet-dsl-1.1.0) | AvroBulletRecordConverter fixing String types | [JavaDocs](apidocs/bullet-dsl/1.1.1/index.html) |
 | 2021-02-17   | [**1.1.0**](https://github.com/bullet-db/bullet-dsl/releases/tag/bullet-dsl-1.1.0) | JSONBulletRecordConverter | [JavaDocs](apidocs/bullet-dsl/1.1.0/index.html) |
 | 2021-02-11   | [**1.0.1**](https://github.com/bullet-db/bullet-dsl/releases/tag/bullet-dsl-1.0.1) | Bullet Core 1.2, Unsets default connector/converter | [JavaDocs](apidocs/bullet-dsl/1.0.1/index.html) |
 | 2020-10-30   | [**1.0.0**](https://github.com/bullet-db/bullet-dsl/releases/tag/bullet-dsl-1.0.0) | Bullet Core 1.1, Types to match Bullet Record 1.1 | [JavaDocs](apidocs/bullet-dsl/1.0.0/index.html) |
