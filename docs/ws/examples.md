@@ -156,6 +156,44 @@ WHERE NOT CONTAINSVALUE(data_map, 'btsg8l9b234ha')
 LIMIT 1;
 ```
 
+### Filtering with NOW Keyword
+
+```SQL
+SELECT *
+FROM STREAM(30000, TIME)
+WHERE event_timestamp >= NOW
+LIMIT 10;
+```
+    
+### BETWEEN Filter
+
+This query checks to see if the field ```heart_rate``` is in-between 70 and 100 inclusive and returns all records for which this is true. The ```BETWEEN``` operator can be written in two ways as shown below.
+
+```SQL
+SELECT *
+FROM STREAM(30000, TIME)
+WHERE heart_rate BETWEEN (70, 100)
+LIMIT 10;
+```
+
+```SQL
+SELECT *
+FROM STREAM(30000, TIME)
+WHERE BETWEEN(heart_rate, 70, 100)
+LIMIT 10;
+```
+
+### IN Filter
+
+This query checks to see if the field ```color``` is in the given list and returns all records for which is true. 
+
+```SQL
+SELECT *
+FROM STREAM(30000, TIME)
+WHERE color IN ('red', 'green', 'blue')
+LIMIT 10;
+```
+
 ### Relational Filter comparing to other fields
 
 Instead of comparing to static, constant values, you may use the extended values notation and set ```kind``` to ```FIELD``` to  compare to other fields within the same record. The following query returns the first record for which the ```id``` field is set to the ```uid``` field.
@@ -1003,6 +1041,97 @@ subtract 24 from it, you get the lower bound of the true count.
 
 Note that this also means the order of the items could be off. If two items had ```Count``` within 24 of each other, it is possible that the higher one *may* actually have had a true count *lower* than
 the second one and possibly be ranked higher. There is no such situation in this result set.
+
+### Lateral View Explode
+
+```SQL
+SELECT student, score
+FROM STREAM(30000, TIME)
+LATERAL VIEW EXPLODE(test_scores) AS (student, score)
+WHERE score >= 80
+LIMIT 10;
+```
+
+This query explodes the map ```test_scores``` to the fields ```student``` and ```score```. This effectively generates a record with a key field and value field for each entry in the exploded map. 
+The lateral view means the generated records are appended to the original record, though in this query, only the exploded fields have been selected.
+
+```javascript
+{
+   "records":[
+      {
+         "student": "Roger",
+         "score": 90
+      },
+      {
+         "student": "Albert",
+         "score": 92
+      },
+      {
+         "student": "Emily",
+         "score": 90
+      },
+      {
+         "student": "Winston",
+         "score": 81
+      },
+      {
+         "student": "Jeff",
+         "score": 95
+      },
+      {
+         "student": "Kristen",
+         "score": 97
+      },
+      {
+         "student": "Percy",
+         "score": 85
+      },
+      {
+         "student": "Tyson",
+         "score": 80
+      },
+      {
+         "student": "Jackie",
+         "score": 89
+      },
+      {
+         "student": "Alice",
+         "score": 100
+      }
+   ],
+   "meta": "<EDITED OUT>"
+}
+```
+
+Lateral view explode can be used to also explode lists to a single field. Multiple lateral view explodes can also be chained in the same query.
+
+### Outer Query
+
+```SQL
+SELECT COUNT(*)
+FROM (
+    SELECT browser_name, COUNT(*)
+    FROM STREAM(30000, TIME)
+    GROUP BY browser_name
+    HAVING COUNT(*) > 10
+)
+```
+
+This query has an inner query wrapped by an outer query. Note that the inner query selects from ```STREAM``` and is thus the main query while the outer query selects from the inner query.
+Note also that the inner/main query can have a window while the outer query cannot.
+
+The query above counts the number of browser names that appear more than 10 times in 30 seconds. 
+
+```javascript
+{
+   "records":[
+      {
+         "COUNT(*)": 6
+      }
+   ],
+   "meta": "<EDITED OUT>"
+}
+```
 
 ### Window - Tumbling Group-By
 

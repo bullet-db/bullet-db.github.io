@@ -12,55 +12,89 @@ Bullet-BQL provides users with a friendly SQL-like API to submit queries to the 
 
 ## Statement Syntax
 
-    SELECT select
-    FROM stream
+`query` is one of
+
+    innerQuery
+    outerQuery
+    
+where `innerQuery` is
+
+    SELECT select FROM stream
+    ( LATERAL VIEW lateralView )?
     ( WHERE expression )?
-    ( GROUP BY expression ( , expression )* )?
+    ( GROUP BY expressions )?
     ( HAVING expression )?
     ( ORDER BY orderBy )?
     ( WINDOWING window )?
     ( LIMIT Integer )?
-    ';'?
+    
+and `outerQuery` is
 
-where `select` is
-
+    SELECT select FROM ( innerQuery )
+    ( LATERAL VIEW lateralView )?
+    ( WHERE expression )?
+    ( GROUP BY expressions )?
+    ( HAVING expression )?
+    ( ORDER BY orderBy )?
+    ( LIMIT Integer )?
+    
+where `select` is 
+    
     DISTINCT? selectItem ( , selectItem )*
-
+    
 and `selectItem` is one of
 
     expression ( AS? identifier )?
+    tableFunction
     *
 
 and `expression` is one of
 
     valueExpression                                                                         
-    fieldExpression                                                                         
+    fieldExpression ( : fieldType )?
+    subFieldExpression ( : fieldType )?
+    subSubFieldExpression ( : fieldType )?                                                                         
     listExpression                                                                          
     expression IS NULL                                                                      
     expression IS NOT NULL                                                                  
     unaryExpression                                                                         
-    functionExpression                                                                      
-    expression NOT? IN expression                                    
-    expression RLIKE ANY? expression                                 
-    expression ( * | / ) expression                                  
+    functionExpression                                                                                                       
+    expression ( * | / | % ) expression                                  
     expression ( + | - ) expression                                      
     expression ( < | <= | > | >= ) ( ANY | ALL )? expression         
-    expression ( = | != ) ( ANY | ALL )? expression                    
+    expression ( = | != ) ( ANY | ALL )? expression
+    expression NOT? RLIKE ANY? expression
+    expression NOT? IN expression
+    expression NOT? IN ( expressions )
+    expressioon NOT? BETWEEN ( expression, expression )
     expression AND expression                                                 
     expression XOR expression                                                 
     expression OR expression                                                  
     ( expression )                                                                      
 
-where `valueExpression` is one of Null, Boolean, Integer, Long, Float, Double, or String
+and `expressions` is
 
-and `fieldExpression` is one of
+    expression ( , expression )*
 
-    identifier ( : fieldType )?
-    identifier [ Integer ] ( : fieldType )?
-    identifier [ Integer ] . identifier ( : fieldType )?
-    identifier . identifier ( : fieldType )?
-    identifier . identifier . identifier ( : fieldType )?
+where `valueExpression` is one of Null, Boolean, Integer, Long, Float, Double, String, or `NOW` - a keyword that is converted to the current unix time in milliseconds
 
+and `fieldExpression` is
+
+    identifier
+    
+and `subFieldExpression` is one of
+
+    fieldExpression [ Integer ]
+    fieldExpression [ String ]
+    fieldExpression [ expression ]
+    fieldExpression . identifier
+    
+and `subSubFieldExpression` is one of
+
+    subFieldExpression [ String ]
+    subFieldExpression [ expression ]
+    subFieldExpression . identifier
+    
 `fieldType` is one of
 
     primitiveType
@@ -68,22 +102,25 @@ and `fieldExpression` is one of
     MAP [ primitiveType ]
     LIST [ MAP [ primitiveType ] ]
     MAP [ MAP [ primitiveType ] ]
-
+    
 and `primitiveType` is `INTEGER`, `LONG`, `FLOAT`, `DOUBLE`, `BOOLEAN`, or `STRING`
 
 where `listExpression` is one of
-
+    
     []
-    [ expression ( , expression )* ]
+    [ expressions ]
 
-`unaryExpression` is
-
+`unaryExpression` is 
+    
     ( NOT | SIZEOF ) ( expression )                                                 with optional parentheses
+    ( ABS | TRIM | LOWER | UPPER ) ( expression )                                   with non-optional parentheses
 
 `functionExpression` is one of
 
-    ( SIZEIS | CONTAINSKEY | CONTAINSVALUE | FILTER ) ( expression, expression )      
-    IF ( expression ( , expression )* )                                             three arguments                         
+    ( SIZEIS | CONTAINSKEY | CONTAINSVALUE | FILTER ) ( expression , expression )
+    UNIXTIMESTAMP ( expressions? )                                                  zero, one, or two arguments
+    SUBSTRING ( expressions? )                                                      two or three arguments
+    ( IF | BETWEEN ) ( expressions? )                                               three arguments                         
     aggregateExpression                               
     CAST ( expression AS primitiveType )          
 
@@ -104,23 +141,32 @@ and `inputMode` is one of
     MANUAL, Number ( , Number )*                                                    defined points
 
 
+and `tableFunction` is one of
+
+    OUTER? EXPLODE ( expression ) AS identifier                                     explode a list to one column
+    OUTER? EXPLODE ( expression ) AS ( identifier , identifier )                    explode a map to a key and a value column
+
 and `stream` is one of
 
     STREAM()                                                                        default time duration will be set from BQLConfig
-    STREAM( ( Integer | MAX ), TIME )                                               time based duration control
+    STREAM( ( Integer | MAX ), TIME )                                               time based duration control 
 
 `RECORD` will be supported in the future.
 
-and `orderBy` is
+and `lateralView` is
+
+    tableFunction (LATERAL VIEW tableFunction)*
+
+and `orderBy` is 
 
     expression ( ASC | DESC )? ( , expression ( ASC | DESC )? )*
 
-and `window` is one of
+and `window` is one of 
 
     EVERY ( Integer, ( TIME | RECORD ), include )
     TUMBLING ( Integer, ( TIME | RECORD ) )
 
-`include` is one of
+`include` is one of 
 
     ALL
     FIRST, Integer, ( TIME | RECORD )
