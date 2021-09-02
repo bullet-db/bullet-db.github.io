@@ -1103,7 +1103,19 @@ The lateral view means the generated records are appended to the original record
 }
 ```
 
-Lateral view explode can be used to also explode lists to a single field. Multiple lateral view explodes can also be chained in the same query.
+### Multiple Lateral View Explodes
+
+Multiple lateral view explodes can also be chained in the same query. For instance, using the above example, instead of the map ```test_scores```, there is the list of maps ```tests```.
+This list could be exploded into a field ```test_scores``` which could the be exploded into the fields ```student``` and ```score``` as before. 
+
+```SQL
+SELECT student, score
+FROM STREAM(30000, TIME)
+LATERAL VIEW EXPLODE(tests) AS test_scores
+LATERAL VIEW EXPLODE(test_scores) AS (student, score)
+WHERE score >= 80
+LIMIT 10;
+```
 
 ### Outer Query
 
