@@ -24,12 +24,15 @@ function copy_docs() {
   local VERSION=$2
   local DEST=$3
 
-  local PATH="${DEST}/apidocs/${PROJECT}/${VERSION}"
-  echo "Making ${PATH} if necessary..."
-  mkdir -p $PATH
+  local TARGET="${DEST}/apidocs/${PROJECT}/${VERSION}"
+  echo "Deleting ${TARGET} if it exists..."
+  rm -rf ${TARGET}
 
-  echo "Copying docs to ${PATH}..."
-  cp -r target/site/*docs/* $PATH/
+  echo "Making ${TARGET} if necessary..."
+  mkdir -p $TARGET
+
+  echo "Copying docs to ${TARGET}..."
+  cp -r target/site/*docs/* $TARGET/
 }
 
 build_docs $1 $2
