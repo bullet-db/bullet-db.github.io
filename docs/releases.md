@@ -10,7 +10,29 @@ API (Java and Scala) docs can also be found for the releases below.
 
 ## Download
 
-For downloading any artifact listed below manually, you should preferably use the [**JCenter mirror here**](https://jcenter.bintray.com/com/yahoo/bullet/). For resolving artifacts in your build tool, follow the direcions in each of the components' Package Manager Setup sections.
+For downloading any of the latest artifacts listed below, you should use [Maven Central](https://repo1.maven.org/maven2/com/yahoo/bullet/). For resolving artifacts in your build tool, follow the directions in each of the components' Package Manager Setup sections.
+
+### JCenter
+
+JCenter was sunset in July 2021. All our artifacts prior to ~June 2021 that were on JCenter will still be accessible as long as [JCenter is in read-only mode](https://jfrog.com/blog/into-the-sunset-bintray-jcenter-gocenter-and-chartcenter/). We have since moved to Maven Central and artifacts since June 2021 are being published there. If you wish to resolve JCenter artifacts, you will need to configure your package manager to use JCenter. For instance, to resolve JCenter artifacts in Maven, you will need to add:
+
+```xml
+<repositories>
+    <repository>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+        <id>central</id>
+        <name>bintray</name>
+        <url>http://jcenter.bintray.com</url>
+    </repository>
+</repositories>
+
+```
+
+### Maven central
+
+Our current package management solution is Maven Central. This requires no configuration if using Maven. The various releases below have a release demarcating the shift to Maven Central.
 
 -----
 
@@ -18,13 +40,13 @@ For downloading any artifact listed below manually, you should preferably use th
 
 The core Bullet logic (a library) that can be used to implement Bullet on different Stream Processors (like Flink, Storm, Kafka Streams etc.). This core library can also be reused in other Bullet components that wish to depend on core Bullet concepts. This actually lived inside the [Bullet Storm](#bullet-storm) package prior to version [0.5.0](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.5.0). Starting with 0.5.0, Bullet Storm only includes the logic to implement Bullet on Storm.
 
-|                           |                 |
-| ------------------------- | --------------- |
-| **Repository**            | [https://github.com/bullet-db/bullet-core](https://github.com/bullet-db/bullet-core) |
-| **Issues**                | [https://github.com/bullet-db/bullet-core/issues](https://github.com/bullet-db/bullet-core/issues) |
-| **Last Tag**              | [![Latest tag](https://img.shields.io/github/release/bullet-db/bullet-core/all.svg)](https://github.com/bullet-db/bullet-core/tags) |
-| **Latest Artifact**       | [![Download](https://api.bintray.com/packages/yahoo/maven/bullet-core/images/download.svg)](https://bintray.com/yahoo/maven/bullet-core/_latestVersion) |
-| **Package Manager Setup** | [Setup for Maven, Gradle etc](https://bintray.com/bintray/jcenter?filterByPkgName=bullet-core) |
+|                           |                 | |
+| ------------------------- | --------------- | |
+| **Repository**            | [https://github.com/bullet-db/bullet-core](https://github.com/bullet-db/bullet-core) | |
+| **Issues**                | [https://github.com/bullet-db/bullet-core/issues](https://github.com/bullet-db/bullet-core/issues) | |
+| **Last Tag**              | [![Latest tag](https://img.shields.io/github/release/bullet-db/bullet-core/all.svg)](https://github.com/bullet-db/bullet-core/tags) | |
+| **Latest Artifact**       | [![Download](https://api.bintray.com/packages/yahoo/maven/bullet-core/images/download.svg)](https://bintray.com/yahoo/maven/bullet-core/_latestVersion) | |
+| **Package Manager Setup** | [Maven Central Setup](https://search.maven.org/artifact/com.yahoo.bullet/bullet-core/latest/jar) | [JCenter Setup](https://bintray.com/bintray/jcenter?filterByPkgName=bullet-core) |
 
 ### Releases
 
