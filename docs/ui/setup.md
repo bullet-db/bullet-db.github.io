@@ -111,7 +111,8 @@ These are the properties in the ```defaultValues``` object. The Validated column
 | sketches.topKErrorType                  | No        | Yes     | The ErrorType used for your Top K sketch in your backend configuration. You should set this to the full String rather than ```NFN``` or ```NFP``` |
 | metadataKeyMapping.querySection         | No        | Yes     | The name of the Metadata key for the Query Concept in your backend configuration |
 | metadataKeyMapping.windowSection        | No        | Yes     | The name of the Metadata key for the Window Concept in your backend configuration |
-| metadataKeyMapping.sketchSection        | No        | Yes     | The name of the Metadata key for the Theta Concept in your backend configuration |
+| metadataKeyMapping.innerQuerySection    | No        | No      | The name of the Metadata key for the Inner Query (if any for your query) Concept in your backend configuration |
+| metadataKeyMapping.sketchSection        | No        | Yes     | The name of the Metadata key for the Sketches Concept in your backend configuration |
 | metadataKeyMapping.theta                | No        | Yes     | The name of the Metadata key for the Theta Concept in your backend configuration |
 | metadataKeyMapping.uniquesEstimate      | No        | Yes     | The name of the Metadata key for the Uniques Estimate Concept in your backend configuration |
 | metadataKeyMapping.queryCreationTime    | No        | Yes     | The name of the Metadata key for the Query Creation Time Concept in your backend configuration |

@@ -17,22 +17,9 @@ In order for your Web Service to work with Bullet, you should have an instance o
 
 ## Installation
 
-You can download the JAR file directly from [JCenter](http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/). The Web Service is a [Spring Boot](https://projects.spring.io/spring-boot/) application. It executes as a standalone application. Note that prior to version 0.1.1, bullet-service was a WAR file that you deployed onto a servlet container like Jetty. It now embeds a [Apache Tomcat](http://tomcat.apache.org/) servlet container.
+You can download the JAR file directly from [Maven Central](https://repo1.maven.org/maven2/com/yahoo/bullet/bullet-service/). The Web Service is a [Spring Boot](https://projects.spring.io/spring-boot/) application. It executes as a standalone application. Note that prior to version 0.1.1, bullet-service was a WAR file that you deployed onto a servlet container like Jetty. It now embeds a [Apache Tomcat](http://tomcat.apache.org/) servlet container.
 
 If you need to depend on the source code directly (to add new endpoints for your own purposes or to build a WAR file out of the JAR), you need to add the JCenter repository and get the artifact through your dependency management system. Maven is shown below.
-
-```xml
-<repositories>
-    <repository>
-        <snapshots>
-            <enabled>false</enabled>
-        </snapshots>
-        <id>central</id>
-        <name>bintray</name>
-        <url>http://jcenter.bintray.com</url>
-    </repository>
-</repositories>
-```
 
 ```xml
 <dependency>
@@ -42,7 +29,7 @@ If you need to depend on the source code directly (to add new endpoints for your
 </dependency>
 ```
 
-You can also add ```<classifier>sources</classifier>```  or ```<classifier>javadoc</classifier>``` if you want the source or javadoc or ```<classifier>embedded</classifier>``` if you want the full JAR with the embedded web server.
+You can also add ```<classifier>sources</classifier>```  or ```<classifier>javadoc</classifier>``` if you want the source or javadoc or ```<classifier>embedded</classifier>``` if you want the full JAR with the embedded web server. You may also deploy it onto a servlet container if you build it as a WAR file.
 
 ## Configuration
 
@@ -74,7 +61,8 @@ You configure the PubSub by providing a configuration YAML file and setting the 
 1. ```bullet.pubsub.class.name``` should be set to the fully qualified package to your PubSub implementation. Example: ```com.yahoo.bullet.kafka.KafkaPubSub``` for the [Kafka PubSub](../pubsub/kafka.md).
 2. ```bullet.pubsub.context.name: QUERY_SUBMISSION```. The Web Service requires the PubSub to be in the ```QUERY_SUBMISSION``` context.
 
-You will also specify other parameters that your chosen PubSub requires or can use.
+
+You will also specify other parameters that your chosen PubSub requires or can use. For instance, ```bullet.pubsub.message.serde.class.name``` can be set to the fully qualified package to your [SerDe implementation](../pubsub/architecture.md#serde).
 
 In the top level configuration for the PubSub in ```application.yaml```, you may configure the number of threads for reading and writing the PubSub as well as enabling and configuring the built-in [REST PubSub](../pubsub/rest.md) if you choose to use that.
 

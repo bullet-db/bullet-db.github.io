@@ -8,27 +8,14 @@ Bullet is configured at run-time using settings defined in a file. Settings not 
 
 ## Installation
 
-To use Bullet, you need to implement a way to read from your data source and convert your data into Bullet Records (bullet-record is a transitive dependency for Bullet and can be found [in JCenter](ingestion.md#installing-the-record-directly). You have a couple of options in how to get your data into Bullet:
+To use Bullet, you need to implement a way to read from your data source and convert your data into Bullet Records (bullet-record is a transitive dependency for Bullet and can be found in [Maven Central](ingestion.md#installing-the-record-directly). You have a couple of options in how to get your data into Bullet:
 
-1. You can implement a spout (or even a topology) that reads from your data source and emits Bullet Records. You then write a main class that submits the topology with your topology wired in [using our submit method](https://github.com/bullet-db/bullet-storm/blob/master/src/main/java/com/yahoo/bullet/storm/StormUtils.java).
+1. You can implement a spout (or even a topology) that reads from your data source and emits Bullet Records. You then write a main class that submits the topology with your topology wired in [using our submit methods](https://github.com/bullet-db/bullet-storm/blob/master/src/main/java/com/yahoo/bullet/storm/StormUtils.java).
 2. Use Bullet DSL to configure a spout (and optionally a bolt) that you provide in the settings to our main class. This will wire up your data source and data format to Bullet without you having to write code!
 
 You can refer to the [Pros and Cons](storm-architecture.md#data-processing) of the various approaches to determine what works best for you.
 
-You need a JVM based project that implements one of the two options above. You include the Bullet artifact and Storm dependencies in your pom.xml or other dependency management system. The artifacts are available through JCenter, so you will need to add the repository.
-
-```xml
-<repositories>
-    <repository>
-        <snapshots>
-            <enabled>false</enabled>
-        </snapshots>
-        <id>central</id>
-        <name>bintray</name>
-        <url>http://jcenter.bintray.com</url>
-    </repository>
-</repositories>
-```
+You need a JVM based project that implements one of the two options above. You include the Bullet artifact and Storm dependencies in your pom.xml or other dependency management system. The artifacts are available through Maven Central.
 
 ```xml
 <dependency>
@@ -45,7 +32,7 @@ You need a JVM based project that implements one of the two options above. You i
 </dependency>
 ```
 
-If you just need the jar artifact directly, you can download it from [JCenter](http://jcenter.bintray.com/com/yahoo/bullet/bullet-storm/).
+If you just need the jar artifact directly, you can download it from [Maven Central](https://repo1.maven.org/maven2/com/yahoo/bullet/bullet-storm/).
 
 You can also add ```<classifier>sources</classifier>```  or ```<classifier>javadoc</classifier>``` if you want the sources or javadoc. We also package up our test code where we have some helper classes to deal with [Storm components](https://github.com/bullet-db/bullet-storm/tree/master/src/test/java/com/yahoo/bullet/storm). If you wish to use these to help with testing your topology, you can add another dependency on bullet-storm with ```<type>test-jar</type>```.
 
@@ -80,7 +67,22 @@ Storm topologies are generally launched with "fat" jars (jar-with-dependencies),
 ### Older Storm Versions
 
 Since package prefixes changed from `backtype.storm` to `org.apache.storm` in Storm 1.0 and above, you will need to get the storm-0.10 version of Bullet if
-your Storm cluster is still not at 1.0 or higher. You change your dependency to:
+your Storm cluster is still not at 1.0 or higher. These older packages are only available in JCenter, which is already sunset but available in read-only
+mode for a short while. We recommend you do not use those versions and migrate to Bullet Storm versions greater than 1.1.2 as soon as possible. If you still
+need them, you can change your dependency to:
+
+```xml
+<repositories>
+    <repository>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+        <id>central</id>
+        <name>bintray</name>
+        <url>http://jcenter.bintray.com</url>
+    </repository>
+</repositories>
+```
 
 ```xml
 <dependency>
@@ -89,8 +91,6 @@ your Storm cluster is still not at 1.0 or higher. You change your dependency to:
     <version>${bullet.version}</version>
 </dependency>
 ```
-
-The jar artifact can be downloaded directly from [JCenter](http://jcenter.bintray.com/com/yahoo/bullet/bullet-storm-0.10/).
 
 You can also add ```<classifier>sources</classifier>```  or ```<classifier>javadoc</classifier>``` if you want the source or javadoc and ```<type>test-jar</type>``` for the test classes as with bullet-storm.
 
@@ -157,15 +157,15 @@ The Bullet Storm jar is not built with Bullet DSL or with other dependencies you
 
 ##### Kafka
 
-[Kafka Clients 2.1.0](https://bintray.com/bintray/jcenter/org.apache.kafka%3Akafka-clients)
+[Kafka Clients 2.6.1](https://repo1.maven.org/maven2/org/apache/kafka/kafka-clients/2.6.1/)
 
 ##### Pulsar
 
-[Pulsar Client 2.2.1](https://bintray.com/bintray/jcenter/org.apache.pulsar%3Apulsar-client)
+[Pulsar Client 2.2.1](https://repo1.maven.org/maven2/org/apache/pulsar/pulsar-client/2.2.1/)
 
-[Pulsar Client Schema 2.2.1](https://bintray.com/bintray/jcenter/org.apache.pulsar%3Apulsar-client-schema)
+[Pulsar Client Schema 2.2.1](https://repo1.maven.org/maven2/org/apache/pulsar/pulsar-client-schema/2.2.1/)
 
-[Pulsar Protobuf Shaded 2.1.0-incubating](https://bintray.com/bintray/jcenter/org.apache.pulsar%3Aprotobuf-shaded)
+[Pulsar Protobuf Shaded 2.1.1-incubating](https://repo1.maven.org/maven2/org/apache/pulsar/protobuf-shaded/2.1.1-incubating/)
 
 ##### Example
 
@@ -173,10 +173,10 @@ The following is an example for Pulsar in Storm 1.2.2+:
 
 ```
 
-storm jar bullet-storm-0.9.1.jar \
+storm jar bullet-storm-1.3.0.jar \
           com.yahoo.bullet.storm.Topology \
           --bullet-conf ./bullet_settings.yaml \
-          --jars "bullet-dsl-0.1.2.jar,pulsar-client-2.2.1.jar,pulsar-client-schema-2.2.1.jar,protobuf-shaded-2.1.0-incubating.jar"
+          --jars "bullet-dsl-1.2.0.jar,pulsar-client-2.2.1.jar,pulsar-client-schema-2.2.1.jar,protobuf-shaded-2.1.1-incubating.jar"
 ```
 
 ## Storage and Replay

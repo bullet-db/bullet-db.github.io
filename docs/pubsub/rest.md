@@ -36,6 +36,8 @@ Configure the backend to use the REST PubSub:
 ```yaml
 bullet.pubsub.context.name: "QUERY_PROCESSING"
 bullet.pubsub.class.name: "com.yahoo.bullet.pubsub.rest.RESTPubSub"
+# Path to the SerDe for PubSubMessages
+bullet.pubsub.message.serde.class.name: 'com.yahoo.bullet.pubsub.ByteArrayPubSubMessageSerDe'
 bullet.pubsub.rest.connect.timeout.ms: 5000
 bullet.pubsub.rest.subscriber.max.uncommitted.messages: 100
 bullet.pubsub.rest.query.subscriber.min.wait.ms: 10
@@ -43,18 +45,19 @@ bullet.pubsub.rest.query.urls:
     - "http://<API_HOST_A>:9901/api/bullet/pubsub/query"
     - "http://<API_HOST_B>:9901/api/bullet/pubsub/query"
 ```
-|             Setting Name                                          |    Default Value                        |     Meaning      |
-| ----------------------------------------------------------------- | --------------------------------------- | ---------------- |
-| bullet.pubsub.context.name                                        | QUERY_PROCESSING                        | Tells the PubSub that it is running in the backend |
-| bullet.pubsub.class.name                                          | com.yahoo.bullet.pubsub.rest.RESTPubSub | Tells Bullet to use this class for its PubSub |
-| bullet.pubsub.rest.connect.timeout.ms                             | 5000                                    | Sets the HTTP connect timeout to 5 s |
-| bullet.pubsub.rest.subscriber.max.uncommitted.messages            | 100                                     | This is the maximum number of uncommitted messages allowed to be read by the subscriber before blocking |
-| bullet.pubsub.rest.query.subscriber.min.wait.ms                   | 10                                      | This is used to avoid making an HTTP request too rapidly and overloading the HTTP endpoint. It will force the backend to poll the query endpoint at most once every 10ms |
-| bullet.pubsub.rest.query.urls                                     | <EXAMPLE DEFAULTS>                      | This should be a list of all the query REST endpoint URLs. If you are only running one Web Service this will only contain one URL (the URL of your Web Service followed by the full path of the query endpoint) |
+|             Setting Name                                          |    Default Value                                    |     Meaning      |
+| ----------------------------------------------------------------- | --------------------------------------------------- | ---------------- |
+| bullet.pubsub.context.name                                        | QUERY_PROCESSING                                    | Tells the PubSub that it is running in the backend |
+| bullet.pubsub.class.name                                          | com.yahoo.bullet.pubsub.rest.RESTPubSub             | Tells Bullet to use this class for its PubSub |
+| bullet.pubsub.message.serde.class.name                            | com.yahoo.bullet.pubsub.ByteArrayPubSubMessageSerDe | Tells Bullet to use this SerDe for reading and writing PubSubMessage payloads |
+| bullet.pubsub.rest.connect.timeout.ms                             | 5000                                                | Sets the HTTP connect timeout to 5 s |
+| bullet.pubsub.rest.subscriber.max.uncommitted.messages            | 100                                                 | This is the maximum number of uncommitted messages allowed to be read by the subscriber before blocking |
+| bullet.pubsub.rest.query.subscriber.min.wait.ms                   | 10                                                  | This is used to avoid making an HTTP request too rapidly and overloading the HTTP endpoint. It will force the backend to poll the query endpoint at most once every 10ms |
+| bullet.pubsub.rest.query.urls                                     | <EXAMPLE DEFAULTS>                                  | This should be a list of all the query REST endpoint URLs. If you are only running one Web Service this will only contain one URL (the URL of your Web Service followed by the full path of the query endpoint) |
 
 ### Plug into the Web Service
 
-Configure the Web Service to use the REST PubSub:
+Configure the Web Service to use the REST PubSub by passing in the yaml file using application.yaml ```bullet.pubsub.config```:
 
 ```yaml
 bullet.pubsub.context.name: "QUERY_SUBMISSION"
@@ -67,12 +70,13 @@ bullet.pubsub.rest.query.urls:
     - "http://localhost:9901/api/bullet/pubsub/query"
 ```
 
-|             Setting Name                                          |    Default Value                               |     Meaning      |
-| ----------------------------------------------------------------- | ---------------------------------------------- | ---------------- |
-| bullet.pubsub.context.name                                        | QUERY_SUBMISSION                               | Tells the PubSub that it is running in the Web Service |
-| bullet.pubsub.class.name                                          | com.yahoo.bullet.pubsub.rest.RESTPubSub        | Tells Bullet to use this class for its PubSub |
-| bullet.pubsub.rest.connect.timeout.ms                             | 5000                                           | Sets the HTTP connect timeout to 5 s |
-| bullet.pubsub.rest.subscriber.max.uncommitted.messages            | 100                                            | This is the maximum number of uncommitted messages allowed to be read by the subscriber before blocking |
-| bullet.pubsub.rest.result.subscriber.min.wait.ms                  | 10                                             | This is used to avoid making an HTTP request too rapidly and overloading the HTTP endpoint. It will force the Web Service to poll the query endpoint at most once every 10ms |
-| bullet.pubsub.rest.result.url                                     | http://localhost:9901/api/bullet/pubsub/result | This is the endpoint from which the Web Service should read results. This is the hostname of that machine the Web Service is running on (or ```localhost```) |
-| bullet.pubsub.rest.query.urls                                     | http://localhost:9901/api/bullet/pubsub/query  | In the Web Service, this should contain *exactly one* URL (the URL to which queries should be written). This is the hostname of that machine the Web Service is running on (or ```localhost```) |
+|             Setting Name                                          |    Default Value                                    |     Meaning      |
+| ----------------------------------------------------------------- | --------------------------------------------------- | ---------------- |
+| bullet.pubsub.context.name                                        | QUERY_SUBMISSION                                    | Tells the PubSub that it is running in the Web Service |
+| bullet.pubsub.class.name                                          | com.yahoo.bullet.pubsub.rest.RESTPubSub             | Tells Bullet to use this class for its PubSub |
+| bullet.pubsub.message.serde.class.name                            | com.yahoo.bullet.pubsub.ByteArrayPubSubMessageSerDe | Tells Bullet to use this SerDe for reading and writing PubSubMessage payloads |
+| bullet.pubsub.rest.connect.timeout.ms                             | 5000                                                | Sets the HTTP connect timeout to 5 s |
+| bullet.pubsub.rest.subscriber.max.uncommitted.messages            | 100                                                 | This is the maximum number of uncommitted messages allowed to be read by the subscriber before blocking |
+| bullet.pubsub.rest.result.subscriber.min.wait.ms                  | 10                                                  | This is used to avoid making an HTTP request too rapidly and overloading the HTTP endpoint. It will force the Web Service to poll the query endpoint at most once every 10ms |
+| bullet.pubsub.rest.result.url                                     | http://localhost:9901/api/bullet/pubsub/result      | This is the endpoint from which the Web Service should read results. This is the hostname of that machine the Web Service is running on (or ```localhost```) |
+| bullet.pubsub.rest.query.urls                                     | http://localhost:9901/api/bullet/pubsub/query       | In the Web Service, this should contain *exactly one* URL (the URL to which queries should be written). This is the hostname of that machine the Web Service is running on (or ```localhost```) |

@@ -1,9 +1,9 @@
 # Storm DRPC PubSub
 
 !!! note "NOTE: This PubSub only works with old versions of the Storm Backend!"
-    Since DRPC is part of Storm and can only support a single query/response model, this PubSub implementation can only be used with the Storm backend and cannot support Windowed queries (bullet-storm 0.8.0 and later).
+    Since DRPC is part of Storm and can only support a single query/response model, this PubSub implementation can only be used with the Storm backend and cannot support Windowed queries (bullet-storm 0.8.0 and later). Also, note that we no longer provide these artifacts since our package management system prior to Bullet Storm 1.1.2 has now been sunset (Bintray). You would need to build the appropriate jars from source. Given all these constraints, we would recommend that you look into other PubSub implementations at this time.
 
-Bullet on [Storm](https://storm.apache.org/) can use [Storm DRPC](http://storm.apache.org/releases/1.0.0/Distributed-RPC.html) as a PubSub layer. DRPC, or Distributed Remote Procedure Call, is built into Storm and consists of a set of servers that are part of the Storm cluster.
+Bullet on [Storm](https://storm.apache.org/) can use [Storm DRPC](http://storm.apache.org/releases/current/Distributed-RPC.html) as a PubSub layer. DRPC, or Distributed Remote Procedure Call, is built into Storm and consists of a set of servers that are part of the Storm cluster.
 
 ## How does it work?
 

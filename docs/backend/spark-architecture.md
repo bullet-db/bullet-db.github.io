@@ -14,7 +14,7 @@ The red lines are the path for the queries that come in through the PubSub, the 
 
 ### Data processing
 
-Bullet can accept arbitrary sources of data as long as they can be ingested by Spark. They can be Kafka, Flume, Kinesis, and TCP sockets etc. In order to hook up your data to Bullet Spark, you just need to implement the [Data Producer Trait](https://github.com/bullet-db/bullet-spark/blob/master/src/main/scala/com/yahoo/bullet/spark/DataProducer.scala). In your implementation, you can either:
+Bullet can accept arbitrary sources of data as long as they can be ingested by Spark. They can be Kafka, Flume, Kinesis, and TCP sockets etc. You can either use [DSL](dsl.md) or hook up your data directly to Bullet Spark. To do the latter, you just need to implement the [Data Producer Trait](https://github.com/bullet-db/bullet-spark/blob/master/src/main/scala/com/yahoo/bullet/spark/DataProducer.scala). In your implementation, you can either:
 
 * Use [Spark Streaming built-in sources](https://spark.apache.org/docs/latest/streaming-programming-guide.html#input-dstreams-and-receivers) to receive data. Below is a quick example for a direct Kafka source in Scala. You can also write it in Java:
 
@@ -47,6 +47,8 @@ class DirectKafkaProducer extends DataProducer {
 ```
 
 * Write a [custom receiver](https://spark.apache.org/docs/latest/streaming-custom-receivers.html) to receive data from any arbitrary data source beyond the ones for which it has built-in support (that is, beyond Flume, Kafka, Kinesis, files, sockets, etc.). See [example](https://github.com/bullet-db/bullet-db.github.io/tree/src/examples/spark/src/main/scala/com/yahoo/bullet/spark/examples).
+
+To use DSL, you can enable it by providing the `bullet.spark.dsl.data.producer.enable: true` and configuring the various DSL parameters. 
 
 After receiving your data, you can do any transformations like joins or type conversions in your implementation before emitting to the Filter Streaming stage.
 

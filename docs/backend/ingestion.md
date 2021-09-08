@@ -36,26 +36,13 @@ Data placed into a Bullet Record is strongly typed. We support these types curre
 3. List of any of the [Primitives](#primitives)
 3. List of any Map in 1
 
-With these types, it is unlikely you would have data that cannot be represented as Bullet Record but if you do, please let us know and we are more than willing to accommodate.
+With these types, it is unlikely you would have data that cannot be represented as Bullet Record but if you do, please let us know and we are more than willing to accommodate. It is also possible to place `UNKNOWN` container types such as Maps and Lists into the record. This can be useful for more deeply nested data structures or heterogenous container types. However, operations that extract fields from it can only work if the type of the extracted object is in the supported types above.
 
 ## Installing the Record directly
 
 Generally, you depend on the Bullet Core artifact for your Stream Processor when you plug in the piece that gets your data into the Stream processor. The Bullet Core artifact already brings in the Bullet Record containers as well. See the usage for the [Storm](storm-setup.md#installation) for an example.
 
-However, if you need it, the artifacts are available through JCenter to depend on them in code directly. You will need to add the repository. Below is a Maven example:
-
-```xml
-<repositories>
-    <repository>
-        <snapshots>
-            <enabled>false</enabled>
-        </snapshots>
-        <id>central</id>
-        <name>bintray</name>
-        <url>http://jcenter.bintray.com</url>
-    </repository>
-</repositories>
-```
+However, if you need it, the artifacts are available through Maven Central to depend on them in code directly. Below is a Maven example:
 
 ```xml
 <dependency>
@@ -65,6 +52,6 @@ However, if you need it, the artifacts are available through JCenter to depend o
 </dependency>
 ```
 
-If you just need the jar artifact, you can download it directly from [JCenter](http://jcenter.bintray.com/com/yahoo/bullet/bullet-record/).
+If you just need the jar artifact, you can download it directly from [Maven Central](https://repo1.maven.org/maven2/com/yahoo/bullet/bullet-record/).
 
 You can also add ```<classifier>sources</classifier>```  or ```<classifier>javadoc</classifier>``` if you want the sources or the javadoc.
