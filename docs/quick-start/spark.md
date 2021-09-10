@@ -110,7 +110,6 @@ $BULLET_SPARK/spark-3.1.2-bin-hadoop2.7/bin/spark-submit \
     --jars $BULLET_HOME/pubsub/bullet-kafka.jar,$BULLET_SPARK/bullet-spark-example.jar \
     $BULLET_SPARK/bullet-spark.jar \
     --bullet-spark-conf=$BULLET_SPARK/bullet_spark_kafka_settings.yaml &> log.txt &
-
 ```
 
 The Backend will usually be up and running usually within 5-10 seconds. Once it is running you can get information about the Spark job in the Spark UI, which can be seen in your browser at [http://localhost:4040](http://localhost:4040) by default. The Web Service will now be hooked up through the Kafka PubSub to the Spark backend. To test it you can now run a Bullet query by hitting the Web Service directly:
