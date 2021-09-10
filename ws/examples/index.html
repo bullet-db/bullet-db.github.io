@@ -409,6 +409,21 @@
                     </li>
             
                     <li class="second-level">
+                        <a href="#filtering-with-now-keyword">Filtering with NOW Keyword</a>
+                        
+                    </li>
+            
+                    <li class="second-level">
+                        <a href="#between-filter">BETWEEN Filter</a>
+                        
+                    </li>
+            
+                    <li class="second-level">
+                        <a href="#in-filter">IN Filter</a>
+                        
+                    </li>
+            
+                    <li class="second-level">
                         <a href="#relational-filter-comparing-to-other-fields">Relational Filter comparing to other fields</a>
                         
                     </li>
@@ -484,6 +499,21 @@
             
                     <li class="second-level">
                         <a href="#approximate-top-k-aggregation">Approximate TOP K Aggregation</a>
+                        
+                    </li>
+            
+                    <li class="second-level">
+                        <a href="#lateral-view-explode">Lateral View Explode</a>
+                        
+                    </li>
+            
+                    <li class="second-level">
+                        <a href="#multiple-lateral-view-explodes">Multiple Lateral View Explodes</a>
+                        
+                    </li>
+            
+                    <li class="second-level">
+                        <a href="#outer-query">Outer Query</a>
                         
                     </li>
             
@@ -636,6 +666,35 @@ LIMIT 1;
 FROM STREAM(30000, TIME)
 WHERE NOT CONTAINSVALUE(data_map, 'btsg8l9b234ha')
 LIMIT 1;
+</code></pre>
+
+<h3 id="filtering-with-now-keyword">Filtering with NOW Keyword</h3>
+<pre><code class="SQL">SELECT *
+FROM STREAM(30000, TIME)
+WHERE event_timestamp &gt;= NOW
+LIMIT 10;
+</code></pre>
+
+<h3 id="between-filter">BETWEEN Filter</h3>
+<p>This query checks to see if the field <code>heart_rate</code> is in-between 70 and 100 inclusive and returns all records for which this is true. The <code>BETWEEN</code> operator can be written in two ways as shown below.</p>
+<pre><code class="SQL">SELECT *
+FROM STREAM(30000, TIME)
+WHERE heart_rate BETWEEN (70, 100)
+LIMIT 10;
+</code></pre>
+
+<pre><code class="SQL">SELECT *
+FROM STREAM(30000, TIME)
+WHERE BETWEEN(heart_rate, 70, 100)
+LIMIT 10;
+</code></pre>
+
+<h3 id="in-filter">IN Filter</h3>
+<p>This query checks to see if the field <code>color</code> is in the given list and returns all records for which is true. </p>
+<pre><code class="SQL">SELECT *
+FROM STREAM(30000, TIME)
+WHERE color IN ('red', 'green', 'blue')
+LIMIT 10;
 </code></pre>
 
 <h3 id="relational-filter-comparing-to-other-fields">Relational Filter comparing to other fields</h3>
@@ -1395,6 +1454,97 @@ set to true. 24 means that the upper bound - the lower bound for the <code>Count
 subtract 24 from it, you get the lower bound of the true count.</p>
 <p>Note that this also means the order of the items could be off. If two items had <code>Count</code> within 24 of each other, it is possible that the higher one <em>may</em> actually have had a true count <em>lower</em> than
 the second one and possibly be ranked higher. There is no such situation in this result set.</p>
+<h3 id="lateral-view-explode">Lateral View Explode</h3>
+<pre><code class="SQL">SELECT student, score
+FROM STREAM(30000, TIME)
+LATERAL VIEW EXPLODE(test_scores) AS (student, score)
+WHERE score &gt;= 80
+LIMIT 10;
+</code></pre>
+
+<p>This query explodes the map <code>test_scores</code> to the fields <code>student</code> and <code>score</code>. This effectively generates a record with a key field and value field for each entry in the exploded map. 
+The lateral view means the generated records are appended to the original record, though in this query, only the exploded fields have been selected.</p>
+<pre><code class="javascript">{
+   &quot;records&quot;:[
+      {
+         &quot;student&quot;: &quot;Roger&quot;,
+         &quot;score&quot;: 90
+      },
+      {
+         &quot;student&quot;: &quot;Albert&quot;,
+         &quot;score&quot;: 92
+      },
+      {
+         &quot;student&quot;: &quot;Emily&quot;,
+         &quot;score&quot;: 90
+      },
+      {
+         &quot;student&quot;: &quot;Winston&quot;,
+         &quot;score&quot;: 81
+      },
+      {
+         &quot;student&quot;: &quot;Jeff&quot;,
+         &quot;score&quot;: 95
+      },
+      {
+         &quot;student&quot;: &quot;Kristen&quot;,
+         &quot;score&quot;: 97
+      },
+      {
+         &quot;student&quot;: &quot;Percy&quot;,
+         &quot;score&quot;: 85
+      },
+      {
+         &quot;student&quot;: &quot;Tyson&quot;,
+         &quot;score&quot;: 80
+      },
+      {
+         &quot;student&quot;: &quot;Jackie&quot;,
+         &quot;score&quot;: 89
+      },
+      {
+         &quot;student&quot;: &quot;Alice&quot;,
+         &quot;score&quot;: 100
+      }
+   ],
+   &quot;meta&quot;: &quot;&lt;EDITED OUT&gt;&quot;
+}
+</code></pre>
+
+<h3 id="multiple-lateral-view-explodes">Multiple Lateral View Explodes</h3>
+<p>Multiple lateral view explodes can also be chained in the same query. For instance, using the above example, instead of the map <code>test_scores</code>, there is the list of maps <code>tests</code>.
+This list could be exploded into a field <code>test_scores</code> which could the be exploded into the fields <code>student</code> and <code>score</code> as before. </p>
+<pre><code class="SQL">SELECT student, score
+FROM STREAM(30000, TIME)
+LATERAL VIEW EXPLODE(tests) AS test_scores
+LATERAL VIEW EXPLODE(test_scores) AS (student, score)
+WHERE score &gt;= 80
+LIMIT 10;
+</code></pre>
+
+<h3 id="outer-query">Outer Query</h3>
+<pre><code class="SQL">SELECT COUNT(*)
+FROM (
+    SELECT browser_name, COUNT(*)
+    FROM STREAM(30000, TIME)
+    GROUP BY browser_name
+    HAVING COUNT(*) &gt; 10
+)
+</code></pre>
+
+<p>This query has an inner query wrapped by an outer query. Note that the inner query selects from <code>STREAM</code> and is thus the main query while the outer query selects from the inner query.
+Note also that the inner/main query can have a window while the outer query cannot.</p>
+<p>The query above counts the number of browser names that appear more than 10 times in 30 seconds. </p>
+<pre><code class="javascript">{
+   &quot;records&quot;:[
+      {
+         &quot;COUNT(*)&quot;: 6
+      }
+   ],
+   &quot;meta&quot;: &quot;&lt;EDITED OUT&gt;&quot;
+}
+</code></pre>
+
 <h3 id="window-tumbling-group-by">Window - Tumbling Group-By</h3>
 <pre><code class="SQL">SELECT demographics.country AS country, COUNT(*) AS count, AVG(demographics.age) AS averageAge,
        AVG(timespent) AS averageTimespent

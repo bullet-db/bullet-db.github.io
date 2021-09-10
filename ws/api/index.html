@@ -400,49 +400,77 @@
 <h2 id="overview">Overview</h2>
 <p>Bullet-BQL provides users with a friendly SQL-like API to submit queries to the Web Service.</p>
 <h2 id="statement-syntax">Statement Syntax</h2>
-<pre><code>SELECT select
-FROM stream
+<p><code>query</code> is one of</p>
+<pre><code>innerQuery
+outerQuery
+</code></pre>
+<p>where <code>innerQuery</code> is</p>
+<pre><code>SELECT select FROM stream
+( LATERAL VIEW lateralView )?
 ( WHERE expression )?
-( GROUP BY expression ( , expression )* )?
+( GROUP BY expressions )?
 ( HAVING expression )?
 ( ORDER BY orderBy )?
 ( WINDOWING window )?
 ( LIMIT Integer )?
-';'?
 </code></pre>
-<p>where <code>select</code> is</p>
+<p>and <code>outerQuery</code> is</p>
+<pre><code>SELECT select FROM ( innerQuery )
+( LATERAL VIEW lateralView )?
+( WHERE expression )?
+( GROUP BY expressions )?
+( HAVING expression )?
+( ORDER BY orderBy )?
+( LIMIT Integer )?
+</code></pre>
+<p>where <code>select</code> is </p>
 <pre><code>DISTINCT? selectItem ( , selectItem )*
 </code></pre>
 <p>and <code>selectItem</code> is one of</p>
 <pre><code>expression ( AS? identifier )?
+tableFunction
 *
 </code></pre>
 <p>and <code>expression</code> is one of</p>
 <pre><code>valueExpression                                                                         
-fieldExpression                                                                         
+fieldExpression ( : fieldType )?
+subFieldExpression ( : fieldType )?
+subSubFieldExpression ( : fieldType )?                                                                         
 listExpression                                                                          
 expression IS NULL                                                                      
 expression IS NOT NULL                                                                  
 unaryExpression                                                                         
-functionExpression                                                                      
-expression NOT? IN expression                                    
-expression RLIKE ANY? expression                                 
-expression ( * | / ) expression                                  
+functionExpression                                                                                                       
+expression ( * | / | % ) expression                                  
 expression ( + | - ) expression                                      
 expression ( &lt; | &lt;= | &gt; | &gt;= ) ( ANY | ALL )? expression         
-expression ( = | != ) ( ANY | ALL )? expression                    
+expression ( = | != ) ( ANY | ALL )? expression
+expression NOT? RLIKE ANY? expression
+expression NOT? IN expression
+expression NOT? IN ( expressions )
+expressioon NOT? BETWEEN ( expression, expression )
 expression AND expression                                                 
 expression XOR expression                                                 
 expression OR expression                                                  
 ( expression )
 </code></pre>
-<p>where <code>valueExpression</code> is one of Null, Boolean, Integer, Long, Float, Double, or String</p>
-<p>and <code>fieldExpression</code> is one of</p>
-<pre><code>identifier ( : fieldType )?
-identifier [ Integer ] ( : fieldType )?
-identifier [ Integer ] . identifier ( : fieldType )?
-identifier . identifier ( : fieldType )?
-identifier . identifier . identifier ( : fieldType )?
+<p>and <code>expressions</code> is</p>
+<pre><code>expression ( , expression )*
+</code></pre>
+<p>where <code>valueExpression</code> is one of Null, Boolean, Integer, Long, Float, Double, String, or <code>NOW</code> - a keyword that is converted to the current unix time in milliseconds</p>
+<p>and <code>fieldExpression</code> is</p>
+<pre><code>identifier
+</code></pre>
+<p>and <code>subFieldExpression</code> is one of</p>
+<pre><code>fieldExpression [ Integer ]
+fieldExpression [ String ]
+fieldExpression [ expression ]
+fieldExpression . identifier
+</code></pre>
+<p>and <code>subSubFieldExpression</code> is one of</p>
+<pre><code>subFieldExpression [ String ]
+subFieldExpression [ expression ]
+subFieldExpression . identifier
 </code></pre>
 <p><code>fieldType</code> is one of</p>
 <pre><code>primitiveType
@@ -454,14 +482,17 @@ MAP [ MAP [ primitiveType ] ]
 <p>and <code>primitiveType</code> is <code>INTEGER</code>, <code>LONG</code>, <code>FLOAT</code>, <code>DOUBLE</code>, <code>BOOLEAN</code>, or <code>STRING</code></p>
 <p>where <code>listExpression</code> is one of</p>
 <pre><code>[]
-[ expression ( , expression )* ]
+[ expressions ]
 </code></pre>
-<p><code>unaryExpression</code> is</p>
+<p><code>unaryExpression</code> is </p>
 <pre><code>( NOT | SIZEOF ) ( expression )                                                 with optional parentheses
+( ABS | TRIM | LOWER | UPPER ) ( expression )                                   with non-optional parentheses
 </code></pre>
 <p><code>functionExpression</code> is one of</p>
-<pre><code>( SIZEIS | CONTAINSKEY | CONTAINSVALUE | FILTER ) ( expression, expression )      
-IF ( expression ( , expression )* )                                             three arguments                         
+<pre><code>( SIZEIS | CONTAINSKEY | CONTAINSVALUE | FILTER ) ( expression , expression )
+UNIXTIMESTAMP ( expressions? )                                                  zero, one, or two arguments
+SUBSTRING ( expressions? )                                                      two or three arguments
+( IF | BETWEEN ) ( expressions? )                                               three arguments                         
 aggregateExpression                               
 CAST ( expression AS primitiveType )
 </code></pre>
@@ -478,19 +509,26 @@ TOP ( Integer ( , Integer )?, expression ( , expression )* )
 REGION, Number, Number, Number                                                  evenly spaced in a region
 MANUAL, Number ( , Number )*                                                    defined points
 </code></pre>
+<p>and <code>tableFunction</code> is one of</p>
+<pre><code>OUTER? EXPLODE ( expression ) AS identifier                                     explode a list to one column
+OUTER? EXPLODE ( expression ) AS ( identifier , identifier )                    explode a map to a key and a value column
+</code></pre>
 <p>and <code>stream</code> is one of</p>
 <pre><code>STREAM()                                                                        default time duration will be set from BQLConfig
 STREAM( ( Integer | MAX ), TIME )                                               time based duration control
 </code></pre>
 <p><code>RECORD</code> will be supported in the future.</p>
-<p>and <code>orderBy</code> is</p>
+<p>and <code>lateralView</code> is</p>
+<pre><code>tableFunction (LATERAL VIEW tableFunction)*
+</code></pre>
+<p>and <code>orderBy</code> is </p>
 <pre><code>expression ( ASC | DESC )? ( , expression ( ASC | DESC )? )*
 </code></pre>
-<p>and <code>window</code> is one of</p>
+<p>and <code>window</code> is one of </p>
 <pre><code>EVERY ( Integer, ( TIME | RECORD ), include )
 TUMBLING ( Integer, ( TIME | RECORD ) )
 </code></pre>
-<p><code>include</code> is one of</p>
+<p><code>include</code> is one of </p>
 <pre><code>ALL
 FIRST, Integer, ( TIME | RECORD )
 </code></pre>

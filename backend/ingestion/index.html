@@ -437,22 +437,10 @@ be implemented as to be optimized for different backends or use-cases.</p>
 <li>List of any of the <a href="#primitives">Primitives</a></li>
 <li>List of any Map in 1</li>
 </ol>
-<p>With these types, it is unlikely you would have data that cannot be represented as Bullet Record but if you do, please let us know and we are more than willing to accommodate.</p>
+<p>With these types, it is unlikely you would have data that cannot be represented as Bullet Record but if you do, please let us know and we are more than willing to accommodate. It is also possible to place <code>UNKNOWN</code> container types such as Maps and Lists into the record. This can be useful for more deeply nested data structures or heterogenous container types. However, operations that extract fields from it can only work if the type of the extracted object is in the supported types above.</p>
 <h2 id="installing-the-record-directly">Installing the Record directly</h2>
 <p>Generally, you depend on the Bullet Core artifact for your Stream Processor when you plug in the piece that gets your data into the Stream processor. The Bullet Core artifact already brings in the Bullet Record containers as well. See the usage for the <a href="../storm-setup/#installation">Storm</a> for an example.</p>
-<p>However, if you need it, the artifacts are available through JCenter to depend on them in code directly. You will need to add the repository. Below is a Maven example:</p>
-<pre><code class="xml">&lt;repositories&gt;
-    &lt;repository&gt;
-        &lt;snapshots&gt;
-            &lt;enabled&gt;false&lt;/enabled&gt;
-        &lt;/snapshots&gt;
-        &lt;id&gt;central&lt;/id&gt;
-        &lt;name&gt;bintray&lt;/name&gt;
-        &lt;url&gt;http://jcenter.bintray.com&lt;/url&gt;
-    &lt;/repository&gt;
-&lt;/repositories&gt;
-</code></pre>
-
+<p>However, if you need it, the artifacts are available through Maven Central to depend on them in code directly. Below is a Maven example:</p>
 <pre><code class="xml">&lt;dependency&gt;
   &lt;groupId&gt;com.yahoo.bullet&lt;/groupId&gt;
   &lt;artifactId&gt;bullet-record&lt;/artifactId&gt;
@@ -460,7 +448,7 @@ be implemented as to be optimized for different backends or use-cases.</p>
 &lt;/dependency&gt;
 </code></pre>
 
-<p>If you just need the jar artifact, you can download it directly from <a href="http://jcenter.bintray.com/com/yahoo/bullet/bullet-record/">JCenter</a>.</p>
+<p>If you just need the jar artifact, you can download it directly from <a href="https://repo1.maven.org/maven2/com/yahoo/bullet/bullet-record/">Maven Central</a>.</p>
 <p>You can also add <code>&lt;classifier&gt;sources&lt;/classifier&gt;</code>  or <code>&lt;classifier&gt;javadoc&lt;/classifier&gt;</code> if you want the sources or the javadoc.</p></div>
         
     </div>
