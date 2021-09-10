@@ -138,7 +138,7 @@ The JSONBulletRecordConverter is used to convert String JSON representations of 
 
 ### AvroBulletRecordConverter
 
-The AvroBulletRecordConverter is used to convert Avro records into BulletRecords. Without a schema, it inserts every field into a BulletRecord without any type-checking. With a schema, you get type-checking, and you can also specify a RECORD field, and the converter will accept Avro Records in addition to Maps, flattening them into the BulletRecord.
+The AvroBulletRecordConverter is used to convert Avro records into BulletRecords. Without a schema, it inserts every field into a BulletRecord without any type-checking. With a schema, you get type-checking, and you can also specify a RECORD field, and the converter will accept Avro Records in addition to Maps, flattening them into the BulletRecord. This converter also handles container types (such as Maps and Lists) that contain heterogenous nested types as well having more nesting levels than the types we support. It maps then to the appropriate Bullet `UNKNOWN_MAP`, `UNKNOWN_MAP_MAP` etc types so that queries can still be written that pull out these fields and if *they* are types that Bullet understands, the query can still execute.
 
 ### Schema
 

@@ -8,31 +8,18 @@ Bullet is configured at run-time using settings defined in a file. Settings not 
 
 ## Installation
 
-Download the Bullet Spark standalone jar from [JCenter](http://jcenter.bintray.com/com/yahoo/bullet/bullet-spark/).
+Download the Bullet Spark standalone jar from [Maven Central](https://repo1.maven.org/maven2/com/yahoo/bullet/bullet-spark/).
 
-If you are using Bullet Kafka as pluggable PubSub, you can download the fat jar from [JCenter](http://jcenter.bintray.com/com/yahoo/bullet/bullet-kafka/). Otherwise, you need to plug in your own PubSub jar or use the RESTPubSub built-into bullet-core and turned on in the API.
+If you are using Bullet Kafka as pluggable PubSub, you can download the fat jar from [Maven Central](https://repo1.maven.org/maven2/com/yahoo/bullet/bullet-kafka/). Otherwise, you need to plug in your own PubSub jar or use the RESTPubSub built-into bullet-core and turned on in the API.
 
-To use Bullet Spark, you need to implement your own [Data Producer Trait](https://github.com/bullet-db/bullet-spark/blob/master/src/main/scala/com/yahoo/bullet/spark/DataProducer.scala) with a JVM based project or you can use Bullet DSL (see below). If you choose to implement your own, you have two ways as described in the [Spark Architecture](spark-architecture.md#data-processing) section. You include the Bullet artifact and Spark dependencies in your pom.xml or other equivalent build tools. The artifacts are available through JCenter. Here is an example if you use Scala and Maven:
-
-```xml
-<repositories>
-    <repository>
-        <snapshots>
-            <enabled>false</enabled>
-        </snapshots>
-        <id>central</id>
-        <name>bintray</name>
-        <url>http://jcenter.bintray.com</url>
-    </repository>
-</repositories>
-```
+To use Bullet Spark, you need to implement your own [Data Producer Trait](https://github.com/bullet-db/bullet-spark/blob/master/src/main/scala/com/yahoo/bullet/spark/DataProducer.scala) with a JVM based project or you can use Bullet DSL (see below). If you choose to implement your own, you have two ways as described in the [Spark Architecture](spark-architecture.md#data-processing) section. You include the Bullet artifact and Spark dependencies in your pom.xml or other equivalent build tools. The artifacts are available through Maven Central. Here is an example if you use Scala and Maven:
 
 ```xml
 <properties>
-    <scala.version>2.11.7</scala.version>
-    <scala.dep.version>2.11</scala.dep.version>
-    <spark.version>2.3.0</spark.version>
-    <bullet.spark.version>0.1.1</bullet.spark.version>
+    <scala.version>2.12.10</scala.version>
+    <scala.dep.version>2.12</scala.dep.version>
+    <spark.version>3.1.2</spark.version>
+    <bullet.spark.version>1.2.0</bullet.spark.version>
 </properties>
 
 <dependency>

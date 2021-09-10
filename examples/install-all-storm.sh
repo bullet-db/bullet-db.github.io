@@ -2,12 +2,12 @@
 
 set -euo pipefail
 
-BULLET_EXAMPLES_VERSION=1.0.0
-BULLET_UI_VERSION=1.0.1
-BULLET_WS_VERSION=1.0.0
+BULLET_EXAMPLES_VERSION=1.1.0
+BULLET_UI_VERSION=1.1.0
+BULLET_WS_VERSION=1.4.1
 STORM_VERSION=2.2.0
-NVM_VERSION=0.37.2
-NODE_VERSION=10.20.1
+NVM_VERSION=0.38.0
+NODE_VERSION=16.9.0
 
 println() {
     local DATE
@@ -123,7 +123,7 @@ launch_bullet_web_service() {
     local BULLET_SERVICE_HOME="${BULLET_HOME}/service"
 
     println "Downloading Bullet Web Service ${BULLET_WS_VERSION}..."
-    download "http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/${BULLET_WS_VERSION}" "${BULLET_WS_JAR}"
+    download "https://repo1.maven.org/maven2/com/yahoo/bullet/bullet-service/${BULLET_WS_VERSION}" "${BULLET_WS_JAR}"
 
     println "Configuring Bullet Web Service and plugging in In-Memory REST PubSub..."
     cp "${BULLET_DOWNLOADS}/${BULLET_WS_JAR}" "${BULLET_SERVICE_HOME}/bullet-service.jar"

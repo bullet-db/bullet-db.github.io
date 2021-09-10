@@ -2,15 +2,15 @@
 
 set -euo pipefail
 
-BULLET_EXAMPLES_VERSION=1.0.0
-BULLET_UI_VERSION=1.0.1
-BULLET_WS_VERSION=1.0.0
-BULLET_KAFKA_VERSION=1.0.1
-BULLET_SPARK_VERSION=1.0.0
-KAFKA_VERSION=2.3.1
-SPARK_VERSION=3.0.1
-NVM_VERSION=0.37.2
-NODE_VERSION=10.20.1
+BULLET_EXAMPLES_VERSION=1.1.0
+BULLET_UI_VERSION=1.1.0
+BULLET_WS_VERSION=1.4.1
+BULLET_KAFKA_VERSION=1.3.0
+BULLET_SPARK_VERSION=1.2.0
+KAFKA_VERSION=2.6.2
+SPARK_VERSION=3.1.2
+NVM_VERSION=0.38.0
+NODE_VERSION=16.9.0
 
 KAFKA_TOPIC_REQUESTS=bullet.requests
 KAFKA_TOPIC_RESPONSES=bullet.responses
@@ -98,7 +98,7 @@ install_bullet_kafka() {
     local BULLET_KAFKA="bullet-kafka-${BULLET_KAFKA_VERSION}-fat.jar"
 
     println "Downloading bullet-kafka ${BULLET_KAFKA_VERSION}..."
-    download "http://jcenter.bintray.com/com/yahoo/bullet/bullet-kafka/${BULLET_KAFKA_VERSION}" "${BULLET_KAFKA}"
+    download "https://repo1.maven.org/maven2/com/yahoo/bullet/bullet-kafka/${BULLET_KAFKA_VERSION}" "${BULLET_KAFKA}"
     cp ${BULLET_DOWNLOADS}/${BULLET_KAFKA} ${BULLET_HOME}/pubsub/${BULLET_KAFKA}
 
     println "Done!"
@@ -135,7 +135,7 @@ launch_bullet_web_service() {
     local BULLET_SERVICE_HOME="${BULLET_HOME}/service"
 
     println "Downloading Bullet Web Service ${BULLET_WS_VERSION}..."
-    download "http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/${BULLET_WS_VERSION}" "${BULLET_WS_JAR}"
+    download "https://repo1.maven.org/maven2/com/yahoo/bullet/bullet-service/${BULLET_WS_VERSION}" "${BULLET_WS_JAR}"
 
     println "Configuring Bullet Web Service and plugging in Kafka PubSub..."
     cp "${BULLET_DOWNLOADS}/${BULLET_WS_JAR}" "${BULLET_SERVICE_HOME}/bullet-service.jar"
@@ -178,7 +178,7 @@ install_bullet_spark() {
     local BULLET_SPARK_JAR="bullet-spark-${BULLET_SPARK_VERSION}-standalone.jar"
 
     println "Downloading Bullet Spark version ${BULLET_SPARK_VERSION}..."
-    download "http://jcenter.bintray.com/com/yahoo/bullet/bullet-spark/${BULLET_SPARK_VERSION}" "${BULLET_SPARK_JAR}"
+    download "https://repo1.maven.org/maven2/com/yahoo/bullet/bullet-spark/${BULLET_SPARK_VERSION}" "${BULLET_SPARK_JAR}"
 
     println "Installing Bullet Spark version ${BULLET_SPARK_VERSION}..."
     cp ${BULLET_DOWNLOADS}/${BULLET_SPARK_JAR} ${BULLET_SPARK}/bullet-spark.jar

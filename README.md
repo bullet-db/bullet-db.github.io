@@ -55,7 +55,7 @@ While mkdocs is available:
 
 ## Building the examples
 
-You will need [Maven 3](https://maven.apache.org/install.html) and [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html) installed to build the examples.
+You will need [Maven 3](https://maven.apache.org/install.html) and [JDK 8](https://jdk.java.net/java-se-ri/8-MR3) installed to build the examples.
 
 ```bash
 cd bullet-docs/examples/ && make

@@ -1,5 +1,6 @@
 bullet.pubsub.context.name: "QUERY_SUBMISSION"
 bullet.pubsub.class.name: "com.yahoo.bullet.storm.drpc.DRPCPubSub"
+bullet.pubsub.message.serde.class.name: "com.yahoo.bullet.pubsub.ByteArrayPubSubMessageSerDe"
 # The following are defaults but we are defining them here anyway
 bullet.pubsub.storm.drpc.servers:
   - 127.0.0.1

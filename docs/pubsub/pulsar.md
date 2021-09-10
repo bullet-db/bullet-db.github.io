@@ -38,7 +38,7 @@ See the [default configuration file](https://github.com/bullet-db/bullet-pulsar/
 
 ### Plug into the Web Service
 
-You will need to head over to our [releases page](../releases.md#bullet-pulsar) and get the JAR artifact with the ```fat``` classifier. You can download the artifact for the 0.1.0 release [directly from JCenter](https://bintray.com/yahoo/maven/bullet-pulsar/0.1.0)).
+You will need to head over to our [releases page](../releases.md#bullet-pulsar) and get the JAR artifact with the ```fat``` classifier. You can download the artifact for the 1.1.0 release [directly from Maven Central](https://repo1.maven.org/maven2/com/yahoo/bullet/bullet-pulsar/1.1.0/)).
 
 You should then plug in this JAR to your Web Service following the instructions [here](../ws/setup.md#launch).
 
