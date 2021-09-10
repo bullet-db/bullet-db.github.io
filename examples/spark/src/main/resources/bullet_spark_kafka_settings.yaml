@@ -87,6 +87,7 @@ bullet.pubsub.context.name: "QUERY_PROCESSING"
 # This is the name of the concrete implementation of PubSub to use.
 # By default, it is the bulletin REST in-memory PubSub.
 bullet.pubsub.class.name: "com.yahoo.bullet.kafka.KafkaPubSub"
+bullet.pubsub.message.serde.class.name: "com.yahoo.bullet.pubsub.ByteArrayPubSubMessageSerDe"
 # Add settings specific to your PubSub.
 bullet.pubsub.kafka.bootstrap.servers: "localhost:9092"
 bullet.pubsub.kafka.request.topic.name: "bullet.requests"

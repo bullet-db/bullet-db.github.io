@@ -53,6 +53,7 @@ bullet.result.metadata.enable: true
 # REST PubSub settings
 bullet.pubsub.context.name: "QUERY_PROCESSING"
 bullet.pubsub.class.name: "com.yahoo.bullet.pubsub.rest.RESTPubSub"
+bullet.pubsub.message.serde.class.name: "com.yahoo.bullet.pubsub.ByteArrayPubSubMessageSerDe"
 bullet.pubsub.rest.query.urls:
     - "http://localhost:9999/api/bullet/pubsub/query"
 bullet.pubsub.rest.result.url: "http://localhost:9999/api/bullet/pubsub/result"

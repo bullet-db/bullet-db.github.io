@@ -9,22 +9,11 @@
     <properties>
         <scala.version>2.12.8</scala.version>
         <scala.dep.version>2.12</scala.dep.version>
-        <spark.version>3.0.1</spark.version>
-        <bullet.spark.version>1.0.0</bullet.spark.version>
-        <bullet.record.version>1.1.0</bullet.record.version>
+        <spark.version>3.1.2</spark.version>
+        <bullet.spark.version>1.2.0</bullet.spark.version>
+        <bullet.record.version>1.2.0</bullet.record.version>
         <avro.version>1.9.2</avro.version>
     </properties>
-
-    <repositories>
-        <repository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>jcenter</id>
-            <name>bintray</name>
-            <url>http://jcenter.bintray.com</url>
-        </repository>
-    </repositories>
 
     <dependencies>
         <!-- Provided -->

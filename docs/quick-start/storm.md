@@ -4,10 +4,10 @@ This section gets you running a mock instance of Bullet to play around with. The
 
 At the end of this section, you will have:
 
-  * Setup the Bullet topology using a custom spout on [bullet-storm-1.0.0](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-1.0.0)
-  * Setup the [Web Service](../ws/setup.md) talking to the topology and serving a schema for your UI using [bullet-service-1.0.0](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-1.0.0)
-  * Setup the [REST PubSub](../pubsub/rest.md) talking to the topology and Web Service using [bullet-core-1.2.0](https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-1.2.0).
-  * Setup the [UI](../ui/setup.md) talking to the Web Service using [bullet-ui-1.0.1](https://github.com/bullet-db/bullet-ui/releases/tag/v1.0.1)
+  * Setup the Bullet topology using a custom spout on [bullet-storm-1.3.0](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-1.3.0)
+  * Setup the [Web Service](../ws/setup.md) talking to the topology and serving a schema for your UI using [bullet-service-1.4.0](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-1.4.0)
+  * Setup the [REST PubSub](../pubsub/rest.md) talking to the topology and Web Service using [bullet-core-1.5.0](https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-1.5.0).
+  * Setup the [UI](../ui/setup.md) talking to the Web Service using [bullet-ui-1.1.0](https://github.com/bullet-db/bullet-ui/releases/tag/v1.1.0)
 
 **Prerequisites**
 
@@ -43,7 +43,7 @@ mkdir -p $BULLET_HOME/backend/storm
 mkdir -p $BULLET_HOME/service
 mkdir -p $BULLET_HOME/ui
 cd $BULLET_HOME
-curl -LO https://github.com/bullet-db/bullet-db.github.io/releases/download/v1.0.0/examples_artifacts.tar.gz
+curl -LO https://github.com/bullet-db/bullet-db.github.io/releases/download/v1.1.0/examples_artifacts.tar.gz
 tar -xzf examples_artifacts.tar.gz
 export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 ```
@@ -131,7 +131,7 @@ Visit the UI and see if the topology is up. You should see the ```DataSource``` 
 
 ```bash
 cd $BULLET_HOME/service
-curl -Lo bullet-service.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/1.0.0/bullet-service-1.0.0-embedded.jar
+curl -Lo bullet-service.jar https://repo1.maven.org/maven2/com/yahoo/bullet/bullet-service/1.4.0/bullet-service-1.4.0-embedded.jar
 cp $BULLET_EXAMPLES/web-service/example* $BULLET_HOME/service/
 ```
 
@@ -163,18 +163,18 @@ curl -s http://localhost:9999/api/bullet/columns
 #### Step 8: Install Node
 
 ```bash
-curl -s https://raw.githubusercontent.com/creationix/nvm/v0.37.2/install.sh | bash
+curl -s https://raw.githubusercontent.com/creationix/nvm/v0.38.0/install.sh | bash
 source ~/.bashrc
-nvm install v10.20.1
-nvm use v10.20.1
+nvm install v16.9.0
+nvm use v16.9.0
 ```
 
 #### Step 9: Install the Bullet UI
 
 ```bash
 cd $BULLET_HOME/ui
-curl -LO https://github.com/bullet-db/bullet-ui/releases/download/v1.0.1/bullet-ui-v1.0.1.tar.gz
-tar -xzf bullet-ui-v1.0.1.tar.gz
+curl -LO https://github.com/bullet-db/bullet-ui/releases/download/v1.1.0/bullet-ui-v1.1.0.tar.gz
+tar -xzf bullet-ui-v1.1.0.tar.gz
 cp $BULLET_EXAMPLES/ui/env-settings.json config/
 ```
 
@@ -337,6 +337,7 @@ For the Web Service, we passed in a YAML file that pointed to itself for the RES
 ```yaml
 bullet.pubsub.context.name: "QUERY_SUBMISSION"
 bullet.pubsub.class.name: "com.yahoo.bullet.pubsub.rest.RESTPubSub"
+bullet.pubsub.message.serde.class.name: "com.yahoo.bullet.pubsub.ByteArrayPubSubMessageSerDe"
 bullet.pubsub.rest.query.urls:
     - "http://localhost:9999/api/bullet/pubsub/query"
 bullet.pubsub.rest.result.url: "http://localhost:9999/api/bullet/pubsub/result"
