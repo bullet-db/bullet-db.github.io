@@ -11,7 +11,7 @@ At the end of this section, you will have:
 **Prerequisites**
 
   * You will need to be on an Unix-based system (Mac OS X, Ubuntu ...) with ```curl``` installed
-  * You will need [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html) installed
+  * You will need [JDK 8](https://jdk.java.net/java-se-ri/8-MR3) installed
 
 ## Install Script
 
