@@ -121,7 +121,7 @@ The Backend will usually be up and running usually within 5-10 seconds. Once it 
 
 ```bash
 cd $BULLET_HOME/service
-curl -Lo bullet-service.jar https://repo1.maven.org/maven2/com/yahoo/bullet/bullet-service/1.4.0/bullet-service-1.4.0-embedded.jar
+curl -Lo bullet-service.jar https://repo1.maven.org/maven2/com/yahoo/bullet/bullet-service/1.4.1/bullet-service-1.4.1-embedded.jar
 cp $BULLET_EXAMPLES/web-service/example_kafka_pubsub_config.yaml $BULLET_HOME/service/
 cp $BULLET_EXAMPLES/web-service/example_query_config.yaml $BULLET_HOME/service/
 cp $BULLET_EXAMPLES/web-service/example_columns.json $BULLET_HOME/service/

@@ -204,6 +204,7 @@ The Web Service implementation that can serve a static schema from a file and ta
 
 |    Date      |                                      Release                                               |        JCenter        |      Maven Central    | Highlights | APIDocs |
 | ------------ | ------------------------------------------------------------------------------------------ | :-------------------: | :-------------------: | ---------- | ------- |
+| 2021-09-10   | [**1.4.1**](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-1.4.1) |                       | <span>&#10003;</span> | Bug fix for masked Commons Lang3 transitive dependency | [JavaDocs](apidocs/bullet-service/1.4.1/index.html) |
 | 2021-09-01   | [**1.4.0**](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-1.4.0) |                       | <span>&#10003;</span> | Bullet Core 1.5.0 and BQL 1.3.0 | [JavaDocs](apidocs/bullet-service/1.4.0/index.html) |
 | 2021-08-03   | [**1.3.2**](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-1.3.2) |                       | <span>&#10003;</span> | Bullet Core 1.4.4 and BQL 1.2.5 | [JavaDocs](apidocs/bullet-service/1.3.2/index.html) |
 | 2021-07-27   | [**1.3.1**](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-1.3.1) |                       | <span>&#10003;</span> | Fixes metrics reporting when storage is not configured | [JavaDocs](apidocs/bullet-service/1.3.1/index.html) |
@@ -424,4 +425,3 @@ A library facilitating the conversion from Bullet BQL queries to Bullet queries.
 | 2018-09-06   | [**0.1.2**](https://github.com/bullet-db/bullet-bql/releases/tag/bullet-bql-0.1.2)   | <span>&#10003;</span> |                       | Supports CONTAINSKEY, CONTAINSVALUE, SIZEOF, comparing to other fields. Fixes some bugs | [JavaDocs](apidocs/bullet-bql/0.1.2/index.html) |
 | 2018-07-17   | [**0.1.1**](https://github.com/bullet-db/bullet-bql/releases/tag/bullet-bql-0.1.1)   | <span>&#10003;</span> |                       | Stops publishing fat jar and marks slf4j dependency provided | [JavaDocs](apidocs/bullet-bql/0.1.1/index.html) |
 | 2018-07-05   | [**0.1.0**](https://github.com/bullet-db/bullet-bql/releases/tag/bullet-bql-0.1.0)   | <span>&#10003;</span> |                       | First release | |
-

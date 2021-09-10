@@ -5,7 +5,7 @@ This section gets you running a mock instance of Bullet to play around with. The
 At the end of this section, you will have:
 
   * Setup the Bullet topology using a custom spout on [bullet-storm-1.3.0](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-1.3.0)
-  * Setup the [Web Service](../ws/setup.md) talking to the topology and serving a schema for your UI using [bullet-service-1.4.0](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-1.4.0)
+  * Setup the [Web Service](../ws/setup.md) talking to the topology and serving a schema for your UI using [bullet-service-1.4.1](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-1.4.1)
   * Setup the [REST PubSub](../pubsub/rest.md) talking to the topology and Web Service using [bullet-core-1.5.0](https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-1.5.0).
   * Setup the [UI](../ui/setup.md) talking to the Web Service using [bullet-ui-1.1.0](https://github.com/bullet-db/bullet-ui/releases/tag/v1.1.0)
 
@@ -131,7 +131,7 @@ Visit the UI and see if the topology is up. You should see the ```DataSource``` 
 
 ```bash
 cd $BULLET_HOME/service
-curl -Lo bullet-service.jar https://repo1.maven.org/maven2/com/yahoo/bullet/bullet-service/1.4.0/bullet-service-1.4.0-embedded.jar
+curl -Lo bullet-service.jar https://repo1.maven.org/maven2/com/yahoo/bullet/bullet-service/1.4.1/bullet-service-1.4.1-embedded.jar
 cp $BULLET_EXAMPLES/web-service/example* $BULLET_HOME/service/
 ```
 

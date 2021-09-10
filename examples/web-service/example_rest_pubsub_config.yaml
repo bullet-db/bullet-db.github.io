@@ -1,6 +1,7 @@
 bullet.pubsub.context.name: "QUERY_SUBMISSION"
 bullet.pubsub.class.name: "com.yahoo.bullet.pubsub.rest.RESTPubSub"
-bullet.pubsub.message.serde.class.name: "com.yahoo.bullet.pubsub.ByteArrayPubSubMessageSerDe"
+# We have to use the IdentityPubSubMessageSerDe because we use asJSON and fromJSON to convert back and forth in the RestPubSub
+bullet.pubsub.message.serde.class.name: "com.yahoo.bullet.pubsub.IdentityPubSubMessageSerDe"
 # In-Memory pubsub settings that you may change for each instance (there may be multiple in-memory pubsub instances)
 # The paths (not including the context.path) of the endpoints for reading/writing queries/responses
 bullet.pubsub.rest.query.urls:
