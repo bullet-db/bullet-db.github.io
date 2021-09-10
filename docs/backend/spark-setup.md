@@ -16,9 +16,9 @@ To use Bullet Spark, you need to implement your own [Data Producer Trait](https:
 
 ```xml
 <properties>
-    <scala.version>2.12.8</scala.version>
+    <scala.version>2.12.10</scala.version>
     <scala.dep.version>2.12</scala.dep.version>
-    <spark.version>3.0.1</spark.version>
+    <spark.version>3.1.2</spark.version>
     <bullet.spark.version>1.2.0</bullet.spark.version>
 </properties>
 

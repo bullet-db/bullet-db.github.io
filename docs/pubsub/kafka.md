@@ -6,7 +6,7 @@ The Kafka implementation of the Bullet PubSub can be used on any Backend and Web
 
 The implementation by default asks you to create two topics in a Kafka cluster - one for queries and another for results. The Web Service publishes queries to the queries topic and reads results from the results topic. Similarly, the Backend reads queries from the queries topic and writes results to the results topic. All messages are sent as [PubSubMessages](architecture.md#messages).
 
-You do not need to have two topics but it makes it simpler to reason about if you do. You can have one but you should use multiple partitions and configure your Web Service and Backend to produce to and consume from the right partitions. See the [setup](#configuration) section for more details.
+You do not need to have two topics - but it makes it simpler to reason about if you do - you can have one but you should use multiple partitions and configure your Web Service and Backend to produce to and consume from the right partitions. See the [setup](#configuration) section for more details.
 
 !!! note "Kafka Client API"
 

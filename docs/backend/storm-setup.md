@@ -68,7 +68,7 @@ Storm topologies are generally launched with "fat" jars (jar-with-dependencies),
 
 Since package prefixes changed from `backtype.storm` to `org.apache.storm` in Storm 1.0 and above, you will need to get the storm-0.10 version of Bullet if
 your Storm cluster is still not at 1.0 or higher. These older packages are only available in JCenter, which is already sunset but available in read-only
-mode for a short while. We recommend you do not use those versions and migrate to Bullet Storm versions greater than 1.1.2 as soon as possible. If you still
+mode. We recommend you do not use those versions and migrate to Bullet Storm versions greater than 1.1.2 as soon as possible. If you still
 need them, you can change your dependency to:
 
 ```xml

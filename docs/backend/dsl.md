@@ -138,7 +138,7 @@ The JSONBulletRecordConverter is used to convert String JSON representations of 
 
 ### AvroBulletRecordConverter
 
-The AvroBulletRecordConverter is used to convert Avro records into BulletRecords. Without a schema, it inserts every field into a BulletRecord without any type-checking. With a schema, you get type-checking, and you can also specify a RECORD field, and the converter will accept Avro Records in addition to Maps, flattening them into the BulletRecord. This converter also handles container types (such as Maps and Lists) that contain heterogenous nested types. It maps then to the appropriate Bullet `UNKNOWN_MAP`, `UNKNOWN_MAP_MAP` etc types so that queries can still be written that pull out these fields and if *they* are types that Bullet understands, the query can still execute.
+The AvroBulletRecordConverter is used to convert Avro records into BulletRecords. Without a schema, it inserts every field into a BulletRecord without any type-checking. With a schema, you get type-checking, and you can also specify a RECORD field, and the converter will accept Avro Records in addition to Maps, flattening them into the BulletRecord. This converter also handles container types (such as Maps and Lists) that contain heterogenous nested types as well having more nesting levels than the types we support. It maps then to the appropriate Bullet `UNKNOWN_MAP`, `UNKNOWN_MAP_MAP` etc types so that queries can still be written that pull out these fields and if *they* are types that Bullet understands, the query can still execute.
 
 ### Schema
 
@@ -188,7 +188,7 @@ When using the schema:
 28. FLOAT_MAP_LIST
 29. DOUBLE_MAP_LIST
 30. STRING_MAP_LIST
-    
+
 !!!note "Special Type for a RECORD"
 
     There is a special case where if you omit the `type` and the `name` for an entry in the schema, the reference is assumed to be a map containing arbitrary fields with types in the list above. You can use this if you have a map field that contains various objects with one or more types in the list above and want to flatten that map out into the target record using the respective types of each field in the map. The names of the fields in the map will be used as the top-level names in the resulting record.
