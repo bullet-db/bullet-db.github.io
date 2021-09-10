@@ -71,7 +71,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v1.0.0</small></a>
+            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v1.1.0</small></a>
         </div>
 
         <!-- Expanded navigation -->
@@ -463,7 +463,7 @@
 <p><strong>Prerequisites</strong></p>
 <ul>
 <li>You will need to be on an Unix-based system (Mac OS X, Ubuntu ...) with <code>curl</code> installed</li>
-<li>You will need <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">JDK 8</a> installed</li>
+<li>You will need <a href="https://jdk.java.net/java-se-ri/8-MR3">JDK 8</a> installed</li>
 </ul>
 <h2 id="install-script">Install Script</h2>
 <p>Simply run:</p>
@@ -483,7 +483,7 @@ mkdir -p $BULLET_HOME/pubsub
 mkdir -p $BULLET_HOME/service
 mkdir -p $BULLET_HOME/ui
 cd $BULLET_HOME
-curl -LO https://github.com/bullet-db/bullet-db.github.io/releases/download/v1.0.0/examples_artifacts.tar.gz
+curl -LO https://github.com/bullet-db/bullet-db.github.io/releases/download/v1.1.0/examples_artifacts.tar.gz
 tar -xzf examples_artifacts.tar.gz
 export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 </code></pre>
@@ -492,10 +492,10 @@ export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 <p>For this instance of Bullet we will use the Kafka PubSub implementation found in <a href="https://github.com/bullet-db/bullet-spark">bullet-spark</a>. So we will first download and run Kafka, and setup a couple Kafka topics.</p>
 <h4 id="step-2-download-and-install-kafka">Step 2: Download and Install Kafka</h4>
 <pre><code class="bash">cd $BULLET_HOME/pubsub
-curl -Lo bullet-kafka.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-kafka/1.0.1/bullet-kafka-1.0.1-fat.jar
-curl -LO https://archive.apache.org/dist/kafka/2.3.1/kafka_2.12-2.3.1.tgz
-tar -xzf kafka_2.12-2.3.1.tgz
-export KAFKA_DIR=$BULLET_HOME/pubsub/kafka_2.12-2.3.1
+curl -Lo bullet-kafka.jar https://repo1.maven.org/maven2/com/yahoo/bullet/bullet-kafka/1.3.0/bullet-kafka-1.3.0-fat.jar
+curl -LO https://archive.apache.org/dist/kafka/2.6.2/kafka_2.12-2.6.2.tgz
+tar -xzf kafka_2.12-2.6.2.tgz
+export KAFKA_DIR=$BULLET_HOME/pubsub/kafka_2.12-2.6.2
 </code></pre>
 
 <h4 id="step-3-start-zookeeper">Step 3: Start Zookeeper</h4>
@@ -514,35 +514,34 @@ $KAFKA_DIR/bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication
 </code></pre>
 
 <h3 id="setup-bullet-backend-on-spark">Setup Bullet Backend on Spark</h3>
-<p>We will run the bullet-spark backend using <a href="https://spark.apache.org/releases/spark-release-3-0-1.html">Spark 3.0.1</a>.</p>
-<h4 id="step-6-install-spark-301">Step 6: Install Spark 3.0.1</h4>
+<p>We will run the bullet-spark backend using <a href="https://spark.apache.org/releases/spark-release-3-1-2.html">Spark 3.1.2</a>.</p>
+<h4 id="step-6-install-spark-312">Step 6: Install Spark 3.1.2</h4>
 <pre><code class="bash">export BULLET_SPARK=$BULLET_HOME/backend/spark
 cd $BULLET_SPARK
-curl -O https://archive.apache.org/dist/spark/spark-3.0.1/spark-3.0.1-bin-hadoop2.7.tgz
-tar -xzf spark-3.0.1-bin-hadoop2.7.tgz
+curl -O https://archive.apache.org/dist/spark/spark-3.1.2/spark-3.1.2-bin-hadoop2.7.tgz
+tar -xzf spark-3.1.2-bin-hadoop2.7.tgz
 </code></pre>
 
 <h4 id="step-7-setup-bullet-spark-and-example-data-producer">Step 7: Setup Bullet-Spark and Example Data Producer</h4>
 <pre><code class="bash">cp $BULLET_HOME/bullet-examples/backend/spark/* $BULLET_SPARK
-curl -Lo bullet-spark.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-spark/1.0.0/bullet-spark-1.0.0-standalone.jar
+curl -Lo bullet-spark.jar https://repo1.maven.org/maven2/com/yahoo/bullet/bullet-spark/1.2.0/bullet-spark-1.2.0-standalone.jar
 </code></pre>
 
 <h4 id="step-8-launch-the-bullet-spark-backend">Step 8: Launch the Bullet Spark Backend</h4>
 <p>Run this multi-line command (new lines are escaped):</p>
-<pre><code class="bash">$BULLET_SPARK/spark-3.0.1-bin-hadoop2.7/bin/spark-submit \
+<pre><code class="bash">$BULLET_SPARK/spark-3.1.2-bin-hadoop2.7/bin/spark-submit \
     --master local[10]  \
     --class com.yahoo.bullet.spark.BulletSparkStreamingMain \
     --jars $BULLET_HOME/pubsub/bullet-kafka.jar,$BULLET_SPARK/bullet-spark-example.jar \
     $BULLET_SPARK/bullet-spark.jar \
     --bullet-spark-conf=$BULLET_SPARK/bullet_spark_kafka_settings.yaml &amp;&gt; log.txt &amp;
-
 </code></pre>
 
 <p>The Backend will usually be up and running usually within 5-10 seconds. Once it is running you can get information about the Spark job in the Spark UI, which can be seen in your browser at <a href="http://localhost:4040">http://localhost:4040</a> by default. The Web Service will now be hooked up through the Kafka PubSub to the Spark backend. To test it you can now run a Bullet query by hitting the Web Service directly:</p>
 <h3 id="setup-web-service">Setup Web Service</h3>
 <h4 id="step-9-install-the-bullet-web-service">Step 9: Install the Bullet Web Service</h4>
 <pre><code class="bash">cd $BULLET_HOME/service
-curl -Lo bullet-service.jar http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/1.0.0/bullet-service-1.0.0-embedded.jar
+curl -Lo bullet-service.jar https://repo1.maven.org/maven2/com/yahoo/bullet/bullet-service/1.4.1/bullet-service-1.4.1-embedded.jar
 cp $BULLET_EXAMPLES/web-service/example_kafka_pubsub_config.yaml $BULLET_HOME/service/
 cp $BULLET_EXAMPLES/web-service/example_query_config.yaml $BULLET_HOME/service/
 cp $BULLET_EXAMPLES/web-service/example_columns.json $BULLET_HOME/service/
@@ -576,15 +575,15 @@ cp $BULLET_EXAMPLES/web-service/example_columns.json $BULLET_HOME/service/
 <h3 id="setting-up-the-bullet-ui">Setting up the Bullet UI</h3>
 <h4 id="step-12-install-node">Step 12: Install Node</h4>
 <pre><code class="bash">cd $BULLET_HOME/ui
-curl -s https://raw.githubusercontent.com/creationix/nvm/v0.37.2/install.sh | bash
+curl -s https://raw.githubusercontent.com/creationix/nvm/v0.38.0/install.sh | bash
 source ~/.bashrc
-nvm install v10.20.1
-nvm use v10.20.1
+nvm install v16.9.0
+nvm use v16.9.0
 </code></pre>
 
 <h4 id="step-13-install-the-bullet-ui">Step 13: Install the Bullet UI</h4>
-<pre><code class="bash">curl -LO https://github.com/bullet-db/bullet-ui/releases/download/v1.0.1/bullet-ui-v1.0.1.tar.gz
-tar -xzf bullet-ui-v1.0.1.tar.gz
+<pre><code class="bash">curl -LO https://github.com/bullet-db/bullet-ui/releases/download/v1.1.0/bullet-ui-v1.1.0.tar.gz
+tar -xzf bullet-ui-v1.1.0.tar.gz
 cp $BULLET_EXAMPLES/ui/env-settings.json config/
 </code></pre>
 
@@ -645,7 +644,7 @@ cp $BULLET_EXAMPLES/ui/env-settings.json config/
 <p>This section will go over the various custom pieces this example plugged into Bullet, so you can better understand what we did.</p>
 <h3 id="spark-streaming-job">Spark Streaming Job</h3>
 <p>The Spark Streaming application we ran was Bullet plugged in with a custom Receiver in our implementation of the Bullet Spark DataProducer trait. This Receiver and DataProducer are implemented in this <a href="https://github.com/bullet-db/bullet-db.github.io/blob/src/examples/spark/">example project</a> and was already built for you when you <a href="#step-1-setup-directories-and-examples">downloaded the examples</a>. It does not read from any data source and just produces random, structured data. It also produces only up to a maximum number of records in a given period. Both this maximum and the length of a period are configured in the Receiver (at most 100 every 1 second).</p>
-<pre><code class="bash">$BULLET_SPARK/spark-3.0.1-bin-hadoop2.7/bin/spark-submit \
+<pre><code class="bash">$BULLET_SPARK/spark-3.1.2-bin-hadoop2.7/bin/spark-submit \
     --master local[10]  \
     --class com.yahoo.bullet.spark.BulletSparkStreamingMain \
     --jars $BULLET_HOME/pubsub/bullet-kafka.jar,$BULLET_SPARK/bullet-spark-example.jar \

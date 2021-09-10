@@ -71,7 +71,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v1.0.0</small></a>
+            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v1.1.0</small></a>
         </div>
 
         <!-- Expanded navigation -->
@@ -423,6 +423,8 @@ bullet.pubsub.builtin.rest.result.path: /pubsub/result
 <p>Configure the backend to use the REST PubSub:</p>
 <pre><code class="yaml">bullet.pubsub.context.name: &quot;QUERY_PROCESSING&quot;
 bullet.pubsub.class.name: &quot;com.yahoo.bullet.pubsub.rest.RESTPubSub&quot;
+# Path to the SerDe for PubSubMessages. You MUST use the IdentityPubSubMessageSerDe
+bullet.pubsub.message.serde.class.name: 'com.yahoo.bullet.pubsub.IdentityPubSubMessageSerDe'
 bullet.pubsub.rest.connect.timeout.ms: 5000
 bullet.pubsub.rest.subscriber.max.uncommitted.messages: 100
 bullet.pubsub.rest.query.subscriber.min.wait.ms: 10
@@ -451,6 +453,11 @@ bullet.pubsub.rest.query.urls:
 <td>Tells Bullet to use this class for its PubSub</td>
 </tr>
 <tr>
+<td>bullet.pubsub.message.serde.class.name</td>
+<td>com.yahoo.bullet.pubsub.IdentityPubSubMessageSerDe</td>
+<td>Tells Bullet to use this SerDe for reading and writing PubSubMessage payloads</td>
+</tr>
+<tr>
 <td>bullet.pubsub.rest.connect.timeout.ms</td>
 <td>5000</td>
 <td>Sets the HTTP connect timeout to 5 s</td>
@@ -473,9 +480,11 @@ bullet.pubsub.rest.query.urls:
 </tbody>
 </table>
 <h3 id="plug-into-the-web-service">Plug into the Web Service</h3>
-<p>Configure the Web Service to use the REST PubSub:</p>
+<p>Configure the Web Service to use the REST PubSub by passing in the yaml file using application.yaml <code>bullet.pubsub.config</code>:</p>
 <pre><code class="yaml">bullet.pubsub.context.name: &quot;QUERY_SUBMISSION&quot;
 bullet.pubsub.class.name: &quot;com.yahoo.bullet.pubsub.rest.RESTPubSub&quot;
+# Path to the SerDe for PubSubMessages. You MUST use the IdentityPubSubMessageSerDe
+bullet.pubsub.message.serde.class.name: 'com.yahoo.bullet.pubsub.IdentityPubSubMessageSerDe'
 bullet.pubsub.rest.connect.timeout.ms: 5000
 bullet.pubsub.rest.subscriber.max.uncommitted.messages: 100
 bullet.pubsub.rest.result.subscriber.min.wait.ms: 10
@@ -502,6 +511,11 @@ bullet.pubsub.rest.query.urls:
 <td>bullet.pubsub.class.name</td>
 <td>com.yahoo.bullet.pubsub.rest.RESTPubSub</td>
 <td>Tells Bullet to use this class for its PubSub</td>
+</tr>
+<tr>
+<td>bullet.pubsub.message.serde.class.name</td>
+<td>com.yahoo.bullet.pubsub.IdentityPubSubMessageSerDe</td>
+<td>Tells Bullet to use this SerDe for reading and writing PubSubMessage payloads</td>
 </tr>
 <tr>
 <td>bullet.pubsub.rest.connect.timeout.ms</td>

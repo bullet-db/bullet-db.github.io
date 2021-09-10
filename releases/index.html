@@ -71,7 +71,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="..">Bullet Docs<small class="small small-brand-text">v1.0.0</small></a>
+            <a class="navbar-brand" href="..">Bullet Docs<small class="small small-brand-text">v1.1.0</small></a>
         </div>
 
         <!-- Expanded navigation -->
@@ -378,7 +378,19 @@
             
                     <li class="second-level">
                         <a href="#download">Download</a>
+                        <ul class="nav">
                         
+                            <li class="third-level">
+                                <a href="#maven-central">Maven central</a>
+                                
+                            </li>
+                        
+                            <li class="third-level">
+                                <a href="#jcenter">JCenter</a>
+                                
+                            </li>
+                        
+                        </ul>
                     </li>
             
                     <li class="second-level">
@@ -514,7 +526,24 @@
 <h2 id="api-documentation">API Documentation</h2>
 <p>API (Java and Scala) docs can also be found for the releases below.</p>
 <h2 id="download">Download</h2>
-<p>For downloading any artifact listed below manually, you should preferably use the <a href="https://jcenter.bintray.com/com/yahoo/bullet/"><strong>JCenter mirror here</strong></a>. For resolving artifacts in your build tool, follow the direcions in each of the components' Package Manager Setup sections.</p>
+<p>For downloading any of the latest artifacts listed below, you should use <a href="https://repo1.maven.org/maven2/com/yahoo/bullet/">Maven Central</a>. For resolving artifacts in your build tool, follow the directions in each of the components' Package Manager Setup sections.</p>
+<h3 id="maven-central">Maven central</h3>
+<p>Our current package management solution is Maven Central. This requires no configuration if using Maven. The various releases below are not entirely on Maven Central. Certain older versions are on our previous package management solution.</p>
+<h3 id="jcenter">JCenter</h3>
+<p>JCenter was sunset in July 2021. All our artifacts prior to ~June 2021 that were on JCenter will still be accessible as long as <a href="https://jfrog.com/blog/into-the-sunset-bintray-jcenter-gocenter-and-chartcenter/">JCenter is in read-only mode</a>. We have since moved to Maven Central and artifacts since June 2021 are being published there. If you wish to resolve JCenter artifacts, you will need to configure your package manager to use JCenter. For instance, to resolve JCenter artifacts in Maven, you will need to add:</p>
+<pre><code class="xml">&lt;repositories&gt;
+    &lt;repository&gt;
+        &lt;snapshots&gt;
+            &lt;enabled&gt;false&lt;/enabled&gt;
+        &lt;/snapshots&gt;
+        &lt;id&gt;central&lt;/id&gt;
+        &lt;name&gt;bintray&lt;/name&gt;
+        &lt;url&gt;http://jcenter.bintray.com&lt;/url&gt;
+    &lt;/repository&gt;
+&lt;/repositories&gt;
+
+</code></pre>
+
 <hr />
 <h2 id="bullet-core">Bullet Core</h2>
 <p>The core Bullet logic (a library) that can be used to implement Bullet on different Stream Processors (like Flink, Storm, Kafka Streams etc.). This core library can also be reused in other Bullet components that wish to depend on core Bullet concepts. This actually lived inside the <a href="#bullet-storm">Bullet Storm</a> package prior to version <a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.5.0">0.5.0</a>. Starting with 0.5.0, Bullet Storm only includes the logic to implement Bullet on Storm.</p>
@@ -540,11 +569,11 @@
 </tr>
 <tr>
 <td><strong>Latest Artifact</strong></td>
-<td><a href="https://bintray.com/yahoo/maven/bullet-core/_latestVersion"><img alt="Download" src="https://api.bintray.com/packages/yahoo/maven/bullet-core/images/download.svg" /></a></td>
+<td><a href="https://maven-badges.herokuapp.com/maven-central/com.yahoo.bullet/bullet-core"><img alt="Latest Artifact" src="https://maven-badges.herokuapp.com/maven-central/com.yahoo.bullet/bullet-core/badge.svg" /></a></td>
 </tr>
 <tr>
 <td><strong>Package Manager Setup</strong></td>
-<td><a href="https://bintray.com/bintray/jcenter?filterByPkgName=bullet-core">Setup for Maven, Gradle etc</a></td>
+<td><a href="https://search.maven.org/artifact/com.yahoo.bullet/bullet-core/${bullet.core.version}/jar">Maven Central</a></td>
 </tr>
 </tbody>
 </table>
@@ -554,188 +583,346 @@
 <tr>
 <th>Date</th>
 <th>Release</th>
+<th align="center">JCenter</th>
+<th align="center">Maven Central</th>
 <th>Highlights</th>
 <th>APIDocs</th>
 </tr>
 </thead>
 <tbody>
 <tr>
+<td>2021-08-26</td>
+<td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-1.5.0"><strong>1.5.0</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Outer queries (subqueries and nested LATERAL VIEW EXPLODE</td>
+<td><a href="../apidocs/bullet-core/1.5.0/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-08-02</td>
+<td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-1.4.4"><strong>1.4.4</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>More efficient BOOLEAN computation and efficient LATERAL VIEW</td>
+<td><a href="../apidocs/bullet-core/1.4.4/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-07-30</td>
+<td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-1.4.3"><strong>1.4.3</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>UNKNOWN containers as first class with Bullet Record 1.2.0</td>
+<td><a href="../apidocs/bullet-core/1.4.3/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-06-30</td>
+<td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-1.4.2"><strong>1.4.2</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Uses Bullet Record 1.1.4 with better Avro performance</td>
+<td><a href="../apidocs/bullet-core/1.4.2/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-06-25</td>
+<td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-1.4.1"><strong>1.4.1</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>ByteArrayPubSubMessageSerDe</td>
+<td><a href="../apidocs/bullet-core/1.4.1/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-06-23</td>
+<td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-1.4.0"><strong>1.4.0</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>PubSubMessage stores Serializable. PubSubMessageSerDe infrastructure</td>
+<td><a href="../apidocs/bullet-core/1.4.0/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-06-03</td>
+<td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-1.3.2"><strong>1.3.2</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>MOD, LOWER, UPPER</td>
+<td><a href="../apidocs/bullet-core/1.3.2/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-05-13</td>
+<td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-1.3.1"><strong>1.3.1</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Bug fix for BulletConfig not recreating the BulletRecordProvider</td>
+<td><a href="../apidocs/bullet-core/1.3.1/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-05-05</td>
+<td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-1.3.0"><strong>1.3.0</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Rate limited BufferingSubscriber, EXPLODE, LATERAL VIEW, NOT RLIKE, NOT RLIKE ANY, TRIM, ABS, BETWEEN, NOT BETWEEN, SUBSTRING, UNIXTIMESTAMP</td>
+<td><a href="../apidocs/bullet-core/1.3.0/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-04-27</td>
+<td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-1.2.3"><strong>1.2.3</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>First release using Screwdriver</td>
+<td><a href="../apidocs/bullet-core/1.2.3/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-04-22</td>
+<td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-1.2.2"><strong>1.2.2</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>First release on Maven Central</td>
+<td><a href="../apidocs/bullet-core/1.2.2/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-03-24</td>
+<td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-1.2.1"><strong>1.2.1</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
+<td>YAML library is snakeyaml instead of jvyaml</td>
+<td><a href="../apidocs/bullet-core/1.2.1/index.html">JavaDocs</a></td>
+</tr>
+<tr>
 <td>2021-01-04</td>
 <td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-1.2.0"><strong>1.2.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Storage layer updates and extensions</td>
 <td><a href="../apidocs/bullet-core/1.2.0/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2020-10-30</td>
 <td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-1.1.0"><strong>1.1.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Ternary Logic, Bullet Record 1.1</td>
 <td><a href="../apidocs/bullet-core/1.1.0/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2020-10-02</td>
 <td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-1.0.0"><strong>1.0.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Major release - Expressions, Storage, Async queries, No JSON queries</td>
 <td><a href="../apidocs/bullet-core/1.0.0/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2019-02-01</td>
 <td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.6.6"><strong>0.6.6</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>QueryManager partition leak cleanup</td>
 <td><a href="../apidocs/bullet-core/0.6.6/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2018-12-20</td>
 <td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.6.5"><strong>0.6.5</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>QueryManager logging fixes</td>
 <td><a href="../apidocs/bullet-core/0.6.5/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2018-11-21</td>
 <td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.6.4"><strong>0.6.4</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Extended field extraction in Projections</td>
 <td><a href="../apidocs/bullet-core/0.6.4/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2018-11-21</td>
 <td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.6.3"><strong>0.6.3</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Extended field extraction Filters and Aggregations</td>
 <td><a href="../apidocs/bullet-core/0.6.3/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2018-11-19</td>
 <td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.6.2"><strong>0.6.2</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Query Manager helpers</td>
 <td><a href="../apidocs/bullet-core/0.6.2/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2018-11-16</td>
 <td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.6.1"><strong>0.6.1</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Query Categorizer category</td>
 <td><a href="../apidocs/bullet-core/0.6.1/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2018-11-06</td>
 <td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.6.0"><strong>0.6.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Query Partitioning, Validator and other improvements</td>
 <td><a href="../apidocs/bullet-core/0.6.0/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2018-10-21</td>
 <td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.5.2"><strong>0.5.2</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>AutoCloseable Pubsub Components, HttpClient 4.3.6</td>
 <td><a href="../apidocs/bullet-core/0.5.2/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2018-09-25</td>
 <td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.5.1"><strong>0.5.1</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Better Order By, Smaller Serializations, Transient Fields</td>
 <td><a href="../apidocs/bullet-core/0.5.1/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2018-09-14</td>
 <td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.5.0"><strong>0.5.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Post Aggregations - ORDER BY, COMPUTATION, Casting in Filters</td>
 <td><a href="../apidocs/bullet-core/0.5.0/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2018-09-05</td>
 <td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.4.3"><strong>0.4.3</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Sliding Windows, SIZEIS, CONTAINSKEY, CONTAINSVALUE, filtering against other fields</td>
 <td><a href="../apidocs/bullet-core/0.4.3/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2018-06-26</td>
 <td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.4.2"><strong>0.4.2</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Fixes a bug with unclosed connections in the RESTPubSub</td>
 <td><a href="../apidocs/bullet-core/0.4.2/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2018-06-22</td>
 <td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.4.1"><strong>0.4.1</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Added RESTPublisher HTTP Timeout Setting</td>
 <td></td>
 </tr>
 <tr>
 <td>2018-06-18</td>
 <td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.4.0"><strong>0.4.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Added support for Integer and Float data types, and configurable BulletRecordProvider class used to instantiate BulletRecords in bullet-core</td>
 <td></td>
 </tr>
 <tr>
 <td>2018-04-11</td>
 <td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.3.4"><strong>0.3.4</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Pre-Start delaying and Buffering changes - queries are now buffered at the start of a query instead of start of each window</td>
 <td></td>
 </tr>
 <tr>
 <td>2018-03-30</td>
 <td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.3.3"><strong>0.3.3</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Bug fix for com.yahoo.bullet.core.querying.Querier#isClosedForPartition</td>
 <td></td>
 </tr>
 <tr>
 <td>2018-03-20</td>
 <td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.3.2"><strong>0.3.2</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Added headers to RESTPubSub http requests</td>
 <td></td>
 </tr>
 <tr>
 <td>2018-03-16</td>
 <td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.3.1"><strong>0.3.1</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Added RESTPubSub implementation</td>
 <td></td>
 </tr>
 <tr>
 <td>2018-02-22</td>
 <td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.3.0"><strong>0.3.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Supports windowing / incremental updates</td>
 <td></td>
 </tr>
 <tr>
 <td>2017-10-04</td>
 <td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.2.5"><strong>0.2.5</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Supports an in-memory BufferingSubscriber implementation for reliable subscribing</td>
 <td></td>
 </tr>
 <tr>
 <td>2017-10-03</td>
 <td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.2.4"><strong>0.2.4</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Helpers added to Config, PubSubMessage, Metadata and JSONFormatter. FAIL signal in Metadata. PubSubMessage is JSON serializable</td>
 <td></td>
 </tr>
 <tr>
 <td>2017-09-20</td>
 <td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.2.3"><strong>0.2.3</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>PubSub is no longer required to be Serializable. Makes PubSubMessage fully serializable. Utility classes and checked exceptions for PubSub</td>
 <td></td>
 </tr>
 <tr>
 <td>2017-08-30</td>
 <td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.2.2"><strong>0.2.2</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Helper methods to PubSubMessage and Config</td>
 <td></td>
 </tr>
 <tr>
 <td>2017-08-23</td>
 <td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.2.1"><strong>0.2.1</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Removes PubSubConfig, adds defaults methods to Publisher/Subscriber interfaces and improves PubSubException</td>
 <td></td>
 </tr>
 <tr>
 <td>2017-08-16</td>
 <td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.2.0"><strong>0.2.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>PubSub interfaces and classes to implement custom communication between API and backend</td>
 <td></td>
 </tr>
 <tr>
 <td>2017-06-27</td>
 <td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.1.2"><strong>0.1.2</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Changes to the BulletConfig interface previously used in Bullet Storm. Users now use BulletStormConfig instead but YAML config is the same</td>
 <td></td>
 </tr>
 <tr>
 <td>2017-06-27</td>
 <td><a href="https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-0.1.1"><strong>0.1.1</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>First stable release containing the core of Bullet as a library including parsing, implementing queries, creating results, DataSketches etc</td>
 <td></td>
 </tr>
@@ -777,11 +964,11 @@
 </tr>
 <tr>
 <td><strong>Latest Artifact</strong></td>
-<td><a href="https://bintray.com/yahoo/maven/bullet-storm/_latestVersion"><img alt="Download" src="https://api.bintray.com/packages/yahoo/maven/bullet-storm/images/download.svg" /></a></td>
+<td><a href="https://maven-badges.herokuapp.com/maven-central/com.yahoo.bullet/bullet-storm"><img alt="Latest Artifact" src="https://maven-badges.herokuapp.com/maven-central/com.yahoo.bullet/bullet-storm/badge.svg" /></a></td>
 </tr>
 <tr>
 <td><strong>Package Manager Setup</strong></td>
-<td><a href="https://bintray.com/bintray/jcenter?filterByPkgName=bullet-storm">Setup for Maven, Gradle etc</a></td>
+<td><a href="https://search.maven.org/artifact/com.yahoo.bullet/bullet-storm/${bullet.storm.version}/jar">Maven Central</a></td>
 </tr>
 </tbody>
 </table>
@@ -792,15 +979,82 @@
 <th>Date</th>
 <th>Storm 1.0+</th>
 <th>Storm 0.10</th>
+<th align="center">JCenter</th>
+<th align="center">Maven Central</th>
 <th>Highlights</th>
 <th>APIDocs</th>
 </tr>
 </thead>
 <tbody>
 <tr>
+<td>2021-09-01</td>
+<td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-1.3.0"><strong>1.3.0</strong></a></td>
+<td>-</td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Bullet Core 1.5.0 and DSL 1.2.0</td>
+<td><a href="../apidocs/bullet-storm/1.3.0/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-08-03</td>
+<td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-1.2.1"><strong>1.2.1</strong></a></td>
+<td>-</td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Bullet Core 1.4.4 and DSL 1.1.8</td>
+<td><a href="../apidocs/bullet-storm/1.2.1/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-07-07</td>
+<td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-1.2.0"><strong>1.2.0</strong></a></td>
+<td>-</td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>PubSubMessageSerDe. Bolts emit PubSubMessage. Bullet Core 1.4.2 and DSL 1.1.7</td>
+<td><a href="../apidocs/bullet-storm/1.2.0/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-05-13</td>
+<td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-1.1.4"><strong>1.1.4</strong></a></td>
+<td>-</td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Bullet Core 1.3.1 and DSL 1.1.6</td>
+<td><a href="../apidocs/bullet-storm/1.1.4/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-04-27</td>
+<td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-1.1.3"><strong>1.1.3</strong></a></td>
+<td>-</td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>First release using Screwdriver</td>
+<td><a href="../apidocs/bullet-storm/1.1.3/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-04-23</td>
+<td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-1.1.2"><strong>1.1.2</strong></a></td>
+<td>-</td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Bullet Core 1.2.2. First release on Maven Central</td>
+<td><a href="../apidocs/bullet-storm/1.1.2/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-03-25</td>
+<td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-1.1.1"><strong>1.1.1</strong></a></td>
+<td>-</td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
+<td>Bullet Core 1.2.1</td>
+<td><a href="../apidocs/bullet-storm/1.1.1/index.html">JavaDocs</a></td>
+</tr>
+<tr>
 <td>2021-03-19</td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-1.1.0"><strong>1.1.0</strong></a></td>
 <td>-</td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>SpoutConnector</td>
 <td><a href="../apidocs/bullet-storm/1.1.0/index.html">JavaDocs</a></td>
 </tr>
@@ -808,6 +1062,8 @@
 <td>2021-03-01</td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-1.0.1"><strong>1.0.1</strong></a></td>
 <td>-</td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Extra submit API with Storm Config</td>
 <td><a href="../apidocs/bullet-storm/1.0.1/index.html">JavaDocs</a></td>
 </tr>
@@ -815,6 +1071,8 @@
 <td>2021-01-12</td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-1.0.0"><strong>1.0.0</strong></a></td>
 <td>-</td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Bullet Core 1.1, Replay, Storage</td>
 <td><a href="../apidocs/bullet-storm/1.0.0/index.html">JavaDocs</a></td>
 </tr>
@@ -822,6 +1080,8 @@
 <td>2019-02-07</td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.9.1"><strong>0.9.1</strong></a></td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.9.1"><strong>0.9.1</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Bullet DSL 0.1.2 and packaging fixes</td>
 <td><a href="../apidocs/bullet-storm/0.9.1/index.html">JavaDocs</a></td>
 </tr>
@@ -829,6 +1089,8 @@
 <td>2019-02-07</td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.9.0"><strong>0.9.0</strong></a></td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.9.0"><strong>0.9.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Bullet DSL support!</td>
 <td><a href="../apidocs/bullet-storm/0.9.0/index.html">JavaDocs</a></td>
 </tr>
@@ -836,6 +1098,8 @@
 <td>2018-11-26</td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.8.5"><strong>0.8.5</strong></a></td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.8.5"><strong>0.8.5</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Extended field notation and updates bullet-core to 0.6.4</td>
 <td><a href="../apidocs/bullet-storm/0.8.5/index.html">JavaDocs</a></td>
 </tr>
@@ -843,6 +1107,8 @@
 <td>2018-11-20</td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.8.4"><strong>0.8.4</strong></a></td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.8.4"><strong>0.8.4</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Partitioning and updates bullet-core to 0.6.2</td>
 <td><a href="../apidocs/bullet-storm/0.8.4/index.html">JavaDocs</a></td>
 </tr>
@@ -850,6 +1116,8 @@
 <td>2018-06-18</td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.8.3"><strong>0.8.3</strong></a></td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.8.3"><strong>0.8.3</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Using new bullet-record and bullet-core supporting Integer and Float data types</td>
 <td><a href="../apidocs/bullet-storm/0.8.3/index.html">JavaDocs</a></td>
 </tr>
@@ -857,6 +1125,8 @@
 <td>2018-04-12</td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.8.2"><strong>0.8.2</strong></a></td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.8.2"><strong>0.8.2</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Delaying query start in Join bolt</td>
 <td></td>
 </tr>
@@ -864,6 +1134,8 @@
 <td>2018-04-04</td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.8.1"><strong>0.8.1</strong></a></td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.8.1"><strong>0.8.1</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Fixed bug in Joinbolt</td>
 <td></td>
 </tr>
@@ -871,6 +1143,8 @@
 <td>2018-03-30</td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.8.0"><strong>0.8.0</strong></a></td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.8.0"><strong>0.8.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Supports windowing / incremental updates</td>
 <td></td>
 </tr>
@@ -878,6 +1152,8 @@
 <td>2017-11-07</td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.7.0"><strong>0.7.0</strong></a></td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.7.0"><strong>0.7.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Merge Query and Metadata Streams</td>
 <td></td>
 </tr>
@@ -885,6 +1161,8 @@
 <td>2017-10-24</td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.6.2"><strong>0.6.2</strong></a></td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.6.2"><strong>0.6.2</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Adds a fat jar for using the DRPC PubSub in the Web Service</td>
 <td></td>
 </tr>
@@ -892,6 +1170,8 @@
 <td>2017-10-18</td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.6.1"><strong>0.6.1</strong></a></td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.6.1"><strong>0.6.1</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>DRPC PubSub</td>
 <td></td>
 </tr>
@@ -899,6 +1179,8 @@
 <td>2017-08-30</td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.6.0"><strong>0.6.0</strong></a></td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.6.0"><strong>0.6.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>New PubSub architecture, removes DRPC components and settings</td>
 <td></td>
 </tr>
@@ -906,6 +1188,8 @@
 <td>2017-06-27</td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.5.0"><strong>0.5.0</strong></a></td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.5.0"><strong>0.5.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Pulled out Bullet Core. BulletConfig to BulletStormConfig</td>
 <td></td>
 </tr>
@@ -913,6 +1197,8 @@
 <td>2017-06-09</td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.4.3"><strong>0.4.3</strong></a></td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.4.3"><strong>0.4.3</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Adding rounding for DISTRIBUTION. Latency metric</td>
 <td></td>
 </tr>
@@ -920,6 +1206,8 @@
 <td>2017-04-28</td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.4.2"><strong>0.4.2</strong></a></td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.4.2"><strong>0.4.2</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Strict JSON output and fix for no data distributions</td>
 <td></td>
 </tr>
@@ -927,6 +1215,8 @@
 <td>2017-04-26</td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.4.1"><strong>0.4.1</strong></a></td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.4.1"><strong>0.4.1</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Result Metadata Concept name mismatch fix</td>
 <td></td>
 </tr>
@@ -934,6 +1224,8 @@
 <td>2017-04-21</td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.4.0"><strong>0.4.0</strong></a></td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.4.0"><strong>0.4.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>DISTRIBUTION and TOP K release. Configuration renames.</td>
 <td></td>
 </tr>
@@ -941,6 +1233,8 @@
 <td>2017-03-13</td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.3.1"><strong>0.3.1</strong></a></td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.3.1"><strong>0.3.1</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Extra records accepted after query expiry bug fix</td>
 <td></td>
 </tr>
@@ -948,6 +1242,8 @@
 <td>2017-02-27</td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.3.0"><strong>0.3.0</strong></a></td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.3.0"><strong>0.3.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Metrics interface, config namespace, NPE bug fix</td>
 <td></td>
 </tr>
@@ -955,6 +1251,8 @@
 <td>2017-02-15</td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.2.1"><strong>0.2.1</strong></a></td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.2.1"><strong>0.2.1</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Acking support, Max size and other bug fixes</td>
 <td></td>
 </tr>
@@ -962,6 +1260,8 @@
 <td>2017-01-26</td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.2.0"><strong>0.2.0</strong></a></td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.2.0"><strong>0.2.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>GROUP (DISTINCT, SUM, COUNT, MIN, MAX, AVG)</td>
 <td></td>
 </tr>
@@ -969,6 +1269,8 @@
 <td>2017-01-09</td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.1.0"><strong>0.1.0</strong></a></td>
 <td><a href="https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-0.10-0.1.0"><strong>0.1.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>COUNT DISTINCT and micro-batching</td>
 <td></td>
 </tr>
@@ -998,11 +1300,11 @@
 </tr>
 <tr>
 <td><strong>Latest Artifact</strong></td>
-<td><a href="https://bintray.com/yahoo/maven/bullet-spark/_latestVersion"><img alt="Download" src="https://api.bintray.com/packages/yahoo/maven/bullet-spark/images/download.svg" /></a></td>
+<td><a href="https://maven-badges.herokuapp.com/maven-central/com.yahoo.bullet/bullet-spark"><img alt="Latest Artifact" src="https://maven-badges.herokuapp.com/maven-central/com.yahoo.bullet/bullet-spark/badge.svg" /></a></td>
 </tr>
 <tr>
 <td><strong>Package Manager Setup</strong></td>
-<td><a href="https://bintray.com/bintray/jcenter?filterByPkgName=bullet-spark">Setup for Maven, Gradle etc</a></td>
+<td><a href="https://search.maven.org/artifact/com.yahoo.bullet/bullet-spark/${bullet.spark.version}/jar">Maven Central</a></td>
 </tr>
 </tbody>
 </table>
@@ -1012,50 +1314,122 @@
 <tr>
 <th>Date</th>
 <th>Release</th>
+<th align="center">JCenter</th>
+<th align="center">Maven Central</th>
 <th>Highlights</th>
 <th>APIDocs</th>
 </tr>
 </thead>
 <tbody>
 <tr>
+<td>2021-09-01</td>
+<td><a href="https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-1.2.0"><strong>1.2.0</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Bullet Core 1.5.0 and DSL 1.2.0</td>
+<td><a href="../apidocs/bullet-spark/1.2.0/index.html">SparkDocs</a></td>
+</tr>
+<tr>
+<td>2021-08-03</td>
+<td><a href="https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-1.1.1"><strong>1.1.1</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Bullet Core 1.4.4 and DSL 1.1.8</td>
+<td><a href="../apidocs/bullet-spark/1.1.1/index.html">SparkDocs</a></td>
+</tr>
+<tr>
+<td>2021-07-07</td>
+<td><a href="https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-1.1.0"><strong>1.1.0</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Bullet Core 1.4.2 and DSL 1.1.7. Supports PubSubMessageSerDe</td>
+<td><a href="../apidocs/bullet-spark/1.1.0/index.html">SparkDocs</a></td>
+</tr>
+<tr>
+<td>2021-05-14</td>
+<td><a href="https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-1.0.4"><strong>1.0.4</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Bullet Core 1.3.1 and DSL 1.1.6. Avro BulletRecords serialize properly with Kryo enabled</td>
+<td><a href="../apidocs/bullet-spark/1.0.4/index.html">SparkDocs</a></td>
+</tr>
+<tr>
+<td>2021-04-27</td>
+<td><a href="https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-1.0.3"><strong>1.0.3</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>First release using Screwdriver</td>
+<td><a href="../apidocs/bullet-spark/1.0.3/index.html">SparkDocs</a></td>
+</tr>
+<tr>
+<td>2021-04-23</td>
+<td><a href="https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-1.0.2"><strong>1.0.2</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>First release on Maven Central. Bullet Core 1.2.2</td>
+<td><a href="../apidocs/bullet-spark/1.0.2/index.html">SparkDocs</a></td>
+</tr>
+<tr>
+<td>2021-03-25</td>
+<td><a href="https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-1.0.1"><strong>1.0.1</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
+<td>Bullet Core 1.2.1</td>
+<td><a href="../apidocs/bullet-spark/1.0.1/index.html">SparkDocs</a></td>
+</tr>
+<tr>
 <td>2021-02-12</td>
 <td><a href="https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-1.0.0"><strong>1.0.0</strong></a></td>
-<td>Bullet Core 1.2, DSL</td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
+<td>Bullet Core 1.2.0, DSL</td>
 <td><a href="../apidocs/bullet-spark/1.0.0/index.html">SparkDocs</a></td>
 </tr>
 <tr>
 <td>2019-02-07</td>
 <td><a href="https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-0.2.2"><strong>0.2.2</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Fixes a NPE in JoinStreaming for very short queries</td>
 <td><a href="../apidocs/bullet-spark/0.2.2/index.html">SparkDocs</a></td>
 </tr>
 <tr>
 <td>2018-11-26</td>
 <td><a href="https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-0.2.1"><strong>0.2.1</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Uses bullet-core 0.6.4 and supports extended field notation in queries</td>
 <td><a href="../apidocs/bullet-spark/0.2.1/index.html">SparkDocs</a></td>
 </tr>
 <tr>
 <td>2018-11-16</td>
 <td><a href="https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-0.2.0"><strong>0.2.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Uses bullet-core 0.6.1 and adds partitioning support</td>
 <td><a href="../apidocs/bullet-spark/0.2.0/index.html">SparkDocs</a></td>
 </tr>
 <tr>
 <td>2018-06-18</td>
 <td><a href="https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-0.1.2"><strong>0.1.2</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Uses SimpleBulletRecord to avoid some Spark serialization issues with Avro</td>
 <td><a href="../apidocs/bullet-spark/0.1.2/index.html">SparkDocs</a></td>
 </tr>
 <tr>
 <td>2018-06-08</td>
 <td><a href="https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-0.1.1"><strong>0.1.1</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Adds a command flag to pass custom setting file</td>
 <td></td>
 </tr>
 <tr>
 <td>2018-05-25</td>
 <td><a href="https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-0.1.0"><strong>0.1.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>The first release</td>
 <td></td>
 </tr>
@@ -1089,11 +1463,11 @@
 </tr>
 <tr>
 <td><strong>Latest Artifact</strong></td>
-<td><a href="https://bintray.com/yahoo/maven/bullet-service/_latestVersion"><img alt="Download" src="https://api.bintray.com/packages/yahoo/maven/bullet-service/images/download.svg" /></a></td>
+<td><a href="https://maven-badges.herokuapp.com/maven-central/com.yahoo.bullet/bullet-service"><img alt="Latest Artifact" src="https://maven-badges.herokuapp.com/maven-central/com.yahoo.bullet/bullet-service/badge.svg" /></a></td>
 </tr>
 <tr>
 <td><strong>Package Manager Setup</strong></td>
-<td><a href="https://bintray.com/bintray/jcenter?filterByPkgName=bullet-service">Setup for Maven, Gradle etc</a></td>
+<td><a href="https://search.maven.org/artifact/com.yahoo.bullet/bullet-service/${bullet.service.version}/jar">Maven Central</a></td>
 </tr>
 </tbody>
 </table>
@@ -1103,80 +1477,218 @@
 <tr>
 <th>Date</th>
 <th>Release</th>
+<th align="center">JCenter</th>
+<th align="center">Maven Central</th>
 <th>Highlights</th>
 <th>APIDocs</th>
 </tr>
 </thead>
 <tbody>
 <tr>
+<td>2021-09-10</td>
+<td><a href="https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-1.4.1"><strong>1.4.1</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Bug fix for masked Commons Lang3 transitive dependency</td>
+<td><a href="../apidocs/bullet-service/1.4.1/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-09-01</td>
+<td><a href="https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-1.4.0"><strong>1.4.0</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Bullet Core 1.5.0 and BQL 1.3.0</td>
+<td><a href="../apidocs/bullet-service/1.4.0/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-08-03</td>
+<td><a href="https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-1.3.2"><strong>1.3.2</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Bullet Core 1.4.4 and BQL 1.2.5</td>
+<td><a href="../apidocs/bullet-service/1.3.2/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-07-27</td>
+<td><a href="https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-1.3.1"><strong>1.3.1</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Fixes metrics reporting when storage is not configured</td>
+<td><a href="../apidocs/bullet-service/1.3.1/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-07-26</td>
+<td><a href="https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-1.3.0"><strong>1.3.0</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Adds a bunch of new metrics that are reported for queries (async and sync)</td>
+<td><a href="../apidocs/bullet-service/1.3.0/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-06-30</td>
+<td><a href="https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-1.2.3"><strong>1.2.3</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Bullet Core 1.4.2 and BQL 1.2.4</td>
+<td><a href="../apidocs/bullet-service/1.2.3/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-06-28</td>
+<td><a href="https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-1.2.2"><strong>1.2.2</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Bug fix for QueryService#get not using the PubSubMessageSerDe</td>
+<td><a href="../apidocs/bullet-service/1.2.2/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-06-25</td>
+<td><a href="https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-1.2.1"><strong>1.2.1</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Uses ByteArrayPubSubMessageSerDe by default. Bullet Core 1.4.1</td>
+<td><a href="../apidocs/bullet-service/1.2.1/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-06-24</td>
+<td><a href="https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-1.2.0"><strong>1.2.0</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Supports PubSubMessageSerDe. Bullet Core 1.4.0 and BQL 1.2.2</td>
+<td><a href="../apidocs/bullet-service/1.2.0/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-06-17</td>
+<td><a href="https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-1.1.0"><strong>1.1.0</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Adds a get interface to QueryService to retrieve stored queries</td>
+<td><a href="../apidocs/bullet-service/1.1.0/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-05-13</td>
+<td><a href="https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-1.0.4"><strong>1.0.4</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Bullet Core 1.3.1 and BQL 1.2.0</td>
+<td><a href="../apidocs/bullet-service/1.0.4/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-04-27</td>
+<td><a href="https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-1.0.3"><strong>1.0.3</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>First release using Screwdriver</td>
+<td><a href="../apidocs/bullet-service/1.0.3/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-04-23</td>
+<td><a href="https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-1.0.2"><strong>1.0.2</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>First release on Maven Central. Bullet Core 1.2.2</td>
+<td><a href="../apidocs/bullet-service/1.0.2/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-03-25</td>
+<td><a href="https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-1.0.1"><strong>1.0.1</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
+<td>Bullet Core 1.2.1</td>
+<td><a href="../apidocs/bullet-service/1.0.1/index.html">JavaDocs</a></td>
+</tr>
+<tr>
 <td>2021-01-12</td>
 <td><a href="https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-1.0.0"><strong>1.0.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Async queries, Storage, Metrics, BQL only 1.0, Bullet Core 1.0</td>
 <td><a href="../apidocs/bullet-service/1.0.0/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2019-03-07</td>
 <td><a href="https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.5.0"><strong>0.5.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>QueryManager API updates</td>
 <td><a href="../apidocs/bullet-service/0.5.0/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2018-11-28</td>
 <td><a href="https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.4.3"><strong>0.4.3</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Updates bullet-bql to 0.2.1</td>
 <td><a href="../apidocs/bullet-service/0.4.3/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2018-11-26</td>
 <td><a href="https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.4.2"><strong>0.4.2</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>BQL to JSON endpoint, dead backend reaper, new types in Schema, bullet-core 0.6.4</td>
 <td><a href="../apidocs/bullet-service/0.4.2/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2018-09-06</td>
 <td><a href="https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.4.1"><strong>0.4.1</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Max Queries limit and bullet-bql 0.1.2</td>
 <td><a href="../apidocs/bullet-service/0.4.1/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2018-07-17</td>
 <td><a href="https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.4.0"><strong>0.4.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Enhanced Web Service to support BQL queries</td>
 <td><a href="../apidocs/bullet-service/0.4.0/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2018-06-25</td>
 <td><a href="https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.3.0"><strong>0.3.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Upgrades to Netty-less Bullet Core for the RESTPubsub</td>
 <td></td>
 </tr>
 <tr>
 <td>2018-06-14</td>
 <td><a href="https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.2.2"><strong>0.2.2</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Adding settings to configure Websocket</td>
 <td></td>
 </tr>
 <tr>
 <td>2018-04-02</td>
 <td><a href="https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.2.1"><strong>0.2.1</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Moved and renamed settings</td>
 <td></td>
 </tr>
 <tr>
 <td>2018-03-30</td>
 <td><a href="https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.2.0"><strong>0.2.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Supporting windowing / incremental updates</td>
 <td></td>
 </tr>
 <tr>
 <td>2017-10-19</td>
 <td><a href="https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.1.1"><strong>0.1.1</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>New PubSub architecture. Switching to Spring Boot and executable JAR instead of WAR</td>
 <td></td>
 </tr>
 <tr>
 <td>2016-12-16</td>
 <td><a href="https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-0.0.1"><strong>0.0.1</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>The first release with support for DRPC and the file-based schema</td>
 <td></td>
 </tr>
@@ -1184,7 +1696,7 @@
 </table>
 <div class="admonition note">
 <p class="admonition-title">Want to directly download jars?</p>
-<p>Head over to the JCenter download page to <a href="http://jcenter.bintray.com/com/yahoo/bullet/">directly download all Bullet Storm, Core, Service, Record artifacts</a>.</p>
+<p>Head over to the Maven Central download page to <a href="https://repo1.maven.org/maven2/com/yahoo/bullet/">directly download all Bullet Storm, Core, Service, Record artifacts</a>.</p>
 </div>
 <h2 id="bullet-ui">Bullet UI</h2>
 <p>The Bullet UI that lets you build, run, save and visualize results from Bullet.</p>
@@ -1224,6 +1736,16 @@
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>2021-05-18</td>
+<td><a href="https://github.com/bullet-db/bullet-ui/releases/tag/v1.1.0"><strong>1.1.0</strong></a></td>
+<td>Supports BQL upto Bullet BQL 1.2.0 (EXPLODE, LATERAL VIEW etc). Bug fixes for schema table, query builder subfield and bql auto-complete</td>
+</tr>
+<tr>
+<td>2021-03-09</td>
+<td><a href="https://github.com/bullet-db/bullet-ui/releases/tag/v1.0.2"><strong>1.0.2</strong></a></td>
+<td>Link update for the BQL API</td>
+</tr>
 <tr>
 <td>2021-02-18</td>
 <td><a href="https://github.com/bullet-db/bullet-ui/releases/tag/v1.0.1"><strong>1.0.1</strong></a></td>
@@ -1320,11 +1842,11 @@
 </tr>
 <tr>
 <td><strong>Latest Artifact</strong></td>
-<td><a href="https://bintray.com/yahoo/maven/bullet-record/_latestVersion"><img alt="Download" src="https://api.bintray.com/packages/yahoo/maven/bullet-record/images/download.svg" /></a></td>
+<td><a href="https://maven-badges.herokuapp.com/maven-central/com.yahoo.bullet/bullet-record"><img alt="Latest Artifact" src="https://maven-badges.herokuapp.com/maven-central/com.yahoo.bullet/bullet-record/badge.svg" /></a></td>
 </tr>
 <tr>
 <td><strong>Package Manager Setup</strong></td>
-<td><a href="https://bintray.com/bintray/jcenter?filterByPkgName=bullet-record">Setup for Maven, Gradle etc</a></td>
+<td><a href="https://search.maven.org/artifact/com.yahoo.bullet/bullet-record/${bullet.record.version}/jar">Maven Central</a></td>
 </tr>
 </tbody>
 </table>
@@ -1334,62 +1856,122 @@
 <tr>
 <th>Date</th>
 <th>Release</th>
+<th align="center">JCenter</th>
+<th align="center">Maven Central</th>
 <th>Highlights</th>
 <th>APIDocs</th>
 </tr>
 </thead>
 <tbody>
 <tr>
+<td>2021-07-30</td>
+<td><a href="https://github.com/bullet-db/bullet-record/releases/tag/bullet-record-1.2.0"><strong>1.2.0</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>UNKNOWN type guessing and support for UNKNOWN container types as first class. Allows much deeper types than what is supported</td>
+<td><a href="../apidocs/bullet-record/1.2.0/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-06-29</td>
+<td><a href="https://github.com/bullet-db/bullet-record/releases/tag/bullet-record-1.1.4"><strong>1.1.4</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>LazyBulletAvro does not cause a SerDe cycle when copy constructing</td>
+<td><a href="../apidocs/bullet-record/1.1.4/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-05-13</td>
+<td><a href="https://github.com/bullet-db/bullet-record/releases/tag/bullet-record-1.1.3"><strong>1.1.3</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Exposes LazyBulletAvro to plug in other Avros</td>
+<td><a href="../apidocs/bullet-record/1.1.3/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-04-27</td>
+<td><a href="https://github.com/bullet-db/bullet-record/releases/tag/bullet-record-1.1.2"><strong>1.1.2</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>First release using Screwdriver</td>
+<td><a href="../apidocs/bullet-record/1.1.2/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-04-22</td>
+<td><a href="https://github.com/bullet-db/bullet-record/releases/tag/bullet-record-1.1.1"><strong>1.1.1</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>First release on Maven Central</td>
+<td><a href="../apidocs/bullet-record/1.1.1/index.html">JavaDocs</a></td>
+</tr>
+<tr>
 <td>2020-10-30</td>
 <td><a href="https://github.com/bullet-db/bullet-record/releases/tag/bullet-record-1.1.0"><strong>1.1.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Ternary logic</td>
 <td><a href="../apidocs/bullet-record/1.1.0/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2020-06-04</td>
 <td><a href="https://github.com/bullet-db/bullet-record/releases/tag/bullet-record-1.0.0"><strong>1.0.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Type System, Typed records, Schemas, extended Types</td>
 <td><a href="../apidocs/bullet-record/1.0.0/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2018-11-21</td>
 <td><a href="https://github.com/bullet-db/bullet-record/releases/tag/bullet-record-0.3.0"><strong>0.3.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>More setters in BulletRecord including a forceSet</td>
 <td><a href="../apidocs/bullet-record/0.3.0/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2018-10-30</td>
 <td><a href="https://github.com/bullet-db/bullet-record/releases/tag/bullet-record-0.2.2"><strong>0.2.2</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Extract from Lists and Map of Maps</td>
 <td><a href="../apidocs/bullet-record/0.2.2/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2018-08-14</td>
 <td><a href="https://github.com/bullet-db/bullet-record/releases/tag/bullet-record-0.2.1"><strong>0.2.1</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Supports List of Primitive types</td>
 <td><a href="../apidocs/bullet-record/0.2.1/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2018-06-14</td>
 <td><a href="https://github.com/bullet-db/bullet-record/releases/tag/bullet-record-0.2.0"><strong>0.2.0</strong></a></td>
-<td>Makes BulletRecord pluggable, adds simple record and avro record implementations</td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
+<td>Makes BulletRecord pluggable, adds simple record and Avro record implementations</td>
 <td><a href="../apidocs/bullet-record/0.2.0/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2017-05-19</td>
 <td><a href="https://github.com/bullet-db/bullet-record/releases/tag/bullet-record-0.1.2"><strong>0.1.2</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Reduces the memory footprint needed to serialize itself by a factor of 128 for small records</td>
 <td></td>
 </tr>
 <tr>
 <td>2017-04-17</td>
 <td><a href="https://github.com/bullet-db/bullet-record/releases/tag/bullet-record-0.1.1"><strong>0.1.1</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Helper methods to remove, rename, check presence and count fields in the Record</td>
 <td></td>
 </tr>
 <tr>
 <td>2017-02-09</td>
 <td><a href="https://github.com/bullet-db/bullet-record/releases/tag/bullet-record-0.1.0"><strong>0.1.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Map constructor</td>
 <td></td>
 </tr>
@@ -1419,11 +2001,11 @@
 </tr>
 <tr>
 <td><strong>Latest Artifact</strong></td>
-<td><a href="https://bintray.com/yahoo/maven/bullet-dsl/_latestVersion"><img alt="Download" src="https://api.bintray.com/packages/yahoo/maven/bullet-dsl/images/download.svg" /></a></td>
+<td><a href="https://maven-badges.herokuapp.com/maven-central/com.yahoo.bullet/bullet-dsl"><img alt="Latest Artifact" src="https://maven-badges.herokuapp.com/maven-central/com.yahoo.bullet/bullet-dsl/badge.svg" /></a></td>
 </tr>
 <tr>
 <td><strong>Package Manager Setup</strong></td>
-<td><a href="https://bintray.com/bintray/jcenter?filterByPkgName=bullet-dsl">Setup for Maven, Gradle etc</a></td>
+<td><a href="https://search.maven.org/artifact/com.yahoo.bullet/bullet-dsl/${bullet.dsl.version}/jar">Maven Central</a></td>
 </tr>
 </tbody>
 </table>
@@ -1433,50 +2015,130 @@
 <tr>
 <th>Date</th>
 <th>Release</th>
+<th align="center">JCenter</th>
+<th align="center">Maven Central</th>
 <th>Highlights</th>
 <th>APIDocs</th>
 </tr>
 </thead>
 <tbody>
 <tr>
+<td>2021-09-01</td>
+<td><a href="https://github.com/bullet-db/bullet-dsl/releases/tag/bullet-dsl-1.2.0"><strong>1.2.0</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Bullet Core 1.5.0. AvroRecordConverter exposes hooks to modify its behavior for various conversions</td>
+<td><a href="../apidocs/bullet-dsl/1.2.0/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-08-02</td>
+<td><a href="https://github.com/bullet-db/bullet-dsl/releases/tag/bullet-dsl-1.1.8"><strong>1.1.8</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Bullet Core 1.4.4. AvroRecordConverter supports Avro Record types</td>
+<td><a href="../apidocs/bullet-dsl/1.1.8/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-06-30</td>
+<td><a href="https://github.com/bullet-db/bullet-dsl/releases/tag/bullet-dsl-1.1.7"><strong>1.1.7</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Bullet Core 1.4.2</td>
+<td><a href="../apidocs/bullet-dsl/1.1.7/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-05-13</td>
+<td><a href="https://github.com/bullet-db/bullet-dsl/releases/tag/bullet-dsl-1.1.6"><strong>1.1.6</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Bullet Core 1.3.1</td>
+<td><a href="../apidocs/bullet-dsl/1.1.6/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-04-27</td>
+<td><a href="https://github.com/bullet-db/bullet-dsl/releases/tag/bullet-dsl-1.1.5"><strong>1.1.5</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>First release using Screwdriver</td>
+<td><a href="../apidocs/bullet-dsl/1.1.5/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-04-22</td>
+<td><a href="https://github.com/bullet-db/bullet-dsl/releases/tag/bullet-dsl-1.1.4"><strong>1.1.4</strong></a></td>
+<td align="center"></td>
+<td align="center"></td>
+<td>First release on Maven Central. Bullet Core 1.2.2 and uses Lang3 Pair instead of JavaFX Pair</td>
+<td><a href="../apidocs/bullet-dsl/1.1.4/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-03-25</td>
+<td><a href="https://github.com/bullet-db/bullet-dsl/releases/tag/bullet-dsl-1.1.3"><strong>1.1.3</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
+<td>Schema defaults changed from "" to null since Yaml library changed</td>
+<td><a href="../apidocs/bullet-dsl/1.1.3/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-03-25</td>
+<td><a href="https://github.com/bullet-db/bullet-dsl/releases/tag/bullet-dsl-1.1.2"><strong>1.1.2</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
+<td>Bullet Core 1.2.1 and Kafka Clients 2.6.0</td>
+<td><a href="../apidocs/bullet-dsl/1.1.2/index.html">JavaDocs</a></td>
+</tr>
+<tr>
 <td>2021-03-18</td>
 <td><a href="https://github.com/bullet-db/bullet-dsl/releases/tag/bullet-dsl-1.1.0"><strong>1.1.1</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>AvroBulletRecordConverter fixing String types</td>
 <td><a href="../apidocs/bullet-dsl/1.1.1/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2021-02-17</td>
 <td><a href="https://github.com/bullet-db/bullet-dsl/releases/tag/bullet-dsl-1.1.0"><strong>1.1.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>JSONBulletRecordConverter</td>
 <td><a href="../apidocs/bullet-dsl/1.1.0/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2021-02-11</td>
 <td><a href="https://github.com/bullet-db/bullet-dsl/releases/tag/bullet-dsl-1.0.1"><strong>1.0.1</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Bullet Core 1.2, Unsets default connector/converter</td>
 <td><a href="../apidocs/bullet-dsl/1.0.1/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2020-10-30</td>
 <td><a href="https://github.com/bullet-db/bullet-dsl/releases/tag/bullet-dsl-1.0.0"><strong>1.0.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Bullet Core 1.1, Types to match Bullet Record 1.1</td>
 <td><a href="../apidocs/bullet-dsl/1.0.0/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2019-02-07</td>
 <td><a href="https://github.com/bullet-db/bullet-dsl/releases/tag/bullet-dsl-0.1.1"><strong>0.1.1</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Interface consolidation, IdentityDeserializer</td>
 <td><a href="../apidocs/bullet-dsl/0.1.1/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2019-02-05</td>
 <td><a href="https://github.com/bullet-db/bullet-dsl/releases/tag/bullet-dsl-0.1.0"><strong>0.1.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Bullet DSL, Fat jar, Interface refactors</td>
 <td><a href="../apidocs/bullet-dsl/0.1.0/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2019-01-08</td>
 <td><a href="https://github.com/bullet-db/bullet-dsl/releases/tag/bullet-dsl-0.0.1"><strong>0.0.1</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>First release</td>
 <td><a href="../apidocs/bullet-dsl/0.0.1/index.html">JavaDocs</a></td>
 </tr>
@@ -1506,11 +2168,11 @@
 </tr>
 <tr>
 <td><strong>Latest Artifact</strong></td>
-<td><a href="https://bintray.com/yahoo/maven/bullet-kafka/_latestVersion"><img alt="Download" src="https://api.bintray.com/packages/yahoo/maven/bullet-kafka/images/download.svg" /></a></td>
+<td><a href="https://maven-badges.herokuapp.com/maven-central/com.yahoo.bullet/bullet-kafka"><img alt="Latest Artifact" src="https://maven-badges.herokuapp.com/maven-central/com.yahoo.bullet/bullet-kafka/badge.svg" /></a></td>
 </tr>
 <tr>
 <td><strong>Package Manager Setup</strong></td>
-<td><a href="https://bintray.com/bintray/jcenter?filterByPkgName=bullet-kafka">Setup for Maven, Gradle etc</a></td>
+<td><a href="https://search.maven.org/artifact/com.yahoo.bullet/bullet-kafka/${bullet.kafka.version}/jar">Maven Central</a></td>
 </tr>
 </tbody>
 </table>
@@ -1520,62 +2182,170 @@
 <tr>
 <th>Date</th>
 <th>Release</th>
+<th align="center">JCenter</th>
+<th align="center">Maven Central</th>
 <th>Highlights</th>
 <th>APIDocs</th>
 </tr>
 </thead>
 <tbody>
 <tr>
+<td>2021-09-01</td>
+<td><a href="https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-1.3.0"><strong>1.3.0</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Bullet Core 1.5.0</td>
+<td><a href="../apidocs/bullet-kafka/1.3.0/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-08-02</td>
+<td><a href="https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-1.2.4"><strong>1.2.4</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Bullet Core 1.4.4</td>
+<td><a href="../apidocs/bullet-kafka/1.2.4/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-06-30</td>
+<td><a href="https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-1.2.3"><strong>1.2.3</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Bullet Core 1.4.2</td>
+<td><a href="../apidocs/bullet-kafka/1.2.3/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-05-13</td>
+<td><a href="https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-1.2.2"><strong>1.2.2</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Bullet Core 1.3.1</td>
+<td><a href="../apidocs/bullet-kafka/1.2.2/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-05-07</td>
+<td><a href="https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-1.2.1"><strong>1.2.1</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Bug fix for response partitions not being honored if partition routing is disabled</td>
+<td><a href="../apidocs/bullet-kafka/1.2.1/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-05-07</td>
+<td><a href="https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-1.2.0"><strong>1.2.0</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>KafkaSubscriber now supports rate limiting. Optional disabling for partition routing</td>
+<td><a href="../apidocs/bullet-kafka/1.2.0/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-04-27</td>
+<td><a href="https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-1.1.3"><strong>1.1.3</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>First release using Screwdriver</td>
+<td><a href="../apidocs/bullet-kafka/1.1.3/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-04-22</td>
+<td><a href="https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-1.1.2"><strong>1.1.2</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>First release on Maven Central. Bullet Core 1.2.2</td>
+<td><a href="../apidocs/bullet-kafka/1.1.2/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-04-05</td>
+<td><a href="https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-1.1.1"><strong>1.1.1</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
+<td>Bug fix for Kafka CertRefresher refresh interval configuration type mismatch</td>
+<td><a href="../apidocs/bullet-kafka/1.1.1/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-04-05</td>
+<td><a href="https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-1.1.0"><strong>1.1.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
+<td>Kafka CertRefresher implementation for auto refreshing SSL credentials</td>
+<td><a href="../apidocs/bullet-kafka/1.1.0/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-03-25</td>
+<td><a href="https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-1.0.2"><strong>1.0.2</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
+<td>Bullet Core 1.2.1 and Kafka Clients 2.6.0</td>
+<td><a href="../apidocs/bullet-kafka/1.0.2/index.html">JavaDocs</a></td>
+</tr>
+<tr>
 <td>2021-02-17</td>
 <td><a href="https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-1.0.1"><strong>1.0.1</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Bullet Core 1.2</td>
 <td><a href="../apidocs/bullet-kafka/1.0.1/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2020-10-30</td>
 <td><a href="https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-1.0.0"><strong>1.0.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Bullet Core 1.1</td>
 <td><a href="../apidocs/bullet-kafka/1.0.0/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2018-12-17</td>
 <td><a href="https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-0.3.3"><strong>0.3.3</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Removes adding unnecessary properties to Producers/Consumers</td>
 <td><a href="../apidocs/bullet-kafka/0.3.3/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2018-11-26</td>
 <td><a href="https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-0.3.2"><strong>0.3.2</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Uses bullet-core-0.6.4</td>
 <td><a href="../apidocs/bullet-kafka/0.3.2/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2018-11-26</td>
 <td><a href="https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-0.3.1"><strong>0.3.1</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Uses bullet-core-0.6.0 and adds Validator</td>
 <td><a href="../apidocs/bullet-kafka/0.3.1/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2018-02-27</td>
 <td><a href="https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-0.3.0"><strong>0.3.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Uses bullet-core-0.3.0 - windows / incremental updates</td>
 <td><a href="../apidocs/bullet-kafka/0.3.0/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2017-10-19</td>
 <td><a href="https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-0.2.0"><strong>0.2.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Refactors and re-releases. Pass-through settings to Kafka. Manual offset committing bug fix</td>
 <td></td>
 </tr>
 <tr>
 <td>2017-09-27</td>
 <td><a href="https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-0.1.2"><strong>0.1.2</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Fixes a bug with config loading</td>
 <td></td>
 </tr>
 <tr>
 <td>2017-09-22</td>
 <td><a href="https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-0.1.1"><strong>0.1.1</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>First release using the PubSub interfaces</td>
 <td></td>
 </tr>
@@ -1601,15 +2371,15 @@
 </tr>
 <tr>
 <td><strong>Last Tag</strong></td>
-<td><a href="https://github.com/bullet-db/bullet-pulsar/tags"><img alt="Latest tag" src="https://img.shields.io/github/release/bullet-db/bullet-pulsar/all.svg" /></a></td>
+<td><a href="https://github.com/bullet-db/bullet-pulsar/tags"><img alt="Latest tag" src="https://img.shields.io/github/release/bullet-db/bullet-kafka/all.svg" /></a></td>
 </tr>
 <tr>
 <td><strong>Latest Artifact</strong></td>
-<td><a href="https://bintray.com/yahoo/maven/bullet-pulsar/_latestVersion"><img alt="Download" src="https://api.bintray.com/packages/yahoo/maven/bullet-pulsar/images/download.svg" /></a></td>
+<td><a href="https://maven-badges.herokuapp.com/maven-central/com.yahoo.bullet/bullet-pulsar"><img alt="Latest Artifact" src="https://maven-badges.herokuapp.com/maven-central/com.yahoo.bullet/bullet-pulsar/badge.svg" /></a></td>
 </tr>
 <tr>
 <td><strong>Package Manager Setup</strong></td>
-<td><a href="https://bintray.com/bintray/jcenter?filterByPkgName=bullet-pulsar">Setup for Maven, Gradle etc</a></td>
+<td><a href="https://search.maven.org/artifact/com.yahoo.bullet/bullet-pulsar/${bullet.pulsar.version}/jar">Maven Central</a></td>
 </tr>
 </tbody>
 </table>
@@ -1619,20 +2389,82 @@
 <tr>
 <th>Date</th>
 <th>Release</th>
+<th align="center">JCenter</th>
+<th align="center">Maven Central</th>
 <th>Highlights</th>
 <th>APIDocs</th>
 </tr>
 </thead>
 <tbody>
 <tr>
+<td>2021-09-01</td>
+<td><a href="https://github.com/bullet-db/bullet-pulsar/releases/tag/bullet-pulsar-1.1.0"><strong>1.1.0</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Bullet Core 1.5.0</td>
+<td><a href="../apidocs/bullet-pulsar/1.1.0/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-08-02</td>
+<td><a href="https://github.com/bullet-db/bullet-pulsar/releases/tag/bullet-pulsar-1.0.6"><strong>1.0.6</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Bullet Core 1.4.4</td>
+<td><a href="../apidocs/bullet-pulsar/1.0.6/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-06-30</td>
+<td><a href="https://github.com/bullet-db/bullet-pulsar/releases/tag/bullet-pulsar-1.0.5"><strong>1.0.5</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Bullet Core 1.4.2</td>
+<td><a href="../apidocs/bullet-pulsar/1.0.5/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-05-13</td>
+<td><a href="https://github.com/bullet-db/bullet-pulsar/releases/tag/bullet-pulsar-1.0.4"><strong>1.0.4</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Bullet Core 1.3.1</td>
+<td><a href="../apidocs/bullet-pulsar/1.0.4/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-04-27</td>
+<td><a href="https://github.com/bullet-db/bullet-pulsar/releases/tag/bullet-pulsar-1.0.3"><strong>1.0.3</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>First release using Screwdriver</td>
+<td><a href="../apidocs/bullet-pulsar/1.0.3/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-04-22</td>
+<td><a href="https://github.com/bullet-db/bullet-pulsar/releases/tag/bullet-pulsar-1.0.2"><strong>1.0.2</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>First release on Maven Central. Bullet Core 1.2.2</td>
+<td><a href="../apidocs/bullet-pulsar/1.0.2/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-03-25</td>
+<td><a href="https://github.com/bullet-db/bullet-pulsar/releases/tag/bullet-pulsar-1.0.1"><strong>1.0.1</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
+<td>Bullet Core 1.2.1</td>
+<td><a href="../apidocs/bullet-pulsar/1.0.1/index.html">JavaDocs</a></td>
+</tr>
+<tr>
 <td>2020-10-30</td>
 <td><a href="https://github.com/bullet-db/bullet-pulsar/releases/tag/bullet-pulsar-1.0.0"><strong>1.0.0</strong></a></td>
-<td>Bullet Core 1.1</td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
+<td>Bullet Core 1.1.0</td>
 <td><a href="../apidocs/bullet-pulsar/1.0.0/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2018-12-10</td>
 <td><a href="https://github.com/bullet-db/bullet-pulsar/releases/tag/bullet-pulsar-0.1.0"><strong>0.1.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>First release using the PubSub interfaces</td>
 <td><a href="../apidocs/bullet-pulsar/0.1.0/index.html">JavaDocs</a></td>
 </tr>
@@ -1662,11 +2494,11 @@
 </tr>
 <tr>
 <td><strong>Latest Artifact</strong></td>
-<td><a href="https://bintray.com/yahoo/maven/bullet-bql/_latestVersion"><img alt="Download" src="https://api.bintray.com/packages/yahoo/maven/bullet-bql/images/download.svg" /></a></td>
+<td><a href="https://maven-badges.herokuapp.com/maven-central/com.yahoo.bullet/bullet-bql"><img alt="Latest Artifact" src="https://maven-badges.herokuapp.com/maven-central/com.yahoo.bullet/bullet-bql/badge.svg" /></a></td>
 </tr>
 <tr>
 <td><strong>Package Manager Setup</strong></td>
-<td><a href="https://bintray.com/bintray/jcenter?filterByPkgName=bullet-bql">Setup for Maven, Gradle etc</a></td>
+<td><a href="https://search.maven.org/artifact/com.yahoo.bullet/bullet-bql/${bullet.bql.version}/jar">Maven Central</a></td>
 </tr>
 </tbody>
 </table>
@@ -1676,50 +2508,138 @@
 <tr>
 <th>Date</th>
 <th>Release</th>
+<th align="center">JCenter</th>
+<th align="center">Maven Central</th>
 <th>Highlights</th>
 <th>APIDocs</th>
 </tr>
 </thead>
 <tbody>
 <tr>
+<td>2021-09-01</td>
+<td><a href="https://github.com/bullet-db/bullet-bql/releases/tag/bullet-bql-1.3.0"><strong>1.3.0</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Bullet Core 1.5.0. Nested (sub) queries and chained LATERAL VIEW EXPLODES</td>
+<td><a href="../apidocs/bullet-bql/1.5.0/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-08-02</td>
+<td><a href="https://github.com/bullet-db/bullet-bql/releases/tag/bullet-bql-1.2.5"><strong>1.2.5</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Bullet Core 1.4.4</td>
+<td><a href="../apidocs/bullet-bql/1.2.5/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-06-30</td>
+<td><a href="https://github.com/bullet-db/bullet-bql/releases/tag/bullet-bql-1.2.4"><strong>1.2.4</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Bullet Core 1.4.2</td>
+<td><a href="../apidocs/bullet-bql/1.2.4/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-06-28</td>
+<td><a href="https://github.com/bullet-db/bullet-bql/releases/tag/bullet-bql-1.2.3"><strong>1.2.3</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Bug fix for LazyPubSubMessageSerDe clobbering the Metadata</td>
+<td><a href="../apidocs/bullet-bql/1.2.3/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-06-24</td>
+<td><a href="https://github.com/bullet-db/bullet-bql/releases/tag/bullet-bql-1.2.2"><strong>1.2.2</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>LazyPubSubMessageSerDe to do BQL in the backend</td>
+<td><a href="../apidocs/bullet-bql/1.2.2/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-06-09</td>
+<td><a href="https://github.com/bullet-db/bullet-bql/releases/tag/bullet-bql-1.2.1"><strong>1.2.1</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>UPPER, LOWER, MOD</td>
+<td><a href="../apidocs/bullet-bql/1.2.1/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-05-13</td>
+<td><a href="https://github.com/bullet-db/bullet-bql/releases/tag/bullet-bql-1.2.0"><strong>1.2.0</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>Bullet Core 1.3.1. EXPLODE, LATERAL VIEW, NOT RLIKE, NOT RLIKE ANY, TRIM, ABS, BETWEEN, NOT BETWEEN, SUBSTRING, UNIXTIMESTAMP</td>
+<td><a href="../apidocs/bullet-bql/1.2.0/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-04-22</td>
+<td><a href="https://github.com/bullet-db/bullet-bql/releases/tag/bullet-bql-1.1.2"><strong>1.1.2</strong></a></td>
+<td align="center"></td>
+<td align="center"><span>&#10003;</span></td>
+<td>First release on Maven Central. Bullet Core 1.2.2</td>
+<td><a href="../apidocs/bullet-bql/1.1.2/index.html">JavaDocs</a></td>
+</tr>
+<tr>
+<td>2021-04-22</td>
+<td><a href="https://github.com/bullet-db/bullet-bql/releases/tag/bullet-bql-1.1.1"><strong>1.1.1</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
+<td>Bullet Core 1.2.1</td>
+<td><a href="../apidocs/bullet-bql/1.1.1/index.html">JavaDocs</a></td>
+</tr>
+<tr>
 <td>2021-01-04</td>
 <td><a href="https://github.com/bullet-db/bullet-bql/releases/tag/bullet-bql-1.1.0"><strong>1.1.0</strong></a></td>
-<td>Updates Bullet Core to 1.2.0</td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
+<td>Bullet Core 1.2.0</td>
 <td><a href="../apidocs/bullet-bql/1.1.0/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2021-01-04</td>
 <td><a href="https://github.com/bullet-db/bullet-bql/releases/tag/bullet-bql-1.0.0"><strong>1.0.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Expressions, Schema integration, native queries instead of JSON</td>
 <td><a href="../apidocs/bullet-bql/1.0.0/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2018-11-28</td>
 <td><a href="https://github.com/bullet-db/bullet-bql/releases/tag/bullet-bql-0.2.1"><strong>0.2.1</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Extended field access notation</td>
 <td><a href="../apidocs/bullet-bql/0.2.1/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2018-09-28</td>
 <td><a href="https://github.com/bullet-db/bullet-bql/releases/tag/bullet-bql-0.2.0"><strong>0.2.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Adds Post Aggregations and uses bullet-core-0.5.1</td>
 <td><a href="../apidocs/bullet-bql/0.2.0/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2018-09-06</td>
 <td><a href="https://github.com/bullet-db/bullet-bql/releases/tag/bullet-bql-0.1.2"><strong>0.1.2</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Supports CONTAINSKEY, CONTAINSVALUE, SIZEOF, comparing to other fields. Fixes some bugs</td>
 <td><a href="../apidocs/bullet-bql/0.1.2/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2018-07-17</td>
 <td><a href="https://github.com/bullet-db/bullet-bql/releases/tag/bullet-bql-0.1.1"><strong>0.1.1</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>Stops publishing fat jar and marks slf4j dependency provided</td>
 <td><a href="../apidocs/bullet-bql/0.1.1/index.html">JavaDocs</a></td>
 </tr>
 <tr>
 <td>2018-07-05</td>
 <td><a href="https://github.com/bullet-db/bullet-bql/releases/tag/bullet-bql-0.1.0"><strong>0.1.0</strong></a></td>
+<td align="center"><span>&#10003;</span></td>
+<td align="center"></td>
 <td>First release</td>
 <td></td>
 </tr>

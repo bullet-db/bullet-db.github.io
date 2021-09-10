@@ -71,7 +71,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v1.0.0</small></a>
+            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v1.1.0</small></a>
         </div>
 
         <!-- Expanded navigation -->
@@ -554,7 +554,7 @@ interface <a href="https://github.com/bullet-db/bullet-dsl/blob/master/src/main/
 <h3 id="jsonbulletrecordconverter">JSONBulletRecordConverter</h3>
 <p>The JSONBulletRecordConverter is used to convert String JSON representations of records into BulletRecords. Without a schema, it simply inserts every entry in the JSON object into a BulletRecord without any type-checking and it only uses the Double type for all numeric values (since it is unable to guess whether records might need a wider type). You should use a schema and mention the appropriate types if you want more specific numeric types for the fields in your record. If the JSON contains objects that are not types supported by the BulletRecord, you might have issues when serializing the record.</p>
 <h3 id="avrobulletrecordconverter">AvroBulletRecordConverter</h3>
-<p>The AvroBulletRecordConverter is used to convert Avro records into BulletRecords. Without a schema, it inserts every field into a BulletRecord without any type-checking. With a schema, you get type-checking, and you can also specify a RECORD field, and the converter will accept Avro Records in addition to Maps, flattening them into the BulletRecord.</p>
+<p>The AvroBulletRecordConverter is used to convert Avro records into BulletRecords. Without a schema, it inserts every field into a BulletRecord without any type-checking. With a schema, you get type-checking, and you can also specify a RECORD field, and the converter will accept Avro Records in addition to Maps, flattening them into the BulletRecord. This converter also handles container types (such as Maps and Lists) that contain heterogenous nested types as well having more nesting levels than the types we support. It maps then to the appropriate Bullet <code>UNKNOWN_MAP</code>, <code>UNKNOWN_MAP_MAP</code> etc types so that queries can still be written that pull out these fields and if <em>they</em> are types that Bullet understands, the query can still execute.</p>
 <h3 id="schema">Schema</h3>
 <p>The schema consists of a list of fields each described by a name, reference, type, and subtype.</p>
 <ol>
