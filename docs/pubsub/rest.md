@@ -36,8 +36,8 @@ Configure the backend to use the REST PubSub:
 ```yaml
 bullet.pubsub.context.name: "QUERY_PROCESSING"
 bullet.pubsub.class.name: "com.yahoo.bullet.pubsub.rest.RESTPubSub"
-# Path to the SerDe for PubSubMessages
-bullet.pubsub.message.serde.class.name: 'com.yahoo.bullet.pubsub.ByteArrayPubSubMessageSerDe'
+# Path to the SerDe for PubSubMessages. You MUST use the IdentityPubSubMessageSerDe
+bullet.pubsub.message.serde.class.name: 'com.yahoo.bullet.pubsub.IdentityPubSubMessageSerDe'
 bullet.pubsub.rest.connect.timeout.ms: 5000
 bullet.pubsub.rest.subscriber.max.uncommitted.messages: 100
 bullet.pubsub.rest.query.subscriber.min.wait.ms: 10
@@ -49,7 +49,7 @@ bullet.pubsub.rest.query.urls:
 | ----------------------------------------------------------------- | --------------------------------------------------- | ---------------- |
 | bullet.pubsub.context.name                                        | QUERY_PROCESSING                                    | Tells the PubSub that it is running in the backend |
 | bullet.pubsub.class.name                                          | com.yahoo.bullet.pubsub.rest.RESTPubSub             | Tells Bullet to use this class for its PubSub |
-| bullet.pubsub.message.serde.class.name                            | com.yahoo.bullet.pubsub.ByteArrayPubSubMessageSerDe | Tells Bullet to use this SerDe for reading and writing PubSubMessage payloads |
+| bullet.pubsub.message.serde.class.name                            | com.yahoo.bullet.pubsub.IdentityPubSubMessageSerDe  | Tells Bullet to use this SerDe for reading and writing PubSubMessage payloads |
 | bullet.pubsub.rest.connect.timeout.ms                             | 5000                                                | Sets the HTTP connect timeout to 5 s |
 | bullet.pubsub.rest.subscriber.max.uncommitted.messages            | 100                                                 | This is the maximum number of uncommitted messages allowed to be read by the subscriber before blocking |
 | bullet.pubsub.rest.query.subscriber.min.wait.ms                   | 10                                                  | This is used to avoid making an HTTP request too rapidly and overloading the HTTP endpoint. It will force the backend to poll the query endpoint at most once every 10ms |
@@ -62,6 +62,8 @@ Configure the Web Service to use the REST PubSub by passing in the yaml file usi
 ```yaml
 bullet.pubsub.context.name: "QUERY_SUBMISSION"
 bullet.pubsub.class.name: "com.yahoo.bullet.pubsub.rest.RESTPubSub"
+# Path to the SerDe for PubSubMessages. You MUST use the IdentityPubSubMessageSerDe
+bullet.pubsub.message.serde.class.name: 'com.yahoo.bullet.pubsub.IdentityPubSubMessageSerDe'
 bullet.pubsub.rest.connect.timeout.ms: 5000
 bullet.pubsub.rest.subscriber.max.uncommitted.messages: 100
 bullet.pubsub.rest.result.subscriber.min.wait.ms: 10
@@ -74,7 +76,7 @@ bullet.pubsub.rest.query.urls:
 | ----------------------------------------------------------------- | --------------------------------------------------- | ---------------- |
 | bullet.pubsub.context.name                                        | QUERY_SUBMISSION                                    | Tells the PubSub that it is running in the Web Service |
 | bullet.pubsub.class.name                                          | com.yahoo.bullet.pubsub.rest.RESTPubSub             | Tells Bullet to use this class for its PubSub |
-| bullet.pubsub.message.serde.class.name                            | com.yahoo.bullet.pubsub.ByteArrayPubSubMessageSerDe | Tells Bullet to use this SerDe for reading and writing PubSubMessage payloads |
+| bullet.pubsub.message.serde.class.name                            | com.yahoo.bullet.pubsub.IdentityPubSubMessageSerDe  | Tells Bullet to use this SerDe for reading and writing PubSubMessage payloads |
 | bullet.pubsub.rest.connect.timeout.ms                             | 5000                                                | Sets the HTTP connect timeout to 5 s |
 | bullet.pubsub.rest.subscriber.max.uncommitted.messages            | 100                                                 | This is the maximum number of uncommitted messages allowed to be read by the subscriber before blocking |
 | bullet.pubsub.rest.result.subscriber.min.wait.ms                  | 10                                                  | This is used to avoid making an HTTP request too rapidly and overloading the HTTP endpoint. It will force the Web Service to poll the query endpoint at most once every 10ms |

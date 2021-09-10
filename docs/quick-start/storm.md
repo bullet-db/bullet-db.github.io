@@ -328,6 +328,7 @@ We used the [REST PubSub](../pubsub/rest.md). Note that even though we support a
 ```yaml
 bullet.pubsub.context.name: "QUERY_PROCESSING"
 bullet.pubsub.class.name: "com.yahoo.bullet.pubsub.rest.RESTPubSub"
+bullet.pubsub.message.serde.class.name: "com.yahoo.bullet.pubsub.IdentityPubSubMessageSerDe"
 bullet.pubsub.rest.query.urls:
     - "http://localhost:9999/api/bullet/pubsub/query"
 ```
@@ -337,7 +338,7 @@ For the Web Service, we passed in a YAML file that pointed to itself for the RES
 ```yaml
 bullet.pubsub.context.name: "QUERY_SUBMISSION"
 bullet.pubsub.class.name: "com.yahoo.bullet.pubsub.rest.RESTPubSub"
-bullet.pubsub.message.serde.class.name: "com.yahoo.bullet.pubsub.ByteArrayPubSubMessageSerDe"
+bullet.pubsub.message.serde.class.name: "com.yahoo.bullet.pubsub.IdentityPubSubMessageSerDe"
 bullet.pubsub.rest.query.urls:
     - "http://localhost:9999/api/bullet/pubsub/query"
 bullet.pubsub.rest.result.url: "http://localhost:9999/api/bullet/pubsub/result"
