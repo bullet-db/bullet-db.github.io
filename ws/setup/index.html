@@ -454,8 +454,20 @@
 <h2 id="prerequisites">Prerequisites</h2>
 <p>In order for your Web Service to work with Bullet, you should have an instance of the Backend such as <a href="../../backend/storm-setup/">Storm</a> and a PubSub instance such as <a href="../../pubsub/storm-drpc/#setup">Storm DRPC</a> or <a href="../../pubsub/kafka/#setup">Kafka</a> already set up. Alternitively you can run the RESTPubSub as part of the web service. See <a href="../../pubsub/rest/">RESTPubSub</a> for more info.</p>
 <h2 id="installation">Installation</h2>
-<p>You can download the JAR file directly from <a href="https://repo1.maven.org/maven2/com/yahoo/bullet/bullet-service/">Maven Central</a>. The Web Service is a <a href="https://projects.spring.io/spring-boot/">Spring Boot</a> application. It executes as a standalone application. Note that prior to version 0.1.1, bullet-service was a WAR file that you deployed onto a servlet container like Jetty. It now embeds a <a href="http://tomcat.apache.org/">Apache Tomcat</a> servlet container.</p>
+<p>You can download the JAR file directly from <a href="http://jcenter.bintray.com/com/yahoo/bullet/bullet-service/">JCenter</a>. The Web Service is a <a href="https://projects.spring.io/spring-boot/">Spring Boot</a> application. It executes as a standalone application. Note that prior to version 0.1.1, bullet-service was a WAR file that you deployed onto a servlet container like Jetty. It now embeds a <a href="http://tomcat.apache.org/">Apache Tomcat</a> servlet container.</p>
 <p>If you need to depend on the source code directly (to add new endpoints for your own purposes or to build a WAR file out of the JAR), you need to add the JCenter repository and get the artifact through your dependency management system. Maven is shown below.</p>
+<pre><code class="xml">&lt;repositories&gt;
+    &lt;repository&gt;
+        &lt;snapshots&gt;
+            &lt;enabled&gt;false&lt;/enabled&gt;
+        &lt;/snapshots&gt;
+        &lt;id&gt;central&lt;/id&gt;
+        &lt;name&gt;bintray&lt;/name&gt;
+        &lt;url&gt;http://jcenter.bintray.com&lt;/url&gt;
+    &lt;/repository&gt;
+&lt;/repositories&gt;
+</code></pre>
+
 <pre><code class="xml">&lt;dependency&gt;
   &lt;groupId&gt;com.yahoo.bullet&lt;/groupId&gt;
   &lt;artifactId&gt;bullet-service&lt;/artifactId&gt;
@@ -463,7 +475,7 @@
 &lt;/dependency&gt;
 </code></pre>
 
-<p>You can also add <code>&lt;classifier&gt;sources&lt;/classifier&gt;</code>  or <code>&lt;classifier&gt;javadoc&lt;/classifier&gt;</code> if you want the source or javadoc or <code>&lt;classifier&gt;embedded&lt;/classifier&gt;</code> if you want the full JAR with the embedded web server. You may also deploy it onto a servlet container if you build it as a WAR file.</p>
+<p>You can also add <code>&lt;classifier&gt;sources&lt;/classifier&gt;</code>  or <code>&lt;classifier&gt;javadoc&lt;/classifier&gt;</code> if you want the source or javadoc or <code>&lt;classifier&gt;embedded&lt;/classifier&gt;</code> if you want the full JAR with the embedded web server.</p>
 <h2 id="configuration">Configuration</h2>
 <p>There are a few different modules in the Web Service:</p>
 <ol>
@@ -487,7 +499,7 @@
 <li><code>bullet.pubsub.class.name</code> should be set to the fully qualified package to your PubSub implementation. Example: <code>com.yahoo.bullet.kafka.KafkaPubSub</code> for the <a href="../../pubsub/kafka/">Kafka PubSub</a>.</li>
 <li><code>bullet.pubsub.context.name: QUERY_SUBMISSION</code>. The Web Service requires the PubSub to be in the <code>QUERY_SUBMISSION</code> context.</li>
 </ol>
-<p>You will also specify other parameters that your chosen PubSub requires or can use. For instance, <code>bullet.pubsub.message.serde.class.name</code> can be set to the fully qualified package to your <a href="../../pubsub/architecture/#serde">SerDe implementation</a>.</p>
+<p>You will also specify other parameters that your chosen PubSub requires or can use.</p>
 <p>In the top level configuration for the PubSub in <code>application.yaml</code>, you may configure the number of threads for reading and writing the PubSub as well as enabling and configuring the built-in <a href="../../pubsub/rest/">REST PubSub</a> if you choose to use that.</p>
 <h3 id="schema-configuration">Schema Configuration</h3>
 <p>The Web Service can also provide a endpoint that serves your data schema to your UI. You do not necessarily have to use this to serve your schema. The UI can use any JSON API schema specification. But if your schema is fixed or does not change often, it might be simpler for you to use this endpoint to provide the schema for the UI, instead of creating a new one. The Web Service also takes care to provide the right <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS">CORS</a> headers so that your UI can communicate with it.</p>

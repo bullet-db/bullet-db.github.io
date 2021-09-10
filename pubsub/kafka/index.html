@@ -426,10 +426,10 @@
 <p>The Kafka implementation of the Bullet PubSub can be used on any Backend and Web Service. It uses <a href="https://kafka.apache.org">Apache Kafka</a> as the backing PubSub queue and works on all Backends.</p>
 <h2 id="how-does-it-work">How does it work?</h2>
 <p>The implementation by default asks you to create two topics in a Kafka cluster - one for queries and another for results. The Web Service publishes queries to the queries topic and reads results from the results topic. Similarly, the Backend reads queries from the queries topic and writes results to the results topic. All messages are sent as <a href="../architecture/#messages">PubSubMessages</a>.</p>
-<p>You do not need to have two topics but it makes it simpler to reason about if you do. You can have one but you should use multiple partitions and configure your Web Service and Backend to produce to and consume from the right partitions. See the <a href="#configuration">setup</a> section for more details.</p>
+<p>You do not need to have two topics. You can have one but you should use multiple partitions and configure your Web Service and Backend to produce to and consume from the right partitions. See the <a href="#configuration">setup</a> section for more details.</p>
 <div class="admonition note">
 <p class="admonition-title">Kafka Client API</p>
-<p>The Bullet Kafka implementation uses the Kafka 2.6.0 client APIs. Generally, your forward or backward compatibilities should work as expected.</p>
+<p>The Bullet Kafka implementation uses the Kafka 2.0.0 client APIs. Generally, your forward or backward compatibilities should work as expected.</p>
 </div>
 <h2 id="setup">Setup</h2>
 <p>Before setting up, you will need a Kafka cluster setup with your topic(s) created. This cluster need only be a couple of machines if it's devoted for Bullet. However, this depends on your query and result volumes. Generally, these are at most a few hundred or thousands of messages per second and a small Kafka cluster will suffice.</p>
@@ -446,7 +446,7 @@ bullet.pubsub.kafka.response.topic.name: &quot;your-result-topic&quot;
 
 <p>You will then need to configure the Publishers and Subscribers. For details on what to configure and what the defaults are, see the <a href="https://github.com/bullet-db/bullet-kafka/blob/master/src/main/resources/bullet_kafka_defaults.yaml">configuration file</a>.</p>
 <h3 id="plug-into-the-web-service">Plug into the Web Service</h3>
-<p>You will need to head over to our <a href="../../releases/#bullet-kafka">releases page</a> and get the JAR artifact with the <code>fat</code> classifier. For example, you can download the artifact for the 1.3.0 release <a href="https://repo1.maven.org/maven2/com/yahoo/bullet/bullet-kafka/1.3.0/">directly from Maven Central</a>).</p>
+<p>You will need to head over to our <a href="../../releases/#bullet-kafka">releases page</a> and get the JAR artifact with the <code>fat</code> classifier. For example, you can download the artifact for the 0.2.0 release <a href="http://jcenter.bintray.com/com/yahoo/bullet/bullet-kafka/0.2.0/">directly from JCenter</a>).</p>
 <p>You should then plug in this JAR to your Web Service following the instructions <a href="../../ws/setup/#launch">here</a>.</p>
 <p>For configuration, you should <a href="../../ws/setup/#pubsub-configuration">follow the steps here</a> to create and provide a YAML file to the Web Service. Remember to change the context to <code>QUERY_SUBMISSION</code>.</p>
 <pre><code class="yaml">bullet.pubsub.context.name: &quot;QUERY_SUBMISSION&quot;
@@ -470,34 +470,11 @@ bullet.pubsub.kafka.response.topic.name: &quot;your-result-topic&quot;
 <li>You may use two topics and partition one or both for scalability when reading and writing</li>
 <li>You may use two topics and partition one or both for sharding across multiple Web Service instances (and multiple instances in your Backend)</li>
 </ol>
-<p>You can accomplish all this with partition maps. You can configure what partitions your Publishers (Web Service or Backend) will write to using <code>bullet.pubsub.kafka.request.partitions</code> and what partitions your Subscribers will read from using <code>bullet.pubsub.kafka.response.partitions</code>. Providing these to an instance of the Web Service or the Backend in the YAML file ensures that the Publishers in that instance only write to these request partitions and Subscribers only read from the response partitions. The Publishers will randomly adds one of the response partitions in the messages sent to ensure that the responses only arrive to one of those partitions this instance's Subscribers are waiting on. For more details, see the <a href="https://github.com/bullet-db/bullet-kafka/blob/master/src/main/resources/bullet_kafka_defaults.yaml">configuration file</a>. You can choose to disable this latter behavior by disabling <code>bullet.pubsub.kafka.partition.routing.enable</code> and letting Kafka decide which partition to send the message to. This is useful if you are using Bullet for <a href="../../ws/setup/#asynchronous-query-configuration">asynchronous queries</a> primarily and you do not care which Web Service instance (assuming you have many) handles the results.</p>
+<p>You can accomplish all this with partition maps. You can configure what partitions your Publishers (Web Service or Backend) will write to using <code>bullet.pubsub.kafka.request.partitions</code> and what partitions your Subscribers will read from using <code>bullet.pubsub.kafka.response.partitions</code>. Providing these to an instance of the Web Service or the Backend in the YAML file ensures that the Publishers in that instance only write to these request partitions and Subscribers only read from the response partitions. The Publishers will randomly adds one of the response partitions in the messages sent to ensure that the responses only arrive to one of those partitions this instance's Subscribers are waiting on. For more details, see the <a href="https://github.com/bullet-db/bullet-kafka/blob/master/src/main/resources/bullet_kafka_defaults.yaml">configuration file</a>.</p>
 <h2 id="security">Security</h2>
 <p>If you're using secure Kafka, you will need to do the necessary metadata setup to make sure your principals have access to your topic(s) for reading and writing. If you're using SSL for securing your Kafka cluster, you will need to add the necessary SSL certificates to the keystore for your JVM before launching the Web Service or the Backend.</p>
 <h3 id="storm">Storm</h3>
-<p>We have tested Kafka with <a href="../../releases/#bullet-storm">Bullet Storm</a> using <code>Kerberos</code> and <code>SSL</code> from the Storm cluster and SSL from the Web Service.</p>
-<h4 id="ssl">SSL</h4>
-<p>For SSL, you will need to configure the various SSL credentials for both your publishers and subscribers. You can either provide a key and truststore with the passwords as required by Kafka. If your SSL keys and certs expire, you will need to update these stores and restart the JVMs using them. If you are using Kafka Client 2.6 and above, we provide an <code>SSLEngineFactory</code> that can automatically refresh your SSL cert/key credentials for your keystore equivalents. Note that the truststore is still provided as a file in the <code>JKS</code> format because it is not expected to change. See below for a sample configuration:</p>
-<pre><code class="yaml">bullet.pubsub.kafka.producer.security.protocol: &quot;SSL&quot;
-# This class will automatically refresh certs in the Kafka client producer at a configurable interval
-bullet.pubsub.kafka.producer.ssl.engine.factory.class: &quot;com.yahoo.bullet.kafka.CertRefreshingSSLEngineFactory&quot;
-bullet.pubsub.kafka.producer.ssl.truststore.location: &quot;my-truststore.jks&quot;
-bullet.pubsub.kafka.producer.ssl.truststore.password: &quot;changeit&quot;
-bullet.pubsub.kafka.producer.ssl.cert.refreshing.cert.location: &quot;my-cert.pem&quot;
-bullet.pubsub.kafka.producer.ssl.cert.refreshing.key.location: &quot;my-key.pem&quot;
-bullet.pubsub.kafka.producer.ssl.cert.refreshing.refresh.interval.ms: 3600000
-
-# This class will automatically refresh certs in the Kafka client consumer at a configurable interval
-bullet.pubsub.kafka.consumer.security.protocol: &quot;SSL&quot;
-bullet.pubsub.kafka.consumer.ssl.engine.factory.class: &quot;com.yahoo.bullet.kafka.CertRefreshingSSLEngineFactory&quot;
-bullet.pubsub.kafka.consumer.ssl.truststore.location: &quot;my-truststore.jks&quot;
-bullet.pubsub.kafka.consumer.ssl.truststore.password: &quot;changeit&quot;
-bullet.pubsub.kafka.consumer.ssl.cert.refreshing.cert.location: &quot;my-cert.pem&quot;
-bullet.pubsub.kafka.consumer.ssl.cert.refreshing.key.location: &quot;my-key.pem&quot;
-bullet.pubsub.kafka.consumer.ssl.cert.refreshing.refresh.interval.ms: 3600000
-</code></pre>
-
-<h4 id="kerberos">Kerberos</h4>
-<p>For Kerberos, you may need to add a <code>JAAS</code> <a href="https://docs.oracle.com/javase/7/docs/technotes/guides/security/jgss/tutorials/LoginConfigFile.html">config file</a> to the <a href="http://storm.apache.org/releases/current/distcache-blobstore.html">Storm BlobStore</a> and add it to your worker JVMs. To do this, you will need a JAAS configuration entry. For example, if your Kerberos KDC is shared with your Storm cluster's KDC, you may be adding a jaas_file.conf with</p>
+<p>We have tested Kafka with <a href="../../releases/#bullet-storm">Bullet Storm</a> using <code>Kerberos</code> from the Storm cluster and SSL from the Web Service. For Kerberos, you may need to add a <code>JAAS</code> <a href="https://docs.oracle.com/javase/7/docs/technotes/guides/security/jgss/tutorials/LoginConfigFile.html">config file</a> to the <a href="http://storm.apache.org/releases/1.1.0/distcache-blobstore.html">Storm BlobStore</a> and add it to your worker JVMs. To do this, you will need a JAAS configuration entry. For example, if your Kerberos KDC is shared with your Storm cluster's KDC, you may be adding a jaas_file.conf with</p>
 <pre><code>KafkaClient {
    org.apache.storm.security.auth.kerberos.AutoTGTKrb5LoginModule required
    serviceName=&quot;kafka&quot;;

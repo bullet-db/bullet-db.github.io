@@ -435,7 +435,7 @@ bullet.pubsub.pulsar.response.topic.names: [&quot;persistent://sample/ns1/your-q
 <p>You will also need to configure the Pulsar Client, Producer, and Consumer properties used by the PubSub Publishers and Subscribers.</p>
 <p>See the <a href="https://github.com/bullet-db/bullet-pulsar/blob/master/src/main/resources/bullet_pulsar_defaults.yaml">default configuration file</a> for complete configuration details.</p>
 <h3 id="plug-into-the-web-service">Plug into the Web Service</h3>
-<p>You will need to head over to our <a href="../../releases/#bullet-pulsar">releases page</a> and get the JAR artifact with the <code>fat</code> classifier. You can download the artifact for the 1.1.0 release <a href="https://repo1.maven.org/maven2/com/yahoo/bullet/bullet-pulsar/1.1.0/">directly from Maven Central</a>).</p>
+<p>You will need to head over to our <a href="../../releases/#bullet-pulsar">releases page</a> and get the JAR artifact with the <code>fat</code> classifier. You can download the artifact for the 0.1.0 release <a href="https://bintray.com/yahoo/maven/bullet-pulsar/0.1.0">directly from JCenter</a>).</p>
 <p>You should then plug in this JAR to your Web Service following the instructions <a href="../../ws/setup/#launch">here</a>.</p>
 <p>For configuration, you should <a href="../../ws/setup/#pubsub-configuration">follow the steps here</a> to create and provide a YAML file to the Web Service. Remember to set the context to <code>QUERY_SUBMISSION</code>.</p>
 <pre><code class="yaml">bullet.pubsub.context.name: &quot;QUERY_SUBMISSION&quot;
