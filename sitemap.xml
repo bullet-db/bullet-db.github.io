@@ -4,7 +4,7 @@
     
     <url>
      <loc>https://bullet-db.github.io//</loc>
-     <lastmod>2021-09-10</lastmod>
+     <lastmod>2021-09-23</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -13,13 +13,13 @@
         
     <url>
      <loc>https://bullet-db.github.io//quick-start/spark/</loc>
-     <lastmod>2021-09-10</lastmod>
+     <lastmod>2021-09-23</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>https://bullet-db.github.io//quick-start/storm/</loc>
-     <lastmod>2021-09-10</lastmod>
+     <lastmod>2021-09-23</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
@@ -51,31 +51,31 @@
         
     <url>
      <loc>https://bullet-db.github.io//pubsub/architecture/</loc>
-     <lastmod>2021-09-10</lastmod>
+     <lastmod>2021-09-23</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>https://bullet-db.github.io//pubsub/kafka/</loc>
-     <lastmod>2021-09-10</lastmod>
+     <lastmod>2021-09-23</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>https://bullet-db.github.io//pubsub/rest/</loc>
-     <lastmod>2021-09-10</lastmod>
+     <lastmod>2021-09-23</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>https://bullet-db.github.io//pubsub/pulsar/</loc>
-     <lastmod>2021-09-10</lastmod>
+     <lastmod>2021-09-23</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>https://bullet-db.github.io//pubsub/storm-drpc/</loc>
-     <lastmod>2021-09-10</lastmod>
+     <lastmod>2021-09-23</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
@@ -85,7 +85,7 @@
         
     <url>
      <loc>https://bullet-db.github.io//ws/setup/</loc>
-     <lastmod>2021-09-10</lastmod>
+     <lastmod>2021-09-23</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
@@ -101,13 +101,13 @@
         
     <url>
      <loc>https://bullet-db.github.io//ui/setup/</loc>
-     <lastmod>2021-09-10</lastmod>
+     <lastmod>2021-09-23</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>https://bullet-db.github.io//ui/usage/</loc>
-     <lastmod>2021-09-10</lastmod>
+     <lastmod>2021-09-23</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
@@ -116,7 +116,7 @@
     
     <url>
      <loc>https://bullet-db.github.io//releases/</loc>
-     <lastmod>2021-09-10</lastmod>
+     <lastmod>2021-09-23</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -125,13 +125,13 @@
         
     <url>
      <loc>https://bullet-db.github.io//about/contributing/</loc>
-     <lastmod>2021-09-10</lastmod>
+     <lastmod>2021-09-23</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>https://bullet-db.github.io//about/contact/</loc>
-     <lastmod>2021-09-10</lastmod>
+     <lastmod>2021-09-23</lastmod>
      <changefreq>daily</changefreq>
     </url>
         

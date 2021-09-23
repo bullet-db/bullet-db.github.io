@@ -71,7 +71,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v1.1.0</small></a>
+            <a class="navbar-brand" href="../..">Bullet Docs<small class="small small-brand-text">v1.1.1</small></a>
         </div>
 
         <!-- Expanded navigation -->
@@ -423,7 +423,7 @@ outerQuery
 ( ORDER BY orderBy )?
 ( LIMIT Integer )?
 </code></pre>
-<p>where <code>select</code> is </p>
+<p>where <code>select</code> is</p>
 <pre><code>DISTINCT? selectItem ( , selectItem )*
 </code></pre>
 <p>and <code>selectItem</code> is one of</p>
@@ -484,9 +484,9 @@ MAP [ MAP [ primitiveType ] ]
 <pre><code>[]
 [ expressions ]
 </code></pre>
-<p><code>unaryExpression</code> is </p>
+<p><code>unaryExpression</code> is</p>
 <pre><code>( NOT | SIZEOF ) ( expression )                                                 with optional parentheses
-( ABS | TRIM | LOWER | UPPER ) ( expression )                                   with non-optional parentheses
+( ABS | TRIM | LOWER | UPPER | HASH) ( expression )                             with non-optional parentheses
 </code></pre>
 <p><code>functionExpression</code> is one of</p>
 <pre><code>( SIZEIS | CONTAINSKEY | CONTAINSVALUE | FILTER ) ( expression , expression )
@@ -521,14 +521,14 @@ STREAM( ( Integer | MAX ), TIME )                                               
 <p>and <code>lateralView</code> is</p>
 <pre><code>tableFunction (LATERAL VIEW tableFunction)*
 </code></pre>
-<p>and <code>orderBy</code> is </p>
+<p>and <code>orderBy</code> is</p>
 <pre><code>expression ( ASC | DESC )? ( , expression ( ASC | DESC )? )*
 </code></pre>
-<p>and <code>window</code> is one of </p>
+<p>and <code>window</code> is one of</p>
 <pre><code>EVERY ( Integer, ( TIME | RECORD ), include )
 TUMBLING ( Integer, ( TIME | RECORD ) )
 </code></pre>
-<p><code>include</code> is one of </p>
+<p><code>include</code> is one of</p>
 <pre><code>ALL
 FIRST, Integer, ( TIME | RECORD )
 </code></pre>
