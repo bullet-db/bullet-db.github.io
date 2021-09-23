@@ -171,7 +171,7 @@ The implementation of Bullet on Spark Streaming.
 
 |    Date      |                                      Release                                            |        JCenter        |      Maven Central    | Highlights | APIDocs |
 | ------------ | --------------------------------------------------------------------------------------- | :-------------------: | :-------------------: | ---------- | ------- |
-| 2021-09-23   | [**1.2.r1*](https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-1.2.1   |                       | <span>&#10003;</span> | Bullet Core 1.5.1 and DSL 1.2.1 | [SparkDocs](apidocs/bullet-spark/1.2.1/index.html) |
+| 2021-09-23   | [**1.2.1**](https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-1.2.1)  |                       | <span>&#10003;</span> | Bullet Core 1.5.1 and DSL 1.2.1 | [SparkDocs](apidocs/bullet-spark/1.2.1/index.html) |
 | 2021-09-01   | [**1.2.0**](https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-1.2.0)  |                       | <span>&#10003;</span> | Bullet Core 1.5.0 and DSL 1.2.0 | [SparkDocs](apidocs/bullet-spark/1.2.0/index.html) |
 | 2021-08-03   | [**1.1.1**](https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-1.1.1)  |                       | <span>&#10003;</span> | Bullet Core 1.4.4 and DSL 1.1.8 | [SparkDocs](apidocs/bullet-spark/1.1.1/index.html) |
 | 2021-07-07   | [**1.1.0**](https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-1.1.0)  |                       | <span>&#10003;</span> | Bullet Core 1.4.2 and DSL 1.1.7. Supports PubSubMessageSerDe | [SparkDocs](apidocs/bullet-spark/1.1.0/index.html) |
