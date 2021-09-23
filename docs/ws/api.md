@@ -16,7 +16,7 @@ Bullet-BQL provides users with a friendly SQL-like API to submit queries to the 
 
     innerQuery
     outerQuery
-    
+
 where `innerQuery` is
 
     SELECT select FROM stream
@@ -27,7 +27,7 @@ where `innerQuery` is
     ( ORDER BY orderBy )?
     ( WINDOWING window )?
     ( LIMIT Integer )?
-    
+
 and `outerQuery` is
 
     SELECT select FROM ( innerQuery )
@@ -37,11 +37,11 @@ and `outerQuery` is
     ( HAVING expression )?
     ( ORDER BY orderBy )?
     ( LIMIT Integer )?
-    
-where `select` is 
-    
+
+where `select` is
+
     DISTINCT? selectItem ( , selectItem )*
-    
+
 and `selectItem` is one of
 
     expression ( AS? identifier )?
@@ -81,20 +81,20 @@ where `valueExpression` is one of Null, Boolean, Integer, Long, Float, Double, S
 and `fieldExpression` is
 
     identifier
-    
+
 and `subFieldExpression` is one of
 
     fieldExpression [ Integer ]
     fieldExpression [ String ]
     fieldExpression [ expression ]
     fieldExpression . identifier
-    
+
 and `subSubFieldExpression` is one of
 
     subFieldExpression [ String ]
     subFieldExpression [ expression ]
     subFieldExpression . identifier
-    
+
 `fieldType` is one of
 
     primitiveType
@@ -102,18 +102,18 @@ and `subSubFieldExpression` is one of
     MAP [ primitiveType ]
     LIST [ MAP [ primitiveType ] ]
     MAP [ MAP [ primitiveType ] ]
-    
+
 and `primitiveType` is `INTEGER`, `LONG`, `FLOAT`, `DOUBLE`, `BOOLEAN`, or `STRING`
 
 where `listExpression` is one of
-    
+
     []
     [ expressions ]
 
-`unaryExpression` is 
-    
+`unaryExpression` is
+
     ( NOT | SIZEOF ) ( expression )                                                 with optional parentheses
-    ( ABS | TRIM | LOWER | UPPER ) ( expression )                                   with non-optional parentheses
+    ( ABS | TRIM | LOWER | UPPER | HASH) ( expression )                             with non-optional parentheses
 
 `functionExpression` is one of
 
@@ -149,7 +149,7 @@ and `tableFunction` is one of
 and `stream` is one of
 
     STREAM()                                                                        default time duration will be set from BQLConfig
-    STREAM( ( Integer | MAX ), TIME )                                               time based duration control 
+    STREAM( ( Integer | MAX ), TIME )                                               time based duration control
 
 `RECORD` will be supported in the future.
 
@@ -157,16 +157,16 @@ and `lateralView` is
 
     tableFunction (LATERAL VIEW tableFunction)*
 
-and `orderBy` is 
+and `orderBy` is
 
     expression ( ASC | DESC )? ( , expression ( ASC | DESC )? )*
 
-and `window` is one of 
+and `window` is one of
 
     EVERY ( Integer, ( TIME | RECORD ), include )
     TUMBLING ( Integer, ( TIME | RECORD ) )
 
-`include` is one of 
+`include` is one of
 
     ALL
     FIRST, Integer, ( TIME | RECORD )

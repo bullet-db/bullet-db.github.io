@@ -52,6 +52,7 @@ The core Bullet logic (a library) that can be used to implement Bullet on differ
 
 |    Date      |                                        Release                                        |        JCenter        |      Maven Central    | Highlights | APIDocs |
 | ------------ | ------------------------------------------------------------------------------------- | :-------------------: | :-------------------: | ---------- | ------- |
+| 2021-09-22   | [**1.5.1**](https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-1.5.1)  |                       | <span>&#10003;</span> | HASH, type hinting, Bug fix for TOP K empty fields | [JavaDocs](apidocs/bullet-core/1.5.1/index.html) |
 | 2021-08-26   | [**1.5.0**](https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-1.5.0)  |                       | <span>&#10003;</span> | Outer queries (subqueries and nested LATERAL VIEW EXPLODE | [JavaDocs](apidocs/bullet-core/1.5.0/index.html) |
 | 2021-08-02   | [**1.4.4**](https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-1.4.4)  |                       | <span>&#10003;</span> | More efficient BOOLEAN computation and efficient LATERAL VIEW | [JavaDocs](apidocs/bullet-core/1.4.4/index.html) |
 | 2021-07-30   | [**1.4.3**](https://github.com/bullet-db/bullet-core/releases/tag/bullet-core-1.4.3)  |                       | <span>&#10003;</span> | UNKNOWN containers as first class with Bullet Record 1.2.0 | [JavaDocs](apidocs/bullet-core/1.4.3/index.html) |
@@ -120,6 +121,7 @@ The implementation of Bullet on Storm. Due to major API changes between Storm <=
 
 |    Date      |                            Storm 1.0+                                                  |                                 Storm 0.10                                                  |        JCenter        |      Maven Central    | Highlights | APIDocs |
 | ------------ | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | :-------------------: | :-------------------: | ---------- | ------- |
+| 2021-09-23   | [**1.3.1**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-1.3.1) | -                                                                                           |                       | <span>&#10003;</span> | Bullet Core 1.5.1 and DSL 1.2.1 | [JavaDocs](apidocs/bullet-storm/1.3.1/index.html) |
 | 2021-09-01   | [**1.3.0**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-1.3.0) | -                                                                                           |                       | <span>&#10003;</span> | Bullet Core 1.5.0 and DSL 1.2.0 | [JavaDocs](apidocs/bullet-storm/1.3.0/index.html) |
 | 2021-08-03   | [**1.2.1**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-1.2.1) | -                                                                                           |                       | <span>&#10003;</span> | Bullet Core 1.4.4 and DSL 1.1.8 | [JavaDocs](apidocs/bullet-storm/1.2.1/index.html) |
 | 2021-07-07   | [**1.2.0**](https://github.com/bullet-db/bullet-storm/releases/tag/bullet-storm-1.2.0) | -                                                                                           |                       | <span>&#10003;</span> | PubSubMessageSerDe. Bolts emit PubSubMessage. Bullet Core 1.4.2 and DSL 1.1.7 | [JavaDocs](apidocs/bullet-storm/1.2.0/index.html) |
@@ -169,6 +171,7 @@ The implementation of Bullet on Spark Streaming.
 
 |    Date      |                                      Release                                            |        JCenter        |      Maven Central    | Highlights | APIDocs |
 | ------------ | --------------------------------------------------------------------------------------- | :-------------------: | :-------------------: | ---------- | ------- |
+| 2021-09-23   | [**1.2.r1*](https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-1.2.1   |                       | <span>&#10003;</span> | Bullet Core 1.5.1 and DSL 1.2.1 | [SparkDocs](apidocs/bullet-spark/1.2.1/index.html) |
 | 2021-09-01   | [**1.2.0**](https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-1.2.0)  |                       | <span>&#10003;</span> | Bullet Core 1.5.0 and DSL 1.2.0 | [SparkDocs](apidocs/bullet-spark/1.2.0/index.html) |
 | 2021-08-03   | [**1.1.1**](https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-1.1.1)  |                       | <span>&#10003;</span> | Bullet Core 1.4.4 and DSL 1.1.8 | [SparkDocs](apidocs/bullet-spark/1.1.1/index.html) |
 | 2021-07-07   | [**1.1.0**](https://github.com/bullet-db/bullet-spark/releases/tag/bullet-spark-1.1.0)  |                       | <span>&#10003;</span> | Bullet Core 1.4.2 and DSL 1.1.7. Supports PubSubMessageSerDe | [SparkDocs](apidocs/bullet-spark/1.1.0/index.html) |
@@ -204,6 +207,7 @@ The Web Service implementation that can serve a static schema from a file and ta
 
 |    Date      |                                      Release                                               |        JCenter        |      Maven Central    | Highlights | APIDocs |
 | ------------ | ------------------------------------------------------------------------------------------ | :-------------------: | :-------------------: | ---------- | ------- |
+| 2021-09-23   | [**1.4.2**](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-1.4.2) |                       | <span>&#10003;</span> | Bullet Core 1.5.1 and BQL 1.3.1 | [JavaDocs](apidocs/bullet-service/1.4.2/index.html) |
 | 2021-09-10   | [**1.4.1**](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-1.4.1) |                       | <span>&#10003;</span> | Bug fix for masked Commons Lang3 transitive dependency | [JavaDocs](apidocs/bullet-service/1.4.1/index.html) |
 | 2021-09-01   | [**1.4.0**](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-1.4.0) |                       | <span>&#10003;</span> | Bullet Core 1.5.0 and BQL 1.3.0 | [JavaDocs](apidocs/bullet-service/1.4.0/index.html) |
 | 2021-08-03   | [**1.3.2**](https://github.com/bullet-db/bullet-service/releases/tag/bullet-service-1.3.2) |                       | <span>&#10003;</span> | Bullet Core 1.4.4 and BQL 1.2.5 | [JavaDocs](apidocs/bullet-service/1.3.2/index.html) |
@@ -250,6 +254,7 @@ The Bullet UI that lets you build, run, save and visualize results from Bullet.
 
 |    Date      |                                      Release                            | Highlights |
 | ------------ | ----------------------------------------------------------------------- | ---------- |
+| 2021-09-23   | [**1.1.1**](https://github.com/bullet-db/bullet-ui/releases/tag/v1.1.1) | Removes autoformatting BQL, supports BQL 1.3.1 with Outer Queries |
 | 2021-05-18   | [**1.1.0**](https://github.com/bullet-db/bullet-ui/releases/tag/v1.1.0) | Supports BQL upto Bullet BQL 1.2.0 (EXPLODE, LATERAL VIEW etc). Bug fixes for schema table, query builder subfield and bql auto-complete |
 | 2021-03-09   | [**1.0.2**](https://github.com/bullet-db/bullet-ui/releases/tag/v1.0.2) | Link update for the BQL API |
 | 2021-02-18   | [**1.0.1**](https://github.com/bullet-db/bullet-ui/releases/tag/v1.0.1) | Stomp Websocket disconnect on query end |
@@ -283,6 +288,7 @@ The AVRO and other containers that you need to convert your data into to be cons
 
 |    Date      |                                  Release                                                 |        JCenter        |      Maven Central    | Highlights | APIDocs |
 | ------------ | ---------------------------------------------------------------------------------------- | :-------------------: | :-------------------: | ---------- | ------- |
+| 2021-09-21   | [**1.2.1**](https://github.com/bullet-db/bullet-record/releases/tag/bullet-record-1.2.1) |                       | <span>&#10003;</span> | Type hinting | [JavaDocs](apidocs/bullet-record/1.2.1/index.html) |
 | 2021-07-30   | [**1.2.0**](https://github.com/bullet-db/bullet-record/releases/tag/bullet-record-1.2.0) |                       | <span>&#10003;</span> | UNKNOWN type guessing and support for UNKNOWN container types as first class. Allows much deeper types than what is supported | [JavaDocs](apidocs/bullet-record/1.2.0/index.html) |
 | 2021-06-29   | [**1.1.4**](https://github.com/bullet-db/bullet-record/releases/tag/bullet-record-1.1.4) |                       | <span>&#10003;</span> | LazyBulletAvro does not cause a SerDe cycle when copy constructing | [JavaDocs](apidocs/bullet-record/1.1.4/index.html) |
 | 2021-05-13   | [**1.1.3**](https://github.com/bullet-db/bullet-record/releases/tag/bullet-record-1.1.3) |                       | <span>&#10003;</span> | Exposes LazyBulletAvro to plug in other Avros | [JavaDocs](apidocs/bullet-record/1.1.3/index.html) |
@@ -314,6 +320,7 @@ A DSL to plug data sources into the Bullet Backend and Web Service.
 
 |    Date      |                                  Release                                                 |        JCenter        |      Maven Central    | Highlights | APIDocs |
 | ------------ | ---------------------------------------------------------------------------------------- | :-------------------: | :-------------------: | ---------- | ------- |
+| 2021-09-23   | [**1.2.1**](https://github.com/bullet-db/bullet-dsl/releases/tag/bullet-dsl-1.2.1)       |                       | <span>&#10003;</span> | Bullet Core 1.5.1. UNKNOWN container types in Schema | [JavaDocs](apidocs/bullet-dsl/1.2.1/index.html) |
 | 2021-09-01   | [**1.2.0**](https://github.com/bullet-db/bullet-dsl/releases/tag/bullet-dsl-1.2.0)       |                       | <span>&#10003;</span> | Bullet Core 1.5.0. AvroRecordConverter exposes hooks to modify its behavior for various conversions | [JavaDocs](apidocs/bullet-dsl/1.2.0/index.html) |
 | 2021-08-02   | [**1.1.8**](https://github.com/bullet-db/bullet-dsl/releases/tag/bullet-dsl-1.1.8)       |                       | <span>&#10003;</span> | Bullet Core 1.4.4. AvroRecordConverter supports Avro Record types | [JavaDocs](apidocs/bullet-dsl/1.1.8/index.html) |
 | 2021-06-30   | [**1.1.7**](https://github.com/bullet-db/bullet-dsl/releases/tag/bullet-dsl-1.1.7)       |                       | <span>&#10003;</span> | Bullet Core 1.4.2 | [JavaDocs](apidocs/bullet-dsl/1.1.7/index.html) |
@@ -346,6 +353,7 @@ A PubSub implementation using Kafka as the backing PubSub. Can be used with any 
 
 |    Date      |                                  Release                                               |        JCenter        |      Maven Central    | Highlights | APIDocs |
 | ------------ | -------------------------------------------------------------------------------------- | :-------------------: | :-------------------: | ---------- | ------- |
+| 2021-09-23   | [**1.3.1**](https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-1.3.1) |                       | <span>&#10003;</span> | Bullet Core 1.5.1 | [JavaDocs](apidocs/bullet-kafka/1.3.1/index.html) |
 | 2021-09-01   | [**1.3.0**](https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-1.3.0) |                       | <span>&#10003;</span> | Bullet Core 1.5.0 | [JavaDocs](apidocs/bullet-kafka/1.3.0/index.html) |
 | 2021-08-02   | [**1.2.4**](https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-1.2.4) |                       | <span>&#10003;</span> | Bullet Core 1.4.4 | [JavaDocs](apidocs/bullet-kafka/1.2.4/index.html) |
 | 2021-06-30   | [**1.2.3**](https://github.com/bullet-db/bullet-kafka/releases/tag/bullet-kafka-1.2.3) |                       | <span>&#10003;</span> | Bullet Core 1.4.2 | [JavaDocs](apidocs/bullet-kafka/1.2.3/index.html) |
@@ -383,6 +391,7 @@ A PubSub implementation using Pulsar as the backing PubSub. Can be used with any
 
 |    Date      |                                  Release                                                 |        JCenter        |      Maven Central    | Highlights | APIDocs |
 | ------------ | ---------------------------------------------------------------------------------------- | :-------------------: | :-------------------: | ---------- | ------- |
+| 2021-09-23   | [**1.1.1**](https://github.com/bullet-db/bullet-pulsar/releases/tag/bullet-pulsar-1.1.1) |                       | <span>&#10003;</span> | Bullet Core 1.5.1 | [JavaDocs](apidocs/bullet-pulsar/1.1.1/index.html) |
 | 2021-09-01   | [**1.1.0**](https://github.com/bullet-db/bullet-pulsar/releases/tag/bullet-pulsar-1.1.0) |                       | <span>&#10003;</span> | Bullet Core 1.5.0 | [JavaDocs](apidocs/bullet-pulsar/1.1.0/index.html) |
 | 2021-08-02   | [**1.0.6**](https://github.com/bullet-db/bullet-pulsar/releases/tag/bullet-pulsar-1.0.6) |                       | <span>&#10003;</span> | Bullet Core 1.4.4 | [JavaDocs](apidocs/bullet-pulsar/1.0.6/index.html) |
 | 2021-06-30   | [**1.0.5**](https://github.com/bullet-db/bullet-pulsar/releases/tag/bullet-pulsar-1.0.5) |                       | <span>&#10003;</span> | Bullet Core 1.4.2 | [JavaDocs](apidocs/bullet-pulsar/1.0.5/index.html) |
@@ -409,6 +418,7 @@ A library facilitating the conversion from Bullet BQL queries to Bullet queries.
 
 |    Date      |                                  Release                                             |        JCenter        |      Maven Central    | Highlights | APIDocs |
 | ------------ | ------------------------------------------------------------------------------------ | :-------------------: | :-------------------: | ---------- | ------- |
+| 2021-09-23   | [**1.3.1**](https://github.com/bullet-db/bullet-bql/releases/tag/bullet-bql-1.3.1)   |                       | <span>&#10003;</span> | Bullet Core 1.5.1. LazyPubSubMessageSerDe copies input | [JavaDocs](apidocs/bullet-bql/1.5.1/index.html) |
 | 2021-09-01   | [**1.3.0**](https://github.com/bullet-db/bullet-bql/releases/tag/bullet-bql-1.3.0)   |                       | <span>&#10003;</span> | Bullet Core 1.5.0. Nested (sub) queries and chained LATERAL VIEW EXPLODES | [JavaDocs](apidocs/bullet-bql/1.5.0/index.html) |
 | 2021-08-02   | [**1.2.5**](https://github.com/bullet-db/bullet-bql/releases/tag/bullet-bql-1.2.5)   |                       | <span>&#10003;</span> | Bullet Core 1.4.4 | [JavaDocs](apidocs/bullet-bql/1.2.5/index.html) |
 | 2021-06-30   | [**1.2.4**](https://github.com/bullet-db/bullet-bql/releases/tag/bullet-bql-1.2.4)   |                       | <span>&#10003;</span> | Bullet Core 1.4.2 | [JavaDocs](apidocs/bullet-bql/1.2.4/index.html) |

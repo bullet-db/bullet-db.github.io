@@ -10,8 +10,8 @@
         <scala.version>2.12.8</scala.version>
         <scala.dep.version>2.12</scala.dep.version>
         <spark.version>3.1.2</spark.version>
-        <bullet.spark.version>1.2.0</bullet.spark.version>
-        <bullet.record.version>1.2.0</bullet.record.version>
+        <bullet.spark.version>1.2.1</bullet.spark.version>
+        <bullet.record.version>1.2.1</bullet.record.version>
         <avro.version>1.9.2</avro.version>
     </properties>
 
