@@ -16,8 +16,8 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <bullet.storm.version>1.3.0</bullet.storm.version>
-        <bullet.core.version>1.5.0</bullet.core.version>
-        <bullet.record.version>1.2.0</bullet.record.version>
+        <bullet.core.version>1.5.1</bullet.core.version>
+        <bullet.record.version>1.2.1</bullet.record.version>
         <storm.version>2.2.0</storm.version>
     </properties>
 

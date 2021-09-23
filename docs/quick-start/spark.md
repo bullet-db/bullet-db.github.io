@@ -37,7 +37,7 @@ mkdir -p $BULLET_HOME/pubsub
 mkdir -p $BULLET_HOME/service
 mkdir -p $BULLET_HOME/ui
 cd $BULLET_HOME
-curl -LO https://github.com/bullet-db/bullet-db.github.io/releases/download/v1.1.0/examples_artifacts.tar.gz
+curl -LO https://github.com/bullet-db/bullet-db.github.io/releases/download/v1.1.1/examples_artifacts.tar.gz
 tar -xzf examples_artifacts.tar.gz
 export BULLET_EXAMPLES=$BULLET_HOME/bullet-examples
 ```
@@ -50,7 +50,7 @@ For this instance of Bullet we will use the Kafka PubSub implementation found in
 
 ```bash
 cd $BULLET_HOME/pubsub
-curl -Lo bullet-kafka.jar https://repo1.maven.org/maven2/com/yahoo/bullet/bullet-kafka/1.3.0/bullet-kafka-1.3.0-fat.jar
+curl -Lo bullet-kafka.jar https://repo1.maven.org/maven2/com/yahoo/bullet/bullet-kafka/1.3.1/bullet-kafka-1.3.1-fat.jar
 curl -LO https://archive.apache.org/dist/kafka/2.6.2/kafka_2.12-2.6.2.tgz
 tar -xzf kafka_2.12-2.6.2.tgz
 export KAFKA_DIR=$BULLET_HOME/pubsub/kafka_2.12-2.6.2
@@ -96,7 +96,7 @@ tar -xzf spark-3.1.2-bin-hadoop2.7.tgz
 
 ```bash
 cp $BULLET_HOME/bullet-examples/backend/spark/* $BULLET_SPARK
-curl -Lo bullet-spark.jar https://repo1.maven.org/maven2/com/yahoo/bullet/bullet-spark/1.2.0/bullet-spark-1.2.0-standalone.jar
+curl -Lo bullet-spark.jar https://repo1.maven.org/maven2/com/yahoo/bullet/bullet-spark/1.2.1/bullet-spark-1.2.1-standalone.jar
 ```
 
 #### Step 8: Launch the Bullet Spark Backend
@@ -120,7 +120,7 @@ The Backend will usually be up and running usually within 5-10 seconds. Once it 
 
 ```bash
 cd $BULLET_HOME/service
-curl -Lo bullet-service.jar https://repo1.maven.org/maven2/com/yahoo/bullet/bullet-service/1.4.1/bullet-service-1.4.1-embedded.jar
+curl -Lo bullet-service.jar https://repo1.maven.org/maven2/com/yahoo/bullet/bullet-service/1.4.2/bullet-service-1.4.2-embedded.jar
 cp $BULLET_EXAMPLES/web-service/example_kafka_pubsub_config.yaml $BULLET_HOME/service/
 cp $BULLET_EXAMPLES/web-service/example_query_config.yaml $BULLET_HOME/service/
 cp $BULLET_EXAMPLES/web-service/example_columns.json $BULLET_HOME/service/
@@ -175,8 +175,8 @@ nvm use v16.9.0
 #### Step 13: Install the Bullet UI
 
 ```bash
-curl -LO https://github.com/bullet-db/bullet-ui/releases/download/v1.1.0/bullet-ui-v1.1.0.tar.gz
-tar -xzf bullet-ui-v1.1.0.tar.gz
+curl -LO https://github.com/bullet-db/bullet-ui/releases/download/v1.1.1/bullet-ui-v1.1.1.tar.gz
+tar -xzf bullet-ui-v1.1.1.tar.gz
 cp $BULLET_EXAMPLES/ui/env-settings.json config/
 ```
 
