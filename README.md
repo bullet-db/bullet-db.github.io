@@ -6,13 +6,13 @@ The built documentation can be accessed [here](https://bullet-db.github.io).
 
 ## Installing mkdocs
 
-You will need Python installed.
+You will need Python 2 installed.
 
 You can install the required tool "mkdocs" like this (a "mkdocs" directory will be created wherever you execute these commands):
 
 ```bash
 sudo pip install virtualenv
-virtualenv mkdocs
+virtualenv -p `which python2` mkdocs
 source mkdocs/bin/activate
 pip install mkdocs==0.16.3
 # Maybe we need this instead (tried but did not work)?  pip install mkdocs==1.2.3
