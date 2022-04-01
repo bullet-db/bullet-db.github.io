@@ -15,7 +15,6 @@ sudo pip install virtualenv
 virtualenv -p `which python2` mkdocs
 source mkdocs/bin/activate
 pip install mkdocs==0.16.3
-# Maybe we need this instead (tried but did not work)?  pip install mkdocs==1.2.3
 pip install mkdocs-cinder
 pip install git+https://github.com/twardoch/clinker-mktheme.git@master --upgrade
 ```
